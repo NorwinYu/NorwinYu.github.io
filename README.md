@@ -60,7 +60,7 @@ Every content page carries one `<a class="lang-switch">` pointing at its counter
 
 When you add a page, add both languages and set the switch href and the hreflang pair; a missing counterpart is a broken switch. Add a journal post to both `blog/index.html` and `en/blog/index.html`, with the same order and numbering.
 
-`ai.html` is the landing page for the **Local** section; the two pages under `local/` hold the full reference tables it summarises. Journal notes stay narrative — they link into `local/` rather than duplicating the tables.
+`ai.html` is the landing page for the **Local** section; the three pages under `local/` hold the full reference tables it summarises. Journal notes stay narrative — they link into `local/` rather than duplicating the tables.
 
 Add new pages as plain HTML and link them from the relevant index. Keep page-specific styling in the existing CSS files rather than adding a framework.
 
