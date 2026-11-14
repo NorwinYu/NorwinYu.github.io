@@ -42,6 +42,7 @@ Add new pages as plain HTML and link them from the relevant index. Keep page-spe
 
 - Project screenshots and third-party assets remain subject to their own project licences.
 - Site code is MIT; personal text and original images are all rights reserved unless stated otherwise.
+- Journal posts are AI-drafted from project notes and reviewed by the site owner.
 - The site intentionally contains no email address or private contact details.
 
 ## Security

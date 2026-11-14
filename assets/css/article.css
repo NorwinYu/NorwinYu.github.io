@@ -1316,3 +1316,48 @@ body {
     color: var(--ink);
   }
 }
+
+/* Four-item article stat strips */
+.stat-strip.is-four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 620px) {
+  .stat-strip.is-four {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.ai-disclosure {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 4px 7px;
+  border: 1px solid var(--line-strong);
+  background: var(--card);
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.03em;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.journal-ai-note {
+  margin-top: 14px;
+  max-width: 72ch;
+  padding: 8px 10px;
+  border-left: 2px solid var(--accent);
+  background: var(--card);
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.03em;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.writing-ai-note {
+  margin: -2px auto 8px;
+  font-family: var(--mono);
+  font-size: 7.5px;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}

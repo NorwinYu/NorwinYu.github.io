@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>识别只是草稿 — Norwin Yu</title>
+  <meta name="description" content="从户型图到可编辑 3D：RoomTessera 的 16 轮迭代，以及为什么自动识别必须配一个修正界面。">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="识别只是草稿 — Norwin Yu">
+  <meta property="og:description" content="从户型图到可编辑 3D：RoomTessera 的 16 轮迭代，以及为什么自动识别必须配一个修正界面。">
+  <meta property="og:image" content="../assets/img/demo-roomtessera.jpg">
+  <meta property="og:locale" content="zh_CN">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="preload" href="../assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/article.css">
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="../index.html" aria-label="Norwin Yu — 首页">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
+      </a>
+      <nav class="article-nav" aria-label="文章导航">
+        <a href="../work/index.html">实验</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <span class="availability"><i aria-hidden="true"></i>开放研究交流</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> 全部笔记</a>
+        <p class="article-kicker"><span class="is-accent">产品</span><i aria-hidden="true"></i><span>空间工具</span><i aria-hidden="true"></i><span>现场复盘</span></p>
+        <h1>识别<br><em>只是草稿。</em></h1>
+        <p class="article-deck">一张户型图能生成 3D，但第一版墙体总是歪的。RoomTessera 的 16 轮迭代说明：图像转 3D 的难点不在识别，而在修正。</p>
+        <p class="article-cn">自动识别负责开始，手动墙线负责结束。中间那段，才是产品。</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>2026 年 11 月</span>
+          <span>7 分钟</span>
+          <span>研究笔记 / 07</span>
+        </div>
+        <p class="ai-disclosure">写作：AI 代写 · 素材与校对：Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">目录</p>
+        <nav class="article-toc" aria-label="文章目录">
+          <a href="#promise">自动识别的承诺</a>
+          <a href="#walls">墙体为什么歪</a>
+          <a href="#draft">把自动降级为草稿</a>
+          <a href="#tools">修正界面才是产品</a>
+          <a href="#local">本地优先</a>
+          <a href="#metric">该测什么</a>
+          <a href="#learned">结论</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>迭代</dt><dd>16 轮反馈</dd></div>
+          <div><dt>家具</dt><dd>15 类，程序化生成</dd></div>
+          <div><dt>修正</dt><dd>10cm 网格 / 20 步撤销</dd></div>
+          <div><dt>运行</dt><dd>纯前端 / 本地保存</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>RoomTessera 的第一句话很简单：导入一张户型图，自动生成 3D 视图，然后自由摆放家具。它听起来像一个识别问题。做完才发现，识别只是入口，真正的工作量在“识别错了以后怎么办”。</p>
+
+        <p>这个项目经历了 16 轮明确反馈。前几轮在加功能：房间、家具、材质、灯光、保存。后面几乎都在处理同一件事——墙。加粗的承重墙被识别宽了，墙体接头突出，某些墙角变成斜线。每一轮都说“识别还是有问题”，每一轮修完，下一个户型又冒出来。</p>
+
+        <div class="stat-strip is-four">
+          <div><strong>16</strong><span>轮明确反馈</span></div>
+          <div><strong>15</strong><span>类程序化家具</span></div>
+          <div><strong>10cm</strong><span>墙线吸附网格</span></div>
+          <div><strong>20</strong><span>步撤销</span></div>
+        </div>
+
+        <h2 id="promise">自动识别的承诺</h2>
+        <p>自动识别能做的事很具体：估算户型范围，找到地面轮廓，切分房间，算出面积。对一张干净的平面图，这些结果已经足够开始布置。用户不需要先画一个空盒子，家具也有了可放置的边界。</p>
+
+        <p>问题在于，户型图不是为算法画的。它有线宽、有标注、有家具遮挡、有阴影，甚至有透视。墙的“中心线”和“可见边”不是同一条线。加粗的承重墙在图上看起来更宽，算法很容易把整段厚度当成墙体，生成一个胖了一圈的房间。</p>
+
+        <h2 id="walls">墙体为什么歪</h2>
+        <p>最典型的失败是三类：</p>
+        <ul>
+          <li><strong>加粗墙变宽。</strong> 图上的墙有厚度，识别把外沿当成中心线，房间被吃掉一块。</li>
+          <li><strong>接头突出。</strong> 两段墙相交时，线段端点没有正确合并，3D 里就多出一个小方块。</li>
+          <li><strong>墙角变斜。</strong> 图上有轻微透视或扫描倾斜，算法把一条本应水平的线拟合成斜线，房间随之歪掉。</li>
+        </ul>
+
+        <p>这些不是“模型再大一点”就能全解决的问题。输入本身缺少深度信息，墙的语义也没有唯一答案。一个更诚实的定位是：自动识别给出可编辑的草稿，而不是最终户型。</p>
+
+        <h2 id="draft">把自动降级为草稿</h2>
+        <p>产品上的转折点，是把“识别结果”从结果改成草稿。界面不再假装它一定对，而是允许人直接改：水平/垂直墙线、点击或拖动擦除、清空全部自动墙、10cm 网格吸附、20 步撤销。</p>
+
+        <p>这个改变看起来不酷，但它让工具从“演示”变成了“能用”。用户不需要和算法争论，只需要把错的那一段拉直。自动识别负责把 80% 的空间关系摆出来，手动墙线负责最后 20% 的精度。</p>
+
+        <blockquote>自动识别的价值不是替人做完，而是让人少做一点。</blockquote>
+
+        <p>同时保留原始户型底图叠加，也很重要。人需要对照原图判断墙在哪里，而不是在 3D 里凭记忆修。底图、网格、墙线和房间标签在同一个平面视图里，修正才是一个可理解的动作。</p>
+
+        <figure class="article-figure">
+          <img src="../assets/img/demo-roomtessera.jpg" alt="RoomTessera 3D 界面：左侧户型图，右侧 3D 客厅和家具。" width="1440" height="900" loading="eager">
+          <figcaption><span>RoomTessera 3D / 户型图、3D 视图与家具面板同屏。</span><span>项目截图</span></figcaption>
+        </figure>
+
+        <h2 id="tools">修正界面才是产品</h2>
+        <p>除了墙线，项目还做了几件让“草稿”变得可用的东西：</p>
+        <ul>
+          <li><strong>平面 / 3D 双视图。</strong> 在平面上修结构，在 3D 里看空间，两个视图共享同一份数据。</li>
+          <li><strong>碰撞提示。</strong> 拖动家具时实时检测墙体、其他家具和空间边界，重叠变红。</li>
+          <li><strong>智能落位。</strong> 新家具先找一个能放的位置，用户再微调，而不是从原点拖进来。</li>
+          <li><strong>本地保存与导出。</strong> 方案存在浏览器里，可导入导出 JSON，也可导出当前视角 PNG。</li>
+          <li><strong>材质与灯光。</strong> 6 种地面、6 种墙色、3 种光照氛围、4 套全屋风格，让草稿能快速变成一个可看的方案。</li>
+        </ul>
+
+        <p>这些功能没有一个是“识别更准”。它们都在回答同一个问题：识别错了以后，用户能不能在不离开页面的情况下继续工作。</p>
+
+        <h2 id="local">本地优先</h2>
+        <p>RoomTessera 是纯前端的：识别、渲染、存储都在浏览器完成，没有后端，也没有账号。户型图和方案不上传服务器。这不是一个技术炫耀，而是这类工具的最低信任条件——家装平面图是私人的，用户不应该为了试一下就要先注册。</p>
+
+        <p>本地优先也带来约束：没有服务端的大模型，识别只能是启发式；没有云端同步，方案要能导出；没有后台任务，所有计算都要在前端可接受的时间里完成。这些约束反而让产品更清楚：它是一个本地工作台，不是一个“AI 设计平台”。</p>
+
+        <h2 id="metric">该测什么</h2>
+        <p>如果只用“墙体像素准确率”评估，这个项目会显得很失败。更有用的指标是：</p>
+        <ul>
+          <li><strong>修正时间。</strong> 从导入到得到可用户型，需要手动改几段墙、几分钟？</li>
+          <li><strong>失败可恢复性。</strong> 墙歪了以后，用户能不能在一两步内拉直，而不是重来？</li>
+          <li><strong>首次可用率。</strong> 不改任何东西，生成的 3D 能不能直接开始摆家具？</li>
+          <li><strong>空间可读性。</strong> 8 个房间、15 类家具之后，画面是否还看得懂？</li>
+        </ul>
+
+        <p>这些指标更像产品指标，而不是模型指标。它们也解释了为什么“再训练一个更强的识别模型”不是唯一答案：用户真正需要的是控制感。</p>
+
+        <h2 id="learned">结论</h2>
+        <p>图像转 3D 的难点不是把图变成几何，而是把几何变成可编辑、可修正、可保存的东西。自动识别可以让你少画几笔，但不能替你做决定。一个没有修正界面的“AI 生成 3D”，在真实户型上很快会变成死胡同。</p>
+
+        <p>RoomTessera 现在还是一个 v0.1：墙体识别是启发式，复杂户型会失败，手动工具也还需要打磨。但它至少承认了这件事，并把修正放进了产品，而不是藏在“识别准确率”后面。</p>
+
+        <p class="article-end"><strong>参考 /</strong> 在线 Demo：<a href="https://norwinyu.github.io/roomtessera-3d/" target="_blank" rel="noopener">roomtessera-3d</a>；源码：<a href="https://github.com/NorwinYu/roomtessera-3d" target="_blank" rel="noopener">NorwinYu/roomtessera-3d</a>。项目页：<a href="../work/index.html#roomtessera">RoomTessera 3D</a>。这是开发复盘，不是对识别精度的评测。</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>下一篇 / 游戏</p>
+          <h2 id="next-title">1,500 步之后</h2>
+        </div>
+        <a href="fifteen-hundred-steps.html">
+          <span>继续阅读</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="页脚">
+        <a href="../work/index.html">实验</a>
+        <a href="../ai.html">环境</a>
+        <a href="../open-source.html">开源</a>
+        <a href="../competitions.html">竞赛</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <a href="index.html">全部笔记 <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>
