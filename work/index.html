@@ -260,16 +260,16 @@
 
     <section class="section comparison-section" id="comparisons" aria-labelledby="comparisons-title">
       <div class="wrap section-head">
-        <div class="section-heading"><p class="section-kicker">02 / Comparisons</p><h2 id="comparisons-title">Three controlled runs.</h2></div>
-        <p class="section-intro">Not every build is a product. Run 01 tests the harness — the skill and its six gates — against a no-skill city-kart build. Run 02 compares one checkpoint in two weight formats. Run 03 compares one farm concept with and without Blender.</p>
+        <div class="section-heading"><p class="section-kicker">02 / Comparisons</p><h2 id="comparisons-title">Four controlled runs.</h2></div>
+        <p class="section-intro">Not every build is a product. Run 01 tests the harness on a 3D shooter: NEON BREACH without it, BLACK ICE through it. Run 02 repeats the question on city karts. Run 03 compares one checkpoint in two weight formats. Run 04 compares one farm concept with and without Blender.</p>
       </div>
       <div class="wrap comparison-stack">
-                        <article class="comparison-run" id="city-kart">
+                        <article class="comparison-run" id="neon">
           <div class="comparison-run-head">
             <div><p class="section-kicker">Run 01 / Harness validation</p><h3>Does the harness change the result?</h3></div>
-            <p>The Photoreal Game Harness here means the skill: the photoreal-game procedure plus its six gates. One city-kart brief, two loops: Sundown Circuit without it, SUNSET DISTRICT through it. The comparison asks what the harness changes and what it catches.</p>
+            <p>The Photoreal Game Harness here means the skill: the photoreal-game procedure plus its six gates. A 3D-shooter comparison, two loops: NEON BREACH without it, BLACK ICE through it. The comparison asks what the harness changes and what it catches.</p>
           </div>
-                    <div class="harness-strip">
+          <div class="harness-strip">
             <p class="mono-label">Harness = skill + six gates</p>
             <ul class="harness-gates">
               <li><span>01</span>Shader</li>
@@ -280,7 +280,28 @@
               <li><span>06</span>Look</li>
             </ul>
           </div>
-<div class="comparison-pair">
+          <div class="comparison-pair">
+            <figure class="comparison-panel">
+              <div class="comparison-panel-media"><img decoding="async" src="../assets/img/demo-neon-breach.jpg" alt="Neon Breach first-person neon arena with a weapon and enemy." width="1280" height="800" loading="eager"></div>
+              <figcaption><span class="panel-label">A / No skill</span><strong>NEON BREACH</strong><span>DeepSeek V4.1 Flash · pure API · 5 waves</span></figcaption>
+            </figure>
+            <figure class="comparison-panel">
+              <div class="comparison-panel-media"><img decoding="async" src="../assets/img/demo-black-ice.jpg" alt="Black Ice arctic outpost firefight: robots, relay towers and first-person weapon." width="1280" height="720" loading="eager"></div>
+              <figcaption><span class="panel-label">B / With skill</span><strong>BLACK ICE / 白夜站</strong><span>8 / 8 gates · 163 draw calls · 127k tris · 318 KB</span></figcaption>
+            </figure>
+          </div>
+          <div class="comparison-run-foot">
+            <div class="work-links"><a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">Play NEON BREACH <span aria-hidden="true">↗</span></a><a href="https://norwinyu.github.io/black-ice/game.html" target="_blank" rel="noopener">Play BLACK ICE <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/neon-breach" target="_blank" rel="noopener">Repo 01 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/black-ice" target="_blank" rel="noopener">Repo 02 <span aria-hidden="true">↗</span></a></div>
+            <p class="work-muted">A is the no-skill control; B is the skill run. Not a controlled model benchmark. <a href="/en/blog/agent-loops-need-taste.html">Read the harness notes <span aria-hidden="true">→</span></a></p>
+          </div>
+        </article>
+
+        <article class="comparison-run" id="city-kart">
+          <div class="comparison-run-head">
+            <div><p class="section-kicker">Run 02 / Harness validation</p><h3>Same harness, second domain: city karts.</h3></div>
+            <p>The same no-skill versus skill question, now on city karts: Sundown Circuit without the skill, SUNSET DISTRICT through it. A different genre should expose different failures.</p>
+          </div>
+          <div class="comparison-pair">
             <figure class="comparison-panel">
               <div class="comparison-panel-media"><img decoding="async" src="../assets/img/demo-city-kart.webp" alt="Sundown Circuit city kart race: karts on a neon-lit street with a cyan boost pad." width="1280" height="720" loading="eager"></div>
               <figcaption><span class="panel-label">A / No skill</span><strong>Sundown Circuit / 落日环线</strong><span>3 laps · 860 m · 6 karts</span></figcaption>
@@ -292,13 +313,13 @@
           </div>
           <div class="comparison-run-foot">
             <div class="work-links"><a href="https://norwinyu.github.io/city-kart/" target="_blank" rel="noopener">Play Sundown Circuit <span aria-hidden="true">↗</span></a><a href="https://norwinyu.github.io/sunset-district/" target="_blank" rel="noopener">Play Sunset District <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/city-kart" target="_blank" rel="noopener">Repo 01 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/sunset-district" target="_blank" rel="noopener">Repo 02 <span aria-hidden="true">↗</span></a></div>
-            <p class="work-muted" id="neon">A is the no-skill control; B is the skill run. Not a controlled model benchmark. <a href="/en/blog/agent-loops-need-taste.html">Read the harness notes <span aria-hidden="true">→</span></a> · Earlier control: <a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">NEON BREACH</a>.</p>
+            <p class="work-muted">A is the no-skill control; B is the skill run. Not a controlled model benchmark.</p>
           </div>
         </article>
 
         <article class="comparison-run" id="ming-palace">
           <div class="comparison-run-head">
-            <div><p class="section-kicker">Run 02 / Model</p><h3>One checkpoint, two weight formats.</h3></div>
+            <div><p class="section-kicker">Run 03 / Model</p><h3>One checkpoint, two weight formats.</h3></div>
             <p>The same Ming palace brief, generated by the original model and by a locally served Maya-XS quantisation. Two images, two trade-offs.</p>
           </div>
           <div class="comparison-pair">
@@ -318,7 +339,7 @@
         </article>
         <article class="comparison-run" id="harvest">
           <div class="comparison-run-head">
-            <div><p class="section-kicker">Run 03 / Asset pipeline</p><h3>Same farm, two asset pipelines.</h3></div>
+            <div><p class="section-kicker">Run 04 / Asset pipeline</p><h3>Same farm, two asset pipelines.</h3></div>
             <p>One farm concept, two ways to get the assets: code and a prompt, or Blender scripts exporting GLB. The question is not which is prettier, but where the assets come from and how hard they are to revise.</p>
           </div>
           <div class="comparison-pair">
