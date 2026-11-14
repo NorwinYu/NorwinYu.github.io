@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>One skill, eight gates — Norwin Yu</title>
+  <meta name="description" content="What Photoreal Game Harness is: a procedure, eight executable gates, and how it turns a demo into a finished 3D game.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="One skill, eight gates — Norwin Yu">
+  <meta property="og:description" content="What Photoreal Game Harness is: a procedure, eight executable gates, and how it turns a demo into a finished 3D game.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/demo-black-ice.jpg">
+  <meta property="og:locale" content="en_US">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="canonical" href="https://norwinyu.github.io/en/blog/photoreal-game-skill.html">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/photoreal-game-skill.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/photoreal-game-skill.html">
+  <link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/photoreal-game-skill.html">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header><div class="header-inner wrap"><a class="brand" href="/" aria-label="Norwin Yu — home"><span class="brand-mark" aria-hidden="true">N<span>Y</span></span><span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span></a><nav class="article-nav" aria-label="Article navigation"><a href="/work/">Experiments</a><a href="/ai.html">Local</a><a href="/en/blog/">Journal</a><a href="/about.html">About</a></nav><a class="lang-switch" href="/blog/photoreal-game-skill.html" hreflang="zh-CN">中文</a><span class="availability"><i aria-hidden="true"></i>Open to research conversations</span></div></header>
+
+  <main id="main">
+    <header class="article-hero"><div class="wrap">
+      <a class="back-link" href="/en/blog/"><span aria-hidden="true">←</span> All notes</a>
+      <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Skill</span><i aria-hidden="true"></i><span>Harness</span></p>
+      <h1>One skill,<br><em>eight gates.</em></h1>
+      <p class="article-deck">Photoreal Game Harness is not a prompt library or an asset pack. It is a procedure plus eight executable checks that are allowed to reject you.</p>
+      <p class="article-cn">A model does not turn a demo into a product by trying harder. It needs a checklist that can say no.</p>
+      <div class="article-meta"><span><i aria-hidden="true"></i>Norwin Yu</span><span>November 2026</span><span>9 min</span><span>Research note / 18</span></div>
+      <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+    </div></header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside"><p class="mono-label">Contents</p><nav class="article-toc" aria-label="Article contents"><a href="#what">What it is</a><a href="#box">What's in the box</a><a href="#gates">The eight gates</a><a href="#learned">Rules written by failure</a><a href="#use">How to use it</a><a href="#not">What it isn't</a><a href="#take">Conclusion</a></nav>
+        <dl class="article-aside-facts"><div><dt>Shape</dt><dd>SKILL.md + harness</dd></div><div><dt>Core</dt><dd>8 executable checks</dd></div><div><dt>Evidence</dt><dd>318 KB FPS · 8/8</dd></div><div><dt>Requires</dt><dd>Node 22+ · Python 3.10+</dd></div></dl>
+      </aside>
+
+      <article class="article-body">
+        <p>In November 2026, Saltline proved that a model could write a content generator, not just a scene: 1.4MB, zero external assets, a playable FPS. The cheaper question followed: <strong>can a low-cost model reach the same kind of finish if it is given enough harness?</strong></p>
+        <p><a href="https://github.com/NorwinYu/photoreal-game" target="_blank" rel="noopener">Photoreal Game Harness</a> is the current answer. It is not a template for imitating Saltline. It is a procedure plus eight executable gates that make the gap between “a demo” and “a game” visible to the model building it.</p>
+
+        <div class="stat-strip is-four"><div><strong>8</strong><span>gates</span></div><div><strong>318 KB</strong><span>Black Ice single file</span></div><div><strong>6–10 min</strong><span>one run</span></div><div><strong>0</strong><span>external assets / API keys</span></div></div>
+
+        <h2 id="what">What it is</h2>
+        <p>In one sentence: <strong>a skill for finishing photorealistic 3D games.</strong> “Photoreal” does not mean photo replication; it means scale, light, materials, composition, motion and performance holding together. The skill turns those into decisions that can be checked each round.</p>
+        <p>It does not write the game for the model. It forces a question at every stage: what changes this round, which gate is worst, did it actually improve, and did the change break the product? A prettier frame that breaks the loop gets reverted.</p>
+
+        <h2 id="box">What's in the box</h2>
+        <ul>
+          <li><strong>SKILL.md:</strong> the procedure — art direction, lighting, materials, composition, loop, product shell, calibration and the rules that survived contact.</li>
+          <li><strong>harness/:</strong> the eight gates and their instruments: headless render, image statistics, calibration, diagnosis, census, collision, light audit, playtest, product, mobile, look.</li>
+          <li><strong>harness/contract.md:</strong> the page contract and both playtest protocols.</li>
+          <li><strong>site/:</strong> the public site, case studies, harness reference and playable builds.</li>
+          <li><strong>examples/:</strong> the index of the controlled runs.</li>
+        </ul>
+        <p>It is tool-agnostic. The harness is optional — but without it, the skill is aspiration; with it, the procedure is checkable.</p>
+
+        <h2 id="gates">The eight gates</h2>
+        <ul>
+          <li><strong>shaders:</strong> does the page actually compile and start?</li>
+          <li><strong>census:</strong> do meshes, instances and near props have identity?</li>
+          <li><strong>collide:</strong> does collision use the same movement code the player uses?</li>
+          <li><strong>lights:</strong> does every light have a physical anchor, or was it added for a screenshot?</li>
+          <li><strong>playtest:</strong> can a run start, progress, fail and restart?</li>
+          <li><strong>product:</strong> title, settings, pause, save, touch, objective chain and HUD?</li>
+          <li><strong>mobile:</strong> 390×844 with no overflow and usable touch?</li>
+          <li><strong>look:</strong> at fixed cameras and exposure, do tone and emptiness pass? Without a reference profile it runs fallback only — no pretending to know taste.</li>
+        </ul>
+        <p>The gates are not “make it prettier” switches. They are a rejection list: if one fails, the round is not done.</p>
+
+        <h2 id="learned">Rules written by failure</h2>
+        <p>The skill was not designed first and evidenced later. It was changed by failures.</p>
+        <p><strong>IRONSIGHT passed 6/6 and was still thin.</strong> It was green on shaders, census, collision, lights, playtest and look — 0.87 against its reference profile — but had one enemy, one weapon, no settings, no save, no touch, and a title card that leaked the HUD. That produced the <strong>product gate</strong>: shell and content breadth before look. The next generation, Black Ice, is 318 KB, 8/8, four enemy roles, a boss and a 6–10 minute run.</p>
+        <p><strong>The prompt appeared at 3m; the action worked at 1.8m.</strong> A player at 2.5m pressed E and nothing happened. The UI was lying, and no screenshot could show it. Playtest now checks both directions: the key appears whenever something is in range, and never when nothing is; marker range, prompt text and action radius come from one constant.</p>
+        <p><strong>The boss died and the run did not end.</strong> The death hook set <code>boss.dead = true</code> before the victory timer was queued. The playtest drove the loop to a win instead of reading the counter. Success needs the same visible consequence as failure.</p>
+        <p>And the snowcat “exploded” because every <code>at()</code> in the transform stack lacked a matching <code>done()</code>. A pixel-only gate would call the debris a silhouette; census, collision and visible geometry checks exist for that reason.</p>
+
+        <figure class="article-figure"><img decoding="async" src="/assets/img/demo-black-ice.jpg" alt="Black Ice arctic outpost firefight: robots, relay towers and a first-person weapon." width="1280" height="720" loading="eager"><figcaption><span>Black Ice: DeepSeek V4.1 Flash + photoreal-game, 8/8 gates, 318 KB.</span><span>Project screenshot</span></figcaption></figure>
+
+        <h2 id="use">How to use it</h2>
+        <p>Requirements are light: Node.js 22+, Python 3.10+ with Pillow, and Chrome or Chromium. No npm packages, no build step, no API key.</p>
+        <pre><code>git clone https://github.com/NorwinYu/photoreal-game.git
+cd photoreal-game
+python3 -m pip install -r requirements.txt
+
+./install.sh /path/to/workspace/.dsh/skills
+node harness/verify.mjs --dir ../my-game --page index.html</code></pre>
+        <p>With no reference profile, the look gate runs fallback: tone and emptiness only. It will not rank your game against another project's style. For a real look target, capture two or three frames from the same project, calibrate a profile, then run again.</p>
+        <p>No skill loader? Copy <code>SKILL.md</code> to <code>AGENTS.md</code>; the procedure still works as an instruction file.</p>
+
+        <h2 id="not">What it isn't</h2>
+        <p>It is not a template. It does not guarantee any model can produce a 318 KB FPS, and eight green gates do not prove “fun”. The look gate in fallback mode checks tone and emptiness, not taste; the product gate can prove a shell exists, not that the content is worth playing.</p>
+        <p>It also isn't FPS-only. The city-kart case moved the same skill to another genre: generic gates transferred, the world contract had to be rewritten. That is the difference between a harness and a checklist.</p>
+
+        <h2 id="take">Conclusion</h2>
+        <p>If I keep one sentence: <strong>the skill is not about making the model write better; it is about making the model know whether it has finished.</strong> Eight gates turn “it looks done” into observable failure, and failure changes the procedure.</p>
+        <p>Repository: <a href="https://github.com/NorwinYu/photoreal-game" target="_blank" rel="noopener">NorwinYu/photoreal-game</a> · Site: <a href="https://norwinyu.github.io/photoreal-game/" target="_blank" rel="noopener">photoreal-game</a> · Cases: <a href="https://norwinyu.github.io/photoreal-game/cases/" target="_blank" rel="noopener">shooter / city karts</a>.</p>
+
+        <p class="article-end"><strong>Reference /</strong> <a href="https://github.com/NorwinYu/photoreal-game" target="_blank" rel="noopener">photoreal-game</a> · <a href="https://norwinyu.github.io/black-ice/game.html" target="_blank" rel="noopener">Black Ice</a> · <a href="https://norwinyu.github.io/sunset-district/" target="_blank" rel="noopener">Sunset District</a> · <a href="https://norwinyu.github.io/city-kart/" target="_blank" rel="noopener">Sundown Circuit</a> · <a href="/work/#comparisons">the four runs in Work</a>. Numbers and failure logs come from the skill repository and each project's acceptance record.</p>
+      </article>
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title"><div class="wrap"><div><p>Back to / Journal</p><h2 id="next-title">All notes</h2></div><a href="/en/blog/"><span>Browse</span><span class="circle-arrow" aria-hidden="true">→</span></a></div></section>
+  </main>
+
+  <footer class="site-footer article-footer"><div class="footer-bottom wrap"><span>© 2026 Norwin Yu</span><nav class="article-footer-links" aria-label="Footer"><a href="/work/">Experiments</a><a href="/ai.html">Local</a><a href="/open-source.html">Open source</a><a href="/competitions.html">Competitions</a><a href="/en/blog/">Journal</a><a href="/about.html">About</a></nav><a href="/en/blog/">All notes <span aria-hidden="true">→</span></a></div></footer>
+</body>
+</html>

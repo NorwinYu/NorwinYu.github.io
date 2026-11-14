@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>一个 skill，八道关 — Norwin Yu</title>
+  <meta name="description" content="Photoreal Game Harness 是什么：一套 procedure、八道可执行的门，以及它如何把 demo 变成能交付的 3D 游戏。">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="一个 skill，八道关 — Norwin Yu">
+  <meta property="og:description" content="Photoreal Game Harness 是什么：一套 procedure、八道可执行的门，以及它如何把 demo 变成能交付的 3D 游戏。">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/demo-black-ice.jpg">
+  <meta property="og:locale" content="zh_CN">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="canonical" href="https://norwinyu.github.io/blog/photoreal-game-skill.html">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/photoreal-game-skill.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/photoreal-game-skill.html">
+  <link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/photoreal-game-skill.html">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header article-header" data-header><div class="header-inner wrap"><a class="brand" href="/zh/" aria-label="Norwin Yu — 首页"><span class="brand-mark" aria-hidden="true">N<span>Y</span></span><span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span></a><nav class="article-nav" aria-label="文章导航"><a href="/zh/work/">实验</a><a href="/zh/ai.html">本地</a><a href="/blog/">日志</a><a href="/zh/about.html">关于</a></nav><a class="lang-switch" href="/en/blog/photoreal-game-skill.html" hreflang="en">EN</a><span class="availability"><i aria-hidden="true"></i>开放研究交流</span></div></header>
+
+  <main id="main">
+    <header class="article-hero"><div class="wrap">
+      <a class="back-link" href="/blog/"><span aria-hidden="true">←</span> 全部笔记</a>
+      <p class="article-kicker"><span class="is-accent">系统</span><i aria-hidden="true"></i><span>Skill</span><i aria-hidden="true"></i><span>Harness</span></p>
+      <h1>一个 skill，<br><em>八道关。</em></h1>
+      <p class="article-deck">Photoreal Game Harness 不是一个 prompt 库，也不是素材包。它是一套 procedure，加八道可以拒绝你的可执行检查。</p>
+      <p class="article-cn">模型不会因为“再努力一点”而把 demo 变成产品；它需要一张能说不的清单。</p>
+      <div class="article-meta"><span><i aria-hidden="true"></i>Norwin Yu</span><span>2026 年 11 月</span><span>9 分钟</span><span>研究笔记 / 18</span></div>
+      <p class="ai-disclosure">写作：AI 代写 · 素材与校对：Norwin Yu</p>
+    </div></header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside"><p class="mono-label">目录</p><nav class="article-toc" aria-label="文章目录"><a href="#what">它是什么</a><a href="#box">盒子里有什么</a><a href="#gates">八道关</a><a href="#learned">被失败改出来的规则</a><a href="#use">怎么用</a><a href="#not">它不是什么</a><a href="#take">结论</a></nav>
+        <dl class="article-aside-facts"><div><dt>形态</dt><dd>SKILL.md + harness</dd></div><div><dt>核心</dt><dd>8 道可执行检查</dd></div><div><dt>证据</dt><dd>318 KB FPS · 8/8</dd></div><div><dt>依赖</dt><dd>Node 22+ · Python 3.10+</dd></div></dl>
+      </aside>
+
+      <article class="article-body">
+        <p>2026 年 11 月，Saltline 用 1.4MB 的单文件证明了另一件事：模型可以写出一套内容生成器，而不只是写一个场景。问题随即变成：<strong>便宜模型能不能也做到这种“完成度”，如果给它足够的 harness？</strong></p>
+        <p><a href="https://github.com/NorwinYu/photoreal-game" target="_blank" rel="noopener">Photoreal Game Harness</a> 是这个问题目前的答案。它不是让模型模仿 Saltline 的模板，而是一套 procedure 加八道可执行的门，让“demo”和“游戏”的差距对模型可见。</p>
+
+        <div class="stat-strip is-four"><div><strong>8</strong><span>道 gates</span></div><div><strong>318 KB</strong><span>BLACK ICE 单文件</span></div><div><strong>6–10 min</strong><span>一局长度</span></div><div><strong>0</strong><span>外部素材 / API key</span></div></div>
+
+        <h2 id="what">它是什么</h2>
+        <p>一句话：<strong>一个用来“做完”写实 3D 游戏的 skill。</strong>“写实”不是照片复刻，而是尺度、光照、材质、构图、运动和性能一起成立；skill 负责把这些东西变成一轮轮可检查的决策。</p>
+        <p>它不替模型写游戏。它规定模型在每个阶段必须回答什么问题：这一轮改什么？哪个 gate 最差？改完有没有变好？有没有把产品层弄坏？如果一帧变漂亮、但 loop 坏了，这一轮必须回滚。</p>
+
+        <h2 id="box">盒子里有什么</h2>
+        <ul>
+          <li><strong>SKILL.md：</strong>procedure。美术方向、光照、材质、构图、游戏 loop、产品外壳、校准，以及那些“撞过墙才留下”的规则。</li>
+          <li><strong>harness/：</strong>八道 gate 和它们需要的仪器：headless render、图像统计、校准、诊断、census、collision、light audit、playtest、product、mobile、look。</li>
+          <li><strong>harness/contract.md：</strong>页面契约和两套 playtest 协议。</li>
+          <li><strong>site/：</strong>公开站点、case studies、harness reference 和可玩的构建。</li>
+          <li><strong>examples/：</strong>三组受控运行的索引。</li>
+        </ul>
+        <p>它是 tool-agnostic 的：harness 可选，但没有 harness，skill 就只是“愿望”；有了 harness，它才是可检查的 procedure。</p>
+
+        <h2 id="gates">八道关</h2>
+        <p>表面上看是八个 PASS/FAIL，实际上每道关都在替人问一个不方便的问题：</p>
+        <ul>
+          <li><strong>shaders：</strong>页面真的能编译、能启动吗？</li>
+          <li><strong>census：</strong>场景里的 mesh、实例、近景道具有没有身份？</li>
+          <li><strong>collide：</strong>碰撞用的是不是玩家实际使用的那套移动代码？</li>
+          <li><strong>lights：</strong>每盏灯有没有实体锚点，还是为了截图凭空加的？</li>
+          <li><strong>playtest：</strong>一局能不能开始、推进、失败、重开？</li>
+          <li><strong>product：</strong>标题、设置、暂停、存档、触屏、目标链和 HUD 是否完整？</li>
+          <li><strong>mobile：</strong>390×844 有没有溢出，触控是不是可用？</li>
+          <li><strong>look：</strong>固定机位、固定曝光下，tone 和 emptiness 是否过关？没有 reference profile 时只跑 fallback，不假装懂审美。</li>
+        </ul>
+        <p>八道关不是“让画面更好看”的开关。它们更像一张拒绝清单：任何一道不过，这一轮就不算完成。</p>
+
+        <h2 id="learned">被失败改出来的规则</h2>
+        <p>这套 skill 不是先写完再找证据，而是被几次失败改出来的。</p>
+        <p><strong>IRONSIGHT 6/6，但游戏很薄。</strong> 第一代 skill 让它在 shader、census、collision、lights、playtest 和 look 上全绿，look 还拿到 0.87；但它只有一种敌人、一把枪，没有设置、没有存档、没有触屏，标题页还把 HUD 漏在背后。于是有了 <strong>product gate</strong>：先过产品外壳和内容宽度，再谈 look。第二代的 BLACK ICE 是 318 KB、8/8、四种敌人、Boss、6–10 分钟的一局。</p>
+        <p><strong>提示在 3 米出现，动作在 1.8 米生效。</strong> 玩家在 2.5 米按 E，什么也没发生；UI 在撒谎，截图看不出来。playtest 现在双向检查：在范围内必须出现提示，不在范围内必须不出现；距离、文案和动作半径来自同一个常量。</p>
+        <p><strong>Boss 死了，但局没结束。</strong> 死亡 hook 先把 <code>boss.dead</code> 设成 true，胜利计时器还没排上；计数器在动，结果没发生。playtest 不是读计数器，而是把 loop 打到胜利。成功和失败需要同样明确的后果。</p>
+        <p>还有雪车“爆炸”的那次：不是材质问题，是 transform stack 里每个 <code>at()</code> 都没有配对的 <code>done()</code>。只打像素分的 gate 会把碎片当成剪影；所以要有 census、collision 和可见的几何检查。</p>
+
+        <figure class="article-figure"><img decoding="async" src="/assets/img/demo-black-ice.jpg" alt="BLACK ICE 北极前哨站枪战：机器人、中继塔和第一人称武器。" width="1280" height="720" loading="eager"><figcaption><span>BLACK ICE：DeepSeek V4.1 Flash + photoreal-game，8/8 gates，318 KB。</span><span>项目截图</span></figcaption></figure>
+
+        <h2 id="use">怎么用</h2>
+        <p>要求很轻：Node.js 22+、Python 3.10+（Pillow）、Chrome/Chromium；没有 npm 包、没有 build step、没有 API key。</p>
+        <pre><code>git clone https://github.com/NorwinYu/photoreal-game.git
+cd photoreal-game
+python3 -m pip install -r requirements.txt
+
+./install.sh /path/to/workspace/.dsh/skills
+node harness/verify.mjs --dir ../my-game --page index.html</code></pre>
+        <p>没有 reference profile 时，look gate 跑 fallback：只检查 tone 和 emptiness，不拿别的项目风格给你打分。要真正的 look 目标，先拍 2–3 张同一项目的参考帧，校准 profile，再跑。</p>
+        <p>没有 skill loader 也没关系：把 <code>SKILL.md</code> 复制成 <code>AGENTS.md</code>，它仍然是一套 procedure。</p>
+
+        <h2 id="not">它不是什么</h2>
+        <p>它不是模板。它不保证任何模型都能做出 318 KB 的 FPS，也不保证八道关等于“好玩”。look gate 在 fallback 模式下只测 tone 和 emptiness，不是审美判断；product gate 能检查产品外壳存在，不能替你决定内容是否值得玩。</p>
+        <p>它也不是“只适用于 FPS”。城市卡丁车那组把同一个 skill 换了一个类型：通用 gate 可以复用，world contract 必须重写。这正是它作为 harness 而不是 checklist 的意义。</p>
+
+        <h2 id="take">结论</h2>
+        <p>如果只记一句：<strong>这个 skill 的核心不是“让模型更会写”，而是让模型每一轮都知道自己有没有做完。</strong> 八道关把“看起来完成了”拆成可观察的失败；失败再反过来改 procedure。</p>
+        <p>仓库：<a href="https://github.com/NorwinYu/photoreal-game" target="_blank" rel="noopener">NorwinYu/photoreal-game</a> · 站点：<a href="https://norwinyu.github.io/photoreal-game/" target="_blank" rel="noopener">photoreal-game</a> · cases：<a href="https://norwinyu.github.io/photoreal-game/cases/" target="_blank" rel="noopener">shooter / city karts</a>。</p>
+
+        <p class="article-end"><strong>参考 /</strong> <a href="https://github.com/NorwinYu/photoreal-game" target="_blank" rel="noopener">photoreal-game</a> · <a href="https://norwinyu.github.io/black-ice/game.html" target="_blank" rel="noopener">BLACK ICE</a> · <a href="https://norwinyu.github.io/sunset-district/" target="_blank" rel="noopener">SUNSET DISTRICT</a> · <a href="https://norwinyu.github.io/city-kart/" target="_blank" rel="noopener">落日环线</a> · <a href="/zh/work/#comparisons">Work 里的四组对比</a>。数字和失败记录来自 skill 仓库与各项目验收记录。</p>
+      </article>
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title"><div class="wrap"><div><p>回到 / 日志</p><h2 id="next-title">全部笔记</h2></div><a href="/blog/"><span>浏览</span><span class="circle-arrow" aria-hidden="true">→</span></a></div></section>
+  </main>
+
+  <footer class="site-footer article-footer"><div class="footer-bottom wrap"><span>© 2026 Norwin Yu</span><nav class="article-footer-links" aria-label="页脚"><a href="/zh/work/">实验</a><a href="/zh/ai.html">本地</a><a href="/zh/open-source.html">开源</a><a href="/zh/competitions.html">竞赛</a><a href="/blog/">日志</a><a href="/zh/about.html">关于</a></nav><a href="/blog/">全部笔记 <span aria-hidden="true">→</span></a></div></footer>
+</body>
+</html>
