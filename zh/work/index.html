@@ -261,27 +261,27 @@
     <section class="section comparison-section" id="comparisons" aria-labelledby="comparisons-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">02 / 对比</p><h2 id="comparisons-title">三次受控运行。</h2></div>
-        <p class="section-intro">不是每个构建都是产品。Run 01 验证 harness 本身：同一份 brief，一次不走 photoreal-game 的 gates，一次走完整检查。Run 02 比较同一个 checkpoint 的两种权重格式。Run 03 比较同一个农场概念在有无 Blender 下的两条资产管线。</p>
+        <p class="section-intro">不是每个构建都是产品。Run 01 用两台独立的城市卡丁车验证 harness。Run 02 比较同一个 checkpoint 的两种权重格式。Run 03 比较同一个农场概念在有无 Blender 下的两条资产管线。</p>
       </div>
       <div class="wrap comparison-stack">
-        <article class="comparison-run" id="neon">
+                <article class="comparison-run" id="city-kart">
           <div class="comparison-run-head">
-            <div><p class="section-kicker">Run 01 / 验证 harness</p><h3>Harness 到底改变了什么？</h3></div>
-            <p>同一份 brief，两种循环：纯 API 循环，和走 photoreal-game harness 的同一份 brief。B 等构建出来再补；这一组验证的是 harness，不是截图。</p>
+            <div><p class="section-kicker">Run 01 / 验证 harness</p><h3>同一个 harness，两台城市卡丁车。</h3></div>
+            <p>两台城市卡丁车都走 photoreal-game skill 和同一套 harness。这里不是选美，而是看这套流程能重复什么、还会漂移什么。</p>
           </div>
           <div class="comparison-pair">
             <figure class="comparison-panel">
-              <div class="comparison-panel-media"><img decoding="async" src="/assets/img/demo-neon-breach.jpg" alt="NEON BREACH 的第一人称霓虹竞技场，画面里有枪械和敌人。" width="1280" height="800" loading="eager"></div>
-              <figcaption><span class="panel-label">A / 无 harness</span><strong>NEON BREACH</strong><span>DeepSeek V4.1 Flash · 纯 API · 已上线</span></figcaption>
+              <div class="comparison-panel-media"><img decoding="async" src="/assets/img/demo-sunset-district.jpg" alt="SUNSET DISTRICT 城市卡丁车比赛：两台卡丁车行驶在湿润的市中心街道，带比赛 HUD 和小地图。" width="960" height="540" loading="eager"></div>
+              <figcaption><span class="panel-label">A / Skill run 01</span><strong>SUNSET DISTRICT</strong><span>4 圈 · 5 个对手 · 636 draw calls</span></figcaption>
             </figure>
-            <figure class="comparison-panel is-empty">
-              <div class="comparison-panel-media comparison-placeholder"><span>B / 02</span><strong>Harness 版<br>即将上线</strong><small>photoreal-game + gates · 同一份 brief</small></div>
-              <figcaption><span class="panel-label">B / 有 harness</span><strong>预留位置</strong><span>等 harness 版构建完成</span></figcaption>
+            <figure class="comparison-panel">
+              <div class="comparison-panel-media"><img decoding="async" src="/assets/img/demo-city-kart.webp" alt="落日环线城市卡丁车比赛：霓虹街道上的卡丁车与青色加速带。" width="1280" height="720" loading="eager"></div>
+              <figcaption><span class="panel-label">B / Skill run 02</span><strong>落日环线 · Sundown Circuit</strong><span>3 圈 · 860 米 · 6 台卡丁车</span></figcaption>
             </figure>
           </div>
           <div class="comparison-run-foot">
-            <div class="work-links"><a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">在线试玩 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/neon-breach" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
-            <p class="work-muted">A 是对照。B 留坑。问题不是哪张截图更好看，而是 harness 能不能抓到纯循环漏掉的失败。</p>
+            <div class="work-links"><a href="https://norwinyu.github.io/sunset-district/" target="_blank" rel="noopener">玩 SUNSET DISTRICT <span aria-hidden="true">↗</span></a><a href="https://norwinyu.github.io/city-kart/" target="_blank" rel="noopener">玩落日环线 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/sunset-district" target="_blank" rel="noopener">仓库 01 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/city-kart" target="_blank" rel="noopener">仓库 02 <span aria-hidden="true">↗</span></a></div>
+            <p class="work-muted" id="neon">同一个 skill 和 harness，两种规模取舍。不是受控的模型 benchmark。更早的无 harness 对照：<a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">NEON BREACH</a>。</p>
           </div>
         </article>
 
