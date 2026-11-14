@@ -23,6 +23,7 @@ Most internal links are relative. The journal is split at `/blog/` (Chinese) and
 
 - `404.html` uses absolute paths — a relative stylesheet would resolve against a directory that does not exist.
 - `og:image` is an absolute `https://norwinyu.github.io/…` URL, because scrapers ignore relative ones.
+- Every content page has a self-canonical and an `x-default` alternate. Rebuild `sitemap.xml` with `python3 tools/build_sitemap.py` after adding pages.
 - Images below the fold use `loading="lazy" decoding="async"`; the first image on a page stays eager for LCP.
 - The hardware figures on `ai.html` are measured on the workstation, not estimated. If the rig changes, the numbers and the caveats change with it.
 
@@ -42,7 +43,8 @@ Most internal links are relative. The journal is split at `/blog/` (Chinese) and
 │   └── 404.html
 ├── en/blog/              English journal
 ├── assets/               css, js, fonts, images
-├── manifest.webmanifest
+├── manifest.webmanifest  sitemap.xml  robots.txt
+├── tools/build_sitemap.py
 ├── 404.html              English 404 (root-absolute paths)
 └── .github/workflows/pages.yml
 ```
