@@ -3921,3 +3921,32 @@ html {
     gap: 4px 12px;
   }
 }
+
+/* Skill site card: typographic tile instead of a duplicated game screenshot. */
+.also-skill-media {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: #171614;
+  color: #efe6d6;
+}
+
+.also-skill-media b {
+  font-family: var(--sans);
+  font-size: 27px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--accent);
+}
+
+.also-skill-media span {
+  font-family: var(--mono);
+  font-size: 6.5px;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: #cfc2ad;
+}
