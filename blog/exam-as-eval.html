@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>考试作为评测 — Norwin Yu</title>
+  <meta name="description" content="同一个模型，两次各 8 题的考试给出 67 和 84：评测框架最有用的能力，是告诉你这个分数不算数。">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="考试作为评测 — Norwin Yu">
+  <meta property="og:description" content="同一个模型，两次各 8 题的考试给出 67 和 84：评测框架最有用的能力，是告诉你这个分数不算数。">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="zh_CN">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="preload" href="../assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/article.css">
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="../index.html" aria-label="Norwin Yu — 首页">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
+      </a>
+      <nav class="article-nav" aria-label="文章导航">
+        <a href="../work/index.html">实验</a>
+        <a href="../ai.html">本地</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <span class="availability"><i aria-hidden="true"></i>开放研究交流</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> 全部笔记</a>
+        <p class="article-kicker"><span class="is-accent">评测</span><i aria-hidden="true"></i><span>LLM 裁判</span><i aria-hidden="true"></i><span>本地优先</span></p>
+        <h1>考试作为<br><em>评测。</em></h1>
+        <p class="article-deck">同一个模型、同一套题库，两次各 8 题的考试给出 67 和 84。框架最该做的事，是承认这两个分数都不算数。</p>
+        <p class="article-cn">我做的不是一个给模型打分的工具，是一个能告诉你“样本不够、别下结论”的工具。</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>2026 年 11 月</span>
+          <span>9 分钟</span>
+          <span>现场笔记 / 13</span>
+        </div>
+        <p class="ai-disclosure">写作：AI 代写 · 素材与校对：Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">目录</p>
+        <nav class="article-toc" aria-label="文章目录">
+          <a href="#shape">为什么是考试</a>
+          <a href="#paper">试卷模式</a>
+          <a href="#grade">三轨判分</a>
+          <a href="#judge">裁判要能换掉</a>
+          <a href="#sixty">67 与 84</a>
+          <a href="#again">可复判</a>
+          <a href="#limits">它不能做什么</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>题库</dt><dd>617 题 · 8 个阶段</dd></div>
+          <div><dt>单次运行</dt><dd>8 题（每阶段 1 题）</dd></div>
+          <div><dt>覆盖</dt><dd>75% / 87.5%</dd></div>
+          <div><dt>依赖</dt><dd>Python 标准库</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>评测本地模型有一个反复出现的困境：想要一个数字，但任何数字都不太可信。用十个问题测，噪声比差异大；用一千个问题测，题库从哪来、谁来判主观题、判官自己有没有偏好，每个都是坑。</p>
+
+        <p><a href="https://github.com/NorwinYu/LMExamBench" target="_blank" rel="noopener">LMExamBench</a> 是我对这个困境的答案。它的形状不是“跑一个 benchmark”，而是“组织一场考试”：有阶段、有科目、有权重、有判分规则，也有明确的“这次样本不够”。</p>
+
+        <h2 id="shape">为什么是考试</h2>
+        <p>因为考试这种形式已经解决了一些我们正在重新发明的问题：</p>
+
+        <ul>
+          <li><strong>分层</strong>：小学、初中、高中、大学、硕士，加上软考、大厂面试、LeetCode，共八个阶段。不同阶段的题目难度和判分方式本来就不同，混在一起算平均分毫无意义。</li>
+          <li><strong>权重</strong>：岗位方案（<code>profiles.json</code>）决定一个“Java 后端”该考哪些阶段、各占多少、能力维度怎么加权。同一份题库，换岗位方案就是另一场考试。</li>
+          <li><strong>科目</strong>：数据结构、算法、操作系统、网络、数据库——分数能拆到科目，才看得出“哪块不行”。</li>
+        </ul>
+
+        <p>题库本身不入库（版权问题），仓库里给的是一套用 AI 生成原创题库的技能（<code>skills/generate-bank</code>）和 schema。本机现在有 617 道题，八个阶段从 57 到 106 道不等。</p>
+
+        <h2 id="paper">试卷模式</h2>
+        <p>最容易被忽略、但可能是最重要的一个功能：<code>--paper N</code>。它按“阶段 × 学科/岗位”每个部分抽 N 题组卷，而不是随机抽 N 道题。</p>
+
+        <p>区别很大。随机抽题会得到“25 道小学题 + 1 道硕士题”这种卷子，然后你拿它去比较两个模型——比的是谁更会做小学题。按部分抽题保证每个阶段都有代表性，同时它也会诚实地告诉你：<strong>某个部分不足 2 题，标 ⚠ 样本不足，别下结论。</strong></p>
+
+        <h2 id="grade">三轨判分</h2>
+        <table class="compare-table">
+          <thead><tr><th>题型</th><th>判分</th><th>细节</th></tr></thead>
+          <tbody>
+            <tr><td data-label="题型">客观题</td><td data-label="判分">规则匹配</td><td data-label="细节">数值容差；多选按 (命中 − 错选) / 正确数 部分给分；填空支持多答案</td></tr>
+            <tr><td data-label="题型">代码题</td><td data-label="判分">子进程跑用例</td><td data-label="细节">单样本按通过率，多样本按 pass@k；支持隐藏用例</td></tr>
+            <tr><td data-label="题型">主观题</td><td data-label="判分">LLM 裁判</td><td data-label="细节">按 rubric 逐要点 0–1 打分；debias 时正反序各判一次取均值</td></tr>
+          </tbody>
+        </table>
+
+        <p>代码题必须真的跑起来。这是我最坚持的一条：让模型写一段代码，然后由人来目测它“看起来对不对”，等于把评测变成了审美。抽代码块、套测试、跑单元测试，答案只有通过/不通过——虽然粗暴，但不可争论。</p>
+
+        <h2 id="judge">裁判要能换掉</h2>
+        <p>主观题的裁判是一个 LLM，这引入了一个新问题：裁判自己有偏好。我做了两件事。</p>
+
+        <p>第一，<strong>被测和裁判完全解耦</strong>：两个独立的 <code>base_url</code> / <code>api_key</code> / <code>model</code>。可以用本地 7B 当裁判、本地 27B 当考生，也可以反过来。裁判是否启用是一行配置（<code>judge.enabled</code>），关掉就只跑客观题。</p>
+
+        <p>第二，<strong>debias</strong>：同一个回答，正序和反序各判一次，取均值。它不能消除偏好，但能削弱“倾向于给第一个候选更高分”这种位置偏差——这是 LLM 当裁判最常见、也最容易复现的失效模式。</p>
+
+        <p>还有一个很小但关键的细节：运行记录会自动抹除密钥。评测工具最容易泄漏的不是模型，是配置。</p>
+
+        <h2 id="sixty">67 与 84</h2>
+        <p>本机跑过两次，同一个模型（<code>deepseek-v4.1-flash</code>，本地 8080），每阶段 1 题共 8 题，判官关闭（只有客观/代码题）：</p>
+
+        <table class="compare-table">
+          <thead><tr><th>运行</th><th>配置差异</th><th>加权分</th><th>等级</th><th>覆盖率</th><th>耗时</th></tr></thead>
+          <tbody>
+            <tr><td data-label="运行">第一次</td><td data-label="配置差异"><code>max_tokens</code> 2048</td><td data-label="加权分">67.39</td><td data-label="等级">D · 及格</td><td data-label="覆盖率">75%</td><td data-label="耗时">215 s</td></tr>
+            <tr><td data-label="运行">第二次</td><td data-label="配置差异"><code>max_tokens</code> 4096 · <code>reasoning_effort=low</code></td><td data-label="加权分">83.7</td><td data-label="等级">B · 良好</td><td data-label="覆盖率">87.5%</td><td data-label="耗时">201 s</td></tr>
+          </tbody>
+        </table>
+
+        <p>同一个模型，分差 16 分。如果只看分数，结论会是“第二次的配置更好”。但真正的原因是另一个：两次都只抽了 8 题，覆盖率分别是 75% 和 87.5%——有些阶段根本没抽到题，或者只有一道。</p>
+
+        <p>框架在这里做对了一件事：它把 <code>coverage</code> 和 <code>ungraded_n</code> 摆在了总分旁边，并且对不足 2 题的部分标了样本不足。一个 8 题的考试能产出 67 也能产出 84，说明这个分数描述的是运气，不是能力。</p>
+
+        <blockquote>评测的第一职责不是给出分数，而是给出这个分数的不确定度。</blockquote>
+
+        <p>回头看，这两次运行并不是白跑：它们验证了整条链路（取题 → 调用 → 判分 → 聚合 → 报告），也验证了“样本不足”的提醒确实会触发。它们只是不该被当成结论。</p>
+
+        <h2 id="again">可复判</h2>
+        <p>评测工具最容易变成一次性脚本：跑完、导出、再也不打开。所以两个功能被当成一等公民：</p>
+
+        <ul>
+          <li><code>regrade</code>：用已存的回答，按当前判分规则重新判分。改了 rubric、加了容差、修了 bug，不用重新调用模型——这对本地模型尤其重要，因为一次全套运行可能要几十分钟。</li>
+          <li><code>audit</code>：题库审计，查近似重复与覆盖。题库会随着生成技能不断长，重复题会让某个科目悄悄变重。</li>
+        </ul>
+
+        <p>还有 <code>compare</code>：多运行对比，附区分度与难度统计。一个题目如果所有模型都做对，它对这个评测没有信息量——这和“题目太简单”不是一回事，前者是统计属性。</p>
+
+        <h2 id="limits">它不能做什么</h2>
+        <p>它不判断“这个模型好不好”，只回答“在这次卷子上，它得了多少分”。换题库、换权重、换裁判，答案会变。</p>
+
+        <p>它也不解决题库的合法性：仓库刻意不内置题库，因为题目有版权。生成题库的技能是给“愿意自己出题”的人用的，不是给“想要一个标准答案”的人用的。</p>
+
+        <p>最后，8 题就是 8 题。试卷模式可以让这一次测量更有代表性，但它不能把 8 题变成 80 题。<strong>样本量不够时，最专业的输出是“样本量不够”。</strong></p>
+
+        <p class="article-end"><strong>方法 /</strong> 代码与文档见 <a href="https://github.com/NorwinYu/LMExamBench" target="_blank" rel="noopener">NorwinYu/LMExamBench</a>；两次运行记录来自本机 <code>runs/</code> 目录（2026-10-29，每次 8 题，判官关闭）。仓库不内置题库，本机 617 道题为自行生成，不随仓库分发。分数为框架的加权百分比，不是排行榜名次。</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>相关 / 系统</p>
+          <h2 id="next-title">每帧 4%</h2>
+        </div>
+        <a href="every-frame-four-percent.html">
+          <span>继续阅读</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="页脚">
+        <a href="../work/index.html">实验</a>
+        <a href="../ai.html">本地</a>
+        <a href="../open-source.html">开源</a>
+        <a href="../competitions.html">竞赛</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <a href="index.html">全部笔记 <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

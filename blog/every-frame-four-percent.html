@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>每帧 4% — Norwin Yu</title>
+  <meta name="description" content="一个零子进程的 Rust 终端硬件监控：NVML 分层采样、自绘渲染，以及 4% 单核换来了什么。">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="每帧 4% — Norwin Yu">
+  <meta property="og:description" content="一个零子进程的 Rust 终端硬件监控：NVML 分层采样、自绘渲染，以及 4% 单核换来了什么。">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="zh_CN">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="preload" href="../assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/article.css">
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="../index.html" aria-label="Norwin Yu — 首页">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
+      </a>
+      <nav class="article-nav" aria-label="文章导航">
+        <a href="../work/index.html">实验</a>
+        <a href="../ai.html">本地</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <span class="availability"><i aria-hidden="true"></i>开放研究交流</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> 全部笔记</a>
+        <p class="article-kicker"><span class="is-accent">系统</span><i aria-hidden="true"></i><span>Rust</span><i aria-hidden="true"></i><span>可观测性</span></p>
+        <h1>每帧<br><em>4%。</em></h1>
+        <p class="article-deck">一个不 fork 任何子进程的终端硬件监控：数据直接从 /proc、/sys 和 NVML 读出来，代价是单核的 4% 到 6%。</p>
+        <p class="article-cn">nvidia-smi 一次大约一百毫秒。用一个每帧都要跑一遍的外部命令去监控这台机器，本身就是个笑话。</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>2026 年 11 月</span>
+          <span>9 分钟</span>
+          <span>现场笔记 / 10</span>
+        </div>
+        <p class="ai-disclosure">写作：AI 代写 · 素材与校对：Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">目录</p>
+        <nav class="article-toc" aria-label="文章目录">
+          <a href="#why">为什么不调子进程</a>
+          <a href="#source">数据从哪来</a>
+          <a href="#tiers">分层采样</a>
+          <a href="#draw">自己画</a>
+          <a href="#cost">成本</a>
+          <a href="#truth">准确性怎么验</a>
+          <a href="#limits">它读不到什么</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>语言</dt><dd>Rust · ratatui</dd></div>
+          <div><dt>单核</dt><dd>4% – 6%</dd></div>
+          <div><dt>常驻</dt><dd>~24 MiB</dd></div>
+          <div><dt>二进制</dt><dd>~1.2 MB</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>这台工作站有 88 个线程、两张 22GB 的卡、七个硬盘分区。它跑推理、跑 ComfyUI、跑编译，噪音和热量都很大。我需要一块仪表盘：一眼看到每个核在干什么、两张卡现在多少度、功耗是撞了 180W 的墙还是没撞。</p>
+
+        <p>现成的答案是把 <code>nvidia-smi</code>、<code>sensors</code>、<code>free</code>、<code>iostat</code> 拼起来。我试过，拼出来的东西有两个问题：慢，和说谎。</p>
+
+        <h2 id="why">为什么不调子进程</h2>
+        <p>慢是量出来的：<code>nvidia-smi</code> 一次调用大约一百毫秒，<code>sensors</code> 在一台双路 Xeon 上要一百到三百毫秒的 CPU。以一个 1 秒刷新、六个视图的仪表盘来说，这意味着监控自己就吃掉了一个核的很大一块——为了知道机器在忙什么，先让机器忙起来。</p>
+
+        <p>说谎的部分更隐蔽：不同工具对“已用内存”的定义不同，时间点也不同。把它们并排画在一起，看起来整齐，实际是四个采样时刻的拼贴。</p>
+
+        <p>所以 <a href="https://github.com/NorwinYu/sensorium" target="_blank" rel="noopener">sensorium</a> 定了一条硬规则：<strong>不 fork 任何子进程</strong>。CPU 和内存读 <code>/proc</code>，温度、风扇、电压、功耗读 <code>/sys/class/hwmon</code>，GPU 走 NVML 的进程内绑定。一次采样是一条时间线，不是一个拼图。</p>
+
+        <h2 id="source">数据从哪来</h2>
+        <p>六个视图对应六类数据源：</p>
+
+        <table class="compare-table">
+          <thead><tr><th>视图</th><th>数据来源</th><th>内容</th></tr></thead>
+          <tbody>
+            <tr><td data-label="视图">Overview</td><td data-label="来源">CPU + 内存 + GPU 摘要</td><td data-label="内容">load、双路封装温度、显存、功耗、趋势曲线</td></tr>
+            <tr><td data-label="视图">CPU</td><td data-label="来源"><code>/proc/stat</code>、<code>/sys/devices/system/cpu</code>、RAPL</td><td data-label="内容">88 线程活动矩阵、每核频率与温度、上下文切换与中断</td></tr>
+            <tr><td data-label="视图">GPU</td><td data-label="来源">NVML（进程内）</td><td data-label="内容">SM/显存/编解码利用率、显存与历史、温度阈值、风扇、功耗与上限、PCIe 代数与宽度、降频原因、显存里的进程</td></tr>
+            <tr><td data-label="视图">Sensors</td><td data-label="来源"><code>/sys/class/hwmon</code> 全量枚举</td><td data-label="内容">温度、风扇转速、电压、电流、功率，带临界值与告警位</td></tr>
+            <tr><td data-label="视图">Storage &amp; Net</td><td data-label="来源"><code>/proc/diskstats</code>、<code>/proc/net/dev</code></td><td data-label="内容">吞吐、IOPS、挂载点容量、网卡速率</td></tr>
+            <tr><td data-label="视图">Processes</td><td data-label="来源"><code>/proc/&lt;pid&gt;</code></td><td data-label="内容">Top 进程、CPU%、RSS、命令行（可匿名化）</td></tr>
+          </tbody>
+        </table>
+
+        <p>NVML 里有个坑值得单说：<strong>身份信息和曲线不是同一个刷新频率</strong>。型号、BIOS、序列号、功耗上限、温度阈值这些字段一辈子不变，却和利用率一样每次都要过一遍 C 库。第一版把所有字段都每帧读一遍，GPU 采样要 97 毫秒。</p>
+
+        <h2 id="tiers">分层采样</h2>
+        <p>改法很朴素——按“多久会变”分组：</p>
+
+        <table class="compare-table">
+          <thead><tr><th>数据</th><th>刷新频率</th><th>理由</th></tr></thead>
+          <tbody>
+            <tr><td data-label="数据">型号 / BIOS / 序列号 / 上限 / 阈值</td><td data-label="刷新频率">只读一次并缓存</td><td data-label="理由">硬件属性，不会变</td></tr>
+            <tr><td data-label="数据">利用率 / 显存 / 温度 / 风扇 / 功耗</td><td data-label="刷新频率">每帧</td><td data-label="理由">曲线需要</td></tr>
+            <tr><td data-label="数据">频率 / Power Limit / PCIe / 编解码</td><td data-label="刷新频率">每 2 帧</td><td data-label="理由">变化慢</td></tr>
+            <tr><td data-label="数据">时钟 / P-State / 降频原因</td><td data-label="刷新频率">每 4 帧</td><td data-label="理由">状态机级别的变化</td></tr>
+            <tr><td data-label="数据">能耗计数器</td><td data-label="刷新频率">每 30 帧</td><td data-label="理由">单次读取本身很贵</td></tr>
+          </tbody>
+        </table>
+
+        <p>结果：GPU 采样从约 97 毫秒降到约 15 毫秒，画面上的数字没有区别。</p>
+
+        <p>同样的思路用在了传感器和进程表上。传感器的标签与临界值只读一次，十秒重扫一次以支持热插拔，每帧只读 <code>*_input</code>；每核温度每次都是一条跨核 MSR 读，44 核上很贵，所以两帧刷一次。进程表遍历一千个 <code>/proc/&lt;pid&gt;/stat</code> 要二三十毫秒，于是三秒采一次——顺带让每进程 CPU% 更准。</p>
+
+        <div class="callout">
+          <span class="mono-label">一条经验</span>
+          <p>监控工具的开销几乎总能靠“哪些数据真的每帧都在变”这个问题砍掉一个数量级。先分组，再谈优化。</p>
+        </div>
+
+        <h2 id="draw">自己画</h2>
+        <p>渲染也走同一条路：不重排整棵树，直接写 <code>ratatui</code> 的 <code>Buffer</code>。一帧 120×40 的全量重绘是 0.2–0.35 毫秒——比读一次 <code>nvidia-smi</code> 便宜三个数量级。这也是为什么这个工具能挂在 1 秒刷新上而几乎不被注意到。</p>
+
+        <h2 id="cost">成本</h2>
+        <p>本机实测，release 构建，采样时机器本身有负载（load ≈ 2.5，GPU 上有任务）：</p>
+
+        <table class="compare-table">
+          <thead><tr><th>视图</th><th>占单核</th><th>单帧渲染</th></tr></thead>
+          <tbody>
+            <tr><td data-label="视图">Overview</td><td data-label="占单核">3.5 – 5.0%</td><td data-label="单帧渲染">0.34 ms</td></tr>
+            <tr><td data-label="视图">Sensors</td><td data-label="占单核">3.9 – 5.1%</td><td data-label="单帧渲染">0.31 ms</td></tr>
+            <tr><td data-label="视图">Storage &amp; Net</td><td data-label="占单核">4.0 – 5.0%</td><td data-label="单帧渲染">0.25 ms</td></tr>
+            <tr><td data-label="视图">GPU</td><td data-label="占单核">4.1 – 5.3%</td><td data-label="单帧渲染">0.26 ms</td></tr>
+            <tr><td data-label="视图">CPU</td><td data-label="占单核">4.5 – 6.4%</td><td data-label="单帧渲染">0.31 ms</td></tr>
+            <tr><td data-label="视图">Processes</td><td data-label="占单核">4.7 – 6.1%</td><td data-label="单帧渲染">0.21 ms</td></tr>
+          </tbody>
+        </table>
+
+        <p>换成整机的比例是 0.05%–0.07%，常驻内存约 24 MiB，二进制 1.2 MB（strip + LTO）。这台机器有 88 个线程，所以“一个核的 4%”听上去比“整机的 0.06%”吓人——两种口径都写出来，是因为它们回答的是不同的问题。</p>
+
+        <h2 id="truth">准确性怎么验</h2>
+        <p>一个监控工具最危险的失败不是崩溃，是安静地显示错的数字。所以它带 <code>--json</code>，可以把一次采样原样导出，和独立计算结果逐字段对拍：</p>
+
+        <ul>
+          <li>内存各字段逐字节相同；</li>
+          <li>CPU 总体占用与独立统计差 0.14%；</li>
+          <li>网络吞吐在一次窗口错位的对比里差 2%（891 MiB/s vs 独立统计），而用自己构造的 8 MiB/s 恒定环路流时，读数正好是 8.00 MiB/s；</li>
+          <li>只有 <code>--bench</code> 会把“稳态”和“首次采样”（NVML 初始化、首次全量传感器扫描、首次 <code>/proc</code> 遍历）分开报告——否则一次性开销会摊进平均值，看起来很漂亮。</li>
+        </ul>
+
+        <p>还有一条更重要的原则：<strong>读不到就写读不到</strong>。多数发行版把 <code>/sys/class/powercap/*/energy_uj</code> 设成 root-only，普通用户拿不到 CPU 封装功耗，它就显示 <em>unavailable (energy_uj needs root)</em>，而不是画一条零线。本机主板没加载 Super-I/O 风扇驱动、也没有 <code>/dev/ipmi0</code>，机箱风扇转速读不到——那就空着。</p>
+
+        <blockquote>监控工具的可信度，取决于它在缺少数据时是否安静。</blockquote>
+
+        <h2 id="limits">它读不到什么</h2>
+        <p>已知的空白，写在 README 里而不是藏在心里：CPU 封装功耗需要 root；机箱风扇需要 <code>nct6775</code> 之类的驱动；GPU 只支持 NVIDIA（AMD 的 <code>amdgpu</code> 会作为传感器出现，但没有利用率与显存）；每核温度只按显示刷新率的一半更新，因为 44 核上每次读取都是跨核 MSR 读。</p>
+
+        <p>还有隐私：这个工具会被要求把输出贴进 issue。<code>--demo</code> 会自动开启匿名化——主机名换成 <code>workstation</code>，进程命令行只保留程序名，网卡名去掉内嵌 MAC，GPU 序列号清空，家目录路径换成 <code>/home/user</code>。硬件规格保留，那是用来解释问题的，不是个人信息。</p>
+
+        <p class="article-end"><strong>方法 /</strong> 所有数字来自 <a href="https://github.com/NorwinYu/sensorium" target="_blank" rel="noopener">NorwinYu/sensorium</a> 的 README 与 <code>--bench</code> 输出，测试机为双路 Xeon E5-2696 v4（44C/88T）、2 × RTX 2080 Ti 22GB、94GB DDR4，采样时机器带负载。视图截图由 <code>sensorium --frame --demo</code> 的 ANSI 输出离线渲染，可用仓库里的 <code>tools/render-frame.py</code> 复现。</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>相关 / 系统</p>
+          <h2 id="next-title">80 与 46</h2>
+        </div>
+        <a href="eighty-and-forty-six.html">
+          <span>继续阅读</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="页脚">
+        <a href="../work/index.html">实验</a>
+        <a href="../ai.html">本地</a>
+        <a href="../open-source.html">开源</a>
+        <a href="../competitions.html">竞赛</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <a href="index.html">全部笔记 <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

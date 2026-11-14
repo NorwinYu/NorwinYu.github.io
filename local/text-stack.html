@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>The text stack — Norwin Yu</title>
+  <meta name="description" content="Local text inference: the 27B FP8 profile, its measured throughput, and the power cap behind the numbers.">
+  <meta name="author" content="Norwin Yu">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="The text stack — Norwin Yu">
+  <meta property="og:description" content="Local text inference: the 27B FP8 profile, its measured throughput, and the power cap behind the numbers.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="preload" href="../assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body class="index-page" data-page="ai">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar" data-header>
+    <div class="wrap topbar-inner">
+      <a class="brand" href="../index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="../work/index.html" data-nav="work">Experiments</a>
+        <a href="../ai.html" data-nav="ai">Local</a>
+        <a href="../open-source.html" data-nav="oss">Open source</a>
+        <a href="../competitions.html" data-nav="competitions">Competitions</a>
+        <a href="../blog/index.html" data-nav="journal">Journal</a>
+        <a href="../about.html" data-nav="about">About</a>
+      </nav>
+      <div class="topbar-actions">
+        <span class="status"><i aria-hidden="true"></i>AI usage research</span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          Menu <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true">
+    <div class="wrap mobile-menu-head">
+      <span class="mono-label">Index / 2026</span>
+      <button class="menu-close" type="button" data-menu-close aria-label="Close menu">Close <span aria-hidden="true">×</span></button>
+    </div>
+    <nav class="wrap mobile-nav" aria-label="Mobile primary">
+      <a href="../work/index.html" data-nav="work">Experiments</a>
+      <a href="../ai.html" data-nav="ai">Local</a>
+      <a href="../open-source.html" data-nav="oss">Open source</a>
+      <a href="../competitions.html" data-nav="competitions">Competitions</a>
+      <a href="../blog/index.html" data-nav="journal">Journal</a>
+      <a href="../about.html" data-nav="about">About</a>
+    </nav>
+    <div class="wrap mobile-menu-foot">
+      <span>AI usage research / 2026</span>
+      <span>Open to research conversations</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <p class="section-kicker">Local / text stack</p>
+        <h1>27B, 256K, 180 W.</h1>
+        <p class="page-lede">The reference page for the text model that runs here: the exact serving configuration, the throughput it produces, and the one number that explains the gap to the documentation.</p>
+        <div class="page-meta"><span><i></i>Qwen3.8-27B-FP8</span><span>262,144 tokens</span><span>TP=2 · MTP/3</span><span>Measured / Nov 2026</span></div>
+        <div class="work-links"><a href="../ai.html">Local overview <span aria-hidden="true">→</span></a><a href="../blog/eighty-and-forty-six.html">Why 46, not 80 <span aria-hidden="true">→</span></a></div>
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="cfg-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">01 / Configuration</p><h2 id="cfg-title">The resolved serving profile.</h2></div>
+        <p class="section-intro">Not a suggested config: this is the profile the benchmark numbers were produced with, on the driver the machine boots today.</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">Text inference serving configuration</caption>
+          <thead><tr><th scope="col">Setting</th><th scope="col">Value</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Model</th><td data-label="Value">Qwen3.8-27B-FP8 · W8A16 (FP8 weights, FP16 activations)</td></tr>
+            <tr><th scope="row">Quantisation</th><td data-label="Value">fp8 e4m3 · weight block 128×128 · dynamic activations</td></tr>
+            <tr><th scope="row">KV cache</th><td data-label="Value">FP8 · 276,788 tokens resident</td></tr>
+            <tr><th scope="row">Context</th><td data-label="Value">262,144 tokens (256K)</td></tr>
+            <tr><th scope="row">Parallelism</th><td data-label="Value">TP=2 × PP=1 · 2 ranks on 2 cards</td></tr>
+            <tr><th scope="row">Speculative decoding</th><td data-label="Value">MTP / 3 draft tokens</td></tr>
+            <tr><th scope="row">Attention / linear attn</th><td data-label="Value">FLASHINFER · FlashQLA legacy prefill (SM75) · Triton GDN decode fallback</td></tr>
+            <tr><th scope="row">CUDA graphs</th><td data-label="Value">PIECEWISE · capture size 4</td></tr>
+            <tr><th scope="row">Prefix caching</th><td data-label="Value">enabled</td></tr>
+            <tr><th scope="row">Sequences / tokens</th><td data-label="Value">max_num_seqs 1 · batched tokens 2,048</td></tr>
+            <tr><th scope="row">GPU memory utilisation</th><td data-label="Value">0.94 — the desktop holds ~740 MiB on GPU0</td></tr>
+            <tr><th scope="row">Power cap</th><td data-label="Value">180 W per card (default 250 W, maximum 280 W)</td></tr>
+            <tr><th scope="row">Software stack</th><td data-label="Value">vLLM 0.29.1rc0 SM75 fork · PyTorch 2.13+cu130 · Triton 3.7.1 · CUDA 13.0.88 · driver 580.178.04</td></tr>
+            <tr><th scope="row">OS</th><td data-label="Value">Ubuntu 24.04.5 LTS · kernel 7.0.0-43</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="tput-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">02 / Throughput</p><h2 id="tput-title">Decode, prefill, and the cost of thinking.</h2></div>
+        <p class="section-intro">Streaming requests, TTFT separated from decode, fixed prompt and output length, median of three or more runs with warmup discarded.</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">Decode throughput</caption>
+          <thead><tr><th scope="col">Decode test</th><th scope="col">Run 1</th><th scope="col">Run 2</th><th scope="col">Run 3</th><th scope="col">Median</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Thinking on · 512 tokens</th><td data-label="Run 1">47.5</td><td data-label="Run 2">45.9</td><td data-label="Run 3">46.1</td><td data-label="Median">46.1 tok/s</td></tr>
+            <tr><th scope="row">Thinking off · 512 tokens</th><td data-label="Run 1">52.1</td><td data-label="Run 2">52.9</td><td data-label="Run 3">51.1</td><td data-label="Median">52.1 tok/s</td></tr>
+          </tbody>
+        </table>
+        <table class="data-table">
+          <caption class="sr-only">Prefill latency and throughput</caption>
+          <thead><tr><th scope="col">Prompt tokens</th><th scope="col">TTFT</th><th scope="col">Prefill throughput</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">74</th><td data-label="TTFT">122 ms</td><td data-label="Prefill throughput">~600 tok/s (overhead-dominated)</td></tr>
+            <tr><th scope="row">1,170</th><td data-label="TTFT">940 ms</td><td data-label="Prefill throughput">1,244 tok/s</td></tr>
+            <tr><th scope="row">4,500</th><td data-label="TTFT">2,275 ms</td><td data-label="Prefill throughput">1,978 tok/s</td></tr>
+            <tr><th scope="row">17,830</th><td data-label="TTFT">13,167 ms</td><td data-label="Prefill throughput">1,354 tok/s</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="mtp-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">03 / Ablation</p><h2 id="mtp-title">MTP/2 vs MTP/3.</h2></div>
+        <p class="section-intro">Six runs per cell at the same power cap. The difference is smaller than the run-to-run spread, which is the actual result.</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">MTP draft-token ablation</caption>
+          <thead><tr><th scope="col">Draft tokens</th><th scope="col">Thinking</th><th scope="col">Median</th><th scope="col">Min</th><th scope="col">Max</th><th scope="col">Stdev</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">MTP/2</th><td data-label="Thinking">off</td><td data-label="Median">50.8</td><td data-label="Min">49.4</td><td data-label="Max">51.7</td><td data-label="Stdev">0.88</td></tr>
+            <tr><th scope="row">MTP/2</th><td data-label="Thinking">on</td><td data-label="Median">46.1</td><td data-label="Min">43.7</td><td data-label="Max">50.4</td><td data-label="Stdev">2.41</td></tr>
+            <tr><th scope="row">MTP/3</th><td data-label="Thinking">off</td><td data-label="Median">51.2</td><td data-label="Min">45.5</td><td data-label="Max">56.8</td><td data-label="Stdev">4.27</td></tr>
+            <tr><th scope="row">MTP/3</th><td data-label="Thinking">on</td><td data-label="Median">45.6</td><td data-label="Min">42.6</td><td data-label="Max">49.4</td><td data-label="Stdev">2.34</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>Read</span>MTP/2 and MTP/3 are statistically indistinguishable here. The profile stays at MTP/3 because there is no measured reason to change it, not because it is faster.</p>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="power-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">04 / Power</p><h2 id="power-title">Both cards pinned at the cap.</h2></div>
+        <p class="section-intro">The 180 W limit is a deliberate choice, and it is the single largest term in the gap between measured decode and the fork's published figure.</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">Power and clocks under load</caption>
+          <thead><tr><th scope="col">GPU</th><th scope="col">Peak draw</th><th scope="col">Average draw</th><th scope="col">Limit</th><th scope="col">Max SM clock</th><th scope="col">Utilisation</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">0</th><td data-label="Peak draw">182 W</td><td data-label="Average draw">178 W</td><td data-label="Limit">180 W</td><td data-label="Max SM clock">1,845 MHz</td><td data-label="Utilisation">100%</td></tr>
+            <tr><th scope="row">1</th><td data-label="Peak draw">179 W</td><td data-label="Average draw">175 W</td><td data-label="Limit">180 W</td><td data-label="Max SM clock">1,830 MHz</td><td data-label="Utilisation">100%</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>Note</span>Utilisation is 100% while clocks cap at the limit: this is a power budget, not a thermal one. Raising the cap to 250 W raises decode and the room temperature.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="repro-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">05 / Reproduce</p><h2 id="repro-title">Bringing it back up.</h2></div>
+        <p class="section-intro">The model volume is an NTFS partition that does not auto-mount. Two commands, then the server.</p>
+      </div>
+      <div class="wrap">
+        <pre><code>udisksctl mount -b /dev/nvme0n1p4     # model volume, not auto-mounted
+cd ~/vllm-2080ti && ./llm.sh start    # detached vLLM server on :8000
+./llm.sh status                       # server, model and GPU overview
+./llm.sh bench                        # throughput benchmark
+./llm.sh stop                         # stop the model, leave the machine on</code></pre>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="caveat-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">06 / Caveats</p><h2 id="caveat-title">What these numbers assume.</h2></div>
+        <p class="section-intro">Every figure on this page is conditional on three things: the power cap, the driver, and the context length.</p>
+      </div>
+      <div class="wrap home-cap-grid">
+        <div class="home-cap-item"><span>01</span><h3>One cap, one driver</h3><p>180 W per card and driver 580.178.04. Change either and the decode figure moves; prefill barely does.</p></div>
+        <div class="home-cap-item"><span>02</span><h3>256K is not free</h3><p>The KV cache holds 276,788 tokens, so a full 256K context runs at about 1.06× concurrency. Long context here means one request at a time.</p></div>
+        <div class="home-cap-item"><span>03</span><h3>One machine</h3><p>These are medians from a used two-socket Xeon with SM75 cards. Useful for deciding what to run here, not for a datacentre comparison.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <p><strong>Norwin Yu</strong><span>AI usage research / games &amp; local compute.</span></p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <span class="mono-label">Index</span>
+        <a href="../work/index.html">Experiments</a>
+        <a href="../ai.html">Local</a>
+        <a href="../open-source.html">Open source</a>
+        <a href="../competitions.html">Competitions</a>
+        <a href="../blog/index.html">Journal</a>
+        <a href="../about.html">About</a>
+      </nav>
+      <div class="footer-note">
+        <span class="mono-label">Colophon</span>
+        <p>Set in Inter and IBM Plex Mono. Hand-built, statically served. No trackers, cookies or keys.</p>
+        <p>AI usage research / 2026</p>
+      </div>
+      <div class="footer-status">
+        <span class="status"><i aria-hidden="true"></i>Open to research conversations</span>
+        <a href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 Norwin Yu</span>
+      <span>Last updated / November 2026</span>
+      <span>No analytics. No external requests at runtime.</span>
+    </div>
+  </footer>
+</body>
+</html>

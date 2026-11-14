@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>The video stack — Norwin Yu</title>
+  <meta name="description" content="Local video generation: MiniMax H3 on two 22 GB cards, measured single-card versus tensor-parallel.">
+  <meta name="author" content="Norwin Yu">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="The video stack — Norwin Yu">
+  <meta property="og:description" content="Local video generation: MiniMax H3 on two 22 GB cards, measured single-card versus tensor-parallel.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="preload" href="../assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body class="index-page" data-page="ai">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar" data-header>
+    <div class="wrap topbar-inner">
+      <a class="brand" href="../index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="../work/index.html" data-nav="work">Experiments</a>
+        <a href="../ai.html" data-nav="ai">Local</a>
+        <a href="../open-source.html" data-nav="oss">Open source</a>
+        <a href="../competitions.html" data-nav="competitions">Competitions</a>
+        <a href="../blog/index.html" data-nav="journal">Journal</a>
+        <a href="../about.html" data-nav="about">About</a>
+      </nav>
+      <div class="topbar-actions">
+        <span class="status"><i aria-hidden="true"></i>AI usage research</span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          Menu <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true">
+    <div class="wrap mobile-menu-head">
+      <span class="mono-label">Index / 2026</span>
+      <button class="menu-close" type="button" data-menu-close aria-label="Close menu">Close <span aria-hidden="true">×</span></button>
+    </div>
+    <nav class="wrap mobile-nav" aria-label="Mobile primary">
+      <a href="../work/index.html" data-nav="work">Experiments</a>
+      <a href="../ai.html" data-nav="ai">Local</a>
+      <a href="../open-source.html" data-nav="oss">Open source</a>
+      <a href="../competitions.html" data-nav="competitions">Competitions</a>
+      <a href="../blog/index.html" data-nav="journal">Journal</a>
+      <a href="../about.html" data-nav="about">About</a>
+    </nav>
+    <div class="wrap mobile-menu-foot">
+      <span>AI usage research / 2026</span>
+      <span>Open to research conversations</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <p class="section-kicker">Local / video stack</p>
+        <h1>20B on 2 × 22 GB.</h1>
+        <p class="page-lede">MiniMax H3 is a 20.11B video-and-audio transformer. It does not fit on one card, so tensor parallelism is not an accelerator here — it is the difference between a usable run and a fan that runs for four minutes.</p>
+        <div class="page-meta"><span><i></i>20.11B · 50 blocks</span><span>W4A8 · 10.96 GiB</span><span>TP2 · 2.97×</span><span>Measured / Sep–Nov 2026</span></div>
+        <div class="work-links"><a href="../ai.html">Local overview <span aria-hidden="true">→</span></a><a href="../blog/tp2-one-thread.html">Why sharding alone stalled <span aria-hidden="true">→</span></a></div>
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="model-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">01 / Model</p><h2 id="model-title">What has to fit.</h2></div>
+        <p class="section-intro">A video model is a memory problem before it is a speed problem. The quantisation is what makes 22 GB per card enough.</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">MiniMax H3 model parameters</caption>
+          <thead><tr><th scope="col">Item</th><th scope="col">Value</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Parameters / blocks</th><td data-label="Value">20.11 B · 50 blocks</td></tr>
+            <tr><th scope="row">Hidden / attention</th><td data-label="Value">5,376 · 56 heads × 128</td></tr>
+            <tr><th scope="row">FFN</th><td data-label="Value">14,336</td></tr>
+            <tr><th scope="row">qkv / out projections</th><td data-label="Value">[21504, 5376] / [5376, 7168]</td></tr>
+            <tr><th scope="row">fc1 / fc2</th><td data-label="Value">[28672, 5376] / [5376, 14336]</td></tr>
+            <tr><th scope="row">Quantisation</th><td data-label="Value">W4A8 · int4 (2 per byte) · group 16 · ConvRot 256 · fp8 group scale · fp32 channel scale</td></tr>
+            <tr><th scope="row">DiT on disk</th><td data-label="Value">10.96 GiB (fl2va 11.68 GiB)</td></tr>
+            <tr><th scope="row">VAE</th><td data-label="Value">16× spatial compression · patch (1,2,2)</td></tr>
+            <tr><th scope="row">Runtime</th><td data-label="Value">ComfyUI · PyTorch 2.9.1+cu130 · driver 580 · CUDA 13.0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="bench-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">02 / Throughput</p><h2 id="bench-title">Single card vs TP2.</h2></div>
+        <p class="section-intro">Smoke sample: 640×352 × 124 frames × 4 steps, text-to-video with no reference image. Same workflow in both columns.</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">Single card versus two-card tensor parallelism</caption>
+          <thead><tr><th scope="col">Metric</th><th scope="col">Single card</th><th scope="col">TP2</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Per step</th><td data-label="Single card">~51 s</td><td data-label="TP2">~14 s</td></tr>
+            <tr><th scope="row">End to end (4 steps)</th><td data-label="Single card">243 s</td><td data-label="TP2">82 s</td></tr>
+            <tr><th scope="row">Speedup</th><td data-label="Single card">1.00×</td><td data-label="TP2">2.97×</td></tr>
+            <tr><th scope="row">GPU utilisation</th><td data-label="Single card">GPU0 idle / GPU1 97%</td><td data-label="TP2">GPU0 57% / GPU1 72%</td></tr>
+            <tr><th scope="row">Peak VRAM</th><td data-label="Single card">GPU1 19,071 MiB</td><td data-label="TP2">GPU0 11,579 / GPU1 19,681 MiB</td></tr>
+            <tr><th scope="row">Peak temperature</th><td data-label="Single card">GPU1 78 °C (97% for 4 min)</td><td data-label="TP2">GPU0 67 °C / GPU1 75 °C (1.4 min)</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>Also measured</span>At 864×480 (124 frames, ref2va): 44.6 s/step on one card, 19.8 s/step with TP2 — 2.25×.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="versions-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">03 / Three versions</p><h2 id="versions-title">1.31×, then 2.25×, then 2.97×.</h2></div>
+        <p class="section-intro">The sharding was correct in the first version. What was missing was a thread, not a split.</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">Tensor-parallel versions and speedups</caption>
+          <thead><tr><th scope="col">Version</th><th scope="col">s/step (864×480)</th><th scope="col">Speedup</th><th scope="col">What changed</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Single card</th><td data-label="s/step">44.6</td><td data-label="Speedup">1.00×</td><td data-label="What changed">Chunked on one card</td></tr>
+            <tr><th scope="row">TP2 v1</th><td data-label="s/step">34.0</td><td data-label="Speedup">1.31×</td><td data-label="What changed">Column/row split with a single launch thread</td></tr>
+            <tr><th scope="row">TP2 + one thread per rank</th><td data-label="s/step">19.8</td><td data-label="Speedup">2.25×</td><td data-label="What changed">Each rank launches its own kernels</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>Cause</span>The W4A8 GEMM blocks its calling host thread, so one launch thread serialised the two cards: measured overlap 5%. One thread per rank lifted it to 91%, with bit-identical output (frame MAE 0.0000).</p>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="probe-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">04 / Probes</p><h2 id="probe-title">The three-row diagnosis.</h2></div>
+        <p class="section-intro">Two GPUs, one GEMM, three launch strategies. Overlap is the number that separates "sharded" from "parallel".</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">GEMM overlap measurements</caption>
+          <thead><tr><th scope="col">Test</th><th scope="col">dev0</th><th scope="col">dev1</th><th scope="col">Concurrent</th><th scope="col">Overlap</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">dense fp16 GEMM</th><td data-label="dev0">61.9</td><td data-label="dev1">58.0</td><td data-label="Concurrent">61.0</td><td data-label="Overlap">95%</td></tr>
+            <tr><th scope="row">W4A8 GEMM</th><td data-label="dev0">103.3</td><td data-label="dev1">96.8</td><td data-label="Concurrent">194.7</td><td data-label="Overlap">5%</td></tr>
+            <tr><th scope="row">W4A8 GEMM, one thread per card</th><td data-label="dev0">106.5</td><td data-label="dev1">97.1</td><td data-label="Concurrent">106.8</td><td data-label="Overlap">91%</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>After the fix</span>Per block: qkv + attention 211 ms, MLP 196 ms, final all-reduce 13 ms — 420 ms per block.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="run-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">05 / Reproduce</p><h2 id="run-title">Starting the two-card server.</h2></div>
+        <p class="section-intro">The device order matters: exposing only one card silently collapses every cuda:0 in the graph onto it.</p>
+      </div>
+      <div class="wrap">
+        <pre><code>export CUDA_VISIBLE_DEVICES=1,0          # GPU1 first, so cuda:0 is the compute card
+python main.py --listen 127.0.0.1 --port 8188     --reserve-vram 1.5 --vram-headroom 0.5     --disable-pinned-memory --fast-disk
+
+python scripts/bench.py examples/smoke_t2v.json smoke   # self-contained sample</code></pre>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="vlimit-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">06 / Caveats</p><h2 id="vlimit-title">What the speedup is not.</h2></div>
+        <p class="section-intro">The 2.97× comes from real renders on this machine, and it is specific to a quantisation, a model and a pair of cards.</p>
+      </div>
+      <div class="wrap home-cap-grid">
+        <div class="home-cap-item"><span>01</span><h3>Not a general TP result</h3><p>These numbers come from W4A8 on two modified 22 GB Turing cards at a 250 W limit. Different cards, quantisation or model shape will produce different overlaps.</p></div>
+        <div class="home-cap-item"><span>02</span><h3>NUMA is part of it</h3><p>The cards sit on different NUMA nodes. The 13 ms all-reduce partially pays for that topology; another board would change it.</p></div>
+        <div class="home-cap-item"><span>03</span><h3>Weights are not here</h3><p>The code is MIT, the model weights are not in the repository and follow MiniMax's own licence. The sample is a self-contained text-to-video case.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <p><strong>Norwin Yu</strong><span>AI usage research / games &amp; local compute.</span></p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <span class="mono-label">Index</span>
+        <a href="../work/index.html">Experiments</a>
+        <a href="../ai.html">Local</a>
+        <a href="../open-source.html">Open source</a>
+        <a href="../competitions.html">Competitions</a>
+        <a href="../blog/index.html">Journal</a>
+        <a href="../about.html">About</a>
+      </nav>
+      <div class="footer-note">
+        <span class="mono-label">Colophon</span>
+        <p>Set in Inter and IBM Plex Mono. Hand-built, statically served. No trackers, cookies or keys.</p>
+        <p>AI usage research / 2026</p>
+      </div>
+      <div class="footer-status">
+        <span class="status"><i aria-hidden="true"></i>Open to research conversations</span>
+        <a href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 Norwin Yu</span>
+      <span>Last updated / November 2026</span>
+      <span>No analytics. No external requests at runtime.</span>
+    </div>
+  </footer>
+</body>
+</html>

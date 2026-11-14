@@ -38,7 +38,7 @@
       </a>
       <nav class="main-nav" aria-label="Primary">
         <a href="work/index.html" data-nav="work">Experiments</a>
-        <a href="ai.html" data-nav="ai">Setup</a>
+        <a href="ai.html" data-nav="ai">Local</a>
         <a href="open-source.html" data-nav="oss">Open source</a>
         <a href="competitions.html" data-nav="competitions">Competitions</a>
         <a href="blog/index.html" data-nav="journal">Journal</a>
@@ -60,7 +60,7 @@
     </div>
     <nav class="wrap mobile-nav" aria-label="Mobile primary">
       <a href="work/index.html" data-nav="work">Experiments</a>
-      <a href="ai.html" data-nav="ai">Setup</a>
+      <a href="ai.html" data-nav="ai">Local</a>
         <a href="open-source.html" data-nav="oss">Open source</a>
       <a href="competitions.html" data-nav="competitions">Competitions</a>
       <a href="blog/index.html" data-nav="journal">Journal</a>
@@ -75,7 +75,7 @@
   <main id="main">
     <header class="page-hero">
       <div class="wrap">
-        <p class="section-kicker">Setup / 2026</p>
+        <p class="section-kicker">Local / 2026</p>
         <h1>Local environment &amp; configuration.</h1>
         <p class="page-lede">Two machines and two operating systems. The workstation is the one that runs the models, so its numbers are recorded rather than estimated: what fits, what it decodes at, and which cap is actually in the way.</p>
         <div class="page-meta"><span><i></i>02 machines</span><span>44 GB VRAM</span><span>94 GB DDR4</span><span>Snapshot / Nov 2026</span></div>
@@ -131,6 +131,7 @@
         </div>
         <p class="table-note"><span>Note</span>Medians of five or more runs, warmup discarded, at the 180 W cap. The fork's published ~80 tok/s is a synthetic best case with high speculative acceptance; real MTP acceptance is lower, and a power limit penalises MTP because verifying several draft tokens per step is compute-heavy.</p>
       </div>
+      <div class="wrap work-links"><a href="local/text-stack.html">Full profile and ablations <span aria-hidden="true">→</span></a><a href="blog/eighty-and-forty-six.html">Why 46, not 80 <span aria-hidden="true">→</span></a></div>
       <div class="wrap"><p class="rig-quote">MTP/2 and MTP/3 are statistically the same here (50.8 vs 51.2 tok/s off; 46.1 vs 45.6 on). The draft count is not the bottleneck — the power cap, memory bandwidth and the Triton fallback that SM75 needs for decode are.</p></div>
     </section>
 
@@ -152,7 +153,7 @@
         <p class="table-note"><span>Speedup</span>2.97× on the smoke sample, 2.25× on the 864×480 film. Both measured against the same single-card workflow; numbers from the repository's own performance log.</p>
       </div>
       <div class="wrap"><p class="rig-quote">The first TP2 attempt only reached 1.31×. The sharding was correct; the host thread was the problem. The W4A8 GEMM blocks the thread that launches it, so with a single launch thread the two cards' GEMMs serialise — measured overlap 5%. One host thread per rank: 91% overlap, 2.25×, output bit-identical.</p></div>
-      <div class="wrap work-links"><a href="https://github.com/NorwinYu/minimax-h3-dual-2080ti" target="_blank" rel="noopener">Source and measurements <span aria-hidden="true">↗</span></a><a href="work/index.html#systems">Case note <span aria-hidden="true">→</span></a></div>
+      <div class="wrap work-links"><a href="local/video-stack.html">Full measurements <span aria-hidden="true">→</span></a><a href="https://github.com/NorwinYu/minimax-h3-dual-2080ti" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a><a href="work/index.html#systems">Case note <span aria-hidden="true">→</span></a></div>
     </section>
 
     <section class="section section-alt" aria-labelledby="caveat-title">
@@ -177,7 +178,7 @@
       <nav class="footer-nav" aria-label="Footer">
         <span class="mono-label">Index</span>
         <a href="work/index.html">Experiments</a>
-        <a href="ai.html">Setup</a>
+        <a href="ai.html">Local</a>
         <a href="open-source.html">Open source</a>
         <a href="competitions.html">Competitions</a>
         <a href="blog/index.html">Journal</a>

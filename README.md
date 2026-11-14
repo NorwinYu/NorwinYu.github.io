@@ -33,8 +33,11 @@ All internal links are relative, so the same files work as a user site (`usernam
 ├── index.html
 ├── work/                 experiments
 ├── blog/                 journal
+├── local/                local-inference reference pages
+│   ├── text-stack.html   serving profile + throughput + ablations
+│   └── video-stack.html  MiniMax H3 single-card vs tensor parallel
 ├── about.html
-├── ai.html
+├── ai.html               "Local" section landing: rig + both stacks
 ├── competitions.html
 ├── open-source.html
 ├── assets/               css, js, fonts, images
@@ -42,6 +45,8 @@ All internal links are relative, so the same files work as a user site (`usernam
 ├── 404.html
 └── .github/workflows/pages.yml
 ```
+
+`ai.html` is the landing page for the **Local** section; the two pages under `local/` hold the full reference tables it summarises. Journal notes stay narrative — they link into `local/` rather than duplicating the tables.
 
 Add new pages as plain HTML and link them from the relevant index. Keep page-specific styling in the existing CSS files rather than adding a framework.
 
