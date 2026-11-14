@@ -426,13 +426,13 @@
           <thead><tr><th scope="col">工作负载</th><th scope="col">模型</th><th scope="col">限制</th><th scope="col">实测</th><th scope="col">细节</th></tr></thead>
           <tbody>
             <tr><th scope="row">视频</th><td data-label="模型">MiniMax H3 · 20.11B · W4A8</td><td data-label="限制">73 帧 · 原生 1344×768 · 4 步 Turbo</td><td data-label="实测">4 步片段 82 秒 · 相对单卡 2.97×</td><td data-label="细节"><a href="/zh/local/video-stack.html">视频栈</a></td></tr>
-            <tr><th scope="row">图片</th><td data-label="模型">H3-Image DiT · W4A8</td><td data-label="限制">6 步 · cfg 1.0 · 预设 1344×768 到 6272×2688</td><td data-label="实测">这里没有单独测速</td><td data-label="细节"><a href="/zh/local/workflow.html#api-title">接口契约</a></td></tr>
-            <tr><th scope="row">音频</th><td data-label="模型">MiniMax Music3 · fp16</td><td data-label="限制">30 步 · cfg 1.7 · 歌词可带 [verse]/[chorus]</td><td data-label="实测">这里没有单独测速</td><td data-label="细节"><a href="/zh/local/workflow.html#api-title">接口契约</a></td></tr>
+            <tr><th scope="row">图片</th><td data-label="模型">H3-Image DiT · W4A8</td><td data-label="限制">6 步 · cfg 1.0 · 预设 1344×768 到 6272×2688</td><td data-label="实测">2k 单张 78 秒（2048×1152，冷启动）</td><td data-label="细节"><a href="/zh/local/workflow.html#api-title">接口契约</a></td></tr>
+            <tr><th scope="row">音频</th><td data-label="模型">MiniMax Music3 · fp16</td><td data-label="限制">30 步 · cfg 1.7 · 歌词可带 [verse]/[chorus]</td><td data-label="实测">30 秒音乐 305 秒（751 步 AR + 30 步扩散）</td><td data-label="细节"><a href="/zh/local/workflow.html#api-title">接口契约</a></td></tr>
             <tr><th scope="row">文本</th><td data-label="模型">Qwen3.8-27B-FP8 · W8A16</td><td data-label="限制">256K 上下文 · 一次一条序列</td><td data-label="实测">思考 46 tok/s · 非思考 52 · 4K 预填充 1,978 tok/s</td><td data-label="细节"><a href="/zh/local/text-stack.html">文本栈</a></td></tr>
             <tr><th scope="row">实验</th><td data-label="模型">Strata 125B MoE · LMExamBench · TP2 探针</td><td data-label="限制">128K 上下文 · 8 个评测阶段 · 每卡 22 GB</td><td data-label="实测">探针与计划；评测每次 8 题</td><td data-label="细节"><a href="/blog/restart-cost.html">重启成本</a> · <a href="/blog/exam-as-eval.html">评测</a></td></tr>
           </tbody>
         </table>
-        <p class="table-note"><span>同一份预算</span>每一行都在争同样的 44 GB 显存，彼此不能同时跑：视频模型采样时独占两张卡，要跑文本模型得先把它停掉。</p>
+        <p class="table-note"><span>同一份预算</span>每一行都在争同样的 44 GB 显存，彼此不能同时跑：视频模型采样时独占两张卡，要跑文本模型得先把它停掉。表里的耗时都是通过任务接口、固定种子的冷启动，包含模型载入。</p>
       </div>
 
       <div class="wrap comparison-grid is-single">

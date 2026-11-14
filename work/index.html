@@ -426,13 +426,13 @@
           <thead><tr><th scope="col">Workload</th><th scope="col">Model</th><th scope="col">Limits</th><th scope="col">Measured</th><th scope="col">Details</th></tr></thead>
           <tbody>
             <tr><th scope="row">Video</th><td data-label="Model">MiniMax H3 · 20.11B · W4A8</td><td data-label="Limits">73 frames · 1344×768 native · 4-step Turbo</td><td data-label="Measured">82 s per 4-step clip · 2.97× over one card</td><td data-label="Details"><a href="/local/video-stack.html">video stack</a></td></tr>
-            <tr><th scope="row">Image</th><td data-label="Model">H3-Image DiT · W4A8</td><td data-label="Limits">6 steps · cfg 1.0 · presets from 1344×768 to 6272×2688</td><td data-label="Measured">not benchmarked here</td><td data-label="Details"><a href="/local/workflow.html#api-title">API contract</a></td></tr>
-            <tr><th scope="row">Audio</th><td data-label="Model">MiniMax Music3 · fp16</td><td data-label="Limits">30 steps · cfg 1.7 · lyrics with [verse]/[chorus]</td><td data-label="Measured">not benchmarked here</td><td data-label="Details"><a href="/local/workflow.html#api-title">API contract</a></td></tr>
+            <tr><th scope="row">Image</th><td data-label="Model">H3-Image DiT · W4A8</td><td data-label="Limits">6 steps · cfg 1.0 · presets from 1344×768 to 6272×2688</td><td data-label="Measured">78 s per 2k image (2048×1152, cold start)</td><td data-label="Details"><a href="/local/workflow.html#api-title">API contract</a></td></tr>
+            <tr><th scope="row">Audio</th><td data-label="Model">MiniMax Music3 · fp16</td><td data-label="Limits">30 steps · cfg 1.7 · lyrics with [verse]/[chorus]</td><td data-label="Measured">305 s per 30 s track (751 AR steps + 30 diffusion steps)</td><td data-label="Details"><a href="/local/workflow.html#api-title">API contract</a></td></tr>
             <tr><th scope="row">Text</th><td data-label="Model">Qwen3.8-27B-FP8 · W8A16</td><td data-label="Limits">256K context · one sequence at a time</td><td data-label="Measured">46 tok/s thinking · 52 off · 1,978 tok/s prefill at 4K</td><td data-label="Details"><a href="/local/text-stack.html">text stack</a></td></tr>
             <tr><th scope="row">Experiments</th><td data-label="Model">Strata 125B MoE · LMExamBench · TP2 probes</td><td data-label="Limits">128K context · 8 eval stages · 22 GB per card</td><td data-label="Measured">probes and plans; eval runs of 8 questions</td><td data-label="Details"><a href="/en/blog/restart-cost.html">restarts</a> · <a href="/en/blog/exam-as-eval.html">evals</a></td></tr>
           </tbody>
         </table>
-        <p class="table-note"><span>One budget</span>Every row competes for the same 44 GB of VRAM. Nothing here runs at the same time as anything else: the video model owns both cards while it samples, and the text model has to be stopped first.</p>
+        <p class="table-note"><span>One budget</span>Every row competes for the same 44 GB of VRAM. Nothing here runs at the same time as anything else: the video model owns both cards while it samples, and the text model has to be stopped first. Timings are cold starts through the job API with a fixed seed, so they include model loading.</p>
       </div>
 
       <div class="wrap comparison-grid is-single">
