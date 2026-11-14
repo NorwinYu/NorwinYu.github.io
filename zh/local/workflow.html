@@ -148,7 +148,7 @@
         <div><strong>88</strong><span>线程 · 2 个插槽</span></div>
         <div><strong>94</strong><span>GiB DDR4</span></div>
         <div><strong>44</strong><span>GB VRAM · 2 张卡</span></div>
-        <div><strong>180</strong><span>W 上限 · 每卡</span></div>
+        <div><strong>180</strong><span>W 上限（每卡）</span></div>
       </div>
     </section>
 
@@ -221,7 +221,7 @@
           <caption class="sr-only">工作站对外暴露的服务</caption>
           <thead><tr><th scope="col">端口</th><th scope="col">绑定</th><th scope="col">受众</th><th scope="col">状态</th><th scope="col">作用</th></tr></thead>
           <tbody>
-            <tr><th scope="row">8189</th><td data-label="绑定">0.0.0.0</td><td data-label="受众">人</td><td data-label="状态">运行中</td><td data-label="作用">ComfyUI 0.45 —— H3 的图像与视频图、节点编辑器、队列</td></tr>
+            <tr><th scope="row">8189</th><td data-label="绑定">0.0.0.0</td><td data-label="受众">人</td><td data-label="状态">运行中</td><td data-label="作用">ComfyUI 0.45 —— H3 的图像与视频节点图、节点编辑器、队列</td></tr>
             <tr><th scope="row">8190</th><td data-label="绑定">0.0.0.0</td><td data-label="受众">程序 / agent</td><td data-label="状态">运行中</td><td data-label="作用">Agent API —— 提交任务、查询状态、列出并下载输出</td></tr>
             <tr><th scope="row">8188</th><td data-label="绑定">0.0.0.0</td><td data-label="受众">内部</td><td data-label="状态">已停止</td><td data-label="作用">影片流水线用的生产版 ComfyUI 0.36；不该对外公开</td></tr>
             <tr><th scope="row">8765</th><td data-label="绑定">0.0.0.0</td><td data-label="受众">手机 / 平板</td><td data-label="状态">按需</td><td data-label="作用">流式文件投放 —— 来自 iOS/Android 的上传落到本地文件夹</td></tr>
@@ -240,7 +240,7 @@
       </div>
       <div class="wrap pipeline-grid">
         <div class="pipeline-step"><span>01</span><h3>启动</h3><p>ComfyUI 在 8189 起来，agent API 在 8190 起来；两者都加载 H3 节点和 TP2 分片钩子。</p><em>人</em></div>
-        <div class="pipeline-step"><span>02</span><h3>描述</h3><p>浏览器里拖一张图，或者 agent 读 <code>/capabilities</code> 了解类型、尺寸预设和模型名。</p><em>两者</em></div>
+        <div class="pipeline-step"><span>02</span><h3>描述</h3><p>浏览器里拖一张节点图，或者 agent 读 <code>/capabilities</code> 了解类型、尺寸预设和模型名。</p><em>两者</em></div>
         <div class="pipeline-step"><span>03</span><h3>提交</h3><p><code>POST /generate</code>，kind 为 image 或 video。队列是串行的：一个任务同时占住两张卡。</p><em>程序</em></div>
         <div class="pipeline-step"><span>04</span><h3>规划显存</h3><p>32B 文本编码器（27 GB）切分到两张卡上，释放，然后 DiT（12 GB）占用同一块空间。</p><em>模型</em></div>
         <div class="pipeline-step"><span>05</span><h3>采样</h3><p>图像：6 步，cfg 1.0。视频：最多 73 帧，8 步，4 步 turbo LoRA。输出落在 <code>~/ComfyUI-img/output</code>。</p><em>模型</em></div>
@@ -271,7 +271,7 @@ GET  /files/&lt;name&gt;     下载一个文件</code></pre>
           <tbody>
             <tr><th scope="row">图像</th><td data-label="模型">minimax_h3_image_pruned_w4a8</td><td data-label="默认值">6 步 · cfg 1.0 · 1k–4k 预设，最高 6272 × 2688</td></tr>
             <tr><th scope="row">视频</th><td data-label="模型">minimax_h3_ref2va_pruned_w4a8_mixed</td><td data-label="默认值">8 步 · 1344 × 768 · 最多 73 帧 · 4 步 turbo LoRA</td></tr>
-            <tr><th scope="row">音频</th><td data-label="模型">minimax_music3_dit_fp16</td><td data-label="默认值">30 步 · cfg 1.7 · 人声描述 + 歌词，用 [verse]/[chorus] 标注</td></tr>
+            <tr><th scope="row">音频</th><td data-label="模型">minimax_music3_dit_fp16</td><td data-label="默认值">30 步 · cfg 1.7 · 文本描述 + 歌词，用 [verse]/[chorus] 标注</td></tr>
           </tbody>
         </table>
         <p class="table-note"><span>设计上串行</span>队列一次只放一个任务。两个客户端同时提交不会共用两张卡；第二个要等。</p>
@@ -286,7 +286,7 @@ GET  /files/&lt;name&gt;     下载一个文件</code></pre>
       <div class="wrap home-cap-grid">
         <div class="home-cap-item"><span>01</span><h3>没有鉴权</h3><p>8189 和 8190 绑定 0.0.0.0，也没有 token。Wi-Fi 上任何人都能排任务、读输出目录。这是换来手机零摩擦访问的代价。</p></div>
         <div class="home-cap-item"><span>02</span><h3>只在局域网</h3><p>没有端口转发、没有隧道、没有公网 DNS。路由器的 NAT 就是边界；机器地址是一个 DHCP 租约。</p></div>
-        <div class="home-cap-item"><span>03</span><h3>一次一个任务</h3><p>队列是串行的，卡就是瓶颈。这是一台被问才答的工作站，不是一个可以随便突发的排队服务。</p></div>
+        <div class="home-cap-item"><span>03</span><h3>一次一个任务</h3><p>队列是串行的，卡就是瓶颈。这是一台被问才答的工作站，不是一个任你灌队列的服务。</p></div>
       </div>
     </section>
 
