@@ -17,7 +17,7 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Experiments — Norwin Yu">
   <meta property="og:description" content="Game and coding experiments used to study LLM capability, production pipelines and verification.">
-  <meta property="og:image" content="../assets/img/og.png">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
@@ -77,8 +77,8 @@
       <div class="wrap">
         <p class="section-kicker">Experiments / 2026</p>
         <h1>Experiments in code.</h1>
-        <p class="page-lede">Games are one probe; coding is the other. Both test how far an LLM can carry a real production pipeline — generated assets, code, UI, verification and deployment — and where a human still has to intervene.</p>
-        <div class="page-meta"><span><i></i>05 game probes</span><span>02 comparisons</span><span>03 coding tools</span><span>Live / source linked</span></div>
+        <p class="page-lede">Games are one probe, coding tools are another, and the rig itself is the third. All of them test how far an LLM can carry a real production pipeline — generated assets, code, UI, verification and deployment — and where a human still has to intervene.</p>
+        <div class="page-meta"><span><i></i>05 game probes</span><span>02 comparisons</span><span>03 coding tools</span><span>02 local systems</span><span>Live / source linked</span></div>
       </div>
     </header>
 
@@ -110,6 +110,8 @@
             <tr><th scope="row">dsh-quota</th><td data-label="Tests">Tooling / route-aware state</td><td data-label="Model">DeepSeek V4.1 Flash</td><td data-label="Leverage">Code/tests/docs; config-driven adapters</td></tr>
             <tr><th scope="row">NorMark</th><td data-label="Tests">Desktop coding app</td><td data-label="Model">Not recorded</td><td data-label="Leverage">Electron / React / CodeMirror</td></tr>
             <tr><th scope="row">RoomTessera 3D</th><td data-label="Tests">Spatial tooling</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Code/UI/tests; procedural geometry</td></tr>
+            <tr><th scope="row">MiniMax H3 TP2</th><td data-label="Tests">Multi-GPU leverage on 22 GB cards</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Tensor parallel node, one host thread per rank</td></tr>
+            <tr><th scope="row">sensorium</th><td data-label="Tests">Reading hardware without a subprocess</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Rust · ratatui · NVML in-process</td></tr>
           </tbody>
         </table>
         <p class="table-note"><span>How to read it</span>The matrix is the experiment design. The case notes below are the evidence: what was built, what was generated, and where the handoff broke.</p>
@@ -139,7 +141,7 @@
 
     <div class="wrap">
       <article class="work-case" id="echo-zero">
-        <div class="work-case-media"><img src="../assets/img/demo-echo-zero.jpg" alt="ECHO ZERO title screen with a dark ring structure above clouds" width="1440" height="900" loading="eager"></div>
+        <div class="work-case-media"><img decoding="async" src="../assets/img/demo-echo-zero.jpg" alt="ECHO ZERO title screen with a dark ring structure above clouds" width="1440" height="900" loading="eager"></div>
         <div class="work-case-copy">
           <h2>零号信标 <span>ECHO ZERO / 蓝光游戏</span></h2>
           <p>A future-noir visual novel about memory, signal and a city that forgets. Three branching chapters, a gallery and an ending loop — built as a complete narrative surface, not a scene demo.</p>
@@ -161,7 +163,7 @@
       </article>
 
       <article class="work-case" id="three-kingdoms">
-        <div class="work-case-media"><img src="../assets/img/demo-three-kingdoms.jpg" alt="Beacon of the Three Kingdoms main menu" width="1440" height="900" loading="eager"></div>
+        <div class="work-case-media"><img decoding="async" src="../assets/img/demo-three-kingdoms.jpg" alt="Beacon of the Three Kingdoms main menu" width="1440" height="900" loading="lazy"></div>
         <div class="work-case-copy">
           <h2>烽火三国 <span>Beacon of the Three Kingdoms</span></h2>
           <p>A browser tactics vertical slice: 12 × 9 grid, 47 generals, 11 cities, weather, fire, morale, reinforcements and boss cut-ins. The goal was a complete loop — deploy, move, attack, level up, lose — not a cinematic trailer.</p>
@@ -183,7 +185,7 @@
       </article>
 
       <article class="work-case" id="immortal-sect">
-        <div class="work-case-media"><img src="../assets/img/demo-immortal-sect.jpg" alt="Immortal Sect mountain gate at dusk" width="1440" height="900" loading="eager"></div>
+        <div class="work-case-media"><img decoding="async" src="../assets/img/demo-immortal-sect.jpg" alt="Immortal Sect mountain gate at dusk" width="1440" height="900" loading="lazy"></div>
         <div class="work-case-copy">
           <h2>仙宗 <span>Immortal Sect / 修仙宗门</span></h2>
           <p>A 3D cultivation-sect management prototype used to test DeepSeek Flash's 3D capability: seven disciples, building upgrades, daily duties, third-person movement, combat and tribulation. The whole playable chapter runs in the browser with no backend.</p>
@@ -205,7 +207,7 @@
       </article>
 
       <article class="work-case" id="mistvale">
-        <div class="work-case-media"><img src="../assets/img/demo-mistvale.jpg" alt="Mistvale Farm title screen with a farmhouse, well and vegetable garden at dusk." width="1600" height="1000" loading="eager"></div>
+        <div class="work-case-media"><img decoding="async" src="../assets/img/demo-mistvale.jpg" alt="Mistvale Farm title screen with a farmhouse, well and vegetable garden at dusk." width="1600" height="1000" loading="lazy"></div>
         <div class="work-case-copy">
           <h2>雾谷农庄 <span>Mistvale Farm</span></h2>
           <p>A third-person 3D farm-life game built with one DeepSeek Flash prompt: “做一款写实风的 3D 农场游戏.” Clear a plot, plant crops, tend them through a slow day/night cycle and turn a foggy valley into a home. Everything is generated in code — this is the no-Blender baseline for a later comparison against a Blender-assisted build.</p>
@@ -228,7 +230,7 @@
       </article>
 
       <article class="work-case" id="airport">
-        <div class="work-case-media"><img src="../assets/img/demo-airport-tycoon.jpg" alt="Airport Tycoon 3D main menu in Godot." width="1280" height="800" loading="eager"></div>
+        <div class="work-case-media"><img decoding="async" src="../assets/img/demo-airport-tycoon.jpg" alt="Airport Tycoon 3D main menu in Godot." width="1280" height="800" loading="lazy"></div>
         <div class="work-case-copy">
           <h2>机场大亨 3D <span>Airport Tycoon 3D</span></h2>
           <p>A Godot 4.6 airport management sim built as a test of DeepSeek Flash + DSH + Godot: buy or lease aircraft, open routes, build terminals and survive storms, strikes, oil spikes and inspections. Every mesh and sound is generated in code.</p>
@@ -258,7 +260,7 @@
       </div>
       <div class="wrap comparison-grid">
         <article class="comparison-card" id="neon">
-          <div class="comparison-media"><img src="../assets/img/demo-neon-breach.jpg" alt="Neon Breach first-person neon arena with a weapon and enemy." width="1280" height="800" loading="eager"></div>
+          <div class="comparison-media"><img decoding="async" src="../assets/img/demo-neon-breach.jpg" alt="Neon Breach first-person neon arena with a weapon and enemy." width="1280" height="800" loading="lazy"></div>
           <div class="comparison-body">
             <p class="demo-kicker">No-skill control · WebGL</p>
             <h3>NEON BREACH <span>霓虹突袭</span></h3>
@@ -276,7 +278,7 @@
         </article>
 
         <article class="comparison-card" id="ming-palace">
-          <div class="comparison-media"><img src="../assets/img/demo-ming-palace.jpg" alt="A 3D reconstruction of a Ming palace hall with a golden roof and white stone terrace." width="1600" height="1000" loading="eager"></div>
+          <div class="comparison-media"><img decoding="async" src="../assets/img/demo-ming-palace.jpg" alt="A 3D reconstruction of a Ming palace hall with a golden roof and white stone terrace." width="1600" height="1000" loading="lazy"></div>
           <div class="comparison-body">
             <p class="demo-kicker">Local-model run · WebGL2</p>
             <h3>明宫三维 <span>Ming Palace 3D</span></h3>
@@ -362,7 +364,7 @@
 
         <article class="coding-card" id="roomtessera">
           <div class="coding-visual">
-            <img src="../assets/img/demo-roomtessera.jpg" alt="RoomTessera 3D interface with a floor plan, furniture and a 3D cutaway view." width="1440" height="900" loading="eager">
+            <img decoding="async" src="../assets/img/demo-roomtessera.jpg" alt="RoomTessera 3D interface with a floor plan, furniture and a 3D cutaway view." width="1440" height="900" loading="lazy">
           </div>
           <div class="coding-body">
             <p class="demo-kicker">Spatial tool · React Three Fiber</p>
@@ -380,7 +382,75 @@
       </div>
     </section>
 
-    <section class="section" aria-labelledby="harness-title">
+    <section class="section" id="systems" aria-labelledby="systems-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">04 / Local systems</p><h2 id="systems-title">What the rig actually runs.</h2></div>
+        <p class="section-intro">Two systems measured on this machine rather than quoted from a project page: a 20B video model made to use both cards, and a monitor that reads the same hardware without forking a single process.</p>
+      </div>
+      <div class="wrap comparison-grid">
+        <article class="comparison-card" id="h3-tp2">
+          <div class="comparison-media is-term">
+            <div class="term-window">
+              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>h3 / tp2 bench · 640×352</span></div>
+              <div class="term-body">
+                <p><span>single card</span><b>51 s / step</b></p>
+                <p><span>TP2</span><strong>14 s / step</strong></p>
+                <p class="term-dim">243 s → 82 s per 4-step clip</p>
+                <p><span>speedup</span><strong>2.97×</strong></p>
+                <p class="term-dim">GEMM overlap 5% → 91%</p>
+                <p><span>GPU1 peak</span><b>78 °C · 4 min</b></p>
+              </div>
+            </div>
+          </div>
+          <div class="comparison-body">
+            <p class="demo-kicker">Local systems · SM75</p>
+            <h3>MiniMax H3 TP2 <span>双卡张量并行</span></h3>
+            <p>A 20.11B video-and-audio transformer in W4A8, sharded across two 22 GB Turing cards. The interesting part is not that it fits — it is that sharding alone only reached 1.31×.</p>
+            <dl class="work-specs">
+              <div><dt>Model</dt><dd>20.11B · 50 blocks</dd></div>
+              <div><dt>Quantisation</dt><dd>W4A8 · int4 group 16</dd></div>
+              <div><dt>Speedup</dt><dd>2.97× smoke · 2.25× film</dd></div>
+              <div><dt>Fix</dt><dd>One host thread per rank</dd></div>
+              <div><dt>Output</dt><dd>Bit-identical · frame MAE 0.0000</dd></div>
+              <div><dt>Status</dt><dd>Public repo · MIT code</dd></div>
+            </dl>
+            <div class="work-links"><a href="https://github.com/NorwinYu/minimax-h3-dual-2080ti" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a><a href="../blog/tp2-one-thread.html">Build note <span aria-hidden="true">→</span></a></div>
+          </div>
+        </article>
+
+        <article class="comparison-card" id="sensorium">
+          <div class="comparison-media is-term">
+            <div class="term-window">
+              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>sensorium / overview</span></div>
+              <div class="term-body">
+                <p><span>GPU0</span><b>97% · 21.5 GB · 71 °C</b></p>
+                <p><span>GPU1</span><b>72% · 19.7 GB · 75 °C</b></p>
+                <p class="term-dim">power 180 / 180 W · capped</p>
+                <p><span>CPU</span><strong>4.6% of one core</strong></p>
+                <p class="term-dim">88 threads · 0.05% of the box</p>
+                <p><span>repaint</span><b>0.34 ms</b></p>
+              </div>
+            </div>
+          </div>
+          <div class="comparison-body">
+            <p class="demo-kicker">Tooling · Rust</p>
+            <h3>sensorium <span>机器的感官中枢</span></h3>
+            <p>A terminal hardware monitor written in Rust: CPU, GPU, memory, temperatures, fans, power, disks and network, read straight from <code>/proc</code>, <code>/sys</code> and NVML with no child processes at all.</p>
+            <dl class="work-specs">
+              <div><dt>Stack</dt><dd>Rust · ratatui</dd></div>
+              <div><dt>Cost</dt><dd>~4–6% of one core</dd></div>
+              <div><dt>Memory</dt><dd>~24 MiB resident</dd></div>
+              <div><dt>Refresh</dt><dd>1 s · 0.2–0.35 ms repaint</dd></div>
+              <div><dt>Binary</dt><dd>~1.2 MB · stripped, LTO</dd></div>
+              <div><dt>Status</dt><dd>Public repo</dd></div>
+            </dl>
+            <div class="work-links"><a href="https://github.com/NorwinYu/sensorium" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a><a href="../ai.html">The rig it reads <span aria-hidden="true">→</span></a></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="harness-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">Also in the lab</p><h2 id="harness-title">The verification harness.</h2></div>
         <p class="section-intro">The Photoreal Game Harness is a portable skill and six-gate check for agents building 3D games: shaders, object census, collision, lights, loop and look. It is the unglamorous part that makes the games above possible.</p>

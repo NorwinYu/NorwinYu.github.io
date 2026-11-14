@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>并行不是切分 — Norwin Yu</title>
+  <meta name="description" content="MiniMax H3 在两张 22GB 2080 Ti 上从 1.31× 到 2.97×：真正卡住的是 host 线程，不是张量切分。">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="并行不是切分 — Norwin Yu">
+  <meta property="og:description" content="MiniMax H3 在两张 22GB 2080 Ti 上从 1.31× 到 2.97×：真正卡住的是 host 线程，不是张量切分。">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="zh_CN">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="preload" href="../assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/article.css">
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="../index.html" aria-label="Norwin Yu — 首页">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
+      </a>
+      <nav class="article-nav" aria-label="文章导航">
+        <a href="../work/index.html">实验</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <span class="availability"><i aria-hidden="true"></i>开放研究交流</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> 全部笔记</a>
+        <p class="article-kicker"><span class="is-accent">系统</span><i aria-hidden="true"></i><span>多卡</span><i aria-hidden="true"></i><span>视频生成</span></p>
+        <h1>并行不是<br><em>切分。</em></h1>
+        <p class="article-deck">一个 20B 视频模型，两张 22GB 的 Turing 卡。第一版张量并行只有 1.31×，问题不在链路，在发起调用的那根线程。</p>
+        <p class="article-cn">我把权重切对了，然后花了两天发现：切对只让一半的工作落在第二张卡上，没让它同时发生。</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>2026 年 11 月</span>
+          <span>10 分钟</span>
+          <span>现场笔记 / 06</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">目录</p>
+        <nav class="article-toc" aria-label="文章目录">
+          <a href="#fits">装得下，但没用上</a>
+          <a href="#shard">切分本身没有错</a>
+          <a href="#block">阻塞点不在链路</a>
+          <a href="#thread">一卡一线程</a>
+          <a href="#numbers">结果</a>
+          <a href="#transfer">这条经验能搬走吗</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>模型</dt><dd>MiniMax H3 · 20.11B</dd></div>
+          <div><dt>量化</dt><dd>W4A8 · int4 group 16</dd></div>
+          <div><dt>单卡</dt><dd>51 s / step</dd></div>
+          <div><dt>TP2</dt><dd>14 s / step</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>MiniMax H3 是一个 20.11B 的视频加音频联合流式 Transformer：50 个 block，hidden 5376，FFN 14336。W4A8 量化之后，DiT 权重在磁盘上占 10.96 GiB，放进一张 22GB 的卡里是够的。跑起来也确实能出片子。</p>
+
+        <p>问题是：另一张卡在旁边闲着。它是一个 2U 的风扇，在吹空气。</p>
+
+        <h2 id="fits">装得下，但没用上</h2>
+        <p>单卡跑 640×352 × 124 帧 × 4 步的 smoke 样本，每步约 51 秒，一条 4 步的片段 243 秒。GPU1 利用率 97%，峰值显存 19.1GB，温度在 78 度上待了四分钟。这不是不能跑，是不能这样跑一个下午。</p>
+
+        <p>所以目标很朴素：让第二张卡进循环。不是把它当更大的显存池——这个模型本来就装得下——而是让它分担计算，顺便把单卡的高温时间压下来。</p>
+
+        <h2 id="shard">切分本身没有错</h2>
+        <p>TP2 的切法是标准做法：qkv、out、fc1 按列切，fc2 按行切，每个 block 结尾做一次对称 allreduce。两张卡各有完整的 25 个 block 的输入输出形状，只是每个矩阵的一半。</p>
+
+        <p>跑出来是 1.31×。切分逻辑正确，数值也对，但 GPU 有一半时间在空转。这不像通信开销——allreduce 只有 13 ms/block，占 420 ms 的 3%——更像两张卡在轮流工作。</p>
+
+        <h2 id="block">阻塞点不在链路</h2>
+        <p>仓库里的 <code>probes/</code> 就是为这个问题写的：把同一个 GEMM 分别放在两张卡上、并发跑、再换成一卡一线程，记录两者的时间重叠比例。重叠 95% 说明两张卡同时在算；重叠 5% 说明它们只是排了个队。</p>
+
+        <table class="compare-table">
+          <thead><tr><th>测试</th><th>dev0</th><th>dev1</th><th>并发耗时</th><th>重叠</th></tr></thead>
+          <tbody>
+            <tr><td data-label="测试">dense fp16 GEMM</td><td data-label="dev0">61.9</td><td data-label="dev1">58.0</td><td data-label="并发耗时">61.0</td><td data-label="重叠">95%</td></tr>
+            <tr><td data-label="测试">W4A8 GEMM</td><td data-label="dev0">103.3</td><td data-label="dev1">96.8</td><td data-label="并发耗时">194.7</td><td data-label="重叠">5%</td></tr>
+            <tr><td data-label="测试">W4A8 GEMM，一卡一线程</td><td data-label="dev0">106.5</td><td data-label="dev1">97.1</td><td data-label="并发耗时">106.8</td><td data-label="重叠">91%</td></tr>
+          </tbody>
+        </table>
+
+        <p>看第二行：两张卡各自的 GEMM 大约 100 个单位，并发跑却要 194.7——正好是相加。它们没有并行，只是串行执行了两遍。</p>
+
+        <p>原因不在 NVLink，也不在 CUDA 的流调度，而在 <code>comfy-kitchen</code> 的 W4A8 GEMM 实现：它调用 kernel 之后会阻塞调用它的 host 线程，直到 kernel 结束。整个 forward 只有一个 host 线程，于是第一个 GEMM 阻塞住线程，第二个 rank 的 kernel 只能排队。dense fp16 那条路径不阻塞，所以它能拿到 95% 的重叠——同一套切分，两种结果。</p>
+
+        <h2 id="thread">一卡一线程</h2>
+        <p>修法只有几行：给每个 rank 一个独立的 host 线程（<code>tp2.py</code> 里的 <code>_par</code>），让两张卡的 kernel 由两个线程分别发起。重叠从 5% 变成 91%，并发耗时从 194.7 降到 106.8——接近单卡时间，也就是真正在并行。</p>
+
+        <p>这是纯调度改动，不碰数值：输出逐比特一致，帧 MAE 0.0000。这一点很重要——它说明 2.97× 不是“少算了一些东西”换来的。</p>
+
+        <h2 id="numbers">结果</h2>
+        <table class="compare-table">
+          <thead><tr><th>指标</th><th>单卡</th><th>TP2</th></tr></thead>
+          <tbody>
+            <tr><td data-label="指标">每步耗时</td><td data-label="单卡">~51 s</td><td data-label="TP2">~14 s</td></tr>
+            <tr><td data-label="指标">4 步片段端到端</td><td data-label="单卡">243 s</td><td data-label="TP2">82 s</td></tr>
+            <tr><td data-label="指标">加速比</td><td data-label="单卡">1×</td><td data-label="TP2">2.97×</td></tr>
+            <tr><td data-label="指标">GPU 利用率</td><td data-label="单卡">GPU0 闲置 / GPU1 97%</td><td data-label="TP2">57% / 72%</td></tr>
+            <tr><td data-label="指标">显存峰值</td><td data-label="单卡">19.1 GB</td><td data-label="TP2">11.6 + 19.7 GB</td></tr>
+            <tr><td data-label="指标">高温时长</td><td data-label="单卡">78 度 · 4 分钟</td><td data-label="TP2">75 度 · 1.4 分钟</td></tr>
+          </tbody>
+        </table>
+
+        <p>成片分辨率（864×480，ref2va）上的曲线是同一件事的另一个刻度：单卡 44.6 s/step，第一版 TP2 34.0 s（1.31×），一卡一线程之后 19.8 s（2.25×）。修好的 block 里，qkv 加注意力 211 ms、MLP 196 ms、allreduce 13 ms，合计 420 ms/block。</p>
+
+        <div class="callout">
+          <span class="mono-label">一条可以复用的检查</span>
+          <p>不要用端到端加速比判断并行是否成功。先测重叠：两张卡的 kernel 真的在同时跑，还是只是交替跑。端到端 1.31× 可以来自很多原因，重叠 5% 只有一个原因。</p>
+        </div>
+
+        <h2 id="transfer">这条经验能搬走吗</h2>
+        <p>能，但要限定范围。这里成立的前提是：<strong>并行度由 host 侧发起调用的方式决定，而不只由切分方式决定</strong>。任何“同步、阻塞调用者”的 kernel 或库，放进单线程的 forward 里，都会把并行变成排队。dense fp16 与 W4A8 的对照，就是同一份模型、同一套切分、只换 kernel 实现的结果。</p>
+
+        <p>搬不走的部分也要写清楚：这些数字来自一台机器、两张 22GB 的 2080 Ti、250W 上限、驱动 580 系列、CUDA 13.0，固定种子 42。它不证明别的卡或别的模型也会得到 2.97×。另外，两张卡分属不同的 NUMA 节点，allreduce 的 13 ms 里有一半是拓扑的账，换一块双路主板就会变。</p>
+
+        <p>真正值得留下的，是那个诊断顺序：先确认切分正确（数值一致），再确认 kernel 真的在并发（重叠比例），最后才优化通信。反过来做，会花很多时间调一个不存在的带宽问题。</p>
+
+        <p class="article-end"><strong>方法 /</strong> 数据来自 <a href="https://github.com/NorwinYu/minimax-h3-dual-2080ti" target="_blank" rel="noopener">NorwinYu/minimax-h3-dual-2080ti</a> 仓库的 <code>docs/PERFORMANCE.md</code> 与 <code>probes/</code>，数字是在本机实际渲染中测的，不是估算。代码 MIT；模型权重不随仓库分发，遵循 MiniMax 自己的许可。重叠比例的测量口径见 <code>docs/ARCHITECTURE.md</code>。</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>相关 / 系统</p>
+          <h2 id="next-title">44GB 显存问题</h2>
+        </div>
+        <a href="two-gpu-local-lab.html">
+          <span>继续阅读</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="页脚">
+        <a href="../work/index.html">实验</a>
+        <a href="../ai.html">环境</a>
+        <a href="../open-source.html">开源</a>
+        <a href="../competitions.html">竞赛</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <a href="index.html">全部笔记 <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

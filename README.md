@@ -17,7 +17,14 @@ Opening `index.html` directly also works, but a local server is better for check
 
 The site deploys from `main` through `.github/workflows/pages.yml` using GitHub Actions. In the repository, **Settings → Pages → Build and deployment** should be set to **GitHub Actions**.
 
-All internal links are relative, so the same files work as a user site (`username.github.io`) or a project site (`username.github.io/repo/`).
+All internal links are relative, so the same files work as a user site (`username.github.io`) or a project site (`username.github.io/repo/`). The one deliberate exception is `404.html`: GitHub Pages serves that file at whatever path was requested, so its asset and navigation URLs are root-absolute (`/assets/…`).
+
+## Conventions
+
+- `404.html` uses absolute paths — a relative stylesheet would resolve against a directory that does not exist.
+- `og:image` is an absolute `https://norwinyu.github.io/…` URL, because scrapers ignore relative ones.
+- Images below the fold use `loading="lazy" decoding="async"`; the first image on a page stays eager for LCP.
+- The hardware figures on `ai.html` are measured on the workstation, not estimated. If the rig changes, the numbers and the caveats change with it.
 
 ## Structure
 

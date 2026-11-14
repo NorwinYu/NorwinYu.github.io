@@ -16,7 +16,7 @@
   <meta property="og:type" content="article">
   <meta property="og:title" content="44GB 的问题 — Norwin Yu">
   <meta property="og:description" content="两张 RTX 2080 Ti、44GB 显存、能跑什么、不能跑什么，以及本地推理真正的瓶颈。">
-  <meta property="og:image" content="../assets/img/og.png">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
   <meta property="og:locale" content="zh_CN">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
@@ -76,7 +76,7 @@
         <dl class="article-aside-facts">
           <div><dt>GPU</dt><dd>2 × RTX 2080 Ti</dd></div>
           <div><dt>显存</dt><dd>22GB 每张 / 共 44GB</dd></div>
-          <div><dt>连接</dt><dd>PCIe，无 NVLink</dd></div>
+          <div><dt>连接</dt><dd>NVLink NV2 · 双链路</dd></div>
           <div><dt>系统</dt><dd>Ubuntu 24.04 LTS</dd></div>
         </dl>
       </aside>
@@ -88,7 +88,7 @@
 
         <h2 id="arithmetic">算术的假象</h2>
         <p>两张卡给你 44GB 总显存，但它们不是一张 44GB 的卡。这个区别不是抠字眼。它决定了哪些模型能舒服地跑，哪些只能慢慢跑，哪些会让你在凌晨一点盯着 CUDA out of memory。</p>
-        <p>一个能放进单卡的模型，完全避开了卡间通信。一个跨两张卡切分的模型，每一个跨过切分点的 layer 边界都要协调。没有 NVLink，这种协调走 PCIe。带宽有限，延迟真实存在，而且同步开销会随切分数量增长。第二张卡不是免费内存，它是带通勤的内存。</p>
+        <p>一个能放进单卡的模型，完全避开了卡间通信。一个跨两张卡切分的模型，每一个跨过切分点的 layer 边界都要协调。这台机器有 NVLink——NV2，两条绑定链路，各 25.78 GB/s——所以协调不走 PCIe。但线路快不等于免费：每个 block 的 allreduce 仍然是 13 ms，两张卡还分属不同的 NUMA 节点，发起 kernel 的 host 线程有时比链路更贵。第二张卡不是免费内存，它是需要调度才能用上的内存。</p>
 
         <blockquote>显存是预算，不是一个数字。上下文、KV cache、激活值和框架本身都要占一行。</blockquote>
 
@@ -113,7 +113,7 @@
         <h2 id="turing">Turing 的边界</h2>
         <p>2080 Ti 是 Turing，不是 Ampere。这有实际后果：没有 BF16，现代训练配方需要翻译；很多推理 kernel 为 Ampere 或更新架构优化，Turing 能用，但不总是快路径。Flash attention、量化 kernel、融合算子，都要对着实际卡验证，而不是对着 README。</p>
         <p>显存带宽仍然不错——每张约 616 GB/s——FP16 tensor core 也在。推理，尤其是量化推理，远没有到不能用。微调就不同了：没有 BF16，加上 22GB 的单卡上限，每次实验都变成仔细的会计。小 LoRA 可以，全量微调不是这台机器的重点。</p>
-        <p>还有不性感的物理问题：两张 250W 卡加 CPU 和硬盘会发热、会吵，会让房间明显比别处暖。它是一台偶尔回答问题的暖气。</p>
+        <p>还有不性感的物理问题：两张 250W 的卡（我把上限压在 180W）、双路 Xeon 和机械硬盘会发热、会吵，会让房间明显比别处暖。它是一台偶尔回答问题的暖气。</p>
 
         <h2 id="bottleneck">瓶颈会移动</h2>
         <p>短上下文时，瓶颈常常是 decode：一次生成一个 token，受显存带宽限制，2080 Ti 的带宽就是天花板。长上下文时，prefill 和 KV cache 变成主角。一个 4k 上下文下很快的模型，32k 时可能像换了台机器，尽管权重没变。</p>
@@ -144,7 +144,7 @@
 
         <h2 id="instrument">它是仪器，不是机房</h2>
         <p>我不再试图把工作站变成一朵小云。它不是。它是一台仪器，用来问那些需要数据留在家里、需要一百次便宜迭代、或者单纯想听见风扇转起来的问题。</p>
-        <p>这个框架让约束变得有用。显存有限，逼你做量化和 batch 纪律；decode 慢，逼你把 prompt 和范围收紧；没有 NVLink，逼你选择尊重切分的模型。机器不是对野心的限制，是一组恰好听得见的设计约束。</p>
+        <p>这个框架让约束变得有用。显存有限，逼你做量化和 batch 纪律；decode 慢，逼你把 prompt 和范围收紧；一张卡只有 22GB，逼你选择尊重切分的模型。机器不是对野心的限制，是一组恰好听得见的设计约束。</p>
 
         <blockquote>最好的本地配置不是能跑最大模型的那套，而是能让下一次实验便宜到值得尝试的那套。</blockquote>
 
@@ -160,7 +160,7 @@
 
         <p>44GB 的问题没有干净解。它只有一组工作 trade-off、几个真正值得留下的模型，以及每天提醒你：能力总是被运行它的机器塑造。那不是限制，那是设计 brief。</p>
 
-        <p class="article-end"><strong>硬件 /</strong> 2 × RTX 2080 Ti（每张 22GB，PCIe，无 NVLink）、94GB DDR4、双路 Xeon E5-2696 v4、Ubuntu 24.04 LTS。数字是 4-bit 推理的权重大小估算，不含 KV cache、激活值和框架开销。这里不声称任何 tokens/s；请测自己的工作负载。</p>
+        <p class="article-end"><strong>硬件 /</strong> 2 × RTX 2080 Ti（每张 22GB，NVLink NV2 双链路，2 × 25.78 GB/s）、94GB DDR4、双路 Xeon E5-2696 v4（44C / 88T）、Ubuntu 24.04.5 LTS。数字是 4-bit 推理的权重大小估算，不含 KV cache、激活值和框架开销。这里不声称任何 tokens/s；请测自己的工作负载。</p>
       </article>
 
       <div aria-hidden="true"></div>
