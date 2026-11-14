@@ -261,42 +261,48 @@
     <section class="section comparison-section" id="comparisons" aria-labelledby="comparisons-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">02 / Comparisons</p><h2 id="comparisons-title">Two controlled runs.</h2></div>
-        <p class="section-intro">Not every build is a product. These two ask a narrower question: what changes when a local model does the work, and what changes when a skill is removed from the loop?</p>
+        <p class="section-intro">Not every build is a product. Each run has two sides: remove the skill from a 3D shooter, then compare one checkpoint in two weight formats.</p>
       </div>
-      <div class="wrap comparison-grid">
-        <article class="comparison-card" id="neon">
-          <div class="comparison-media"><img decoding="async" src="../assets/img/demo-neon-breach.jpg" alt="Neon Breach first-person neon arena with a weapon and enemy." width="1280" height="800" loading="lazy"></div>
-          <div class="comparison-body">
-            <p class="demo-kicker">No-skill control · WebGL</p>
-            <h3>NEON BREACH <span>霓虹突袭</span></h3>
-            <p>A five-wave first-person arena shooter built through direct API calls, with no skill instructions. Kept as the control run for comparing skill-assisted work against a plain model loop.</p>
-            <dl class="work-specs">
-              <div><dt>Mode</dt><dd>Pure API · no skill</dd></div>
-              <div><dt>Stack</dt><dd>Native WebGL · single file</dd></div>
-              <div><dt>Scope</dt><dd>5 waves · 3-phase boss</dd></div>
-              <div><dt>Status</dt><dd>Live</dd></div>
-              <div><dt>Model</dt><dd>DeepSeek V4.1 Flash</dd></div>
-              <div><dt>Leverage</dt><dd>Pure API, no skill · code/UI/audio procedural</dd></div>
-            </dl>
-            <div class="work-links"><a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">Play online <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/neon-breach" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+      <div class="wrap comparison-stack">
+        <article class="comparison-run" id="neon">
+          <div class="comparison-run-head">
+            <div><p class="section-kicker">Run 01 / Leverage</p><h3>No skill vs. skill.</h3></div>
+            <p>One brief, two loops: direct API calls, then the same brief with the photoreal-game skill. The second build is reserved; the pair is the point.</p>
+          </div>
+          <div class="comparison-pair">
+            <figure class="comparison-panel">
+              <div class="comparison-panel-media"><img decoding="async" src="../assets/img/demo-neon-breach.jpg" alt="Neon Breach first-person neon arena with a weapon and enemy." width="1280" height="800" loading="eager"></div>
+              <figcaption><span class="panel-label">A / No skill</span><strong>NEON BREACH</strong><span>Pure API · 5 waves · live</span></figcaption>
+            </figure>
+            <figure class="comparison-panel is-empty">
+              <div class="comparison-panel-media comparison-placeholder"><span>B / 02</span><strong>Skill build<br>coming soon</strong><small>photoreal-game · same brief</small></div>
+              <figcaption><span class="panel-label">B / With skill</span><strong>Reserved slot</strong><span>Publish when the build is ready</span></figcaption>
+            </figure>
+          </div>
+          <div class="comparison-run-foot">
+            <div class="work-links"><a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">Play NEON <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/neon-breach" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+            <p class="work-muted">A is the control. B is intentionally empty: no borrowed screenshot, no claim before the build exists.</p>
           </div>
         </article>
 
-        <article class="comparison-card" id="ming-palace">
-          <div class="comparison-media"><img decoding="async" src="../assets/img/demo-ming-palace.jpg" alt="A 3D reconstruction of a Ming palace hall with a golden roof and white stone terrace." width="1600" height="1000" loading="lazy"></div>
-          <div class="comparison-body">
-            <p class="demo-kicker">Quantised run · WebGL2</p>
-            <h3>明宫三维 <span>Ming Palace 3D</span></h3>
-            <p>A single-file study of Ming imperial architecture, generated from one Chinese prompt. This is the original build; the same checkpoint quantised to ~1.6 bits per expert and served locally produced a second one, and the two are compared side by side in the journal.</p>
-            <dl class="work-specs">
-              <div><dt>Model</dt><dd>DeepSeek-V4.1-Flash-1017 · original</dd></div>
-              <div><dt>Prompt</dt><dd>One Chinese prompt</dd></div>
-              <div><dt>Output</dt><dd>Single HTML · WebGL2</dd></div>
-              <div><dt>Scope</dt><dd>Architecture · shaders</dd></div>
-              <div><dt>Status</dt><dd>Live · two builds compared</dd></div>
-              <div><dt>Leverage</dt><dd>No skill · custom WebGL2 · procedural geometry</dd></div>
-            </dl>
-            <div class="work-links"><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/" target="_blank" rel="noopener">View online <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/deepseek-flash-1017-ming-palace" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/local/">Local build, untouched <span aria-hidden="true">↗</span></a><a href="/en/blog/two-taihe-halls.html">Two builds compared <span aria-hidden="true">→</span></a></div>
+        <article class="comparison-run" id="ming-palace">
+          <div class="comparison-run-head">
+            <div><p class="section-kicker">Run 02 / Model</p><h3>One checkpoint, two weight formats.</h3></div>
+            <p>The same Ming palace brief, generated by the original model and by a locally served Maya-XS quantisation. Two images, two trade-offs.</p>
+          </div>
+          <div class="comparison-pair">
+            <figure class="comparison-panel">
+              <div class="comparison-panel-media"><img decoding="async" src="../assets/img/demo-ming-local.jpg" alt="Local Maya-XS quantised Ming palace: warm morning light, gold roof and white stone terrace." width="1600" height="1000" loading="eager"></div>
+              <figcaption><span class="panel-label">A / Local · ~1.6 bit</span><strong>Maya-XS</strong><span>93 GB · 131K context · 91 KB output</span></figcaption>
+            </figure>
+            <figure class="comparison-panel">
+              <div class="comparison-panel-media"><img decoding="async" src="../assets/img/demo-ming-1017.jpg" alt="Original online Ming palace: bright hazy sky and straight-on elevation with four view presets." width="1600" height="1000" loading="eager"></div>
+              <figcaption><span class="panel-label">B / Online · original</span><strong>DeepSeek Flash 1017</strong><span>Original · 85 KB output</span></figcaption>
+            </figure>
+          </div>
+          <div class="comparison-run-foot">
+            <div class="work-links"><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/local/" target="_blank" rel="noopener">Local build <span aria-hidden="true">↗</span></a><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/" target="_blank" rel="noopener">Online build <span aria-hidden="true">↗</span></a><a href="/en/blog/two-taihe-halls.html">Compare in journal <span aria-hidden="true">→</span></a></div>
+            <p class="work-muted">Same prompt; not a controlled model benchmark. The journal explains what is and is not comparable.</p>
           </div>
         </article>
       </div>

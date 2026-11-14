@@ -261,42 +261,48 @@
     <section class="section comparison-section" id="comparisons" aria-labelledby="comparisons-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">02 / 对比</p><h2 id="comparisons-title">两次受控运行。</h2></div>
-        <p class="section-intro">不是每个构建都是产品。这两个只问一个更窄的问题：换成本地模型来做，什么变了？把 skill 从回路里拿掉，什么变了？</p>
+        <p class="section-intro">不是每个构建都是产品。每组都有两边：先把 skill 从 3D 枪战里拿掉，再比较同一个 checkpoint 的两种权重格式。</p>
       </div>
-      <div class="wrap comparison-grid">
-        <article class="comparison-card" id="neon">
-          <div class="comparison-media"><img decoding="async" src="/assets/img/demo-neon-breach.jpg" alt="Neon Breach 的第一人称霓虹竞技场，画面里有枪械和敌人。" width="1280" height="800" loading="lazy"></div>
-          <div class="comparison-body">
-            <p class="demo-kicker">无 skill 对照组 · WebGL</p>
-            <h3>NEON BREACH <span>霓虹突袭</span></h3>
-            <p>一款五波次的第一人称竞技场射击游戏，通过直连 API 调用构建，不带任何 skill 指令。作为对照组保留，用来比 skill 辅助的工作和纯模型循环。</p>
-            <dl class="work-specs">
-              <div><dt>模式</dt><dd>纯 API · 无 skill</dd></div>
-              <div><dt>技术栈</dt><dd>原生 WebGL · 单文件</dd></div>
-              <div><dt>规模</dt><dd>5 波 · 3 阶段 Boss</dd></div>
-              <div><dt>状态</dt><dd>已上线</dd></div>
-              <div><dt>模型</dt><dd>DeepSeek V4.1 Flash</dd></div>
-              <div><dt>杠杆</dt><dd>纯 API，无 skill · 代码/UI/音频全程序化</dd></div>
-            </dl>
+      <div class="wrap comparison-stack">
+        <article class="comparison-run" id="neon">
+          <div class="comparison-run-head">
+            <div><p class="section-kicker">Run 01 / 杠杆</p><h3>无 skill vs. 有 skill。</h3></div>
+            <p>同一份 brief，两种循环：直连 API，和加上 photoreal-game skill 的同一份 brief。第二个构建先留空；这一组才是重点。</p>
+          </div>
+          <div class="comparison-pair">
+            <figure class="comparison-panel">
+              <div class="comparison-panel-media"><img decoding="async" src="/assets/img/demo-neon-breach.jpg" alt="NEON BREACH 的第一人称霓虹竞技场，画面里有枪械和敌人。" width="1280" height="800" loading="eager"></div>
+              <figcaption><span class="panel-label">A / 无 skill</span><strong>NEON BREACH</strong><span>纯 API · 5 波 · 已上线</span></figcaption>
+            </figure>
+            <figure class="comparison-panel is-empty">
+              <div class="comparison-panel-media comparison-placeholder"><span>B / 02</span><strong>Skill 版<br>即将上线</strong><small>photoreal-game · 同一份 brief</small></div>
+              <figcaption><span class="panel-label">B / 有 skill</span><strong>预留位置</strong><span>构建完成后再发布</span></figcaption>
+            </figure>
+          </div>
+          <div class="comparison-run-foot">
             <div class="work-links"><a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">在线试玩 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/neon-breach" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+            <p class="work-muted">A 是对照组。B 故意留空：不借截图，不在构建存在前下结论。</p>
           </div>
         </article>
 
-        <article class="comparison-card" id="ming-palace">
-          <div class="comparison-media"><img decoding="async" src="/assets/img/demo-ming-palace.jpg" alt="明代宫殿大殿的 3D 复原，金色屋顶和白色石台基。" width="1600" height="1000" loading="lazy"></div>
-          <div class="comparison-body">
-            <p class="demo-kicker">量化版运行 · WebGL2</p>
-            <h3>明宫三维 <span>Ming Palace 3D</span></h3>
-            <p>一份单文件的明代宫廷建筑研究，从一句中文 prompt 生成。这是原版；同一个 checkpoint 被压到每专家约 1.6 bit 在本地跑出另一版，两版并排对比写在日志里。</p>
-            <dl class="work-specs">
-              <div><dt>模型</dt><dd>DeepSeek-V4.1-Flash-1017 · 原版</dd></div>
-              <div><dt>Prompt</dt><dd>一句中文 prompt</dd></div>
-              <div><dt>输出</dt><dd>单个 HTML · WebGL2</dd></div>
-              <div><dt>规模</dt><dd>建筑 · shader</dd></div>
-              <div><dt>状态</dt><dd>已上线 · 两版已对比</dd></div>
-              <div><dt>杠杆</dt><dd>无 skill · 手写 WebGL2 · 程序化几何</dd></div>
-            </dl>
-            <div class="work-links"><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/" target="_blank" rel="noopener">在线查看 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/deepseek-flash-1017-ming-palace" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/local/">本地版（原样） <span aria-hidden="true">↗</span></a><a href="/blog/two-taihe-halls.html">两版对比 <span aria-hidden="true">→</span></a></div>
+        <article class="comparison-run" id="ming-palace">
+          <div class="comparison-run-head">
+            <div><p class="section-kicker">Run 02 / 模型</p><h3>同一个 checkpoint，两种权重格式。</h3></div>
+            <p>同一份明宫 brief，由原版模型和本地 Maya-XS 量化版各生成一次。两张图，两种取舍。</p>
+          </div>
+          <div class="comparison-pair">
+            <figure class="comparison-panel">
+              <div class="comparison-panel-media"><img decoding="async" src="/assets/img/demo-ming-local.jpg" alt="本地 Maya-XS 量化版明宫：暖色晨光、金色屋顶和白色石台基。" width="1600" height="1000" loading="eager"></div>
+              <figcaption><span class="panel-label">A / 本地 · 约 1.6 bit</span><strong>Maya-XS</strong><span>93GB · 131K 上下文 · 91KB 输出</span></figcaption>
+            </figure>
+            <figure class="comparison-panel">
+              <div class="comparison-panel-media"><img decoding="async" src="/assets/img/demo-ming-1017.jpg" alt="线上原版明宫：明亮薄雾天空、正面立面和右侧四个视角预设。" width="1600" height="1000" loading="eager"></div>
+              <figcaption><span class="panel-label">B / 线上 · 原版</span><strong>DeepSeek Flash 1017</strong><span>原版 · 85KB 输出</span></figcaption>
+            </figure>
+          </div>
+          <div class="comparison-run-foot">
+            <div class="work-links"><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/local/" target="_blank" rel="noopener">本地版 <span aria-hidden="true">↗</span></a><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/" target="_blank" rel="noopener">线上版 <span aria-hidden="true">↗</span></a><a href="/blog/two-taihe-halls.html">日志里的对比 <span aria-hidden="true">→</span></a></div>
+            <p class="work-muted">同一个 prompt；不是受控的模型 benchmark。哪些能比、哪些不能比，写在日志里。</p>
           </div>
         </article>
       </div>
