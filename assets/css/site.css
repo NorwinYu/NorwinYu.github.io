@@ -3279,3 +3279,109 @@ html {
     font-size: 8px;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Diagrams (local/workflow.html)
+   Inline SVG so the pages stay dependency-free. All colour comes from the
+   palette above; nothing here is painted with inline styles (CSP).
+   -------------------------------------------------------------------------- */
+
+.diagram {
+  overflow-x: auto;
+  padding: 18px;
+  border: 1px solid var(--line-strong);
+  background: var(--card);
+}
+
+.diagram svg {
+  display: block;
+  width: 100%;
+  min-width: 620px;
+  height: auto;
+}
+
+.diagram text {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  fill: var(--muted);
+}
+
+.diagram .d-title {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  fill: var(--ink);
+}
+
+.diagram .d-sub {
+  font-size: 8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  fill: var(--muted-light);
+}
+
+.diagram .d-meta {
+  font-size: 8.5px;
+  fill: var(--muted);
+}
+
+.diagram .d-label {
+  font-size: 8.5px;
+  fill: var(--accent-deep);
+}
+
+.diagram .d-node {
+  fill: var(--card);
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+
+.diagram .d-gpu {
+  fill: #f1ece2;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+
+.diagram .d-frame {
+  fill: #faf8f3;
+  stroke: var(--accent);
+  stroke-width: 1;
+}
+
+.diagram .d-chip {
+  fill: var(--bg);
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.diagram .d-chip-quiet {
+  fill: #f3efe7;
+  stroke-dasharray: 3 3;
+}
+
+.diagram .d-chip .d-chip-title {
+  font-family: var(--sans);
+  font-size: 10.5px;
+  font-weight: 600;
+  fill: var(--ink);
+}
+
+.diagram .d-wire {
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  fill: none;
+}
+
+.diagram .d-nvlink {
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  fill: none;
+}
+
+.diagram .d-link-soft {
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+  fill: none;
+}

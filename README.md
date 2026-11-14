@@ -35,7 +35,8 @@ All internal links are relative, so the same files work as a user site (`usernam
 ├── blog/                 journal
 ├── local/                local-inference reference pages
 │   ├── text-stack.html   serving profile + throughput + ablations
-│   └── video-stack.html  MiniMax H3 single-card vs tensor parallel
+│   ├── video-stack.html  MiniMax H3 single-card vs tensor parallel
+│   └── workflow.html     rig topology, LAN services, request path
 ├── about.html
 ├── ai.html               "Local" section landing: rig + both stacks
 ├── competitions.html

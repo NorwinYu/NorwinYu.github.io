@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>The workflow — Norwin Yu</title>
+  <meta name="description" content="How the workstation is wired, what it serves on the LAN, and the path a request takes from a browser or an agent to a file.">
+  <meta name="author" content="Norwin Yu">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="The workflow — Norwin Yu">
+  <meta property="og:description" content="How the workstation is wired, what it serves on the LAN, and the path a request takes from a browser or an agent to a file.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="preload" href="../assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body class="index-page" data-page="ai">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar" data-header>
+    <div class="wrap topbar-inner">
+      <a class="brand" href="../index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="../work/index.html" data-nav="work">Experiments</a>
+        <a href="../ai.html" data-nav="ai">Local</a>
+        <a href="../open-source.html" data-nav="oss">Open source</a>
+        <a href="../competitions.html" data-nav="competitions">Competitions</a>
+        <a href="../blog/index.html" data-nav="journal">Journal</a>
+        <a href="../about.html" data-nav="about">About</a>
+      </nav>
+      <div class="topbar-actions">
+        <span class="status"><i aria-hidden="true"></i>AI usage research</span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          Menu <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true">
+    <div class="wrap mobile-menu-head">
+      <span class="mono-label">Index / 2026</span>
+      <button class="menu-close" type="button" data-menu-close aria-label="Close menu">Close <span aria-hidden="true">×</span></button>
+    </div>
+    <nav class="wrap mobile-nav" aria-label="Mobile primary">
+      <a href="../work/index.html" data-nav="work">Experiments</a>
+      <a href="../ai.html" data-nav="ai">Local</a>
+      <a href="../open-source.html" data-nav="oss">Open source</a>
+      <a href="../competitions.html" data-nav="competitions">Competitions</a>
+      <a href="../blog/index.html" data-nav="journal">Journal</a>
+      <a href="../about.html" data-nav="about">About</a>
+    </nav>
+    <div class="wrap mobile-menu-foot">
+      <span>AI usage research / 2026</span>
+      <span>Open to research conversations</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <p class="section-kicker">Local / workflow</p>
+        <h1>One machine, two audiences.</h1>
+        <p class="page-lede">How the workstation is wired, what it actually serves on the LAN, and the path a request takes from a browser or an agent to a file in an output directory.</p>
+        <div class="page-meta"><span><i></i>192.168.1.10</span><span>8189 · 8190</span><span>2 × 22 GB</span><span>Snapshot / Nov 2026</span></div>
+        <div class="work-links"><a href="../ai.html">Local overview <span aria-hidden="true">→</span></a><a href="video-stack.html">Video stack <span aria-hidden="true">→</span></a></div>
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="wiring-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">01 / Wiring</p><h2 id="wiring-title">What is inside the box.</h2></div>
+        <p class="section-intro">A 2014-era X99 board with two 22-core Xeons, two modified 22 GB cards and one NVLink bridge. Everything below is read off the machine, not off a spec sheet.</p>
+      </div>
+      <div class="wrap">
+      <div class="diagram">
+        <svg viewBox="0 0 900 410" role="img" aria-labelledby="rig-title-desc">
+          <title id="rig-title-desc">Workstation topology: two Xeon sockets, one 2080 Ti per socket, joined by NVLink, plus NVMe, HDD and a USB Wi-Fi adapter.</title>
+
+          <rect class="d-node" x="24" y="34" width="400" height="128" rx="2"/>
+          <text class="d-sub" x="44" y="56">NUMA 0 · SOCKET 0</text>
+          <text class="d-title" x="44" y="82">Xeon E5-2696 v4</text>
+          <text class="d-meta" x="44" y="102">22C / 44T · 2.2–3.7 GHz</text>
+          <text class="d-meta" x="44" y="122">DDR4 · 47 GB local</text>
+          <text class="d-meta" x="44" y="142">GPU0 on PCIe 05:00.0</text>
+
+          <rect class="d-node" x="476" y="34" width="400" height="128" rx="2"/>
+          <text class="d-sub" x="496" y="56">NUMA 1 · SOCKET 1</text>
+          <text class="d-title" x="496" y="82">Xeon E5-2696 v4</text>
+          <text class="d-meta" x="496" y="102">22C / 44T · 2.2–3.7 GHz</text>
+          <text class="d-meta" x="496" y="122">DDR4 · 47 GB local</text>
+          <text class="d-meta" x="496" y="142">GPU1 on PCIe 83:00.0</text>
+
+          <path class="d-wire" d="M129 162 L129 206"/>
+          <path class="d-wire" d="M771 162 L771 206"/>
+
+          <rect class="d-gpu" x="24" y="206" width="210" height="82" rx="2"/>
+          <text class="d-title" x="44" y="232">RTX 2080 Ti</text>
+          <text class="d-meta" x="44" y="252">22,528 MiB · TU102 · sm_75</text>
+          <text class="d-meta" x="44" y="270">180 W cap · 616 GB/s</text>
+
+          <rect class="d-gpu" x="666" y="206" width="210" height="82" rx="2"/>
+          <text class="d-title" x="686" y="232">RTX 2080 Ti</text>
+          <text class="d-meta" x="686" y="252">22,528 MiB · TU102 · sm_75</text>
+          <text class="d-meta" x="686" y="270">180 W cap · 616 GB/s</text>
+
+          <path class="d-nvlink" d="M234 236 L666 236"/>
+          <path class="d-nvlink" d="M234 248 L666 248"/>
+          <text class="d-label" x="450" y="222" text-anchor="middle">NVLink NV2 · 2 links × 25.78 GB/s</text>
+          <text class="d-meta" x="450" y="276" text-anchor="middle">different NUMA nodes — the bridge does not move memory between them</text>
+
+          <text class="d-sub" x="24" y="330">STORAGE · NETWORK</text>
+          <rect class="d-node" x="24" y="340" width="270" height="58" rx="2"/>
+          <text class="d-title" x="40" y="362">NVMe · 1 TB</text>
+          <text class="d-meta" x="40" y="382">WD Green SN350 · / 317 GB · /data 323 GB</text>
+
+          <rect class="d-node" x="310" y="340" width="250" height="58" rx="2"/>
+          <text class="d-title" x="326" y="362">HDD · 3 TB</text>
+          <text class="d-meta" x="326" y="382">WD30EFRX · /mnt/hdd 886 GB</text>
+
+          <rect class="d-node" x="580" y="340" width="296" height="58" rx="2"/>
+          <text class="d-title" x="596" y="362">USB Wi-Fi · 480 Mbps</text>
+          <text class="d-meta" x="596" y="382">RTL8852CU · LAN address · wired NICs down</text>
+        </svg>
+      </div>
+      <p class="table-note"><span>Read it as</span>Two sockets, one card per socket, one bridge between the cards. The 50 GB/s link is real; the NUMA boundary above it is the part that costs context switches, not bandwidth.</p>
+      </div>
+      <div class="wrap glance-stats rig-stats">
+        <div><strong>88</strong><span>threads · 2 sockets</span></div>
+        <div><strong>94</strong><span>GiB DDR4</span></div>
+        <div><strong>44</strong><span>GB VRAM · 2 cards</span></div>
+        <div><strong>180</strong><span>W cap per card</span></div>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="lan-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">02 / On the LAN</p><h2 id="lan-title">What the network can reach.</h2></div>
+        <p class="section-intro">The machine is a generation server for the flat network, over Wi-Fi rather than the two wired ports. Six ports exist; two are running right now.</p>
+      </div>
+      <div class="wrap">
+      <div class="diagram">
+        <svg viewBox="0 0 900 430" role="img" aria-labelledby="lan-title-desc">
+          <title id="lan-title-desc">Local network: the workstation at 192.168.1.10 serves ComfyUI, an agent API and a photo drop to a MacBook, a phone and other agents on the same Wi-Fi.</title>
+
+          <rect class="d-node" x="350" y="16" width="200" height="52" rx="2"/>
+          <text class="d-title" x="450" y="38" text-anchor="middle">Router</text>
+          <text class="d-meta" x="450" y="56" text-anchor="middle">192.168.1.1 · DHCP</text>
+
+          <path class="d-wire" d="M450 68 L450 104"/>
+          <text class="d-meta" x="462" y="88">Wi-Fi · USB 2.0 · 480 Mbps</text>
+
+          <rect class="d-frame" x="120" y="104" width="660" height="172" rx="2"/>
+          <text class="d-sub" x="140" y="128">WORKSTATION · 192.168.1.10</text>
+          <text class="d-meta" x="140" y="146">Ubuntu 24.04.5 · 2 × RTX 2080 Ti 22 GB · 44 GB VRAM · 94 GB DDR4</text>
+
+          <rect class="d-chip" x="140" y="162" width="196" height="46" rx="2"/>
+          <text class="d-chip-title" x="152" y="182">8189 · ComfyUI</text>
+          <text class="d-meta" x="152" y="198">browser · running</text>
+
+          <rect class="d-chip" x="352" y="162" width="196" height="46" rx="2"/>
+          <text class="d-chip-title" x="364" y="182">8190 · Agent API</text>
+          <text class="d-meta" x="364" y="198">HTTP · running</text>
+
+          <rect class="d-chip" x="564" y="162" width="196" height="46" rx="2"/>
+          <text class="d-chip-title" x="576" y="182">8188 · production</text>
+          <text class="d-meta" x="576" y="198">film pipeline · stopped</text>
+
+          <rect class="d-chip" x="140" y="216" width="196" height="46" rx="2"/>
+          <text class="d-chip-title" x="152" y="236">8765 · photo drop</text>
+          <text class="d-meta" x="152" y="252">phone upload · on demand</text>
+
+          <rect class="d-chip" x="352" y="216" width="196" height="46" rx="2"/>
+          <text class="d-chip-title" x="364" y="236">8000 · vLLM</text>
+          <text class="d-meta" x="364" y="252">27B text · on demand</text>
+
+          <rect class="d-chip d-chip-quiet" x="564" y="216" width="196" height="46" rx="2"/>
+          <text class="d-chip-title" x="576" y="236">3080 · DSH GUI</text>
+          <text class="d-meta" x="576" y="252">127.0.0.1 only</text>
+
+          <path class="d-link-soft" d="M180 330 L180 276"/>
+          <path class="d-link-soft" d="M450 330 L450 276"/>
+          <path class="d-link-soft" d="M740 330 L740 276"/>
+
+          <rect class="d-node" x="40" y="330" width="250" height="66" rx="2"/>
+          <text class="d-title" x="56" y="354">MacBook Pro</text>
+          <text class="d-meta" x="56" y="372">Safari · :8189 · :8765</text>
+
+          <rect class="d-node" x="320" y="330" width="250" height="66" rx="2"/>
+          <text class="d-title" x="336" y="354">iPhone / iPad</text>
+          <text class="d-meta" x="336" y="372">Safari · photo upload</text>
+
+          <rect class="d-node" x="610" y="330" width="250" height="66" rx="2"/>
+          <text class="d-title" x="626" y="354">Another agent</text>
+          <text class="d-meta" x="626" y="372">HTTP · /capabilities → /generate</text>
+        </svg>
+      </div>
+      <p class="table-note"><span>Read it as</span>Two audiences on one host: a human with a browser, and a program with an HTTP client. The API exists because an agent cannot drag nodes in ComfyUI.</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">Services exposed on the workstation</caption>
+          <thead><tr><th scope="col">Port</th><th scope="col">Bind</th><th scope="col">Audience</th><th scope="col">State</th><th scope="col">What it does</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">8189</th><td data-label="Bind">0.0.0.0</td><td data-label="Audience">Human</td><td data-label="State">Running</td><td data-label="What it does">ComfyUI 0.45 — H3 image and video graphs, node editor, queue</td></tr>
+            <tr><th scope="row">8190</th><td data-label="Bind">0.0.0.0</td><td data-label="Audience">Program / agent</td><td data-label="State">Running</td><td data-label="What it does">Agent API — submit jobs, poll status, list and download outputs</td></tr>
+            <tr><th scope="row">8188</th><td data-label="Bind">0.0.0.0</td><td data-label="Audience">Internal</td><td data-label="State">Stopped</td><td data-label="What it does">Production ComfyUI 0.36 for the film pipeline; not meant to be public</td></tr>
+            <tr><th scope="row">8765</th><td data-label="Bind">0.0.0.0</td><td data-label="Audience">Phone / tablet</td><td data-label="State">On demand</td><td data-label="What it does">Streaming file drop — uploads from iOS/Android land in a local folder</td></tr>
+            <tr><th scope="row">8000</th><td data-label="Bind">127.0.0.1</td><td data-label="Audience">Local tools</td><td data-label="State">On demand</td><td data-label="What it does">vLLM — the 27B text model, OpenAI-compatible</td></tr>
+            <tr><th scope="row">3080</th><td data-label="Bind">127.0.0.1</td><td data-label="Audience">This desk only</td><td data-label="State">Running</td><td data-label="What it does">DeepSeek Harness web GUI — the agent that edits this site</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>Note</span>The image/video services are started by hand right now. Unit files exist in <code>h3-setup/systemd/</code> (h3-comfy, h3-agent) but are not installed, so a reboot leaves them down.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="steps-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">03 / The path</p><h2 id="steps-title">From request to file.</h2></div>
+        <p class="section-intro">Six steps, and only two of them involve a language model. The rest is queueing, memory planning and copying bytes.</p>
+      </div>
+      <div class="wrap pipeline-grid">
+        <div class="pipeline-step"><span>01</span><h3>Start</h3><p>ComfyUI comes up on 8189 and the agent API on 8190; both load the H3 nodes and the TP2 shard hooks.</p><em>Human</em></div>
+        <div class="pipeline-step"><span>02</span><h3>Describe</h3><p>Browser drags a graph, or an agent reads <code>/capabilities</code> to learn kinds, size presets and model names.</p><em>Both</em></div>
+        <div class="pipeline-step"><span>03</span><h3>Submit</h3><p><code>POST /generate</code> with kind image or video. The queue is serial: one job owns both cards at a time.</p><em>Program</em></div>
+        <div class="pipeline-step"><span>04</span><h3>Plan memory</h3><p>32B text encoder (27 GB) is sharded across both cards, released, then the DiT (12 GB) takes the same space.</p><em>Model</em></div>
+        <div class="pipeline-step"><span>05</span><h3>Sample</h3><p>Image: 6 steps at cfg 1.0. Video: up to 73 frames, 8 steps, 4-step turbo LoRA. Output lands in <code>~/ComfyUI-img/output</code>.</p><em>Model</em></div>
+        <div class="pipeline-step"><span>06</span><h3>Collect</h3><p>Poll <code>/jobs/&lt;id&gt;</code> for <code>output_url</code>, then <code>GET /files/&lt;name&gt;</code>. No upload, no cloud round trip.</p><em>Program</em></div>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="api-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">04 / Interface</p><h2 id="api-title">What the API will admit.</h2></div>
+        <p class="section-intro">The capability document is the contract: an agent should read it before guessing a size or a step count.</p>
+      </div>
+      <div class="wrap">
+        <pre><code>GET  /                 human entry point
+GET  /openapi          machine-readable endpoint list
+GET  /capabilities     models, size presets, limits
+GET  /health           service and VRAM state
+POST /generate         {"kind":"image"|"video","prompt":"...", ...}
+GET  /jobs             recent jobs
+GET  /jobs/&lt;id&gt;        one job, with output_url
+GET  /files            produced files
+GET  /files/&lt;name&gt;     download a file</code></pre>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">Models and defaults reported by the capability endpoint</caption>
+          <thead><tr><th scope="col">Kind</th><th scope="col">Model</th><th scope="col">Defaults</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Image</th><td data-label="Model">minimax_h3_image_pruned_w4a8</td><td data-label="Defaults">6 steps · cfg 1.0 · 1k–4k presets up to 6272 × 2688</td></tr>
+            <tr><th scope="row">Video</th><td data-label="Model">minimax_h3_ref2va_pruned_w4a8_mixed</td><td data-label="Defaults">8 steps · 1344 × 768 · 73 frames max · 4-step turbo LoRA</td></tr>
+            <tr><th scope="row">Audio</th><td data-label="Model">minimax_music3_dit_fp16</td><td data-label="Defaults">30 steps · cfg 1.7 · caption + lyrics with [verse]/[chorus]</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>Serial by design</span>The queue is one job wide. Two clients submitting at once do not share the cards; the second waits.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="expose-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">05 / Exposure</p><h2 id="exposure-title">What this is not.</h2></div>
+        <p class="section-intro">It is a lab service on a home network, not a hosted product. Three consequences worth stating plainly.</p>
+      </div>
+      <div class="wrap home-cap-grid">
+        <div class="home-cap-item"><span>01</span><h3>No authentication</h3><p>8189 and 8190 bind 0.0.0.0 with no token. Anyone on the Wi-Fi can queue a job and read the output folder. That is the trade for zero-friction access from a phone.</p></div>
+        <div class="home-cap-item"><span>02</span><h3>LAN only</h3><p>No port forwarding, no tunnel and no public DNS. The router's NAT is the boundary; the machine's address is a DHCP lease.</p></div>
+        <div class="home-cap-item"><span>03</span><h3>One job at a time</h3><p>The queue is serial and the cards are the bottleneck. This is a workstation that answers when asked, not a service with a queue you can burst.</p></div>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="files-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">06 / Files</p><h2 id="files-title">Where things land.</h2></div>
+        <p class="section-intro">Everything stays on the machine: references in, renders out, uploads beside them.</p>
+      </div>
+      <div class="wrap">
+        <pre><code>~/ComfyUI-img/input/      reference images, dropped in by hand or over the API
+~/ComfyUI-img/output/     renders — currently ~709 MB of images, video and audio
+~/received/               phone uploads via the 8765 drop page
+/data                     large datasets and model work (separate ext4 partition)
+/mnt/hdd                  cold archive (3 TB NTFS)</code></pre>
+      </div>
+      <div class="wrap work-links"><a href="video-stack.html">How the two cards are split <span aria-hidden="true">→</span></a><a href="../blog/every-frame-four-percent.html">What watches the GPUs <span aria-hidden="true">→</span></a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <p><strong>Norwin Yu</strong><span>AI usage research / games &amp; local compute.</span></p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <span class="mono-label">Index</span>
+        <a href="../work/index.html">Experiments</a>
+        <a href="../ai.html">Local</a>
+        <a href="../open-source.html">Open source</a>
+        <a href="../competitions.html">Competitions</a>
+        <a href="../blog/index.html">Journal</a>
+        <a href="../about.html">About</a>
+      </nav>
+      <div class="footer-note">
+        <span class="mono-label">Colophon</span>
+        <p>Set in Inter and IBM Plex Mono. Hand-built, statically served. No trackers, cookies or keys.</p>
+        <p>AI usage research / 2026</p>
+      </div>
+      <div class="footer-status">
+        <span class="status"><i aria-hidden="true"></i>Open to research conversations</span>
+        <a href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 Norwin Yu</span>
+      <span>Last updated / November 2026</span>
+      <span>No analytics. No external requests at runtime.</span>
+    </div>
+  </footer>
+</body>
+</html>
