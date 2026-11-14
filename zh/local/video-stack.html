@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>视频栈 — Norwin Yu</title>
+  <meta name="description" content="本地视频生成：MiniMax H3 跑在两张 22 GB 卡上，单卡与张量并行的实测对比。">
+  <meta name="author" content="Norwin Yu">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="视频栈 — Norwin Yu">
+  <meta property="og:description" content="本地视频生成：MiniMax H3 跑在两张 22 GB 卡上，单卡与张量并行的实测对比。">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/local/video-stack.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/zh/local/video-stack.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="index-page" data-page="ai">
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="topbar" data-header>
+    <div class="wrap topbar-inner">
+      <a class="brand" href="/zh/" aria-label="Norwin Yu — 首页">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
+      </a>
+      <nav class="main-nav" aria-label="主导航">
+        <a href="/zh/work/" data-nav="work">实验</a>
+        <a href="/zh/ai.html" data-nav="ai">本地</a>
+        <a href="/zh/open-source.html" data-nav="oss">开源</a>
+        <a href="/zh/competitions.html" data-nav="competitions">竞赛</a>
+        <a href="/blog/" data-nav="journal">日志</a>
+        <a href="/zh/about.html" data-nav="about">关于</a>
+      </nav>
+      <div class="topbar-actions">
+        <a class="lang-switch" href="/local/video-stack.html" hreflang="en">EN</a>
+        <span class="status"><i aria-hidden="true"></i>AI 使用研究</span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          菜单 <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true">
+    <div class="wrap mobile-menu-head">
+      <span class="mono-label">目录 / 2026</span>
+      <button class="menu-close" type="button" data-menu-close aria-label="关闭菜单">关闭 <span aria-hidden="true">×</span></button>
+    </div>
+    <nav class="wrap mobile-nav" aria-label="移动端主导航">
+      <a href="/zh/work/" data-nav="work">实验</a>
+      <a href="/zh/ai.html" data-nav="ai">本地</a>
+      <a href="/zh/open-source.html" data-nav="oss">开源</a>
+      <a href="/zh/competitions.html" data-nav="competitions">竞赛</a>
+      <a href="/blog/" data-nav="journal">日志</a>
+      <a href="/zh/about.html" data-nav="about">关于</a>
+    </nav>
+    <div class="wrap mobile-menu-foot">
+      <span>AI 使用研究 / 2026</span>
+      <span>欢迎交流研究</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <p class="section-kicker">本地 / 视频栈</p>
+        <h1>20B 装进 2 × 22 GB。</h1>
+        <p class="page-lede">MiniMax H3 是一个 20.11B 的视频与音频 transformer，一张卡装不下。所以张量并行在这里不是加速手段 —— 它是能跑和风扇转四分钟之间的区别。</p>
+        <div class="page-meta"><span><i></i>20.11B · 50 blocks</span><span>W4A8 · 10.96 GiB</span><span>TP2 · 2.97×</span><span>实测 / 2026 年 9–11 月</span></div>
+        <div class="work-links"><a href="/zh/ai.html">本地总览 <span aria-hidden="true">→</span></a><a href="workflow.html">接线与工作流 <span aria-hidden="true">→</span></a><a href="/blog/tp2-one-thread.html">为什么只分片会卡住 <span aria-hidden="true">→</span></a></div>
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="model-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">01 / 模型</p><h2 id="model-title">要先装下什么。</h2></div>
+        <p class="section-intro">视频模型先是一个显存问题，然后才是速度问题。量化让每卡 22 GB 变得够用。</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">MiniMax H3 模型参数</caption>
+          <thead><tr><th scope="col">项目</th><th scope="col">取值</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">参数量 / 块数</th><td data-label="取值">20.11 B · 50 blocks</td></tr>
+            <tr><th scope="row">隐藏层 / 注意力</th><td data-label="取值">5,376 · 56 heads × 128</td></tr>
+            <tr><th scope="row">FFN</th><td data-label="取值">14,336</td></tr>
+            <tr><th scope="row">qkv / out 投影</th><td data-label="取值">[21504, 5376] / [5376, 7168]</td></tr>
+            <tr><th scope="row">fc1 / fc2</th><td data-label="取值">[28672, 5376] / [5376, 14336]</td></tr>
+            <tr><th scope="row">量化</th><td data-label="取值">W4A8 · int4（2 个/字节）· group 16 · ConvRot 256 · fp8 group scale · fp32 channel scale</td></tr>
+            <tr><th scope="row">磁盘上的 DiT</th><td data-label="取值">10.96 GiB（fl2va 11.68 GiB）</td></tr>
+            <tr><th scope="row">VAE</th><td data-label="取值">16× 空间压缩 · patch (1,2,2)</td></tr>
+            <tr><th scope="row">运行时</th><td data-label="取值">ComfyUI · PyTorch 2.9.1+cu130 · 驱动 580 · CUDA 13.0</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="bench-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">02 / 吞吐</p><h2 id="bench-title">单卡 vs TP2。</h2></div>
+        <p class="section-intro">冒烟采样：640×352 × 124 frames × 4 steps，纯文生视频，无参考图。两列用的是同一个工作流。</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">单卡与双卡张量并行对比</caption>
+          <thead><tr><th scope="col">指标</th><th scope="col">单卡</th><th scope="col">TP2</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">每步</th><td data-label="单卡">~51 s</td><td data-label="TP2">~14 s</td></tr>
+            <tr><th scope="row">端到端（4 steps）</th><td data-label="单卡">243 s</td><td data-label="TP2">82 s</td></tr>
+            <tr><th scope="row">加速比</th><td data-label="单卡">1.00×</td><td data-label="TP2">2.97×</td></tr>
+            <tr><th scope="row">GPU 占用率</th><td data-label="单卡">GPU0 空闲 / GPU1 97%</td><td data-label="TP2">GPU0 57% / GPU1 72%</td></tr>
+            <tr><th scope="row">峰值显存</th><td data-label="单卡">GPU1 19,071 MiB</td><td data-label="TP2">GPU0 11,579 / GPU1 19,681 MiB</td></tr>
+            <tr><th scope="row">峰值温度</th><td data-label="单卡">GPU1 78 °C（97%，持续 4 min）</td><td data-label="TP2">GPU0 67 °C / GPU1 75 °C（1.4 min）</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>另测</span>864×480 下（124 frames，ref2va）：单卡 44.6 s/step，TP2 19.8 s/step —— 2.25×。</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="versions-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">03 / 三个版本</p><h2 id="versions-title">1.31×，然后 2.25×，然后 2.97×。</h2></div>
+        <p class="section-intro">第一版的分片就是对的。缺的是一条线程，不是一次切分。</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">张量并行的三个版本与加速比</caption>
+          <thead><tr><th scope="col">版本</th><th scope="col">s/step (864×480)</th><th scope="col">加速比</th><th scope="col">改了什么</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">单卡</th><td data-label="s/step">44.6</td><td data-label="加速比">1.00×</td><td data-label="改了什么">在单卡上分块</td></tr>
+            <tr><th scope="row">TP2 v1</th><td data-label="s/step">34.0</td><td data-label="加速比">1.31×</td><td data-label="改了什么">列/行切分，只用一个启动线程</td></tr>
+            <tr><th scope="row">TP2 + 每个 rank 一条线程</th><td data-label="s/step">19.8</td><td data-label="加速比">2.25×</td><td data-label="改了什么">每个 rank 启动自己的 kernel</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>原因</span>W4A8 GEMM 会阻塞调用它的宿主线程，所以一个启动线程把两张卡串行化了：实测重叠只有 5%。每个 rank 一条线程后升到 91%，输出逐位一致（帧 MAE 0.0000）。</p>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="probe-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">04 / 探针</p><h2 id="probe-title">三行诊断。</h2></div>
+        <p class="section-intro">两张 GPU，一个 GEMM，三种启动策略。重叠率就是区分「切开了」和「真并行了」的那个数。</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">GEMM 重叠率实测</caption>
+          <thead><tr><th scope="col">测试</th><th scope="col">dev0</th><th scope="col">dev1</th><th scope="col">并发</th><th scope="col">重叠</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">dense fp16 GEMM</th><td data-label="dev0">61.9</td><td data-label="dev1">58.0</td><td data-label="并发">61.0</td><td data-label="重叠">95%</td></tr>
+            <tr><th scope="row">W4A8 GEMM</th><td data-label="dev0">103.3</td><td data-label="dev1">96.8</td><td data-label="并发">194.7</td><td data-label="重叠">5%</td></tr>
+            <tr><th scope="row">W4A8 GEMM，每卡一条线程</th><td data-label="dev0">106.5</td><td data-label="dev1">97.1</td><td data-label="并发">106.8</td><td data-label="重叠">91%</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>修好之后</span>每 block：qkv + attention 211 ms，MLP 196 ms，最后的 all-reduce 13 ms —— 每 block 420 ms。</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="run-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">05 / 复现</p><h2 id="run-title">启动双卡服务。</h2></div>
+        <p class="section-intro">设备顺序很关键：只暴露一张卡，图里所有 cuda:0 会悄悄塌到那张卡上。</p>
+      </div>
+      <div class="wrap">
+        <pre><code>export CUDA_VISIBLE_DEVICES=1,0          # GPU1 在前，这样 cuda:0 才是计算卡
+python main.py --listen 127.0.0.1 --port 8188     --reserve-vram 1.5 --vram-headroom 0.5     --disable-pinned-memory --fast-disk
+
+python scripts/bench.py examples/smoke_t2v.json smoke   # 自带样例</code></pre>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="vlimit-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">06 / 注意事项</p><h2 id="vlimit-title">这个加速比不是什么。</h2></div>
+        <p class="section-intro">2.97× 来自这台机器上的真实渲染，而且只对一种量化、一个模型和一对卡成立。</p>
+      </div>
+      <div class="wrap home-cap-grid">
+        <div class="home-cap-item"><span>01</span><h3>不是通用的 TP 结论</h3><p>这些数字来自两张改造过的 22 GB Turing 卡、250 W 上限下的 W4A8。换卡、换量化或换模型形状，重叠率都会不同。</p></div>
+        <div class="home-cap-item"><span>02</span><h3>NUMA 也算在里面</h3><p>两张卡位于不同的 NUMA 节点。那 13 ms 的 all-reduce 有一部分是在为这个拓扑付账；换块主板就会变。</p></div>
+        <div class="home-cap-item"><span>03</span><h3>权重不在这里</h3><p>代码是 MIT，模型权重不在仓库里，遵循 MiniMax 自己的许可。样例是一个自包含的文生视频用例。</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <p><strong>Norwin Yu</strong><span>AI 使用研究 / 游戏与本地算力。</span></p>
+      </div>
+      <nav class="footer-nav" aria-label="页脚">
+        <span class="mono-label">目录</span>
+        <a href="/zh/work/">实验</a>
+        <a href="/zh/ai.html">本地</a>
+        <a href="/zh/open-source.html">开源</a>
+        <a href="/zh/competitions.html">竞赛</a>
+        <a href="/blog/">日志</a>
+        <a href="/zh/about.html">关于</a>
+      </nav>
+      <div class="footer-note">
+        <span class="mono-label">版本说明</span>
+        <p>字体为 Inter 与 IBM Plex Mono。手工编写，静态托管。没有追踪器、cookie 或密钥。</p>
+        <p>AI 使用研究 / 2026</p>
+      </div>
+      <div class="footer-status">
+        <span class="status"><i aria-hidden="true"></i>欢迎交流研究</span>
+        <a href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 Norwin Yu</span>
+      <span>最后更新 / 2026 年 11 月</span>
+      <span>无统计代码，运行时无外部请求。</span>
+    </div>
+  </footer>
+</body>
+</html>

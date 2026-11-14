@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Journal — Norwin Yu</title>
+  <meta name="description" content="AI usage research, systems, design and technical teardowns.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Journal — Norwin Yu">
+  <meta property="og:description" content="AI usage research, systems, design and technical teardowns.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="article-nav" aria-label="Article navigation">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/en/blog/" aria-current="page">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="lang-switch" href="/blog/" hreflang="zh-CN">中文</a>
+      <span class="availability"><i aria-hidden="true"></i>Open to research conversations</span>
+    </div>
+  </header>
+
+  <main id="main" class="journal-main">
+    <section class="journal-hero" aria-labelledby="journal-title">
+      <div class="wrap">
+        <div class="journal-hero-top">
+          <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span><span>Journal / 2026</span><span class="eyebrow-rule" aria-hidden="true"></span><span>13 notes</span></p>
+          <span class="mono-label">Updated / 2026.11</span>
+        </div>
+        <h1 id="journal-title">Workbench<br><em>notes.</em></h1>
+        <div class="journal-hero-bottom">
+          <p>Research, systems and design notes from the workbench. Write long when the question earns it; write short while the answer is still moving.</p>
+          <p>No content calendar, no growth tricks. Only the questions that were still there after the build.</p>
+        </div>
+        <p class="journal-ai-note">Writing note: every note here is AI-drafted; projects, data and facts come from me and are reviewed.</p>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <a class="journal-feature" href="name-that-llm.html">
+        <div class="journal-feature-media">
+          <img src="/assets/img/demo-name-that-llm.jpg" alt="Balanced accuracy for the training pool before and after cleaning." width="1500" height="780" loading="eager">
+        </div>
+        <div class="journal-feature-copy">
+          <div class="demo-tags"><span>Featured research</span><span>NLP</span><span>Evaluation</span></div>
+          <h2>A fingerprint<br>in the noise.</h2>
+          <p>Telling language models apart with a small classifier, and why clean data is more useful than a bigger model.</p>
+          <div class="journal-feature-foot">
+            <span>Read research · 9 min</span>
+            <span class="circle-arrow" aria-hidden="true">↗</span>
+          </div>
+        </div>
+      </a>
+
+      <section class="journal-list" aria-labelledby="all-notes">
+        <div class="journal-list-head">
+          <h2 id="all-notes">All notes</h2>
+          <span class="mono-label">12 notes</span>
+        </div>
+
+        <a class="journal-entry" href="what-1-4mb-buys.html">
+          <span class="journal-entry-index">02</span>
+          <span class="journal-entry-meta"><i>Systems</i><span>11 min</span></span>
+          <span class="journal-entry-main">
+            <h3>What 1.4MB actually buys</h3>
+            <p>Unpacking Saltline: zero assets, a model-written content pipeline, and the difference between a “scene script” and a “generator”.</p>
+          </span>
+          <span class="journal-entry-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="journal-entry" href="two-gpu-local-lab.html">
+          <span class="journal-entry-index">03</span>
+          <span class="journal-entry-meta"><i>Systems</i><span>8 min</span></span>
+          <span class="journal-entry-main">
+            <h3>The 44GB VRAM problem</h3>
+            <p>What two 22GB 2080 Ti cards can and can't do, and where local inference actually bottlenecks.</p>
+          </span>
+          <span class="journal-entry-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="journal-entry" href="last-mile-taste.html">
+          <span class="journal-entry-index">04</span>
+          <span class="journal-entry-meta"><i>Design</i><span>6 min</span></span>
+          <span class="journal-entry-main">
+            <h3>The last mile is taste</h3>
+            <p>A generative interface gets you to the first draft; that last 10% still runs on editing, judgment and taste.</p>
+          </span>
+          <span class="journal-entry-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="journal-entry" href="agent-loops-need-taste.html">
+          <span class="journal-entry-index">05</span>
+          <span class="journal-entry-meta"><i>AI systems</i><span>7 min</span></span>
+          <span class="journal-entry-main">
+            <h3>Agent loops need taste</h3>
+            <p>More tools don't make a stronger agent. What's scarce is a loop that knows when to stop.</p>
+          </span>
+          <span class="journal-entry-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="journal-entry" href="godot-is-not-a-bigger-canvas.html">
+          <span class="journal-entry-index">06</span>
+          <span class="journal-entry-meta"><i>Systems</i><span>8 min</span></span>
+          <span class="journal-entry-main">
+            <h3>An engine is not a bigger canvas</h3>
+            <p>Godot + DSH for an airport tycoon: longer feedback chains, planes clipping through, airport flow and desktop distribution.</p>
+          </span>
+          <span class="journal-entry-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="journal-entry" href="recognition-is-a-draft.html">
+          <span class="journal-entry-index">07</span>
+          <span class="journal-entry-meta"><i>Product</i><span>7 min</span></span>
+          <span class="journal-entry-main">
+            <h3>Recognition is only a draft</h3>
+            <p>RoomTessera: the hard part of image-to-3D isn't recognition, it's letting the user correct it.</p>
+          </span>
+          <span class="journal-entry-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="journal-entry" href="fifteen-hundred-steps.html">
+          <span class="journal-entry-index">08</span>
+          <span class="journal-entry-meta"><i>Game</i><span>9 min</span></span>
+          <span class="journal-entry-main">
+            <h3>1,500 steps later</h3>
+            <p>A scale post-mortem on the Three Kingdoms tactics game: where selection, map, auto-battle and phone controls broke first.</p>
+          </span>
+          <span class="journal-entry-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="journal-entry" href="tp2-one-thread.html">
+          <span class="journal-entry-index">09</span>
+          <span class="journal-entry-meta"><i>Systems</i><span>10 min</span></span>
+          <span class="journal-entry-main">
+            <h3>Parallel is not a split</h3>
+            <p>A 20B video model on two 22GB cards: 1.31× to 2.97×, with the host thread as the blocker, not the link.</p>
+          </span>
+          <span class="journal-entry-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="journal-entry" href="every-frame-four-percent.html">
+          <span class="journal-entry-index">10</span>
+          <span class="journal-entry-meta"><i>Systems</i><span>9 min</span></span>
+          <span class="journal-entry-main">
+            <h3>4% per frame</h3>
+            <p>A zero-subprocess Rust hardware monitor: layered sampling cuts GPU collection from 97ms to 15ms.</p>
+          </span>
+          <span class="journal-entry-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="journal-entry" href="eighty-and-forty-six.html">
+          <span class="journal-entry-index">11</span>
+          <span class="journal-entry-meta"><i>Systems</i><span>9 min</span></span>
+          <span class="journal-entry-main">
+            <h3>80 and 46</h3>
+            <p>The same 27B model, 80 tok/s in the docs and 46 measured: the power wall and the compute density of MTP.</p>
+          </span>
+          <span class="journal-entry-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="journal-entry" href="restart-cost.html">
+          <span class="journal-entry-index">12</span>
+          <span class="journal-entry-meta"><i>Systems</i><span>10 min</span></span>
+          <span class="journal-entry-main">
+            <h3>Three minutes per restart</h3>
+            <p>Changing a config means loading 55GB: experiment orchestration, the optimizations the second card throws away, and idle NVLink.</p>
+          </span>
+          <span class="journal-entry-arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <a class="journal-entry" href="exam-as-eval.html">
+          <span class="journal-entry-index">13</span>
+          <span class="journal-entry-meta"><i>Evaluation</i><span>9 min</span></span>
+          <span class="journal-entry-main">
+            <h3>The exam as evaluation</h3>
+            <p>Two 8-question runs scored 67 and 84: the eval framework's job is to admit the sample is too small.</p>
+          </span>
+          <span class="journal-entry-arrow" aria-hidden="true">↗</span>
+        </a>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="Footer">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/open-source.html">Open source</a>
+        <a href="/competitions.html">Competitions</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a href="/index.html">Back to home <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

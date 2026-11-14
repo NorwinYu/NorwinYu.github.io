@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Agent loops need taste — Norwin Yu</title>
+  <meta name="description" content="More tools don't make a stronger agent. What's scarce is a loop that knows when to stop.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Agent loops need taste — Norwin Yu">
+  <meta property="og:description" content="More tools don't make a stronger agent. What's scarce is a loop that knows when to stop.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/agent-loops-need-taste.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/agent-loops-need-taste.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="article-nav" aria-label="Article navigation">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="lang-switch" href="/blog/agent-loops-need-taste.html" hreflang="zh-CN">中文</a>
+      <span class="availability"><i aria-hidden="true"></i>Open to research conversations</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> All notes</a>
+        <p class="article-kicker"><span class="is-accent">AI systems</span><i aria-hidden="true"></i><span>Agent design</span><i aria-hidden="true"></i><span>Field note</span></p>
+        <h1>Agent loops<br><em>need taste.</em></h1>
+        <p class="article-deck">More tools don't make a stronger agent. What's scarce is a loop that knows when to stop.</p>
+        <p class="article-cn">More tools don't make a stronger agent. What's actually scarce is a loop that knows when to stop.</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>November 2026</span>
+          <span>7 min</span>
+          <span>Field note / 04</span>
+        </div>
+        <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">Contents</p>
+        <nav class="article-toc" aria-label="Article contents">
+          <a href="#fifth-run">The fifth run</a>
+          <a href="#tool-belt">The tool-belt trap</a>
+          <a href="#product">The loop is the product</a>
+          <a href="#stop">Taste is the stop function</a>
+          <a href="#measure">What to measure</a>
+          <a href="#handoff">Handoff</a>
+          <a href="#checklist">Checklist</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>Context</dt><dd>tool-using agents</dd></div>
+          <div><dt>Failure</dt><dd>a loop with no exit</dd></div>
+          <div><dt>Belief</dt><dd>judgment beats tool count</dd></div>
+          <div><dt>Test</dt><dd>fixed tasks, read the traces</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>Every agent demo can succeed once. The interesting question is the fifth run: the input is real, the tools are slow, and the user doesn't care about the architecture.</p>
+        <p>Most of the failures I see aren't reasoning failures, they're loop failures: still searching after the answer is found; calling a tool because it's available; editing a file without reading it; summarizing without verifying; asking permission only after doing the irreversible thing. The model is often capable. The loop has no taste.</p>
+
+        <h2 id="fifth-run">The fifth run</h2>
+        <p>The first run is a rehearsal. The prompt is clean, the tools answer instantly, the happy path is obvious. The fifth run has a malformed input, a flaky API, a stale cache, and a user who wanted the result yesterday. That's where the design lives.</p>
+        <p>I care about agents that can be interrupted, inspected and resumed. Not because interruption is elegant, but because real work gets interrupted anyway. A loop that can't survive a tool pause is a script with an LLM attached.</p>
+
+        <blockquote>A demo proves the model can act. A product proves the loop can stop.</blockquote>
+
+        <h2 id="tool-belt">The tool-belt trap</h2>
+        <p>Adding tools feels like adding capability. In practice every tool adds a branch, a schema, a failure mode, and a new way to be confidently wrong. The search space grows faster than the useful behavior. An agent with twenty tools is often worse on a focused task than one with three tools and one clear instruction.</p>
+        <p>The tool belt also hides the real bottleneck: context. A long list of tool descriptions competes with the task, the history, retrieved documents and constraints. The model spends more attention deciding which tool to use than on whether the task is already done.</p>
+        <p>My default is to start from the smallest set that can close the loop: one read tool, one write tool, one way to ask a human. Add the fourth when a trace proves the loop can't move without it.</p>
+
+        <h2 id="product">The loop is the product</h2>
+        <p>A useful agent loop has the same parts as any other product interface:</p>
+        <ul>
+          <li><strong>Entry state.</strong> What does the agent know before it starts? What's missing? What must it never assume?</li>
+          <li><strong>Observation.</strong> What counts as evidence? A tool result, a screenshot, a passing test, a human confirmation?</li>
+          <li><strong>Action.</strong> What can change the world? Which parts are reversible? Which need a check?</li>
+          <li><strong>Exit.</strong> What does done look like? Who decides? What happens when the budget runs out?</li>
+        </ul>
+        <p>Most teams write the prompt and skip the exit. Then they're surprised the agent never stops. The exit isn't a guardrail bolted on at the end. It's the spec.</p>
+
+        <div class="callout">
+          <span class="mono-label">Design rule</span>
+          <p>Before you add a tool, write down the condition under which the loop stops. If you can't write it, you don't have a task yet, only exploration.</p>
+        </div>
+
+        <h2 id="stop">Taste is the stop function</h2>
+        <p>An agent's taste isn't a mysterious aesthetic gift. It's a set of judgments about “enough”: this evidence is sufficient, this result is good enough, this path isn't worth another token. It's the ability to stop at the right moment, and to tell “done” apart from “budget exhausted”.</p>
+        <p>That judgment can be encoded, at least in part. Three mechanisms do most of the work:</p>
+        <ul>
+          <li><strong>Budget.</strong> Caps on tokens, time, attempts and tool calls. When the cap hits, the agent reports what it has and what it didn't do. It doesn't loop silently.</li>
+          <li><strong>Success check.</strong> Tests, schemas, diffs, citations or human confirmation. Something outside the model decides whether the loop is finished.</li>
+          <li><strong>Loop detection.</strong> Repeated actions, repeated searches, or two rounds with no state change. Stop and explain, instead of retrying forever.</li>
+        </ul>
+        <p>None of this needs a smarter model. It needs an editor's sense of when the scene ends.</p>
+
+        <h2 id="measure">What to measure</h2>
+        <p>Agent evals are often reported as one success rate. That number hides the interesting part. I want to see:</p>
+        <ul>
+          <li><strong>Success on a fixed task.</strong> Same input every time, with a clear pass condition.</li>
+          <li><strong>Cost per success.</strong> Tokens, tool calls, wall-clock time. A cheap failure is still a failure; an expensive success is a design smell.</li>
+          <li><strong>Failure modes.</strong> Wrong answer, loop, stopped early, unsafe action, unreadable output. Each one points at a different fix.</li>
+          <li><strong>Recovery.</strong> After a tool error or a human correction, can the agent continue without starting from scratch?</li>
+          <li><strong>Trace readability.</strong> Can a human explain what happened in two minutes? If not, the loop isn't observable enough, or improvable enough.</li>
+        </ul>
+        <p>A trace isn't a log dump. It's a narrative: what the agent believed, what it tried, what changed, why it stopped. If the trace can't carry that narrative, the agent isn't ready for anything that matters.</p>
+
+        <h2 id="handoff">Handoff</h2>
+        <p>The most important tool for a serious agent is handoff. The loop says: “I did what I could; here's the state, here's the uncertainty, here's what I need from you.” That isn't a failure of autonomy. It's the feature that makes autonomy safe enough to use.</p>
+        <p>Good handoffs are specific. Not “something went wrong” but “the deploy failed at step 3; the migration ran, but the app is still on the old image; I didn't touch production traffic.” A human can act immediately. Bad handoffs dump a stack trace and call it transparency.</p>
+        <p>I design the handoff first, then remove it where the loop earns trust. Order matters. Trust is granted on evidence, not on a demo.</p>
+
+        <h2 id="checklist">Checklist</h2>
+        <ul>
+          <li><strong>One task, one pass condition.</strong> Write both before the prompt.</li>
+          <li><strong>Fewest tools.</strong> Add capability only when a trace proves it's missing.</li>
+          <li><strong>Hard budgets.</strong> Tokens, time, attempts, tool calls. Make the cap visible to the agent.</li>
+          <li><strong>State before action.</strong> Read before write; snapshot before migrate; ask before irreversible.</li>
+          <li><strong>Stop on repetition.</strong> If the state didn't change, don't try it the same way again.</li>
+          <li><strong>Show humans the trace.</strong> A readable narrative, not raw logs.</li>
+          <li><strong>Clean handoff.</strong> State, uncertainty, next step.</li>
+        </ul>
+
+        <p>Models will keep getting better, and the loop will still need an editor. The difference between an agent that feels smart and one that feels exhausting is rarely the model. It's the taste that knows when the work is over.</p>
+
+        <p class="article-end"><strong>Context /</strong> Notes from building tool-using agents and verification harnesses, including the six-gate Photoreal Game Harness. No model benchmark is claimed here; the argument is about loop design and eval practice.</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>Back to / Journal</p>
+          <h2 id="next-title">All notes</h2>
+        </div>
+        <a href="index.html">
+          <span>Browse</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="Footer">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/open-source.html">Open source</a>
+        <a href="/competitions.html">Competitions</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a href="index.html">All notes <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

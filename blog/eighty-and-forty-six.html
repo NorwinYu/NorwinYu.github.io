@@ -18,28 +18,31 @@
   <meta property="og:description" content="同一个 27B 模型：文档说 80 tok/s，这台机器给 46。差的不是运气，是功耗上限和 MTP 的计算密度。">
   <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
   <meta property="og:locale" content="zh_CN">
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
-  <link rel="manifest" href="../manifest.webmanifest">
-  <link rel="preload" href="../assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/css/site.css">
-  <link rel="stylesheet" href="../assets/css/article.css">
-  <script src="../assets/js/site.js" defer></script>
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/eighty-and-forty-six.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/eighty-and-forty-six.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
 </head>
 <body class="article-page">
   <a class="skip-link" href="#main">跳到正文</a>
   <header class="site-header article-header" data-header>
     <div class="header-inner wrap">
-      <a class="brand" href="../index.html" aria-label="Norwin Yu — 首页">
+      <a class="brand" href="/zh/" aria-label="Norwin Yu — 首页">
         <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
         <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
       </a>
       <nav class="article-nav" aria-label="文章导航">
-        <a href="../work/index.html">实验</a>
-        <a href="../ai.html">本地</a>
-        <a href="index.html">日志</a>
-        <a href="../about.html">关于</a>
+        <a href="/zh/work/">实验</a>
+        <a href="/zh/ai.html">本地</a>
+        <a href="/blog/">日志</a>
+        <a href="/zh/about.html">关于</a>
       </nav>
+      <a class="lang-switch" href="/en/blog/eighty-and-forty-six.html" hreflang="en">EN</a>
       <span class="availability"><i aria-hidden="true"></i>开放研究交流</span>
     </div>
   </header>
@@ -47,7 +50,7 @@
   <main id="main">
     <header class="article-hero">
       <div class="wrap">
-        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> 全部笔记</a>
+        <a class="back-link" href="/blog/"><span aria-hidden="true">←</span> 全部笔记</a>
         <p class="article-kicker"><span class="is-accent">系统</span><i aria-hidden="true"></i><span>本地推理</span><i aria-hidden="true"></i><span>基准</span></p>
         <h1>80 与<br><em>46。</em></h1>
         <p class="article-deck">同一个 27B 模型、同一个 vLLM 分支，文档写 80 tok/s，这台机器给 46。差的不是运气。</p>
@@ -175,7 +178,7 @@
 
         <p>最有用的结论其实很小：<strong>报 tok/s 的时候，必须同时报功耗上限和上下文长度</strong>，否则这个数字只描述了一个不受约束的理想情况。</p>
 
-        <p class="article-end"><strong>方法 /</strong> 数据来自本机 <code>vllm-2080ti/RESULTS.md</code> 的实测记录：流式请求、用首 token 时间分离 TTFT 与解码、固定 prompt 与输出长度、每项至少五轮取中位数并记 min/max/stdev、每次配置变更后丢弃一次 warmup。完整配置表见站点 <a href="../local/text-stack.html">本地推理</a> 页。</p>
+        <p class="article-end"><strong>方法 /</strong> 数据来自本机 <code>vllm-2080ti/RESULTS.md</code> 的实测记录：流式请求、用首 token 时间分离 TTFT 与解码、固定 prompt 与输出长度、每项至少五轮取中位数并记 min/max/stdev、每次配置变更后丢弃一次 warmup。完整配置表见站点 <a href="/zh/local/text-stack.html">本地推理</a> 页。</p>
       </article>
 
       <div aria-hidden="true"></div>
@@ -199,14 +202,14 @@
     <div class="footer-bottom wrap">
       <span>© 2026 Norwin Yu</span>
       <nav class="article-footer-links" aria-label="页脚">
-        <a href="../work/index.html">实验</a>
-        <a href="../ai.html">本地</a>
-        <a href="../open-source.html">开源</a>
-        <a href="../competitions.html">竞赛</a>
-        <a href="index.html">日志</a>
-        <a href="../about.html">关于</a>
+        <a href="/zh/work/">实验</a>
+        <a href="/zh/ai.html">本地</a>
+        <a href="/zh/open-source.html">开源</a>
+        <a href="/zh/competitions.html">竞赛</a>
+        <a href="/blog/">日志</a>
+        <a href="/zh/about.html">关于</a>
       </nav>
-      <a href="index.html">全部笔记 <span aria-hidden="true">→</span></a>
+      <a href="/blog/">全部笔记 <span aria-hidden="true">→</span></a>
     </div>
   </footer>
 </body>

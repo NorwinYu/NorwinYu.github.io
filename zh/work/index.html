@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>实验 — Norwin Yu</title>
+  <meta name="description" content="用游戏与编程实验研究 LLM 的能力边界、生产管线与验证方式。">
+  <meta name="author" content="Norwin Yu">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="实验 — Norwin Yu">
+  <meta property="og:description" content="用游戏与编程实验研究 LLM 的能力边界、生产管线与验证方式。">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/work/">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/zh/work/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="index-page" data-page="work">
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="topbar" data-header>
+    <div class="wrap topbar-inner">
+      <a class="brand" href="/zh/" aria-label="Norwin Yu — 首页">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
+      </a>
+      <nav class="main-nav" aria-label="主导航">
+        <a href="/zh/work/" data-nav="work">实验</a>
+        <a href="/zh/ai.html" data-nav="ai">本地</a>
+        <a href="/zh/open-source.html" data-nav="oss">开源</a>
+        <a href="/zh/competitions.html" data-nav="competitions">竞赛</a>
+        <a href="/blog/" data-nav="journal">日志</a>
+        <a href="/zh/about.html" data-nav="about">关于</a>
+      </nav>
+      <div class="topbar-actions">
+        <a class="lang-switch" href="/work/" hreflang="en">EN</a>
+        <span class="status"><i aria-hidden="true"></i>AI 使用研究</span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          菜单 <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true">
+    <div class="wrap mobile-menu-head">
+      <span class="mono-label">目录 / 2026</span>
+      <button class="menu-close" type="button" data-menu-close aria-label="关闭菜单">关闭 <span aria-hidden="true">×</span></button>
+    </div>
+    <nav class="wrap mobile-nav" aria-label="移动端主导航">
+      <a href="/zh/work/" data-nav="work">实验</a>
+      <a href="/zh/ai.html" data-nav="ai">本地</a>
+        <a href="/zh/open-source.html" data-nav="oss">开源</a>
+      <a href="/zh/competitions.html" data-nav="competitions">竞赛</a>
+      <a href="/blog/" data-nav="journal">日志</a>
+      <a href="/zh/about.html" data-nav="about">关于</a>
+    </nav>
+    <div class="wrap mobile-menu-foot">
+      <span>AI 使用研究 / 2026</span>
+      <span>欢迎交流研究</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <p class="section-kicker">实验 / 2026</p>
+        <h1>代码里的实验。</h1>
+        <p class="page-lede">游戏是一组探针，编程工具是另一组，机器本身是第三组。它们都在问同一条真实的生产管线——生成素材、代码、UI、验证和部署——LLM 能推多远，以及人还必须在哪一步介入。</p>
+        <div class="page-meta"><span><i></i>05 个游戏探针</span><span>02 组对比</span><span>03 个编程工具</span><span>02 套本地系统</span><span>在线 / 附源码</span></div>
+      </div>
+    </header>
+
+    <section class="section research-map" id="map" aria-labelledby="map-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">图谱</p><h2 id="map-title">一份目录，四个变量。</h2></div>
+        <p class="section-intro">这些项目不是一份游戏清单。每个项目只隔离一个变量：模型能力、围绕它的杠杆、素材管线，或者验证回路。</p>
+      </div>
+
+      <div class="wrap thread-grid">
+        <div class="thread-card"><span>01</span><h3>模型能力</h3><p>本地模型能不能从一个 prompt 撑起一个 3D 场景？明宫三维（Ming Palace 3D）就是那个本地模型探针。</p></div>
+        <div class="thread-card"><span>02</span><h3>杠杆</h3><p>给模型一套 agent/skill 框架，和只给一个 API 循环，差在哪？NEON BREACH 是没开 skill 的对照组。</p></div>
+        <div class="thread-card"><span>03</span><h3>素材管线</h3><p>程序化代码、生成图片/视频，还是 Blender 辅助？雾谷农庄是目前不用 Blender 的基线；Blender 对比是下一步。</p></div>
+        <div class="thread-card"><span>04</span><h3>验证</h3><p>Playwright、截图复查、碰撞检查，加上六道关的 harness。构建跑得起来不算结果，能被人检查才算。</p></div>
+      </div>
+
+      <div class="wrap table-wrap matrix-wrap">
+        <table class="data-table experiment-matrix">
+          <caption class="sr-only">实验地图：各项目及其被测的那个变量</caption>
+          <thead><tr><th scope="col">实验</th><th scope="col">测什么</th><th scope="col">模型</th><th scope="col">杠杆</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">ECHO ZERO</th><td data-label="测什么">完整叙事管线 + 追加的语音层</td><td data-label="模型">DeepSeek Flash + MiniMax H3</td><td data-label="杠杆">代码/UI/音频；生成美术、视频、音乐；Edge TTS</td></tr>
+            <tr><th scope="row">烽火三国</th><td data-label="测什么">生成素材塞进一个完整的游戏循环</td><td data-label="模型">DeepSeek Flash + MiniMax H3</td><td data-label="杠杆">代码/UI/音频；生成的图片与视频素材</td></tr>
+            <tr><th scope="row">仙宗</th><td data-label="测什么">DeepSeek Flash 的 3D 能力</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">代码/系统/文档；程序化素材；Playwright</td></tr>
+            <tr><th scope="row">雾谷农庄</th><td data-label="测什么">一句 prompt、不用 Blender 的基线</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">程序化模型、天气、音频；无外部素材</td></tr>
+            <tr><th scope="row">机场大亨 3D</th><td data-label="测什么">DeepSeek Flash + DSH + Godot 引擎路线</td><td data-label="模型">DeepSeek Flash + DSH</td><td data-label="杠杆">Godot 4.6 / GDScript；程序化网格与音频</td></tr>
+            <tr><th scope="row">NEON BREACH</th><td data-label="测什么">不用 skill 的对照组</td><td data-label="模型">DeepSeek V4.1 Flash</td><td data-label="杠杆">纯 API，无 skill；原生 WebGL；程序化素材</td></tr>
+            <tr><th scope="row">明宫三维</th><td data-label="测什么">本地模型对比</td><td data-label="模型">DeepSeek Flash 1017 · 本地</td><td data-label="杠杆">一句中文 prompt；单文件 WebGL2；无 skill</td></tr>
+            <tr><th scope="row">dsh-quota</th><td data-label="测什么">工具 / 按路由显示状态</td><td data-label="模型">DeepSeek V4.1 Flash</td><td data-label="杠杆">代码/测试/文档；配置驱动的适配器</td></tr>
+            <tr><th scope="row">NorMark</th><td data-label="测什么">桌面编程应用</td><td data-label="模型">未记录</td><td data-label="杠杆">Electron / React / CodeMirror</td></tr>
+            <tr><th scope="row">RoomTessera 3D</th><td data-label="测什么">空间工具</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">代码/UI/测试；程序化几何</td></tr>
+            <tr><th scope="row">MiniMax H3 TP2</th><td data-label="测什么">22 GB 卡上的多卡杠杆</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">张量并行节点，每个 rank 一个 host 线程</td></tr>
+            <tr><th scope="row">sensorium</th><td data-label="测什么">不起子进程读硬件</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">Rust · ratatui · 进程内 NVML</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>怎么读</span>矩阵是实验设计，下面的案例记录才是证据：建了什么、生成了什么、交接在哪一步断掉。</p>
+      </div>
+    </section>
+
+    <section class="section pipeline-section" aria-labelledby="pipeline-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">方法</p><h2 id="pipeline-title">每个构建背后的管线。</h2></div>
+        <p class="section-intro">产出可以是一款能玩的游戏，也可以是一件能用的工具，但研究对象是管线。每个构建都跑同一条回路，只是约束不同、坏的环节不同。</p>
+      </div>
+      <div class="wrap pipeline-grid">
+        <div class="pipeline-step"><span>01</span><h3>定范围</h3><p>在生成任何东西之前，先钉死回路、约束和验证目标。</p><em>人</em></div>
+        <div class="pipeline-step"><span>02</span><h3>素材</h3><p>用 MiniMax H3 生成场景、角色、单位、视频和音频。</p><em>模型</em></div>
+        <div class="pipeline-step"><span>03</span><h3>代码</h3><p>用 DeepSeek Flash 写系统、UI、游戏逻辑和程序化音频。</p><em>模型</em></div>
+        <div class="pipeline-step"><span>04</span><h3>集成</h3><p>把素材、状态、存档、输入和移动端布局接成一个能玩的构建。</p><em>双方</em></div>
+        <div class="pipeline-step"><span>05</span><h3>验证</h3><p>Playwright 检查、截图复查、碰撞与回路测试，最后手动试玩。</p><em>双方</em></div>
+        <div class="pipeline-step"><span>06</span><h3>部署</h3><p>静态产物、源码说明，以及一条能在本机复现的运行路径。</p><em>人</em></div>
+      </div>
+      <p class="wrap pipeline-note"><span>这测的是什么</span>不是「LLM 能不能写游戏」，而是生产管线的哪些环节扛得住模型生成、交接在哪一步断掉、结果需要多少验证。</p>
+    </section>
+
+    <div class="wrap section-head work-section-head">
+      <div class="section-heading"><p class="section-kicker">01 / 游戏探针</p><h2>五款游戏，五次压力测试。</h2></div>
+      <p class="section-intro">能玩的产物，逼着管线同时处理状态、输入、素材、移动端布局和一个完整循环。</p>
+    </div>
+
+    <div class="wrap">
+      <article class="work-case" id="echo-zero">
+        <div class="work-case-media"><img decoding="async" src="/assets/img/demo-echo-zero.jpg" alt="ECHO ZERO 标题画面，云层之上悬着一圈深色的环形结构" width="1440" height="900" loading="eager"></div>
+        <div class="work-case-copy">
+          <h2>零号信标 <span>ECHO ZERO / 蓝光游戏</span></h2>
+          <p>一部未来黑色风格的视觉小说，讲记忆、信号和一座正在遗忘的城市。三条分支章节、一个画廊、一个结局回路——做成一整个叙事面，不是场景 demo。</p>
+          <ul>
+            <li>生成的场景、角色立绘、视频和中文配音；代码、UI 与声音设计由 DeepSeek Flash 完成。</li>
+            <li>存档 / 读档、章节选择、画廊、设置和移动端布局。</li>
+            <li>静态 GitHub Pages 构建；无后端，运行时不带 API key。</li>
+          </ul>
+          <dl class="work-specs">
+            <div><dt>格式</dt><dd>3 章 · 分支选择</dd></div>
+            <div><dt>媒介</dt><dd>MiniMax H3 + Edge TTS + WebAudio</dd></div>
+            <div><dt>构建</dt><dd>静态单页应用</dd></div>
+            <div><dt>状态</dt><dd>已上线，非商业</dd></div>
+            <div><dt>模型</dt><dd>DeepSeek Flash + MiniMax H3</dd></div>
+            <div><dt>杠杆</dt><dd>代码、UI、音频 · MiniMax 美术/视频/音乐 · 追加中文配音（Edge TTS）</dd></div>
+          </dl>
+          <div class="work-links"><a href="https://norwinyu.github.io/echo-zero/" target="_blank" rel="noopener">在线试玩 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/echo-zero" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </article>
+
+      <article class="work-case" id="three-kingdoms">
+        <div class="work-case-media"><img decoding="async" src="/assets/img/demo-three-kingdoms.jpg" alt="烽火三国主菜单" width="1440" height="900" loading="lazy"></div>
+        <div class="work-case-copy">
+          <h2>烽火三国 <span>Beacon of the Three Kingdoms</span></h2>
+          <p>浏览器端的三国战棋垂直切片：12 × 9 网格、47 名武将、11 座城池，还有天气、火攻、士气、增援和 Boss 演出。目标是跑通一个完整循环——布阵、移动、攻击、升级、失败——而不是拍一支电影级预告。</p>
+          <ul>
+            <li>行动顺序、地形、反击、侧翼、补给和自动战斗。</li>
+            <li>立绘、单位美术、地形和视频由 MiniMax H3 生成。</li>
+            <li>代码、UI、系统和程序化音频由 DeepSeek Flash 完成。</li>
+          </ul>
+          <dl class="work-specs">
+            <div><dt>规模</dt><dd>47 名武将 · 11 座城池</dd></div>
+            <div><dt>战斗</dt><dd>12 × 9 网格 · 天气 · 火攻</dd></div>
+            <div><dt>技术栈</dt><dd>Three.js + MiniMax H3</dd></div>
+            <div><dt>状态</dt><dd>非商业 demo</dd></div>
+            <div><dt>模型</dt><dd>DeepSeek Flash + MiniMax H3</dd></div>
+            <div><dt>杠杆</dt><dd>代码、UI、音频 · MiniMax 生成的图片与视频素材</dd></div>
+          </dl>
+          <div class="work-links"><a href="https://norwinyu.github.io/three-kingdoms-slg/" target="_blank" rel="noopener">在线试玩 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/three-kingdoms-slg" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a><a href="/blog/last-mile-taste.html">构建记录 <span aria-hidden="true">→</span></a></div>
+        </div>
+      </article>
+
+      <article class="work-case" id="immortal-sect">
+        <div class="work-case-media"><img decoding="async" src="/assets/img/demo-immortal-sect.jpg" alt="黄昏时分仙宗的山门" width="1440" height="900" loading="lazy"></div>
+        <div class="work-case-copy">
+          <h2>仙宗 <span>Immortal Sect / 修仙宗门</span></h2>
+          <p>一个 3D 修仙宗门经营原型，用来测 DeepSeek Flash 的 3D 能力：七名弟子、建筑升级、每日事务、第三人称移动、战斗和天劫。整个可玩章节在浏览器里跑完，没有后端。</p>
+          <ul>
+            <li>程序化生成模型、材质和音频；不依赖任何外部素材文件。</li>
+            <li>localStorage 存档、旧档迁移、移动端布局，以及暂停与设置。</li>
+            <li>73 项 Playwright 检查，覆盖桌面、手机、布局和旧存档。</li>
+          </ul>
+          <dl class="work-specs">
+            <div><dt>规模</dt><dd>7 名弟子 · 12 天章节</dd></div>
+            <div><dt>技术栈</dt><dd>Three.js + TypeScript + Vite</dd></div>
+            <div><dt>验证</dt><dd>73 项 Playwright 检查</dd></div>
+            <div><dt>状态</dt><dd>可玩原型</dd></div>
+            <div><dt>模型</dt><dd>DeepSeek Flash</dd></div>
+            <div><dt>杠杆</dt><dd>3D 能力测试 · 代码、系统、文档、Playwright 检查 · 程序化素材</dd></div>
+          </dl>
+          <div class="work-links"><a href="https://norwinyu.github.io/ImmortalSect/" target="_blank" rel="noopener">在线试玩 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/ImmortalSect" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </article>
+
+      <article class="work-case" id="mistvale">
+        <div class="work-case-media"><img decoding="async" src="/assets/img/demo-mistvale.jpg" alt="雾谷农庄标题画面：黄昏下的农舍、水井和菜园。" width="1600" height="1000" loading="lazy"></div>
+        <div class="work-case-copy">
+          <h2>雾谷农庄 <span>Mistvale Farm</span></h2>
+          <p>一款第三人称 3D 农场生活游戏，只用一句 DeepSeek Flash prompt 就搭起来：「做一款写实风的 3D 农场游戏」。开一块地、种下作物、在缓慢的昼夜循环里照料它们，把一个雾气弥漫的山谷变成家。全部在代码里生成——这是不用 Blender 的基线，之后要和一个 Blender 辅助的版本对比。</p>
+          <ul>
+            <li>一句 prompt，不用 Blender，没有外部模型、贴图、字体或音频文件。</li>
+            <li>程序化作物、工具、天气、水面 shader 和 WebAudio 环境声。</li>
+            <li>静态 GitHub Pages 构建，本地存档，适配移动端。</li>
+            <li>保留为基线，用于将来与 Blender 辅助版本对比。</li>
+          </ul>
+          <dl class="work-specs">
+            <div><dt>技术栈</dt><dd>Three.js + Vite</dd></div>
+            <div><dt>规模</dt><dd>农场循环 · 天气 · 存档</dd></div>
+            <div><dt>素材</dt><dd>100% 程序化</dd></div>
+            <div><dt>状态</dt><dd>已上线，非商业</dd></div>
+            <div><dt>模型</dt><dd>DeepSeek Flash · 一句 prompt</dd></div>
+            <div><dt>杠杆</dt><dd>不用 Blender · 程序化模型、天气、音频 · Blender 对比的基线</dd></div>
+          </dl>
+          <div class="work-links"><a href="https://norwinyu.github.io/mistvale-farm/" target="_blank" rel="noopener">在线试玩 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/mistvale-farm" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </article>
+
+      <article class="work-case" id="airport">
+        <div class="work-case-media"><img decoding="async" src="/assets/img/demo-airport-tycoon.jpg" alt="机场大亨 3D 在 Godot 里的主菜单。" width="1280" height="800" loading="lazy"></div>
+        <div class="work-case-copy">
+          <h2>机场大亨 3D <span>Airport Tycoon 3D</span></h2>
+          <p>一款 Godot 4.6 机场经营模拟，用来测 DeepSeek Flash + DSH + Godot 这条路线：买机或租机、开航线、建航站楼，还要扛住暴风雨、罢工、油价飙升和检查。每个网格和音效都在代码里生成。</p>
+          <ul>
+            <li>从主菜单到通关/破产的完整循环，含手动与自动存档。</li>
+            <li>3 种机型、8 个航点、8 类事件，以及昼夜循环。</li>
+            <li>桌面版。还没有公开的网页导出，所以不挂线上链接。</li>
+          </ul>
+          <dl class="work-specs">
+            <div><dt>引擎</dt><dd>Godot 4.6</dd></div>
+            <div><dt>规模</dt><dd>3 种机型 · 8 条航线</dd></div>
+            <div><dt>平台</dt><dd>macOS · Windows · Linux</dd></div>
+            <div><dt>状态</dt><dd>桌面版</dd></div>
+            <div><dt>模型</dt><dd>DeepSeek Flash + DSH</dd></div>
+            <div><dt>杠杆</dt><dd>Godot 4.6 · GDScript · 程序化网格与音频</dd></div>
+          </dl>
+          <div class="work-links"><span class="work-muted">源码 / 构建可索取 · 网页导出待定</span></div>
+        </div>
+      </article>
+
+    </div>
+
+    <section class="section comparison-section" id="comparisons" aria-labelledby="comparisons-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">02 / 对比</p><h2 id="comparisons-title">两次受控运行。</h2></div>
+        <p class="section-intro">不是每个构建都是产品。这两个只问一个更窄的问题：换成本地模型来做，什么变了？把 skill 从回路里拿掉，什么变了？</p>
+      </div>
+      <div class="wrap comparison-grid">
+        <article class="comparison-card" id="neon">
+          <div class="comparison-media"><img decoding="async" src="/assets/img/demo-neon-breach.jpg" alt="Neon Breach 的第一人称霓虹竞技场，画面里有枪械和敌人。" width="1280" height="800" loading="lazy"></div>
+          <div class="comparison-body">
+            <p class="demo-kicker">无 skill 对照组 · WebGL</p>
+            <h3>NEON BREACH <span>霓虹突袭</span></h3>
+            <p>一款五波次的第一人称竞技场射击游戏，通过直连 API 调用构建，不带任何 skill 指令。作为对照组保留，用来比 skill 辅助的工作和纯模型循环。</p>
+            <dl class="work-specs">
+              <div><dt>模式</dt><dd>纯 API · 无 skill</dd></div>
+              <div><dt>技术栈</dt><dd>原生 WebGL · 单文件</dd></div>
+              <div><dt>规模</dt><dd>5 波 · 3 阶段 Boss</dd></div>
+              <div><dt>状态</dt><dd>已上线</dd></div>
+              <div><dt>模型</dt><dd>DeepSeek V4.1 Flash</dd></div>
+              <div><dt>杠杆</dt><dd>纯 API，无 skill · 代码/UI/音频全程序化</dd></div>
+            </dl>
+            <div class="work-links"><a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">在线试玩 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/neon-breach" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+
+        <article class="comparison-card" id="ming-palace">
+          <div class="comparison-media"><img decoding="async" src="/assets/img/demo-ming-palace.jpg" alt="明代宫殿大殿的 3D 复原，金色屋顶和白色石台基。" width="1600" height="1000" loading="lazy"></div>
+          <div class="comparison-body">
+            <p class="demo-kicker">本地模型运行 · WebGL2</p>
+            <h3>明宫三维 <span>Ming Palace 3D</span></h3>
+            <p>一份单文件的明代宫廷建筑研究，由本地运行的 DeepSeek Flash 1017 从一句中文 prompt 生成。和更大的托管模型之间的对比还在整理。</p>
+            <dl class="work-specs">
+              <div><dt>模型</dt><dd>DeepSeek Flash 1017 · 本地</dd></div>
+              <div><dt>Prompt</dt><dd>一句中文 prompt</dd></div>
+              <div><dt>输出</dt><dd>单个 HTML · WebGL2</dd></div>
+              <div><dt>规模</dt><dd>建筑 · shader</dd></div>
+              <div><dt>状态</dt><dd>已上线 · 更多说明待补</dd></div>
+              <div><dt>杠杆</dt><dd>无 skill · 手写 WebGL2 · 程序化几何</dd></div>
+            </dl>
+            <div class="work-links"><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/" target="_blank" rel="noopener">在线查看 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/deepseek-flash-1017-ming-palace" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-alt coding-section" id="coding" aria-labelledby="coding-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">03 / 编程与工具</p><h2 id="coding-title">让技术栈变得可读的工具。</h2></div>
+        <p class="section-intro">编程实验不是支线任务。模型的工作在这里变得可检查：额度状态、本地优先的文档、空间编辑，以及验证构建的那些 harness。</p>
+      </div>
+      <div class="wrap coding-grid">
+        <article class="coding-card">
+          <div class="coding-visual terminal">
+            <div class="term-window">
+              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>dsh / 额度状态</span></div>
+              <div class="term-body">
+                <p><span>$</span> dsh quota status</p>
+                <p><b>OpenCode Go</b><strong>剩余 96%</strong></p>
+                <p class="term-dim">滚动窗口 · 1h 0m 后重置</p>
+                <p><b>DeepSeek API</b><strong>¥42.50</strong></p>
+                <p class="term-dim">余额来源</p>
+                <p><b>Ark Coding Plan</b><strong>¥188 / ¥200</strong></p>
+              </div>
+            </div>
+          </div>
+          <div class="coding-body">
+            <p class="demo-kicker">工具 · TypeScript</p>
+            <h3>dsh-quota</h3>
+            <p>给 DeepSeek Harness 做的、随路由变化的额度与花费组件。切换模型会改变 UI 该显示什么：套餐剩余、API 余额，还是本地记录的花费。</p>
+            <p class="model-line"><span>模型</span>DeepSeek V4.1 Flash · 代码、测试与文档 · 配置驱动适配器 · 51 项测试</p>
+            <dl class="demo-specs">
+              <div><dt>技术栈</dt><dd>TypeScript · Node · YAML</dd></div>
+              <div><dt>验证</dt><dd>51 项测试</dd></div>
+              <div><dt>状态</dt><dd>本地工具</dd></div>
+            </dl>
+            <div class="demo-foot"><span>源码可索取</span><span>配置里不放密钥</span></div>
+          </div>
+        </article>
+
+        <article class="coding-card">
+          <div class="coding-visual app-mock">
+            <div class="app-window">
+              <div class="app-titlebar"><span class="app-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>NorMark — notes.md</span></div>
+              <div class="app-body">
+                <div class="app-sidebar">
+                  <span>工作区</span><i></i><i></i><i></i><i class="is-active"></i><i></i>
+                </div>
+                <div class="app-page">
+                  <small>01 / 笔记</small>
+                  <strong>构建记录</strong>
+                  <p>让管线保持可检查。</p>
+                  <p>测量。写下来。去掉多余的部分。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="coding-body">
+            <p class="demo-kicker">macOS 应用 · Electron</p>
+            <h3>NorMark</h3>
+            <p>一款 Mac 上的 Markdown 阅读与编辑器，带 CodeMirror、实时预览、工作区、PDF 导出、专注模式和打字机模式。</p>
+            <p class="model-line"><span>模型</span>未记录 · Electron / React / CodeMirror 应用 · 仓库里没有模型说明</p>
+            <dl class="demo-specs">
+              <div><dt>技术栈</dt><dd>Electron · React · TS</dd></div>
+              <div><dt>侧重</dt><dd>写作 · 预览</dd></div>
+              <div><dt>状态</dt><dd>公开仓库</dd></div>
+            </dl>
+            <div class="demo-foot"><span>桌面应用</span><a href="https://github.com/NorwinYu/normark" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+
+        <article class="coding-card" id="roomtessera">
+          <div class="coding-visual">
+            <img decoding="async" src="/assets/img/demo-roomtessera.jpg" alt="RoomTessera 3D 界面：户型图、家具和 3D 剖切视图。" width="1440" height="900" loading="lazy">
+          </div>
+          <div class="coding-body">
+            <p class="demo-kicker">空间工具 · React Three Fiber</p>
+            <h3>RoomTessera 3D</h3>
+            <p>上传一张户型图，得到一个可编辑的 3D 公寓：墙体识别、15 类家具、材质、测量和本地存档。</p>
+            <p class="model-line"><span>模型</span>DeepSeek Flash · 代码、UI 与测试 · 程序化几何与材质</p>
+            <dl class="demo-specs">
+              <div><dt>技术栈</dt><dd>React · Three.js · Vite</dd></div>
+              <div><dt>规模</dt><dd>墙体 · 家具 · 灯光</dd></div>
+              <div><dt>状态</dt><dd>在线预览</dd></div>
+            </dl>
+            <div class="demo-foot"><span>空间编辑</span><a href="https://norwinyu.github.io/roomtessera-3d/" target="_blank" rel="noopener">试玩 <span aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="systems" aria-labelledby="systems-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">04 / 本地系统</p><h2 id="systems-title">这台机器实际在跑什么。</h2></div>
+        <p class="section-intro">两套系统都是在本机实测的，不是从项目页上抄的：一个被迫用上两张卡的 20B 视频模型，一个不起任何子进程就能读到同一套硬件的监控器。</p>
+      </div>
+      <div class="wrap comparison-grid">
+        <article class="comparison-card" id="h3-tp2">
+          <div class="comparison-media is-term">
+            <div class="term-window">
+              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>h3 / tp2 基准 · 640×352</span></div>
+              <div class="term-body">
+                <p><span>单卡</span><b>51 s / step</b></p>
+                <p><span>TP2</span><strong>14 s / step</strong></p>
+                <p class="term-dim">每段 4 step 片段 243 s → 82 s</p>
+                <p><span>加速比</span><strong>2.97×</strong></p>
+                <p class="term-dim">GEMM 重叠 5% → 91%</p>
+                <p><span>GPU1 峰值</span><b>78 °C · 4 min</b></p>
+              </div>
+            </div>
+          </div>
+          <div class="comparison-body">
+            <p class="demo-kicker">本地系统 · SM75</p>
+            <h3>MiniMax H3 TP2 <span>双卡张量并行</span></h3>
+            <p>一个 20.11B 的视频与音频 transformer，跑 W4A8，切分到两张 22 GB 的 Turing 卡上。关键不是它塞得下——而是光靠切分只到 1.31×。</p>
+            <dl class="work-specs">
+              <div><dt>模型</dt><dd>20.11B · 50 个 block</dd></div>
+              <div><dt>量化</dt><dd>W4A8 · int4 group 16</dd></div>
+              <div><dt>加速比</dt><dd>2.97× smoke · 2.25× film</dd></div>
+              <div><dt>修法</dt><dd>每个 rank 一个 host 线程</dd></div>
+              <div><dt>输出</dt><dd>逐位一致 · 帧 MAE 0.0000</dd></div>
+              <div><dt>状态</dt><dd>公开仓库 · MIT 代码</dd></div>
+            </dl>
+            <div class="work-links"><a href="/zh/local/video-stack.html">实测数据 <span aria-hidden="true">→</span></a><a href="https://github.com/NorwinYu/minimax-h3-dual-2080ti" target="_blank" rel="noopener">源码 <span aria-hidden="true">↗</span></a><a href="/blog/tp2-one-thread.html">构建记录 <span aria-hidden="true">→</span></a></div>
+          </div>
+        </article>
+
+        <article class="comparison-card" id="sensorium">
+          <div class="comparison-media is-term">
+            <div class="term-window">
+              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>sensorium / 总览</span></div>
+              <div class="term-body">
+                <p><span>GPU0</span><b>97% · 21.5 GB · 71 °C</b></p>
+                <p><span>GPU1</span><b>72% · 19.7 GB · 75 °C</b></p>
+                <p class="term-dim">功耗 180 / 180 W · 已封顶</p>
+                <p><span>CPU</span><strong>单核 4.6%</strong></p>
+                <p class="term-dim">88 线程 · 占整机 0.05%</p>
+                <p><span>重绘</span><b>0.34 ms</b></p>
+              </div>
+            </div>
+          </div>
+          <div class="comparison-body">
+            <p class="demo-kicker">工具 · Rust</p>
+            <h3>sensorium <span>机器的感官中枢</span></h3>
+            <p>一个用 Rust 写的终端硬件监控：CPU、GPU、内存、温度、风扇、功耗、磁盘和网络，直接读 <code>/proc</code>、<code>/sys</code> 和 NVML，完全不起子进程。</p>
+            <dl class="work-specs">
+              <div><dt>技术栈</dt><dd>Rust · ratatui</dd></div>
+              <div><dt>开销</dt><dd>约占单核 4–6%</dd></div>
+              <div><dt>内存</dt><dd>常驻约 24 MiB</dd></div>
+              <div><dt>刷新</dt><dd>1 s · 重绘 0.2–0.35 ms</dd></div>
+              <div><dt>二进制</dt><dd>约 1.2 MB · stripped，LTO</dd></div>
+              <div><dt>状态</dt><dd>公开仓库</dd></div>
+            </dl>
+            <div class="work-links"><a href="https://github.com/NorwinYu/sensorium" target="_blank" rel="noopener">源码 <span aria-hidden="true">↗</span></a><a href="/blog/every-frame-four-percent.html">构建记录 <span aria-hidden="true">→</span></a><a href="/zh/ai.html">它读的那台机器 <span aria-hidden="true">→</span></a></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="harness-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">也在实验室里</p><h2 id="harness-title">验证 harness。</h2></div>
+        <p class="section-intro">Photoreal Game Harness 是一套可移植的 skill 加六道关的检查，给做 3D 游戏的 agent 用：shader、对象普查、碰撞、灯光、回路和观感。正是这块不体面的活，让上面的游戏跑得起来。</p>
+      </div>
+      <div class="wrap work-links"><a href="/blog/agent-loops-need-taste.html">读 harness 笔记 <span aria-hidden="true">→</span></a><a href="/zh/competitions.html">竞赛 <span aria-hidden="true">→</span></a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <p><strong>Norwin Yu</strong><span>AI 使用研究 / 游戏与本地算力。</span></p>
+      </div>
+      <nav class="footer-nav" aria-label="页脚">
+        <span class="mono-label">目录</span>
+        <a href="/zh/work/">实验</a>
+        <a href="/zh/ai.html">本地</a>
+        <a href="/zh/open-source.html">开源</a>
+        <a href="/zh/competitions.html">竞赛</a>
+        <a href="/blog/">日志</a>
+        <a href="/zh/about.html">关于</a>
+      </nav>
+      <div class="footer-note">
+        <span class="mono-label">版本说明</span>
+        <p>字体为 Inter 与 IBM Plex Mono。手工编写，静态托管。没有追踪器、cookie 或密钥。</p>
+        <p>AI 使用研究 / 2026</p>
+      </div>
+      <div class="footer-status">
+        <span class="status"><i aria-hidden="true"></i>欢迎交流研究</span>
+        <a href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 Norwin Yu</span>
+      <span>最后更新 / 2026 年 11 月</span>
+      <span>无统计代码，运行时无外部请求。</span>
+    </div>
+  </footer>
+</body>
+</html>

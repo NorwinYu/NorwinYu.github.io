@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>本地 — Norwin Yu</title>
+  <meta name="description" content="本机环境与配置：两台机器、操作系统与本地运行时。">
+  <meta name="author" content="Norwin Yu">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="本地 — Norwin Yu">
+  <meta property="og:description" content="本机环境与配置：两台机器、操作系统与本地运行时。">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/ai.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/zh/ai.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="index-page" data-page="ai">
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="topbar" data-header>
+    <div class="wrap topbar-inner">
+      <a class="brand" href="/zh/" aria-label="Norwin Yu — 首页">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
+      </a>
+      <nav class="main-nav" aria-label="主导航">
+        <a href="/zh/work/" data-nav="work">实验</a>
+        <a href="/zh/ai.html" data-nav="ai">本地</a>
+        <a href="/zh/open-source.html" data-nav="oss">开源</a>
+        <a href="/zh/competitions.html" data-nav="competitions">竞赛</a>
+        <a href="/blog/" data-nav="journal">日志</a>
+        <a href="/zh/about.html" data-nav="about">关于</a>
+      </nav>
+      <div class="topbar-actions">
+        <a class="lang-switch" href="/ai.html" hreflang="en">EN</a>
+        <span class="status"><i aria-hidden="true"></i>AI 使用研究</span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          菜单 <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true">
+    <div class="wrap mobile-menu-head">
+      <span class="mono-label">目录 / 2026</span>
+      <button class="menu-close" type="button" data-menu-close aria-label="关闭菜单">关闭 <span aria-hidden="true">×</span></button>
+    </div>
+    <nav class="wrap mobile-nav" aria-label="移动端主导航">
+      <a href="/zh/work/" data-nav="work">实验</a>
+      <a href="/zh/ai.html" data-nav="ai">本地</a>
+        <a href="/zh/open-source.html" data-nav="oss">开源</a>
+      <a href="/zh/competitions.html" data-nav="competitions">竞赛</a>
+      <a href="/blog/" data-nav="journal">日志</a>
+      <a href="/zh/about.html" data-nav="about">关于</a>
+    </nav>
+    <div class="wrap mobile-menu-foot">
+      <span>AI 使用研究 / 2026</span>
+      <span>欢迎交流研究</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <p class="section-kicker">本地 / 2026</p>
+        <h1>本机环境与配置。</h1>
+        <p class="page-lede">两台机器，两个操作系统。跑模型的是工作站，所以它的数字是量出来的，不是估的：什么塞得下、解码多少 token/s、真正卡住的是哪一道限制。</p>
+        <div class="page-meta"><span><i></i>02 台机器</span><span>44 GB VRAM</span><span>94 GB DDR4</span><span>快照 / 2026 年 11 月</span></div>
+      </div>
+    </header>
+
+    <section class="section" id="rig" aria-labelledby="rig-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">01 / 本机环境</p><h2 id="rig-title">两台机器，一条工作流。</h2></div>
+        <p class="section-intro">一台能随身带的工作室，一台二手件攒的工作站。实验在 Mac 上做，模型回到 2080 Ti 双卡上跑。</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table rig-table">
+          <caption class="sr-only">计算机配置</caption>
+          <thead><tr><th scope="col">机器</th><th scope="col">算力</th><th scope="col">内存</th><th scope="col">存储</th><th scope="col">系统</th><th scope="col">角色</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><span class="machine-name">MacBook Pro</span><em>安静的那一半</em></th><td data-label="算力">Apple silicon</td><td data-label="内存">48 GB 统一内存</td><td data-label="存储">1 TB SSD</td><td data-label="系统">macOS</td><td data-label="角色">设计、写代码和写作；日常随身。</td></tr>
+            <tr><th scope="row"><span class="machine-name">Workstation</span><em>吵闹的那一半</em></th><td data-label="算力">2 × RTX 2080 Ti · 各 22 GB · NVLink NV2</td><td data-label="内存">44 GB VRAM + 94 GB DDR4</td><td data-label="存储">1 TB NVMe + 3 TB HDD</td><td data-label="系统">Ubuntu 24.04.5 LTS</td><td data-label="角色">本地推理、视频生成，以及热量。</td></tr>
+          </tbody>
+        </table>
+        <div class="rig-notes">
+          <div><span class="mono-label">两张卡，一个池子</span><p>每张 22 GB，共 44 GB。NVLink NV2 两条链路绑定，25.78 GB/s，所以张量切分不是在付 PCIe 的账。但两张卡挂在不同的 NUMA 节点上，而启动 kernel 的那个 host 线程比链路本身还贵。</p></div>
+          <div><span class="mono-label">天花板在哪</span><p>文本解码被功耗限住：两张卡都钉在 180 W、100% 利用率，所以先撞墙的是时钟，不是内存带宽。视频生成则是另一个问题——带宽加同步。</p></div>
+          <div><span class="mono-label">擅长 / 不擅长</span><p>擅长：27B FP8 模型跑 256K 上下文，20B 视频 640×352，embedding、分类、小型 LoRA。不擅长：70B 跑可用上下文，256K 下 batch &gt; 1，或者不做分块管线直接出原生 1344×768 视频。</p></div>
+        </div>
+        <p class="rig-quote">二手件攒的：2 × Xeon E5-2696 v4（44C / 88T）、2 × RTX 2080 Ti 各 22 GB、94 GB DDR4、一块 1 TB NVMe。还是比租便宜。</p>
+      <div class="wrap work-links"><a href="/zh/local/workflow.html">布线与本机网络图 <span aria-hidden="true">→</span></a></div>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="text-stack" aria-labelledby="text-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">02 / 文本栈</p><h2 id="text-title">模型实际解码有多快。</h2></div>
+        <p class="section-intro">下面这套服务配置就是跑 benchmark 时用的那一套：一个 27B 模型跨两张卡、256K 上下文，跑在机器今天启动时用的驱动上。</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">本地文本推理配置与实测吞吐</caption>
+          <thead><tr><th scope="col">项目</th><th scope="col">数值</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">运行时</th><td data-label="数值">vLLM 0.29.1rc0 SM75 fork · PyTorch 2.13 · CUDA 13.0</td></tr>
+            <tr><th scope="row">模型</th><td data-label="数值">Qwen3.8-27B-FP8 · W8A16（FP8 权重，FP16 激活）· FP8 KV cache</td></tr>
+            <tr><th scope="row">并行</th><td data-label="数值">TP=2 跨两张卡 · MTP/3 投机解码</td></tr>
+            <tr><th scope="row">上下文</th><td data-label="数值">262,144 tokens · GPU KV cache 可容纳 276,788</td></tr>
+            <tr><th scope="row">系统</th><td data-label="数值">Ubuntu 24.04.5 · kernel 7.0.0-43 · driver 580.178.04（open 模块）</td></tr>
+            <tr><th scope="row">功耗上限</th><td data-label="数值">每卡 180 W（默认 250 W，最高 280 W）</td></tr>
+          </tbody>
+        </table>
+        <div class="glance-stats rig-stats">
+          <div><strong>46</strong><span>tok/s 解码 · 开思考</span></div>
+          <div><strong>52</strong><span>tok/s 解码 · 关思考</span></div>
+          <div><strong>1,978</strong><span>tok/s prefill · 4K</span></div>
+          <div><strong>21.5 / 21.1</strong><span>GB VRAM · 256K</span></div>
+        </div>
+        <p class="table-note"><span>说明</span>五次以上运行取中位数，丢掉 warmup，在 180 W 功耗上限下测。fork 自己公布的 ~80 tok/s 是投机接受率很高的合成最好情况；真实 MTP 接受率更低，而且功耗上限会惩罚 MTP——每步要验证多个 draft token，计算本来就更重。</p>
+      </div>
+      <div class="wrap work-links"><a href="/zh/local/text-stack.html">完整配置与消融 <span aria-hidden="true">→</span></a><a href="/blog/eighty-and-forty-six.html">为什么是 46，不是 80 <span aria-hidden="true">→</span></a></div>
+      <div class="wrap"><p class="rig-quote">MTP/2 和 MTP/3 在这里统计上没有区别（关思考 50.8 vs 51.2 tok/s；开思考 46.1 vs 45.6）。瓶颈不是 draft 数量，是功耗上限、内存带宽，以及 SM75 解码时必须走的 Triton 回退路径。</p></div>
+    </section>
+
+    <section class="section" id="video-stack" aria-labelledby="video-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">03 / 视频栈</p><h2 id="video-title">22 GB 卡上跑 20B 视频模型。</h2></div>
+        <p class="section-intro">MiniMax H3 有 20.11B 参数、50 个 block。它塞不进一张卡，所以第二张卡不是备用显存——它必须分担一半工作，否则这一跑只是更慢。</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">MiniMax H3：单卡与双卡张量并行实测</caption>
+          <thead><tr><th scope="col">运行</th><th scope="col">每步</th><th scope="col">片段</th><th scope="col">峰值 VRAM</th><th scope="col">峰值温度</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">单卡 · 640×352</th><td data-label="每步">~51 s</td><td data-label="片段">243 s</td><td data-label="峰值 VRAM">19.1 GB</td><td data-label="峰值温度">78 °C 持续 4 min</td></tr>
+            <tr><th scope="row">TP2 · 640×352</th><td data-label="每步">~14 s</td><td data-label="片段">82 s</td><td data-label="峰值 VRAM">11.6 + 19.7 GB</td><td data-label="峰值温度">75 °C 持续 1.4 min</td></tr>
+            <tr><th scope="row">TP2 · 864×480</th><td data-label="每步">19.8 s</td><td data-label="片段">—</td><td data-label="峰值 VRAM">19.7 GB</td><td data-label="峰值温度">—</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>加速比</span>冒烟样本上 2.97×，864×480 成片上 2.25×。两边都对着同一套单卡流程测；数字来自仓库自己的性能日志。</p>
+      </div>
+      <div class="wrap"><p class="rig-quote">第一次 TP2 只到 1.31×。切分是对的，问题在 host 线程。W4A8 的 GEMM 会阻塞发起它的那个线程，所以只有一个 launch 线程时，两张卡的 GEMM 就串行了——实测重叠 5%。每个 rank 一个 host 线程：91% 重叠，2.25×，输出逐位一致。</p></div>
+      <div class="wrap work-links"><a href="/zh/local/video-stack.html">完整实测 <span aria-hidden="true">→</span></a><a href="https://github.com/NorwinYu/minimax-h3-dual-2080ti" target="_blank" rel="noopener">源码 <span aria-hidden="true">↗</span></a><a href="/zh/work/#systems">案例记录 <span aria-hidden="true">→</span></a></div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="caveat-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">04 / 前提与限制</p><h2 id="caveat-title">这些数字不是什么。</h2></div>
+        <p class="section-intro">上面每个数字都来自这台机器、这个功耗上限、这个驱动。去掉其中任何一个，数字就会变。</p>
+      </div>
+      <div class="wrap home-cap-grid">
+        <div class="home-cap-item"><span>01</span><h3>一个上限，一个驱动</h3><p>180 W 是选择，不是硬件极限。提到 250 W 会提高解码速度；上面那些温度正是它得留在 180 W 的原因。</p></div>
+        <div class="home-cap-item"><span>02</span><h3>不是排行榜</h3><p>这是二手双路 Xeon 上的单机中位数。用来决定在这里跑什么有用，拿去跟数据中心比没用。</p></div>
+        <div class="home-cap-item"><span>03</span><h3>被机器自己盯着</h3><p>撑着这些数字的就是那些 NVML 字段，读它们的是实验清单里的终端监控 <a href="/zh/work/#sensorium">sensorium</a>——回路里没有 <code>nvidia-smi</code> 子进程。</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <p><strong>Norwin Yu</strong><span>AI 使用研究 / 游戏与本地算力。</span></p>
+      </div>
+      <nav class="footer-nav" aria-label="页脚">
+        <span class="mono-label">目录</span>
+        <a href="/zh/work/">实验</a>
+        <a href="/zh/ai.html">本地</a>
+        <a href="/zh/open-source.html">开源</a>
+        <a href="/zh/competitions.html">竞赛</a>
+        <a href="/blog/">日志</a>
+        <a href="/zh/about.html">关于</a>
+      </nav>
+      <div class="footer-note">
+        <span class="mono-label">版本说明</span>
+        <p>字体为 Inter 与 IBM Plex Mono。手工编写，静态托管。没有追踪器、cookie 或密钥。</p>
+        <p>AI 使用研究 / 2026</p>
+      </div>
+      <div class="footer-status">
+        <span class="status"><i aria-hidden="true"></i>欢迎交流研究</span>
+        <a href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 Norwin Yu</span>
+      <span>最后更新 / 2026 年 11 月</span>
+      <span>无统计代码，运行时无外部请求。</span>
+    </div>
+  </footer>
+</body>
+</html>

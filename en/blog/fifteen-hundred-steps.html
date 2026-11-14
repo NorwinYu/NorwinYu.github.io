@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>1,500 steps later — Norwin Yu</title>
+  <meta name="description" content="A scale postmortem for a Three Kingdoms tactics game: how 47 generals, 11 cities and one map that was too small broke the interface, the gameplay and the art together.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="1,500 steps later — Norwin Yu">
+  <meta property="og:description" content="A scale postmortem for a Three Kingdoms tactics game: how 47 generals, 11 cities and one map that was too small broke the interface, the gameplay and the art together.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/demo-three-kingdoms-battle.jpg">
+  <meta property="og:locale" content="en_US">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/fifteen-hundred-steps.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/fifteen-hundred-steps.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="article-nav" aria-label="Article navigation">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="lang-switch" href="/blog/fifteen-hundred-steps.html" hreflang="zh-CN">中文</a>
+      <span class="availability"><i aria-hidden="true"></i>Open to research conversations</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> All notes</a>
+        <p class="article-kicker"><span class="is-accent">Game</span><i aria-hidden="true"></i><span>Tactics</span><i aria-hidden="true"></i><span>Scale postmortem</span></p>
+        <h1>1,500 steps<br><em>later.</em></h1>
+        <p class="article-deck">The first version of 烽火三国 (Beacon of the Three Kingdoms) wanted to be AAA. What sank it was not the model failing to write systems, but 47 generals, 11 cities and one map that was too small.</p>
+        <p class="article-cn">The number of systems is not depth. Past a certain scale, the first things to break are selection, the map and touch input.</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>November 2026</span>
+          <span>9 min</span>
+          <span>Research note / 08</span>
+        </div>
+        <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">Contents</p>
+        <nav class="article-toc" aria-label="Article contents">
+          <a href="#first">First version: many systems, a small game</a>
+          <a href="#selection">You cannot select a target</a>
+          <a href="#map">The map is too small</a>
+          <a href="#auto">Auto-battle that does not auto</a>
+          <a href="#art">Art is not a generation problem</a>
+          <a href="#mobile">Mobile is not a smaller version</a>
+          <a href="#redo">If I started over</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>Scale</dt><dd>47 generals / 11 cities</dd></div>
+          <div><dt>Battlefield</dt><dd>12 × 9 tiles</dd></div>
+          <div><dt>Process</dt><dd>30+ rounds of feedback / 1,500+ steps</dd></div>
+          <div><dt>Form</dt><dd>Browser / single player</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>The first version's goal was written large: Three Kingdoms setting, 3D tactics, match AAA, ship every system. It did grow a lot of systems: 47 generals, 11 cities, a 12×9 battlefield, weather, fire, morale, reinforcements, boss entrances. The screenshots looked plausible. Ten minutes of play and you noticed it had not yet become a game.</p>
+
+        <p>The problem is not that there is too little content. The opposite: there is too much. Cram the growth of 47 generals, the management of 11 cities and several layers of battle state into a 12×9 grid and the interface breaks first, the gameplay second. Most of the problems below are not model-capability problems. They are scale problems.</p>
+
+        <div class="stat-strip is-four">
+          <div><strong>47</strong><span>generals</span></div>
+          <div><strong>11</strong><span>cities</span></div>
+          <div><strong>12 × 9</strong><span>battlefield tiles</span></div>
+          <div><strong>30+</strong><span>rounds of explicit feedback</span></div>
+        </div>
+
+        <h2 id="first">First version: many systems, a small game</h2>
+        <p>“Ship every system” is a dangerous brief. It pulls attention toward a checklist: is there weather? fire? morale? reinforcements? The checklist can always grow, but what players actually perceive is a different set of questions: who do I click now? Why will it not select? What happens after this step?</p>
+
+        <p>The first version buried the answers to those questions inside the systems. Battles had weather and fire, but you could not see where the fire would spread; generals had growth, but its relation to the battle in front of you was unclear; cities had management, but the feedback from it arrived much later. Every system was there. The game was small.</p>
+
+        <h2 id="selection">You cannot select a target</h2>
+        <p>The earliest and most fatal bug was that targets could not be selected. You clicked an enemy and the unit did not move, or you selected the unit beside it. The cause is usually not complicated: the mapping between screen coordinates and tile coordinates is wrong, hit-testing and rendering use different geometry, or the UI layer swallows the click.</p>
+
+        <p>The impact was large. Every action in a tactics game rests on “the unit I selected is this one”. If selection is unstable, skills, movement, attacks and counterattacks downstream mean nothing. Players do not analyse your coordinate system. They conclude that the game is broken.</p>
+
+        <blockquote>Selection is not an interaction detail. It is the first contract of a tactics game.</blockquote>
+
+        <p>Fixing selection is only half of it; the selection feedback has to be fixed too: highlight, range, path, attackable targets. Players need to see the outcome before they commit. Without that preview, even correct selection feels random.</p>
+
+        <h2 id="map">The map is too small</h2>
+        <p>A 12×9 grid is not small for a turn-based game, but it is cramped for a 3D camera. Make the units bigger and the models hide the tiles; pull the camera closer and the surrounding context disappears; add effects and the battlefield turns into a smear of light. When players say the map is too small, they often do not mean the tile count. They mean the readable space.</p>
+
+        <p>3D tactics adds a layer that 2D does not have: the tile is a logical unit, the model is a visual unit. A general occupies one tile, but the model may be three tiles wide; a city is a point in logic and a large block of buildings on screen. When logic and visuals disagree, clicks drift and occlusion happens.</p>
+
+        <p>These problems are not solved by making the map bigger. What has to be fixed earlier is the camera height, the world size of a tile, unit bounding boxes, occlusion rules and the clickable area on screen. Map size is an outcome, not a starting point.</p>
+
+        <h2 id="auto">Auto-battle that does not auto</h2>
+        <p>In the first version of auto-battle, the last few turns stopped moving. It was not the AI failing to decide; the turn state machine never advanced. After the current unit finished, it did not switch to the next one correctly, or some unit was stuck on an unreachable tile and the loop halted. Players saw “auto-battle is broken”. The code had a loop with no exit.</p>
+
+        <p>Auto-battle is really a second product: it needs a deterministic turn order, explainable action choices, failure recovery and a log. It cannot be player input replaced with random choices. Otherwise, once it stalls, the player neither knows what happened nor can take over.</p>
+
+        <p>Later I preferred to treat auto-battle as a pausable simulation: every turn has an explicit state change, a log and stop conditions, and the player can take over at any moment. Even an unimpressive AI then will not deadlock the game.</p>
+
+        <h2 id="art">Art is not a generation problem</h2>
+        <p>“The art looks bad” is the easiest thing to misattribute. Generated images and video supply assets, but assets do not become a scene on their own. Whether a battlefield looks good depends first on composition: where the camera looks, how terrain is layered, whether unit silhouettes read, whether colour separates friend from foe. A generative model decides none of those.</p>
+
+        <p>This project did use generated image and video assets, and some units did stop looking so crude. But while the map's spatial relations are wrong, the finer the assets, the messier the frame. Enemies stand on the same ground with the same silhouette and the same colour, and the player still cannot tell them apart.</p>
+
+        <figure class="article-figure">
+          <img decoding="async" src="/assets/img/demo-three-kingdoms-battle.jpg" alt="Three Kingdoms tactics battle screen: board, units, terrain and action bar." width="1440" height="900" loading="eager">
+          <figcaption><span>烽火三国 / battle screen. Once the information density goes up, reading order matters more than any single model.</span><span>Project screenshot</span></figcaption>
+        </figure>
+
+        <p>A more effective order: fix the camera and the terrain layering first, then unit silhouettes and faction colours, and only then materials and generated assets. Art is not “generate more images”. It is letting the player understand the battlefield in 0.5 seconds.</p>
+
+        <h2 id="mobile">Mobile is not a smaller version</h2>
+        <p>Mobile support is not shrinking the desktop layout. Tactics on a phone needs a different input set: tap, drag, pinch to zoom, long-press to inspect, cancel. Desktop hover previews do not exist on a phone, and there is no room for a sidebar. The player has to complete the select → move → confirm chain with one thumb.</p>
+
+        <p>This adaptation exposed a pile of layout and state problems: the match could start before assets finished loading, the interface misaligned, buttons covered tiles. These are not small CSS problems. “Mobile is the primary input” never entered the design from the first version.</p>
+
+        <h2 id="redo">If I started over</h2>
+        <ul>
+          <li><strong>Ship one complete battle with 6 units and 1 map.</strong> Selection, movement, resolution, restart — then talk about 47 generals.</li>
+          <li><strong>Write the selection contract into the first version.</strong> Click mapping, tile highlight, path preview, attack range — before any content.</li>
+          <li><strong>Treat auto-battle as a simulation.</strong> A log, stop conditions, take-over — not a loop with no exit.</li>
+          <li><strong>Fix the camera and the scale first.</strong> How big a tile is, how big a unit is, how high the camera sits — that decides how complex the map can be.</li>
+          <li><strong>Mobile is the primary input from day one.</strong> Not responsive work at the end; design the flows a thumb can finish first.</li>
+          <li><strong>Do silhouettes and faction colours before art.</strong> Generated assets are the last step, not the first.</li>
+        </ul>
+
+        <p>The demo did end up playable, with a complete Three Kingdoms shell: generals, cities, weather, fire, morale, reinforcements and bosses. That proves one thing: a model can write a lot of systems. It also proves another: the number of systems is not depth. Scale breaks the interface and the input first.</p>
+
+        <p>If I keep only one lesson, it is this: get one battle right, then make it bigger. Players do not remember how many generals you had. They remember whether they could select the unit they meant to select.</p>
+
+        <p class="article-end"><strong>References /</strong> Live demo: <a href="https://norwinyu.github.io/three-kingdoms-slg/" target="_blank" rel="noopener">three-kingdoms-slg</a>; source: <a href="https://github.com/NorwinYu/three-kingdoms-slg" target="_blank" rel="noopener">NorwinYu/three-kingdoms-slg</a>. Project page: <a href="/work/index.html#three-kingdoms">烽火三国</a>. This is a development postmortem, not a final judgement on the visuals or the gameplay.</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>Back to / Journal</p>
+          <h2 id="next-title">All notes</h2>
+        </div>
+        <a href="index.html">
+          <span>Browse</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="Footer">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/open-source.html">Open source</a>
+        <a href="/competitions.html">Competitions</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a href="index.html">All notes <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

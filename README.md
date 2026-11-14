@@ -30,22 +30,35 @@ All internal links are relative, so the same files work as a user site (`usernam
 
 ```text
 .
-├── index.html
+├── index.html            English site (root)
 ├── work/                 experiments
-├── blog/                 journal
-├── local/                local-inference reference pages
-│   ├── text-stack.html   serving profile + throughput + ablations
-│   ├── video-stack.html  MiniMax H3 single-card vs tensor parallel
-│   └── workflow.html     rig topology, LAN services, request path
-├── about.html
-├── ai.html               "Local" section landing: rig + both stacks
-├── competitions.html
-├── open-source.html
+├── ai.html               "Local" section landing
+├── local/                reference pages
+├── about.html  competitions.html  open-source.html
+├── blog/                 Chinese journal (keeps its original URLs)
+├── zh/                   Chinese site: same structure as the root
+│   ├── index.html  about.html  competitions.html  open-source.html
+│   ├── ai.html  work/  local/
+│   └── 404.html
+├── en/blog/              English journal
 ├── assets/               css, js, fonts, images
 ├── manifest.webmanifest
-├── 404.html
+├── 404.html              English 404 (root-absolute paths)
 └── .github/workflows/pages.yml
 ```
+
+Language layout:
+
+| URL | Language |
+| --- | --- |
+| `/…` | English |
+| `/zh/…` | Chinese |
+| `/blog/…` | Chinese journal (unchanged URLs) |
+| `/en/blog/…` | English journal |
+
+Every page carries one `<a class="lang-switch">` pointing at its counterpart and a pair of `hreflang` alternates. The mapping is by path: strip or add the `/zh/` prefix for site pages; `/blog/x.html` ↔ `/en/blog/x.html` for the journal. Pages under `zh/` and `en/` use root-absolute asset URLs (`/assets/…`) because they live one level deeper.
+
+When you add a page, add both languages and set the switch href and the hreflang pair; a missing counterpart is a broken switch.
 
 `ai.html` is the landing page for the **Local** section; the two pages under `local/` hold the full reference tables it summarises. Journal notes stay narrative — they link into `local/` rather than duplicating the tables.
 

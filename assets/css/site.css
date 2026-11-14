@@ -3385,3 +3385,297 @@ html {
   stroke-dasharray: 4 4;
   fill: none;
 }
+
+/* --------------------------------------------------------------------------
+   Motion — opt-in. The `has-motion` class is only added by site.js when the
+   visitor has not asked for reduced motion, so a no-JS page stays fully visible.
+   -------------------------------------------------------------------------- */
+
+.has-motion [data-reveal] {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
+}
+
+.has-motion [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* Reading progress, injected by site.js on article pages. */
+.reading-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 60;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+/* Hover depth: a 1px lift rather than a shadow, to stay in the paper palette. */
+.home-work-card,
+.coding-card,
+.comparison-card,
+.oss-card,
+.also-card,
+.journal-entry,
+.coding-home-card {
+  transition: transform 0.25s var(--ease), border-color 0.25s, background 0.2s;
+}
+
+@media (hover: hover) {
+  .home-work-card:hover,
+  .coding-card:hover,
+  .comparison-card:hover,
+  .oss-card:hover,
+  .also-card:hover,
+  .journal-entry:hover,
+  .coding-home-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--line-strong);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .has-motion [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3D rig — CSS transforms only, no library and no assets. Used on the home
+   page as the one animated object on the site.
+   -------------------------------------------------------------------------- */
+
+.home-local-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: 28px;
+  align-items: center;
+}
+
+.rig3d {
+  position: relative;
+  height: 360px;
+  perspective: 1100px;
+  perspective-origin: 50% 45%;
+}
+
+.rig3d-tilt {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transition: transform 0.4s var(--ease);
+}
+
+.rig3d-scene {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 320px;
+  height: 210px;
+  margin: -105px 0 0 -160px;
+  transform-style: preserve-3d;
+  transform: rotateX(58deg) rotateZ(-38deg);
+  animation: rig-orbit 26s ease-in-out infinite alternate;
+}
+
+@keyframes rig-orbit {
+  from { transform: rotateX(58deg) rotateZ(-38deg); }
+  to   { transform: rotateX(53deg) rotateZ(-29deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rig3d-scene { animation: none; }
+}
+
+.r3-board {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  background: #f0eade;
+  box-shadow: 0 20px 44px -30px rgba(24, 22, 19, 0.5);
+}
+
+.r3-socket {
+  position: absolute;
+  width: 70px;
+  height: 62px;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  background: #e9e2d5;
+}
+
+.r3-socket-a { left: 24px; top: 22px; }
+.r3-socket-b { right: 24px; top: 22px; }
+
+.r3-ram {
+  position: absolute;
+  height: 5px;
+  width: 104px;
+  border-radius: 1px;
+  background: #ded6c7;
+}
+
+.r3-ram-a { left: 30px; bottom: 34px; }
+.r3-ram-b { left: 30px; bottom: 22px; }
+.r3-ram-c { right: 30px; bottom: 34px; }
+.r3-ram-d { right: 30px; bottom: 22px; }
+
+/* PCIe slots, so the cards visibly sit in something. */
+.r3-slot {
+  position: absolute;
+  height: 2px;
+  width: 132px;
+  background: rgba(64, 60, 53, 0.28);
+}
+
+.r3-slot-a { left: 6px; top: 166px; }
+.r3-slot-b { right: 6px; top: 166px; }
+
+.r3-card {
+  position: absolute;
+  width: 124px;
+  height: 70px;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  background: linear-gradient(158deg, #fdfcf8 0%, #f4efe4 100%);
+  transform-style: preserve-3d;
+  box-shadow: 0 24px 28px -24px rgba(24, 22, 19, 0.55);
+}
+
+.r3-card-a { left: 6px; top: 92px; transform: translateZ(58px); }
+.r3-card-b { right: 6px; top: 92px; transform: translateZ(58px); }
+
+.r3-shadow {
+  position: absolute;
+  width: 136px;
+  height: 40px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 50%, rgba(24, 22, 19, 0.14) 0%, rgba(24, 22, 19, 0) 72%);
+}
+
+.r3-shadow-a { left: 0; top: 156px; }
+.r3-shadow-b { right: 0; top: 156px; }
+
+.r3-fan {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #efe8da 0 40%, #e2dacb 41% 100%);
+}
+
+.r3-fin {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: 9px;
+  height: 3px;
+  background: repeating-linear-gradient(90deg, var(--line-strong) 0 2px, transparent 2px 6px);
+}
+
+.r3-label {
+  position: absolute;
+  right: 9px;
+  top: 10px;
+  font-family: var(--mono);
+  font-size: 7.5px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.r3-bridge {
+  position: absolute;
+  left: 50%;
+  top: 119px;
+  width: 46px;
+  height: 13px;
+  margin-left: -23px;
+  border: 1px solid var(--accent);
+  border-radius: 2px;
+  background: linear-gradient(90deg, rgba(180, 78, 45, 0.3), rgba(180, 78, 45, 0.1));
+  transform: translateZ(66px);
+}
+
+.r3-relay {
+  position: absolute;
+  left: 50%;
+  top: 72px;
+  width: 1px;
+  height: 150px;
+  margin-left: -0.5px;
+  background: repeating-linear-gradient(180deg, var(--line-strong) 0 4px, transparent 4px 8px);
+  transform: translateZ(24px);
+}
+
+.rig-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin-top: 10px;
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.rig-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rig-legend i {
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--line-strong);
+  background: var(--card);
+}
+
+.rig-legend i.is-accent {
+  border-color: var(--accent);
+  background: rgba(180, 78, 45, 0.16);
+}
+
+@media (max-width: 940px) {
+  .home-local-split {
+    grid-template-columns: 1fr;
+  }
+
+  .rig3d {
+    height: 320px;
+  }
+}
+
+/* Language switch: a text link, not a control — it changes the URL. */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding-bottom: 1px;
+  border-bottom: 1px solid var(--line-strong);
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lang-switch:hover {
+  color: var(--ink);
+  border-bottom-color: var(--accent);
+}
+
+.article-header .lang-switch {
+  margin-left: 14px;
+}

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Norwin Yu — AI 使用研究</title>
+  <meta name="description" content="Norwin Yu 的 AI 使用研究：用游戏、本地模型对比、编码工具和本地推理，看 AI 到底怎么被用。">
+  <meta name="author" content="Norwin Yu">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Norwin Yu — AI 使用研究">
+  <meta property="og:description" content="Norwin Yu 的 AI 使用研究：用游戏、本地模型对比、编码工具和本地推理，看 AI 到底怎么被用。">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/zh/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="index-page" data-page="home">
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="topbar" data-header>
+    <div class="wrap topbar-inner">
+      <a class="brand" href="/zh/" aria-label="Norwin Yu — 首页">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
+      </a>
+      <nav class="main-nav" aria-label="主导航">
+        <a href="/zh/work/" data-nav="work">实验</a>
+        <a href="/zh/ai.html" data-nav="ai">本地</a>
+        <a href="/zh/open-source.html" data-nav="oss">开源</a>
+        <a href="/zh/competitions.html" data-nav="competitions">竞赛</a>
+        <a href="/blog/" data-nav="journal">日志</a>
+        <a href="/zh/about.html" data-nav="about">关于</a>
+      </nav>
+      <div class="topbar-actions">
+        <a class="lang-switch" href="/" hreflang="en">EN</a>
+        <span class="status"><i aria-hidden="true"></i>AI 使用研究</span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          菜单 <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true">
+    <div class="wrap mobile-menu-head">
+      <span class="mono-label">目录 / 2026</span>
+      <button class="menu-close" type="button" data-menu-close aria-label="关闭菜单">关闭 <span aria-hidden="true">×</span></button>
+    </div>
+    <nav class="wrap mobile-nav" aria-label="移动端主导航">
+      <a href="/zh/work/" data-nav="work">实验</a>
+      <a href="/zh/ai.html" data-nav="ai">本地</a>
+        <a href="/zh/open-source.html" data-nav="oss">开源</a>
+      <a href="/zh/competitions.html" data-nav="competitions">竞赛</a>
+      <a href="/blog/" data-nav="journal">日志</a>
+      <a href="/zh/about.html" data-nav="about">关于</a>
+    </nav>
+    <div class="wrap mobile-menu-foot">
+      <span>AI 使用研究 / 2026</span>
+      <span>欢迎交流研究</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="wrap hero-layout">
+        <div class="hero-copy">
+          <p class="eyebrow"><span>作品集 / 2026</span><span class="eyebrow-sep" aria-hidden="true"></span><span>AI 使用研究</span></p>
+          <h1 id="hero-title">AI 使用研究。</h1>
+          <p class="hero-lede">我研究 AI 到底怎么被用：agent 工作流、浏览器游戏，以及跑在自己硬件上的模型。重点是「能演示」和「能用」之间那段距离。</p>
+          <div class="hero-actions">
+            <a class="button" href="/zh/work/">精选实验</a>
+            <a class="text-link" href="/blog/">日志 <span aria-hidden="true">→</span></a>
+            <a class="text-link" href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+          </div>
+          <ul class="focus-list" aria-label="核心方向">
+            <li>Agent 系统</li><li>浏览器 3D</li><li>本地推理</li><li>产品实验</li>
+          </ul>
+        </div>
+
+        <aside class="glance" aria-labelledby="glance-title">
+          <div class="glance-head">
+            <h2 id="glance-title">速览</h2>
+            <span class="status"><i aria-hidden="true"></i>开放</span>
+          </div>
+          <dl class="glance-list">
+            <div><dt>方向</dt><dd>AI 系统、游戏、编码工具、本地推理</dd></div>
+            <div><dt>现在</dt><dd>十二个实验：游戏、工具 + 本地系统</dd></div>
+            <div><dt>算力</dt><dd>MacBook Pro + 2 × RTX 2080 Ti</dd></div>
+            <div><dt>状态</dt><dd>欢迎交流研究</dd></div>
+          </dl>
+          <div class="glance-stats">
+            <div><strong>12</strong><span>实验</span></div>
+            <div><strong>02</strong><span>在跑竞赛</span></div>
+            <div><strong>06</strong><span>方向</span></div>
+            <div><strong>44 GB</strong><span>本地显存</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="work-title">
+      <div class="wrap home-section-head">
+        <h2 id="work-title">精选实验</h2>
+        <a href="/zh/work/">全部实验 <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="wrap"><p class="home-section-note">这些不是游戏开发的作品集。每一个都是一次技术探针：LLM 能把一条真实的生产管线带到多远——生成的素材、代码、UI、音频、验证和部署——以及人在哪里仍然必须介入？</p></div>
+      <div class="wrap home-work-grid">
+        <article class="home-work-card">
+          <a class="home-work-media" href="https://norwinyu.github.io/echo-zero/" target="_blank" rel="noopener" aria-label="在线试玩 零号信标"><img decoding="async" src="/assets/img/demo-echo-zero.jpg" alt="零号信标 标题画面" width="1440" height="900" loading="eager"></a>
+          <div class="home-work-body">
+            <p class="demo-kicker">电影化视觉小说 · 浏览器</p>
+            <h3>零号信标 <span>ECHO ZERO / 蓝光游戏</span></h3>
+            <p>一部未来黑色风格的视觉小说：关于记忆、信号，和一座会遗忘的城市。</p>
+            <p class="model-line"><span>模型</span>DeepSeek Flash + MiniMax H3 + 追加配音</p>
+            <div class="home-work-links"><a class="home-work-link" href="https://norwinyu.github.io/echo-zero/" target="_blank" rel="noopener">在线试玩 <span aria-hidden="true">↗</span></a><a class="home-work-link" href="/zh/work/#echo-zero">案例 <span aria-hidden="true">→</span></a></div>
+          </div>
+        </article>
+        <article class="home-work-card">
+          <a class="home-work-media" href="https://norwinyu.github.io/three-kingdoms-slg/" target="_blank" rel="noopener" aria-label="在线试玩 烽火三国"><img decoding="async" src="/assets/img/demo-three-kingdoms.jpg" alt="烽火三国 主菜单" width="1440" height="900" loading="lazy"></a>
+          <div class="home-work-body">
+            <p class="demo-kicker">战棋 · 浏览器 3D</p>
+            <h3>烽火三国 <span>Beacon of the Three Kingdoms</span></h3>
+            <p>一个 12 × 9 的战棋切片：47 名武将、天气、火攻，和一套完整的战斗循环。</p>
+            <p class="model-line"><span>模型</span>DeepSeek Flash + MiniMax H3</p>
+            <div class="home-work-links"><a class="home-work-link" href="https://norwinyu.github.io/three-kingdoms-slg/" target="_blank" rel="noopener">在线试玩 <span aria-hidden="true">↗</span></a><a class="home-work-link" href="/zh/work/#three-kingdoms">案例 <span aria-hidden="true">→</span></a></div>
+          </div>
+        </article>
+        <article class="home-work-card">
+          <a class="home-work-media" href="https://norwinyu.github.io/ImmortalSect/" target="_blank" rel="noopener" aria-label="在线试玩 仙宗"><img decoding="async" src="/assets/img/demo-immortal-sect.jpg" alt="仙宗 黄昏时的山门" width="1440" height="900" loading="lazy"></a>
+          <div class="home-work-body">
+            <p class="demo-kicker">3D 经营 · 浏览器</p>
+            <h3>仙宗 <span>Immortal Sect / 修仙宗门</span></h3>
+            <p>一座 3D 山门，七名弟子，升级、战斗和渡劫。</p>
+            <p class="model-line"><span>模型</span>DeepSeek Flash · 3D 能力测试</p>
+            <div class="home-work-links"><a class="home-work-link" href="https://norwinyu.github.io/ImmortalSect/" target="_blank" rel="noopener">在线试玩 <span aria-hidden="true">↗</span></a><a class="home-work-link" href="/zh/work/#immortal-sect">案例 <span aria-hidden="true">→</span></a></div>
+          </div>
+        </article>
+      </div>
+      <div class="wrap home-also">
+        <div class="home-also-head">
+          <span class="mono-label">另外 / 04 个实验</span>
+          <a href="/zh/work/">全部实验 <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="home-also-grid">
+          <a class="also-card" href="/zh/work/#mistvale">
+            <div class="also-media"><img decoding="async" src="/assets/img/demo-mistvale.jpg" alt="雾谷农庄" width="1600" height="1000" loading="lazy"></div>
+            <div class="also-copy"><span>无 Blender 基线</span><h3>雾谷农庄</h3><p>DeepSeek Flash · 单条 prompt</p></div>
+            <i class="also-arrow" aria-hidden="true">↗</i>
+          </a>
+          <a class="also-card" href="/zh/work/#airport">
+            <div class="also-media"><img decoding="async" src="/assets/img/demo-airport-tycoon.jpg" alt="机场大亨 3D" width="1280" height="800" loading="lazy"></div>
+            <div class="also-copy"><span>桌面端 · 无 Web 导出</span><h3>机场大亨 3D</h3><p>DeepSeek Flash + DSH · Godot</p></div>
+            <i class="also-arrow" aria-hidden="true">↗</i>
+          </a>
+          <a class="also-card" href="/zh/work/#neon">
+            <div class="also-media"><img decoding="async" src="/assets/img/demo-neon-breach.jpg" alt="NEON BREACH" width="1280" height="800" loading="lazy"></div>
+            <div class="also-copy"><span>无 skill 对照</span><h3>NEON BREACH</h3><p>DeepSeek V4.1 Flash · 纯 API</p></div>
+            <i class="also-arrow" aria-hidden="true">↗</i>
+          </a>
+          <a class="also-card" href="/zh/work/#ming-palace">
+            <div class="also-media"><img decoding="async" src="/assets/img/demo-ming-palace.jpg" alt="明宫三维" width="1600" height="1000" loading="lazy"></div>
+            <div class="also-copy"><span>本地模型对比</span><h3>明宫三维</h3><p>DeepSeek Flash 1017 · 本地</p></div>
+            <i class="also-arrow" aria-hidden="true">↗</i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="coding-title">
+      <div class="wrap home-section-head">
+        <h2 id="coding-title">编码与工具</h2>
+        <a href="/zh/work/#coding">全部实验 <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="wrap"><p class="home-section-note">实验的另一半：让模型干的活可检查、本地优先、可复现的工具。用和游戏同一套循环做出来，只是没有游戏。</p></div>
+      <div class="wrap home-coding-grid">
+        <a class="coding-home-card" href="/zh/work/#coding">
+          <span class="mono-label">工具 / TypeScript</span>
+          <h3>dsh-quota</h3>
+          <p>为 DeepSeek Harness 提供按路由区分的配额与花费状态：套餐剩余、API 余额或本地台账，由模型路由决定。</p>
+          <p class="model-line"><span>模型</span>DeepSeek V4.1 Flash</p>
+          <span class="coding-home-link">读构建过程 <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="coding-home-card" href="/zh/work/#coding">
+          <span class="mono-label">桌面应用 / Electron</span>
+          <h3>NorMark</h3>
+          <p>一个 macOS 上的 Markdown 阅读器与编辑器，带 CodeMirror、实时预览、工作区、PDF 导出和专注模式。</p>
+          <p class="model-line"><span>模型</span>未记录</p>
+          <span class="coding-home-link">读构建过程 <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="coding-home-card" href="/zh/work/#coding">
+          <span class="mono-label">空间工具 / Three.js</span>
+          <h3>RoomTessera 3D</h3>
+          <p>从户型图到可编辑的 3D 公寓：墙体识别、家具、材质、测量和本地保存。</p>
+          <p class="model-line"><span>模型</span>DeepSeek Flash</p>
+          <span class="coding-home-link">读构建过程 <span aria-hidden="true">→</span></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="cap-title">
+      <div class="wrap home-section-head">
+        <h2 id="cap-title">研究方向</h2>
+        <a href="/zh/about.html">完整档案 <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="wrap home-cap-grid">
+        <div class="home-cap-item"><span>01</span><h3>AI 系统与 agent</h3><p>Agent 工作流、RAG、工具调用、评测和本地推理。</p></div>
+        <div class="home-cap-item"><span>02</span><h3>产品实验</h3><p>TypeScript、React、Node、Python 和静态优先的部署。</p></div>
+        <div class="home-cap-item"><span>03</span><h3>空间界面</h3><p>Three.js、WebGL、Godot，以及能承载信息的游戏 UI。</p></div>
+        <div class="home-cap-item"><span>04</span><h3>本地基础设施</h3><p>Linux、CUDA、Docker 和本地 GPU 工作流。</p></div>
+        <div class="home-cap-item"><span>05</span><h3>研究与写作</h3><p>benchmark、数据分析和带注意事项的技术笔记。</p></div>
+        <div class="home-cap-item"><span>06</span><h3>界面设计</h3><p>字体、层级与交互，都写在代码里。</p></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="bench-title">
+      <div class="wrap home-section-head">
+        <h2 id="bench-title">本地环境</h2>
+        <a href="/zh/ai.html">本地 <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="wrap home-local-split">
+        <div class="home-panel">
+          <h3>两台机器，一套本地优先的工作流</h3>
+          <p>一台便携 Mac 用来做东西，一台二手配件的工作站用来跑本地推理，再加一个刻意做小的模型台。硬件和运行时是研究装置的一部分，不是采购上的炫耀。</p>
+          <dl>
+            <div><dt>MacBook Pro</dt><dd>Apple 芯片 · 48 GB 统一内存 · 1 TB</dd></div>
+            <div><dt>工作站</dt><dd>2 × Xeon E5-2696 v4 · 2 × RTX 2080 Ti（每张 22 GB）· 94 GB DDR4</dd></div>
+            <div><dt>运行时</dt><dd>vLLM · Qwen3.8-27B-FP8 · 256K 上下文 · 180 W 上限</dd></div>
+            <div><dt>擅长</dt><dd>Embeddings、分类、本地草稿和小规模 LoRA 训练。</dd></div>
+          </dl>
+          <a class="home-panel-link" href="/zh/ai.html">完整环境与配置 <span aria-hidden="true">→</span></a>
+        </div>
+
+        <div class="rig3d" data-rig aria-hidden="true">
+          <div class="rig3d-tilt" data-rig-tilt>
+            <div class="rig3d-scene">
+              <div class="r3-board">
+                <span class="r3-socket r3-socket-a"></span>
+                <span class="r3-socket r3-socket-b"></span>
+                <span class="r3-ram r3-ram-a"></span>
+                <span class="r3-ram r3-ram-b"></span>
+                <span class="r3-ram r3-ram-c"></span>
+                <span class="r3-ram r3-ram-d"></span>
+                <span class="r3-slot r3-slot-a"></span>
+                <span class="r3-slot r3-slot-b"></span>
+              </div>
+              <div class="r3-relay"></div>
+              <div class="r3-card r3-card-a">
+                <span class="r3-fan"></span>
+                <span class="r3-label">GPU0</span>
+                <span class="r3-fin"></span>
+              </div>
+              <div class="r3-card r3-card-b">
+                <span class="r3-fan"></span>
+                <span class="r3-label">GPU1</span>
+                <span class="r3-fin"></span>
+              </div>
+              <div class="r3-bridge"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wrap">
+        <p class="rig-legend"><span><i></i>2 × Xeon E5-2696 v4 · 44C / 88T</span><span><i></i>2 × RTX 2080 Ti · 22 GB</span><span><i class="is-accent"></i>NVLink NV2 · 2 × 25.78 GB/s</span><span><i></i>94 GB DDR4</span></p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="oss-title">
+      <div class="wrap home-section-head">
+        <h2 id="oss-title">开源</h2>
+        <a href="/zh/open-source.html">全部贡献 <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="wrap home-split">
+        <a class="home-panel" href="/zh/open-source.html#strata">
+          <p class="mono-label">Strata / 43k+ ★</p>
+          <h3>老卡上的多 GPU 实测</h3>
+          <p>五个上游 PR，涉及层切分与单卡的对比、批量并发和 vLLM，全部在双路 Xeon 上的 2× 2080 Ti 22 GB 上实测。</p>
+          <span class="home-panel-link">读这个贡献 <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="home-panel" href="/zh/open-source.html#maya">
+          <p class="mono-label">Project Maya / 2.8k+ ★</p>
+          <h3>客户端发现上限 + 一份 128K 报告</h3>
+          <p>把 <code>/v1/models</code> 的上下文与输出上限测出来了；同一对卡上，Maya-XS DeepSeek-V4.1-Flash 跑到 128K，写进了报告。</p>
+          <span class="home-panel-link">读这个贡献 <span aria-hidden="true">→</span></span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="comp-title">
+      <div class="wrap home-section-head">
+        <h2 id="comp-title">竞赛</h2>
+        <a href="/zh/competitions.html">全部结果 <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="wrap home-list">
+        <a href="/zh/competitions.html"><span class="home-list-date">2020</span><span class="home-list-title">保险数字科技挑战赛 · 对话意图识别</span><span class="home-list-arrow">第 14 名</span></a>
+        <a href="/zh/competitions.html"><span class="home-list-date">2020</span><span class="home-list-title">天池 · 饿了么骑士行为预估</span><span class="home-list-arrow">45 / 102</span></a>
+        <a href="/blog/name-that-llm.html"><span class="home-list-date">2026</span><span class="home-list-title">Kaggle · Name That LLM</span><span class="home-list-arrow">研究 <span aria-hidden="true">↗</span></span></a>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="writing-title">
+      <div class="wrap home-section-head">
+        <h2 id="writing-title">写作</h2>
+        <a href="/blog/">全部笔记 <span aria-hidden="true">→</span></a>
+      </div>
+      <p class="writing-ai-note wrap">写作均为 AI 代写 · 素材与校对：Norwin Yu</p>
+      <div class="wrap home-list">
+        <a href="/blog/name-that-llm.html"><span class="home-list-date">置顶</span><span class="home-list-title">噪声里的指纹</span><span class="home-list-arrow">研究 <span aria-hidden="true">↗</span></span></a>
+        <a href="/blog/what-1-4mb-buys.html"><span class="home-list-date">系统</span><span class="home-list-title">1.4MB 到底买到了什么</span><span class="home-list-arrow">11 分钟 <span aria-hidden="true">↗</span></span></a>
+        <a href="/blog/two-gpu-local-lab.html"><span class="home-list-date">系统</span><span class="home-list-title">44GB 显存问题</span><span class="home-list-arrow">8 分钟 <span aria-hidden="true">↗</span></span></a>
+        <a href="/blog/tp2-one-thread.html"><span class="home-list-date">系统</span><span class="home-list-title">并行不是切分</span><span class="home-list-arrow">10 分钟 <span aria-hidden="true">↗</span></span></a>
+        <a href="/blog/every-frame-four-percent.html"><span class="home-list-date">系统</span><span class="home-list-title">每帧 4%</span><span class="home-list-arrow">9 分钟 <span aria-hidden="true">↗</span></span></a>
+        <a href="/blog/eighty-and-forty-six.html"><span class="home-list-date">系统</span><span class="home-list-title">80 与 46</span><span class="home-list-arrow">9 分钟 <span aria-hidden="true">↗</span></span></a>
+        <a href="/blog/restart-cost.html"><span class="home-list-date">系统</span><span class="home-list-title">重启一次三分钟</span><span class="home-list-arrow">10 分钟 <span aria-hidden="true">↗</span></span></a>
+        <a href="/blog/exam-as-eval.html"><span class="home-list-date">评测</span><span class="home-list-title">考试作为评测</span><span class="home-list-arrow">9 分钟 <span aria-hidden="true">↗</span></span></a>
+        <a href="/blog/last-mile-taste.html"><span class="home-list-date">设计</span><span class="home-list-title">最后一公里是审美</span><span class="home-list-arrow">6 分钟 <span aria-hidden="true">↗</span></span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <p><strong>Norwin Yu</strong><span>AI 使用研究 / 游戏与本地算力。</span></p>
+      </div>
+      <nav class="footer-nav" aria-label="页脚">
+        <span class="mono-label">目录</span>
+        <a href="/zh/work/">实验</a>
+        <a href="/zh/ai.html">本地</a>
+        <a href="/zh/open-source.html">开源</a>
+        <a href="/zh/competitions.html">竞赛</a>
+        <a href="/blog/">日志</a>
+        <a href="/zh/about.html">关于</a>
+      </nav>
+      <div class="footer-note">
+        <span class="mono-label">版本说明</span>
+        <p>字体为 Inter 与 IBM Plex Mono。手工编写，静态托管。没有追踪器、cookie 或密钥。</p>
+        <p>AI 使用研究 / 2026</p>
+      </div>
+      <div class="footer-status">
+        <span class="status"><i aria-hidden="true"></i>欢迎交流研究</span>
+        <a href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 Norwin Yu</span>
+      <span>最后更新 / 2026 年 11 月</span>
+      <span>无统计代码，运行时无外部请求。</span>
+    </div>
+  </footer>
+</body>
+</html>

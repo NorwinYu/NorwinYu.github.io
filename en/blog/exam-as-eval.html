@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>The exam as evaluation — Norwin Yu</title>
+  <meta name="description" content="One model, two 8-question exams, 67 and 84: the most useful thing an evaluation harness can do is tell you the score does not count.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="The exam as evaluation — Norwin Yu">
+  <meta property="og:description" content="One model, two 8-question exams, 67 and 84: the most useful thing an evaluation harness can do is tell you the score does not count.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/exam-as-eval.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/exam-as-eval.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="article-nav" aria-label="Article navigation">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="lang-switch" href="/blog/exam-as-eval.html" hreflang="zh-CN">中文</a>
+      <span class="availability"><i aria-hidden="true"></i>Open to research conversations</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> All notes</a>
+        <p class="article-kicker"><span class="is-accent">Evaluation</span><i aria-hidden="true"></i><span>LLM judges</span><i aria-hidden="true"></i><span>Local first</span></p>
+        <h1>The exam as<br><em>evaluation.</em></h1>
+        <p class="article-deck">Same model, same question bank, two exams of 8 questions each give 67 and 84. The most important thing the harness can do is admit that neither score counts.</p>
+        <p class="article-cn">What I built is not a tool that scores models, it is a tool that can tell you “not enough samples, do not conclude anything”.</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>November 2026</span>
+          <span>9 min</span>
+          <span>Field note / 13</span>
+        </div>
+        <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">Contents</p>
+        <nav class="article-toc" aria-label="Article contents">
+          <a href="#shape">Why an exam</a>
+          <a href="#paper">Paper mode</a>
+          <a href="#grade">Three grading tracks</a>
+          <a href="#judge">The judge must be swappable</a>
+          <a href="#sixty">67 and 84</a>
+          <a href="#again">Re-gradable</a>
+          <a href="#limits">What it cannot do</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>Question bank</dt><dd>617 questions · 8 stages</dd></div>
+          <div><dt>Per run</dt><dd>8 questions (1 per stage)</dd></div>
+          <div><dt>Coverage</dt><dd>75% / 87.5%</dd></div>
+          <div><dt>Dependencies</dt><dd>Python standard library</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>Evaluating local models has a recurring dilemma: you want a number, but no number is very trustworthy. With ten questions the noise is bigger than the difference; with a thousand questions, where the bank came from, who grades the subjective items and whether the judge has its own preferences are each a trap.</p>
+
+        <p><a href="https://github.com/NorwinYu/LMExamBench" target="_blank" rel="noopener">LMExamBench</a> is my answer to that dilemma. Its shape is not “run a benchmark” but “organize an exam”: there are stages, subjects, weights and grading rules, and an explicit “not enough samples this time”.</p>
+
+        <h2 id="shape">Why an exam</h2>
+        <p>Because the exam format has already solved some of the problems we are re-inventing:</p>
+
+        <ul>
+          <li><strong>Layering</strong>: primary school, middle school, high school, university and master's, plus the software engineer exam, big-tech interviews and LeetCode — eight stages. Question difficulty and grading differ by stage by design; averaging them together is meaningless.</li>
+          <li><strong>Weights</strong>: a job profile (<code>profiles.json</code>) decides which stages a “Java backend” candidate sits, how much each is worth, and how capability dimensions are weighted. Same question bank, different profile, different exam.</li>
+          <li><strong>Subjects</strong>: data structures, algorithms, operating systems, networks, databases — a score has to break down by subject before you can see which part is weak.</li>
+        </ul>
+
+        <p>The question bank itself is not in the repo (copyright); what is in the repo is a skill for generating an original bank with AI (<code>skills/generate-bank</code>) plus a schema. This machine currently holds 617 questions, between 57 and 106 per stage across the eight stages.</p>
+
+        <h2 id="paper">Paper mode</h2>
+        <p>The most easily overlooked feature, and possibly the most important: <code>--paper N</code>. It assembles a paper by drawing N questions from each “stage × subject/profile” section, rather than drawing N questions at random.</p>
+
+        <p>The difference is large. Random sampling produces papers like “25 primary-school questions + 1 master's question”, and then you use it to compare two models — what you measured is who is better at primary school. Per-section sampling guarantees every stage is represented, and it also tells you honestly: <strong>a section with fewer than 2 questions is flagged ⚠ insufficient sample, do not conclude.</strong></p>
+
+        <h2 id="grade">Three grading tracks</h2>
+        <table class="compare-table">
+          <thead><tr><th>Question type</th><th>Grading</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Question type">Objective</td><td data-label="Grading">Rule matching</td><td data-label="Detail">Numeric tolerance; multi-select scored partially as (hits − wrong picks) / correct count; fill-in accepts multiple answers</td></tr>
+            <tr><td data-label="Question type">Code</td><td data-label="Grading">Subprocess runs the cases</td><td data-label="Detail">Pass rate per sample, pass@k for multiple samples; hidden cases supported</td></tr>
+            <tr><td data-label="Question type">Subjective</td><td data-label="Grading">LLM judge</td><td data-label="Detail">0–1 score per rubric point; with debias, graded in forward and reverse order and averaged</td></tr>
+          </tbody>
+        </table>
+
+        <p>Code questions have to actually run. This is the rule I hold to hardest: have a model write code and then eyeball whether it “looks right”, and evaluation becomes aesthetics. Extract the code block, wrap it in a harness, run the unit tests — the answer is pass or fail, blunt but not arguable.</p>
+
+        <h2 id="judge">The judge must be swappable</h2>
+        <p>The judge for subjective questions is an LLM, which introduces a new problem: the judge has preferences. I did two things.</p>
+
+        <p>First, <strong>the model under test and the judge are fully decoupled</strong>: two independent <code>base_url</code> / <code>api_key</code> / <code>model</code>. A local 7B can judge a local 27B, or the other way round. Whether a judge runs at all is one line of config (<code>judge.enabled</code>); turn it off and only the objective questions run.</p>
+
+        <p>Second, <strong>debias</strong>: grade the same answer once in forward order and once in reverse, then average. It cannot remove preference, but it weakens position bias — the tendency to score the first candidate higher, the most common and most reproducible failure mode for an LLM judge.</p>
+
+        <p>One small but critical detail: run records scrub keys automatically. The thing an evaluation tool leaks most easily is not the model, it is the config.</p>
+
+        <h2 id="sixty">67 and 84</h2>
+        <p>Two runs on this machine, same model (<code>deepseek-v4.1-flash</code>, local 8080), 1 question per stage for 8 total, judge off (objective and code questions only):</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Run</th><th>Config difference</th><th>Weighted score</th><th>Grade</th><th>Coverage</th><th>Elapsed</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Run">First</td><td data-label="Config difference"><code>max_tokens</code> 2048</td><td data-label="Weighted score">67.39</td><td data-label="Grade">D · pass</td><td data-label="Coverage">75%</td><td data-label="Elapsed">215 s</td></tr>
+            <tr><td data-label="Run">Second</td><td data-label="Config difference"><code>max_tokens</code> 4096 · <code>reasoning_effort=low</code></td><td data-label="Weighted score">83.7</td><td data-label="Grade">B · good</td><td data-label="Coverage">87.5%</td><td data-label="Elapsed">201 s</td></tr>
+          </tbody>
+        </table>
+
+        <p>Same model, a 16-point spread. Looking only at the scores, the conclusion would be “the second configuration is better”. The real reason is different: both runs drew only 8 questions, covering 75% and 87.5% — some stages got no question at all, or only one.</p>
+
+        <p>The framework got one thing right here: it puts <code>coverage</code> and <code>ungraded_n</code> next to the total, and flags sections with fewer than 2 questions as an insufficient sample. An 8-question exam can produce both 67 and 84, which means the score describes luck, not ability.</p>
+
+        <blockquote>The first duty of an evaluation is not to produce a score, but to state the uncertainty of that score.</blockquote>
+
+        <p>In hindsight those two runs were not wasted: they exercised the whole chain (select → call → grade → aggregate → report), and they confirmed that the insufficient-sample warning actually fires. They just should not be treated as conclusions.</p>
+
+        <h2 id="again">Re-gradable</h2>
+        <p>Evaluation tools tend to become one-off scripts: run, export, never open again. So two features are treated as first-class:</p>
+
+        <ul>
+          <li><code>regrade</code>: re-grade stored answers under the current grading rules. Change a rubric, add a tolerance, fix a bug — no need to call the model again. That matters especially for local models, where a full run can take tens of minutes.</li>
+          <li><code>audit</code>: question-bank audit, for near-duplicates and coverage. A bank keeps growing as the generation skill runs, and duplicate questions quietly make one subject heavier.</li>
+        </ul>
+
+        <p>There is also <code>compare</code>: multi-run comparison with discrimination and difficulty statistics. A question that every model gets right carries no information for this evaluation — which is not the same as “the question is too easy”; the former is a statistical property.</p>
+
+        <h2 id="limits">What it cannot do</h2>
+        <p>It does not decide whether a model is good, it answers “how many points it scored on this paper”. Change the bank, the weights or the judge, and the answer changes.</p>
+
+        <p>It also does not solve the legality of the question bank: the repo deliberately ships no bank, because the questions are copyrighted. The bank-generation skill is for people willing to write their own questions, not for people who want a standard answer key.</p>
+
+        <p>Finally, 8 questions is 8 questions. Paper mode makes one measurement more representative, but it cannot turn 8 questions into 80. <strong>When the sample is too small, the most professional output is “the sample is too small”.</strong></p>
+
+        <p class="article-end"><strong>Method /</strong> Code and docs at <a href="https://github.com/NorwinYu/LMExamBench" target="_blank" rel="noopener">NorwinYu/LMExamBench</a>; the two run records come from the local <code>runs/</code> directory (2026-10-29, 8 questions each, judge off). The repo ships no question bank; the 617 questions here were generated locally and are not distributed with the repo. Scores are the framework's weighted percentage, not a leaderboard rank.</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>Related / Systems</p>
+          <h2 id="next-title">4% per frame</h2>
+        </div>
+        <a href="every-frame-four-percent.html">
+          <span>Continue reading</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="Footer">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/open-source.html">Open source</a>
+        <a href="/competitions.html">Competitions</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a href="index.html">All notes <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>4% per frame — Norwin Yu</title>
+  <meta name="description" content="A zero-subprocess Rust hardware monitor for the terminal: tiered NVML sampling, self-drawn rendering, and what 4% of one core buys.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="4% per frame — Norwin Yu">
+  <meta property="og:description" content="A zero-subprocess Rust hardware monitor for the terminal: tiered NVML sampling, self-drawn rendering, and what 4% of one core buys.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/every-frame-four-percent.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/every-frame-four-percent.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="article-nav" aria-label="Article navigation">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="lang-switch" href="/blog/every-frame-four-percent.html" hreflang="zh-CN">中文</a>
+      <span class="availability"><i aria-hidden="true"></i>Open to research conversations</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> All notes</a>
+        <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Rust</span><i aria-hidden="true"></i><span>Observability</span></p>
+        <h1>4%<br><em>per frame.</em></h1>
+        <p class="article-deck">A terminal hardware monitor that forks no subprocesses: the data comes straight out of /proc, /sys and NVML, and the price is 4% to 6% of one core.</p>
+        <p class="article-cn">One nvidia-smi call is about a hundred milliseconds. Using an external command that has to run every frame to monitor this machine is a joke in itself.</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>November 2026</span>
+          <span>9 min</span>
+          <span>Field note / 10</span>
+        </div>
+        <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">Contents</p>
+        <nav class="article-toc" aria-label="Article contents">
+          <a href="#why">Why not call a subprocess</a>
+          <a href="#source">Where the data comes from</a>
+          <a href="#tiers">Tiered sampling</a>
+          <a href="#draw">Drawing it myself</a>
+          <a href="#cost">The cost</a>
+          <a href="#truth">Checking accuracy</a>
+          <a href="#limits">What it cannot read</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>Language</dt><dd>Rust · ratatui</dd></div>
+          <div><dt>One core</dt><dd>4% – 6%</dd></div>
+          <div><dt>Resident</dt><dd>~24 MiB</dd></div>
+          <div><dt>Binary</dt><dd>~1.2 MB</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>This workstation has 88 threads, two 22GB cards, seven disk partitions. It runs inference, ComfyUI and builds, and it makes a lot of noise and heat. I wanted one dashboard: what each core is doing at a glance, how hot the two cards are right now, and whether power is pinned against the 180W wall or not.</p>
+
+        <p>The ready-made answer is to wire <code>nvidia-smi</code>, <code>sensors</code>, <code>free</code> and <code>iostat</code> together. I tried it. What came out had two problems: it was slow, and it lied.</p>
+
+        <h2 id="why">Why not call a subprocess</h2>
+        <p>Slow is measured: one <code>nvidia-smi</code> call takes about a hundred milliseconds, and <code>sensors</code> burns a hundred to three hundred milliseconds of CPU on a dual-socket Xeon. For a dashboard refreshing at 1 second across six views, that means the monitor itself eats a large slice of a core — to find out what the machine is busy with, first make the machine busy.</p>
+
+        <p>The lying part is subtler: different tools define “used memory” differently, and they sample at different moments. Drawn side by side it looks orderly, but it is a collage of four sampling instants.</p>
+
+        <p>So <a href="https://github.com/NorwinYu/sensorium" target="_blank" rel="noopener">sensorium</a> has one hard rule: <strong>fork no subprocesses</strong>. CPU and memory come from <code>/proc</code>; temperature, fans, voltage and power come from <code>/sys/class/hwmon</code>; GPUs go through the in-process NVML bindings. One sample is one timeline, not a jigsaw.</p>
+
+        <h2 id="source">Where the data comes from</h2>
+        <p>Six views map to six kinds of data source:</p>
+
+        <table class="compare-table">
+          <thead><tr><th>View</th><th>Source</th><th>What it shows</th></tr></thead>
+          <tbody>
+            <tr><td data-label="View">Overview</td><td data-label="Source">CPU + memory + GPU summary</td><td data-label="What it shows">load, both package temperatures, VRAM, power, trend curves</td></tr>
+            <tr><td data-label="View">CPU</td><td data-label="Source"><code>/proc/stat</code>, <code>/sys/devices/system/cpu</code>, RAPL</td><td data-label="What it shows">88-thread activity matrix, per-core clock and temperature, context switches and interrupts</td></tr>
+            <tr><td data-label="View">GPU</td><td data-label="Source">NVML (in-process)</td><td data-label="What it shows">SM/VRAM/encoder-decoder utilization, VRAM and history, temperature thresholds, fans, power and cap, PCIe generation and width, throttle reasons, processes holding VRAM</td></tr>
+            <tr><td data-label="View">Sensors</td><td data-label="Source">full <code>/sys/class/hwmon</code> enumeration</td><td data-label="What it shows">temperature, fan speed, voltage, current, power, with critical limits and alarm bits</td></tr>
+            <tr><td data-label="View">Storage &amp; Net</td><td data-label="Source"><code>/proc/diskstats</code>, <code>/proc/net/dev</code></td><td data-label="What it shows">throughput, IOPS, mount-point capacity, NIC link speed</td></tr>
+            <tr><td data-label="View">Processes</td><td data-label="Source"><code>/proc/&lt;pid&gt;</code></td><td data-label="What it shows">top processes, CPU%, RSS, command line (anonymizable)</td></tr>
+          </tbody>
+        </table>
+
+        <p>One NVML trap deserves its own paragraph: <strong>identity fields and time series do not refresh at the same rate</strong>. Model, BIOS, serial number, power cap and temperature thresholds never change for the life of the card, yet they were read through the C library every frame just like utilization. The first version read every field every frame, and GPU sampling cost 97 milliseconds.</p>
+
+        <h2 id="tiers">Tiered sampling</h2>
+        <p>The fix is unglamorous — group by how often a value changes:</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Field</th><th>Refresh rate</th><th>Reason</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Field">Model / BIOS / serial / cap / thresholds</td><td data-label="Refresh rate">Read once and cached</td><td data-label="Reason">Hardware properties, they do not change</td></tr>
+            <tr><td data-label="Field">Utilization / VRAM / temperature / fan / power</td><td data-label="Refresh rate">Every frame</td><td data-label="Reason">The curves need them</td></tr>
+            <tr><td data-label="Field">Frequency / Power Limit / PCIe / encoder-decoder</td><td data-label="Refresh rate">Every 2 frames</td><td data-label="Reason">Slow to change</td></tr>
+            <tr><td data-label="Field">Clock / P-State / throttle reasons</td><td data-label="Refresh rate">Every 4 frames</td><td data-label="Reason">State-machine level changes</td></tr>
+            <tr><td data-label="Field">Energy counters</td><td data-label="Refresh rate">Every 30 frames</td><td data-label="Reason">A single read is expensive</td></tr>
+          </tbody>
+        </table>
+
+        <p>Result: GPU sampling drops from about 97 milliseconds to about 15, and nothing on screen changes.</p>
+
+        <p>The same idea went into the sensors and the process table. Sensor labels and critical limits are read once and rescanned every ten seconds so hotplug works; each frame reads only <code>*_input</code>. Per-core temperature is a cross-core MSR read every time, which is expensive on 44 cores, so it refreshes every two frames. Walking a thousand <code>/proc/&lt;pid&gt;/stat</code> entries takes twenty to thirty milliseconds, so the process table samples every three seconds — which also makes per-process CPU% more accurate.</p>
+
+        <div class="callout">
+          <span class="mono-label">One lesson</span>
+          <p>The cost of a monitoring tool can almost always be cut by an order of magnitude once you ask which values actually change every frame. Group first, then optimize.</p>
+        </div>
+
+        <h2 id="draw">Drawing it myself</h2>
+        <p>Rendering takes the same route: no relayout of the whole tree, write straight into <code>ratatui</code>'s <code>Buffer</code>. A full 120×40 repaint is 0.2–0.35 milliseconds — three orders of magnitude cheaper than one <code>nvidia-smi</code> read. That is also why this tool can sit at a 1-second refresh and go almost unnoticed.</p>
+
+        <h2 id="cost">The cost</h2>
+        <p>Measured on this machine, release build, with the machine itself loaded during sampling (load ≈ 2.5, jobs on the GPU):</p>
+
+        <table class="compare-table">
+          <thead><tr><th>View</th><th>Share of one core</th><th>Per-frame render</th></tr></thead>
+          <tbody>
+            <tr><td data-label="View">Overview</td><td data-label="Share of one core">3.5 – 5.0%</td><td data-label="Per-frame render">0.34 ms</td></tr>
+            <tr><td data-label="View">Sensors</td><td data-label="Share of one core">3.9 – 5.1%</td><td data-label="Per-frame render">0.31 ms</td></tr>
+            <tr><td data-label="View">Storage &amp; Net</td><td data-label="Share of one core">4.0 – 5.0%</td><td data-label="Per-frame render">0.25 ms</td></tr>
+            <tr><td data-label="View">GPU</td><td data-label="Share of one core">4.1 – 5.3%</td><td data-label="Per-frame render">0.26 ms</td></tr>
+            <tr><td data-label="View">CPU</td><td data-label="Share of one core">4.5 – 6.4%</td><td data-label="Per-frame render">0.31 ms</td></tr>
+            <tr><td data-label="View">Processes</td><td data-label="Share of one core">4.7 – 6.1%</td><td data-label="Per-frame render">0.21 ms</td></tr>
+          </tbody>
+        </table>
+
+        <p>Against the whole machine that is 0.05%–0.07%, with about 24 MiB resident and a 1.2 MB binary (strip + LTO). This machine has 88 threads, so “4% of one core” sounds scarier than “0.06% of the machine” — both framings are written down because they answer different questions.</p>
+
+        <h2 id="truth">Checking accuracy</h2>
+        <p>The most dangerous failure for a monitoring tool is not a crash, it is quietly showing the wrong number. So it ships <code>--json</code>, which dumps one sample verbatim to be diffed field by field against an independent calculation:</p>
+
+        <ul>
+          <li>every memory field matches byte for byte;</li>
+          <li>total CPU utilization differs from an independent count by 0.14%;</li>
+          <li>network throughput differs by 2% in one window-misaligned comparison (891 MiB/s vs the independent count), while a self-built constant 8 MiB/s loopback stream reads exactly 8.00 MiB/s;</li>
+          <li>only <code>--bench</code> reports “steady state” and “first sample” (NVML init, first full sensor scan, first <code>/proc</code> walk) separately — otherwise the one-off cost is averaged in and looks flattering.</li>
+        </ul>
+
+        <p>There is a more important principle: <strong>if it cannot read something, it says so</strong>. Most distributions make <code>/sys/class/powercap/*/energy_uj</code> root-only, so a normal user cannot get CPU package power; it prints <em>unavailable (energy_uj needs root)</em> instead of drawing a zero line. This board does not load a Super-I/O fan driver and has no <code>/dev/ipmi0</code>, so chassis fan speed is unreadable — so that field stays empty.</p>
+
+        <blockquote>The credibility of a monitoring tool rests on how quiet it is when data is missing.</blockquote>
+
+        <h2 id="limits">What it cannot read</h2>
+        <p>The known gaps are in the README rather than in my head: CPU package power needs root; chassis fans need a driver such as <code>nct6775</code>; GPUs are NVIDIA only (AMD's <code>amdgpu</code> shows up as a sensor but has no utilization or VRAM); per-core temperature updates at half the display refresh rate, because every read across 44 cores is a cross-core MSR read.</p>
+
+        <p>Then there is privacy: this tool will be asked to paste its output into an issue. <code>--demo</code> turns anonymization on automatically — hostname becomes <code>workstation</code>, process command lines keep only the program name, NIC names lose the embedded MAC, GPU serial numbers are cleared, home paths become <code>/home/user</code>. Hardware specs stay; those explain the problem, they are not personal information.</p>
+
+        <p class="article-end"><strong>Method /</strong> All figures come from the <a href="https://github.com/NorwinYu/sensorium" target="_blank" rel="noopener">NorwinYu/sensorium</a> README and <code>--bench</code> output; the test machine is dual Xeon E5-2696 v4 (44C/88T), 2 × RTX 2080 Ti 22GB, 94GB DDR4, loaded during sampling. The view screenshots are rendered offline from <code>sensorium --frame --demo</code> ANSI output and can be reproduced with <code>tools/render-frame.py</code> in the repository.</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>Related / Systems</p>
+          <h2 id="next-title">80 and 46</h2>
+        </div>
+        <a href="eighty-and-forty-six.html">
+          <span>Continue reading</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="Footer">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/open-source.html">Open source</a>
+        <a href="/competitions.html">Competitions</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a href="index.html">All notes <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

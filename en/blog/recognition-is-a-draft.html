@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Recognition is only a draft — Norwin Yu</title>
+  <meta name="description" content="From floor plan to editable 3D: 16 iterations of RoomTessera, and why automatic recognition has to come with a correction interface.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Recognition is only a draft — Norwin Yu">
+  <meta property="og:description" content="From floor plan to editable 3D: 16 iterations of RoomTessera, and why automatic recognition has to come with a correction interface.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/demo-roomtessera.jpg">
+  <meta property="og:locale" content="en_US">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/recognition-is-a-draft.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/recognition-is-a-draft.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="article-nav" aria-label="Article navigation">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="lang-switch" href="/blog/recognition-is-a-draft.html" hreflang="zh-CN">中文</a>
+      <span class="availability"><i aria-hidden="true"></i>Open to research conversations</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> All notes</a>
+        <p class="article-kicker"><span class="is-accent">Product</span><i aria-hidden="true"></i><span>Spatial tools</span><i aria-hidden="true"></i><span>Field postmortem</span></p>
+        <h1>Recognition<br><em>is only a draft.</em></h1>
+        <p class="article-deck">A floor plan can produce 3D, but in the first version the walls were always crooked. 16 iterations of RoomTessera showed that the hard part of image-to-3D is not recognition. It is correction.</p>
+        <p class="article-cn">Automatic recognition opens the task; hand-drawn wall lines close it. The stretch in between is the product.</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>November 2026</span>
+          <span>7 min</span>
+          <span>Research note / 07</span>
+        </div>
+        <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">Contents</p>
+        <nav class="article-toc" aria-label="Article contents">
+          <a href="#promise">What automatic recognition promises</a>
+          <a href="#walls">Why walls come out crooked</a>
+          <a href="#draft">Demote automation to a draft</a>
+          <a href="#tools">The correction interface is the product</a>
+          <a href="#local">Local-first</a>
+          <a href="#metric">What to measure</a>
+          <a href="#learned">Conclusion</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>Iterations</dt><dd>16 rounds of feedback</dd></div>
+          <div><dt>Furniture</dt><dd>15 categories, procedurally generated</dd></div>
+          <div><dt>Correction</dt><dd>10cm grid / 20-step undo</dd></div>
+          <div><dt>Runtime</dt><dd>Front end only / saved locally</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>RoomTessera started from one simple sentence: import a floor plan, get a 3D view automatically, then place furniture freely. It sounds like a recognition problem. Only after building it did the real weight show up: what happens once recognition gets it wrong.</p>
+
+        <p>The project went through 16 rounds of explicit feedback. The early rounds added features: rooms, furniture, materials, lighting, saving. Almost every later round dealt with the same thing — walls. A thick load-bearing wall came out too wide, wall joints protruded, some corners turned into diagonals. Every round said recognition was still wrong, and every fix was followed by the next floor plan.</p>
+
+        <div class="stat-strip is-four">
+          <div><strong>16</strong><span>rounds of explicit feedback</span></div>
+          <div><strong>15</strong><span>procedural furniture categories</span></div>
+          <div><strong>10cm</strong><span>wall-line snap grid</span></div>
+          <div><strong>20</strong><span>undo steps</span></div>
+        </div>
+
+        <h2 id="promise">What automatic recognition promises</h2>
+        <p>What automatic recognition can do is specific: estimate the extent of the plan, find the floor outline, split it into rooms, compute areas. On a clean plan those results are already enough to start furnishing. The user does not have to draw an empty box first, and furniture has boundaries to sit inside.</p>
+
+        <p>The catch is that floor plans were not drawn for algorithms. They have line weights, dimensions, furniture covering the walls, shadows, sometimes even perspective. A wall's centre line and its visible edge are not the same line. A thick load-bearing wall looks wider on the plan, so the algorithm easily takes the whole thickness as wall and produces a room that is one wall too fat.</p>
+
+        <h2 id="walls">Why walls come out crooked</h2>
+        <p>The typical failures come in three kinds:</p>
+        <ul>
+          <li><strong>Thick walls get wider.</strong> Walls on the plan have thickness; recognition takes the outer edge as the centre line and eats a strip out of the room.</li>
+          <li><strong>Joints protrude.</strong> When two walls meet, the segment endpoints are not merged correctly, so a small block appears in 3D.</li>
+          <li><strong>Corners turn into diagonals.</strong> Slight perspective or a skewed scan, and the algorithm fits a line that should be horizontal as a diagonal; the room tilts with it.</li>
+        </ul>
+
+        <p>None of these is fully solved by a bigger model. The input itself lacks depth, and the semantics of a wall have no single answer. A more honest framing: automatic recognition produces an editable draft, not a finished plan.</p>
+
+        <h2 id="draft">Demote automation to a draft</h2>
+        <p>The turning point was reclassifying the recognition output from a result into a draft. The interface stopped pretending it must be right and let people edit directly: horizontal and vertical wall lines, click or drag to erase, clear all automatic walls, 10cm grid snapping, 20-step undo.</p>
+
+        <p>It does not look impressive, but it moved the tool from demo to usable. The user no longer argues with the algorithm; they straighten the segment that is wrong. Automatic recognition lays out 80% of the spatial relations; hand-drawn walls supply the last 20% of precision.</p>
+
+        <blockquote>The value of automatic recognition is not doing the work for you. It is making you do less of it.</blockquote>
+
+        <p>Keeping the original plan as an underlay matters too. People need to compare against the source image to decide where a wall is, not patch it from memory in 3D. With the underlay, the grid, the wall lines and the room labels in one plan view, correction becomes an action you can reason about.</p>
+
+        <figure class="article-figure">
+          <img decoding="async" src="/assets/img/demo-roomtessera.jpg" alt="RoomTessera 3D interface: the floor plan on the left, a 3D living room with furniture on the right." width="1440" height="900" loading="eager">
+          <figcaption><span>RoomTessera 3D / floor plan, 3D view and furniture panel on one screen.</span><span>Project screenshot</span></figcaption>
+        </figure>
+
+        <h2 id="tools">The correction interface is the product</h2>
+        <p>Beyond wall lines, the project added several things that made the draft usable:</p>
+        <ul>
+          <li><strong>Plan and 3D views.</strong> Fix the structure in plan, read the space in 3D; both views share one data model.</li>
+          <li><strong>Collision feedback.</strong> While dragging furniture, walls, other furniture and the space boundary are checked in real time; overlaps turn red.</li>
+          <li><strong>Smart placement.</strong> New furniture first finds a spot where it fits, then the user adjusts, instead of being dragged in from the origin.</li>
+          <li><strong>Local save and export.</strong> Plans live in the browser, can be imported and exported as JSON, and the current view can be exported as a PNG.</li>
+          <li><strong>Materials and lighting.</strong> 6 floors, 6 wall colours, 3 lighting moods, 4 whole-home styles, so a draft turns into something presentable quickly.</li>
+        </ul>
+
+        <p>Not one of these makes recognition more accurate. They all answer the same question: after recognition gets it wrong, can the user keep working without leaving the page?</p>
+
+        <h2 id="local">Local-first</h2>
+        <p>RoomTessera is front end only: recognition, rendering and storage all run in the browser, with no backend and no account. Floor plans and designs are never uploaded to a server. That is not a technical boast; it is the minimum trust condition for this class of tool — a home floor plan is private, and nobody should have to register just to try something.</p>
+
+        <p>Local-first imposes constraints as well: with no server-side model, recognition has to be heuristic; with no cloud sync, plans have to be exportable; with no background jobs, all computation has to finish in a time the front end can tolerate. Those constraints made the product clearer: it is a local workbench, not an AI design platform.</p>
+
+        <h2 id="metric">What to measure</h2>
+        <p>Judged only by wall pixel accuracy, this project looks like a failure. More useful metrics:</p>
+        <ul>
+          <li><strong>Correction time.</strong> From import to a usable plan, how many wall segments and how many minutes of hand editing?</li>
+          <li><strong>Recoverability of failure.</strong> Once a wall is crooked, can the user straighten it in one or two steps instead of starting over?</li>
+          <li><strong>First-run usability.</strong> With nothing changed, can furniture be placed in the generated 3D right away?</li>
+          <li><strong>Spatial readability.</strong> With 8 rooms and 15 furniture categories, is the frame still legible?</li>
+        </ul>
+
+        <p>These are product metrics, not model metrics. They also explain why training a stronger recognition model is not the only answer: what the user actually needs is a sense of control.</p>
+
+        <h2 id="learned">Conclusion</h2>
+        <p>The hard part of image-to-3D is not turning an image into geometry; it is making that geometry editable, correctable and savable. Automatic recognition saves you a few strokes, but it cannot make decisions for you. An “AI-generated 3D” with no correction interface becomes a dead end on real floor plans very quickly.</p>
+
+        <p>RoomTessera is still v0.1: wall recognition is heuristic, complex plans fail, and the manual tools need polishing. But at least it admits that, and it puts correction into the product instead of hiding it behind a recognition accuracy figure.</p>
+
+        <p class="article-end"><strong>References /</strong> Live demo: <a href="https://norwinyu.github.io/roomtessera-3d/" target="_blank" rel="noopener">roomtessera-3d</a>; source: <a href="https://github.com/NorwinYu/roomtessera-3d" target="_blank" rel="noopener">NorwinYu/roomtessera-3d</a>. Project page: <a href="/work/index.html#roomtessera">RoomTessera 3D</a>. This is a development postmortem, not an evaluation of recognition accuracy.</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>Next / Game</p>
+          <h2 id="next-title">1,500 steps later</h2>
+        </div>
+        <a href="fifteen-hundred-steps.html">
+          <span>Read next</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="Footer">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/open-source.html">Open source</a>
+        <a href="/competitions.html">Competitions</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a href="index.html">All notes <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

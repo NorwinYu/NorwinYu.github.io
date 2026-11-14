@@ -20,6 +20,8 @@
   <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/zh/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
@@ -41,10 +43,11 @@
         <a href="ai.html" data-nav="ai">Local</a>
         <a href="open-source.html" data-nav="oss">Open source</a>
         <a href="competitions.html" data-nav="competitions">Competitions</a>
-        <a href="blog/index.html" data-nav="journal">Journal</a>
+        <a href="/en/blog/" data-nav="journal">Journal</a>
         <a href="about.html" data-nav="about">About</a>
       </nav>
       <div class="topbar-actions">
+        <a class="lang-switch" href="/zh/" hreflang="zh-CN">中文</a>
         <span class="status"><i aria-hidden="true"></i>AI usage research</span>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
           Menu <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
@@ -63,7 +66,7 @@
       <a href="ai.html" data-nav="ai">Local</a>
         <a href="open-source.html" data-nav="oss">Open source</a>
       <a href="competitions.html" data-nav="competitions">Competitions</a>
-      <a href="blog/index.html" data-nav="journal">Journal</a>
+      <a href="/en/blog/" data-nav="journal">Journal</a>
       <a href="about.html" data-nav="about">About</a>
     </nav>
     <div class="wrap mobile-menu-foot">
@@ -81,7 +84,7 @@
           <p class="hero-lede">I study how AI is actually used: agent workflows, browser games and models running on hardware I own. The focus is the gap between a demo and something that holds up.</p>
           <div class="hero-actions">
             <a class="button" href="work/index.html">Selected experiments</a>
-            <a class="text-link" href="blog/index.html">Journal <span aria-hidden="true">→</span></a>
+            <a class="text-link" href="/en/blog/">Journal <span aria-hidden="true">→</span></a>
             <a class="text-link" href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
           </div>
           <ul class="focus-list" aria-label="Core focus">
@@ -227,9 +230,9 @@
     <section class="section" aria-labelledby="bench-title">
       <div class="wrap home-section-head">
         <h2 id="bench-title">Local environment</h2>
-        <a href="ai.html">Setup <span aria-hidden="true">→</span></a>
+        <a href="ai.html">Local <span aria-hidden="true">→</span></a>
       </div>
-      <div class="wrap">
+      <div class="wrap home-local-split">
         <div class="home-panel">
           <h3>Two machines, one local-first workflow</h3>
           <p>A portable Mac for making, a used-parts workstation for local inference, and a deliberately small model bench. The hardware and runtime are part of the research setup, not a procurement flex.</p>
@@ -241,6 +244,38 @@
           </dl>
           <a class="home-panel-link" href="ai.html">Full environment &amp; configuration <span aria-hidden="true">→</span></a>
         </div>
+
+        <div class="rig3d" data-rig aria-hidden="true">
+          <div class="rig3d-tilt" data-rig-tilt>
+            <div class="rig3d-scene">
+              <div class="r3-board">
+                <span class="r3-socket r3-socket-a"></span>
+                <span class="r3-socket r3-socket-b"></span>
+                <span class="r3-ram r3-ram-a"></span>
+                <span class="r3-ram r3-ram-b"></span>
+                <span class="r3-ram r3-ram-c"></span>
+                <span class="r3-ram r3-ram-d"></span>
+                <span class="r3-slot r3-slot-a"></span>
+                <span class="r3-slot r3-slot-b"></span>
+              </div>
+              <div class="r3-relay"></div>
+              <div class="r3-card r3-card-a">
+                <span class="r3-fan"></span>
+                <span class="r3-label">GPU0</span>
+                <span class="r3-fin"></span>
+              </div>
+              <div class="r3-card r3-card-b">
+                <span class="r3-fan"></span>
+                <span class="r3-label">GPU1</span>
+                <span class="r3-fin"></span>
+              </div>
+              <div class="r3-bridge"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="wrap">
+        <p class="rig-legend"><span><i></i>2 × Xeon E5-2696 v4 · 44C / 88T</span><span><i></i>2 × RTX 2080 Ti · 22 GB</span><span><i class="is-accent"></i>NVLink NV2 · 2 × 25.78 GB/s</span><span><i></i>94 GB DDR4</span></p>
       </div>
     </section>
 
@@ -273,26 +308,26 @@
       <div class="wrap home-list">
         <a href="competitions.html"><span class="home-list-date">2020</span><span class="home-list-title">保险数字科技挑战赛 · 对话意图识别</span><span class="home-list-arrow">Rank 14</span></a>
         <a href="competitions.html"><span class="home-list-date">2020</span><span class="home-list-title">天池 · 饿了么骑士行为预估</span><span class="home-list-arrow">45 / 102</span></a>
-        <a href="blog/name-that-llm.html"><span class="home-list-date">2026</span><span class="home-list-title">Kaggle · Name That LLM</span><span class="home-list-arrow">Research <span aria-hidden="true">↗</span></span></a>
+        <a href="/en/blog/name-that-llm.html"><span class="home-list-date">2026</span><span class="home-list-title">Kaggle · Name That LLM</span><span class="home-list-arrow">Research <span aria-hidden="true">↗</span></span></a>
       </div>
     </section>
 
     <section class="section" aria-labelledby="writing-title">
       <div class="wrap home-section-head">
         <h2 id="writing-title">Writing</h2>
-        <a href="blog/index.html">All notes <span aria-hidden="true">→</span></a>
+        <a href="/en/blog/">All notes <span aria-hidden="true">→</span></a>
       </div>
-      <p class="writing-ai-note wrap">写作均为 AI 代写 · 素材与校对：Norwin Yu</p>
+      <p class="writing-ai-note wrap">Writing is AI-drafted · Sources and review: Norwin Yu</p>
       <div class="wrap home-list">
-        <a href="blog/name-that-llm.html"><span class="home-list-date">置顶</span><span class="home-list-title">噪声里的指纹</span><span class="home-list-arrow">研究 <span aria-hidden="true">↗</span></span></a>
-        <a href="blog/what-1-4mb-buys.html"><span class="home-list-date">系统</span><span class="home-list-title">1.4MB 到底买到了什么</span><span class="home-list-arrow">11 分钟 <span aria-hidden="true">↗</span></span></a>
-        <a href="blog/two-gpu-local-lab.html"><span class="home-list-date">系统</span><span class="home-list-title">44GB 显存问题</span><span class="home-list-arrow">8 分钟 <span aria-hidden="true">↗</span></span></a>
-        <a href="blog/tp2-one-thread.html"><span class="home-list-date">系统</span><span class="home-list-title">并行不是切分</span><span class="home-list-arrow">10 分钟 <span aria-hidden="true">↗</span></span></a>
-        <a href="blog/every-frame-four-percent.html"><span class="home-list-date">系统</span><span class="home-list-title">每帧 4%</span><span class="home-list-arrow">9 分钟 <span aria-hidden="true">↗</span></span></a>
-        <a href="blog/eighty-and-forty-six.html"><span class="home-list-date">系统</span><span class="home-list-title">80 与 46</span><span class="home-list-arrow">9 分钟 <span aria-hidden="true">↗</span></span></a>
-        <a href="blog/restart-cost.html"><span class="home-list-date">系统</span><span class="home-list-title">重启一次三分钟</span><span class="home-list-arrow">10 分钟 <span aria-hidden="true">↗</span></span></a>
-        <a href="blog/exam-as-eval.html"><span class="home-list-date">评测</span><span class="home-list-title">考试作为评测</span><span class="home-list-arrow">9 分钟 <span aria-hidden="true">↗</span></span></a>
-        <a href="blog/last-mile-taste.html"><span class="home-list-date">设计</span><span class="home-list-title">最后一公里是审美</span><span class="home-list-arrow">6 分钟 <span aria-hidden="true">↗</span></span></a>
+        <a href="/en/blog/name-that-llm.html"><span class="home-list-date">Pinned</span><span class="home-list-title">A fingerprint in the noise</span><span class="home-list-arrow">Research <span aria-hidden="true">↗</span></span></a>
+        <a href="/en/blog/what-1-4mb-buys.html"><span class="home-list-date">Systems</span><span class="home-list-title">What 1.4MB actually buys</span><span class="home-list-arrow">11 min <span aria-hidden="true">↗</span></span></a>
+        <a href="/en/blog/two-gpu-local-lab.html"><span class="home-list-date">Systems</span><span class="home-list-title">The 44GB problem</span><span class="home-list-arrow">8 min <span aria-hidden="true">↗</span></span></a>
+        <a href="/en/blog/tp2-one-thread.html"><span class="home-list-date">Systems</span><span class="home-list-title">Parallel is not a split</span><span class="home-list-arrow">10 min <span aria-hidden="true">↗</span></span></a>
+        <a href="/en/blog/every-frame-four-percent.html"><span class="home-list-date">Systems</span><span class="home-list-title">4% per frame</span><span class="home-list-arrow">9 min <span aria-hidden="true">↗</span></span></a>
+        <a href="/en/blog/eighty-and-forty-six.html"><span class="home-list-date">Systems</span><span class="home-list-title">80 and 46</span><span class="home-list-arrow">9 min <span aria-hidden="true">↗</span></span></a>
+        <a href="/en/blog/restart-cost.html"><span class="home-list-date">Systems</span><span class="home-list-title">Three minutes per restart</span><span class="home-list-arrow">10 min <span aria-hidden="true">↗</span></span></a>
+        <a href="/en/blog/exam-as-eval.html"><span class="home-list-date">Evaluation</span><span class="home-list-title">The exam as evaluation</span><span class="home-list-arrow">9 min <span aria-hidden="true">↗</span></span></a>
+        <a href="/en/blog/last-mile-taste.html"><span class="home-list-date">Design</span><span class="home-list-title">The last mile is taste</span><span class="home-list-arrow">6 min <span aria-hidden="true">↗</span></span></a>
       </div>
     </section>
   </main>
@@ -309,7 +344,7 @@
         <a href="ai.html">Local</a>
         <a href="open-source.html">Open source</a>
         <a href="competitions.html">Competitions</a>
-        <a href="blog/index.html">Journal</a>
+        <a href="/en/blog/">Journal</a>
         <a href="about.html">About</a>
       </nav>
       <div class="footer-note">

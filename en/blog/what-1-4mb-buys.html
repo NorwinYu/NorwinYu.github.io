@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>What 1.4MB actually buys — Norwin Yu</title>
+  <meta name="description" content="Saltline isn't a compression miracle. It turns assets into functions: the model wrote a generator, not a scene.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="What 1.4MB actually buys — Norwin Yu">
+  <meta property="og:description" content="Unpacking Saltline: zero assets, a model-written content pipeline, and the difference between a scene script and a generator.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/what-1-4mb-buys.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/what-1-4mb-buys.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="article-nav" aria-label="Article navigation">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="lang-switch" href="/blog/what-1-4mb-buys.html" hreflang="zh-CN">中文</a>
+      <span class="availability"><i aria-hidden="true"></i>Open to research conversations</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> All notes</a>
+        <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>WebGL</span><i aria-hidden="true"></i><span>Generative pipeline</span></p>
+        <h1>What 1.4MB<br><em>actually buys.</em></h1>
+        <p class="article-deck">Saltline isn't a compression miracle. It's a generator written by a model, building the content at runtime.</p>
+        <p class="article-cn">Take it apart and the interesting part isn't the 1.4MB. It's the production pipeline behind “zero assets”.</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>November 2026</span>
+          <span>11 min</span>
+          <span>Research note / 05</span>
+        </div>
+        <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">Contents</p>
+        <nav class="article-toc" aria-label="Article contents">
+          <a href="#number">Unpack the number</a>
+          <a href="#zero">Zero assets is not zero content</a>
+          <a href="#layers">Six layers of generation</a>
+          <a href="#look">Why it looks better</a>
+          <a href="#old-way">Why the old pipeline didn't</a>
+          <a href="#steal">What's worth borrowing</a>
+          <a href="#limits">What it doesn't prove</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>File</dt><dd>1,423,668 bytes</dd></div>
+          <div><dt>gzip</dt><dd>about 443KB</dd></div>
+          <div><dt>External assets</dt><dd>0 images / audio / models</dd></div>
+          <div><dt>Generation</dt><dd>about 8 hours · about $550 of API</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>I downloaded the standalone HTML file and took it apart. First surprise: the number in the headline is real — 1,423,668 bytes, about 6,195 lines, roughly 443KB gzipped. Second surprise: the interesting part isn't the 1.4MB, it's the zero. No image files, no audio files, no 3D model files.</p>
+
+        <p>The game is <a href="https://saltline.games" target="_blank" rel="noopener">Saltline</a>, a first-person shooter demo set in a container port on a rainy night. It keeps getting described as “a 1.4MB AAA game”. That description is wrong in an informative way: it isn't AAA, and 1.4MB isn't a win for compression. It's a single-file browser game whose content isn't loaded — it's generated by code at runtime.</p>
+
+        <div class="stat-strip">
+          <div><strong>1.42 MB</strong><span>One HTML file, uncompressed</span></div>
+          <div><strong>443 KB</strong><span>Actually transferred gzipped</span></div>
+          <div><strong>0</strong><span>Separate images / audio / models</span></div>
+        </div>
+
+        <h2 id="number">Unpack the number first</h2>
+        <p>Composition matters more than the total. About half is three.js inlined into the same file; the other half is the game itself: world building, materials, shaders, player and enemy logic, level data, UI and audio synthesis.</p>
+
+        <figure class="article-figure budget-figure">
+          <div class="budget-chart" role="img" aria-label="Rough size breakdown: three.js about 700KB, game code about 690KB, assets 0.">
+            <div class="budget-row"><span>three.js runtime</span><i class="budget-w49"></i><b>about 700 KB</b></div>
+            <div class="budget-row"><span>Game and shaders</span><i class="budget-w48"></i><b>about 690 KB</b></div>
+            <div class="budget-row"><span>Images / audio / models</span><i class="is-empty budget-w1"></i><b>0 B</b></div>
+          </div>
+          <figcaption><span>Rough composition of the 1.42MB file.</span><span>Local unpacking / 2026</span></figcaption>
+        </figure>
+
+        <p>This is why the “small file” discussion so often goes sideways. Traditional games are big because textures, models, animation and audio are data. Saltline replaces that data with process. The code is smaller than the content it generates, not because it compressed the content, but because it never stored it.</p>
+
+        <p>It isn't unprecedented either. In 2004, <em>.kkrieger</em> fit a complete FPS into 96KB. What's new isn't the idea of procedural generation; it's the cost of writing the generator: one model, one prompt, about eight hours, and — per the creator — about $550 in API bills.</p>
+
+        <h2 id="zero">Zero assets is not zero content</h2>
+        <p>The scene has containers, forklifts, jersey barriers, light masts, chain-link fence, pallets, crates, bollards, a gatehouse, stairs, catwalks and ships. None of them load as meshes. They're assembled from a kit table, using real metric dimensions:</p>
+
+        <pre><code>container40:    [12.19, 2.59, 2.44, "paint_blue", "metal"]
+container40hc:  [12.19, 2.90, 2.44, "paint_green", "metal"]
+jersey_barrier: [3.00, 0.81, 0.60, "concrete", "concrete"]
+light_mast:     [0.50, 14.0, 0.50, "steel_galv", "metal"]</code></pre>
+
+        <p>A scene is essentially a table of coordinates plus a set of assembly functions. Boxes, cylinders, extrusions and lathes combine into props; static geometry is merged; repeated objects are instanced. What counts as “art” here isn't a model file — it's dimensions, material keys and placement.</p>
+
+        <p>Surfaces work the same way. There is no texture atlas; the code carries about 29 surface functions: asphalt, concrete, rust, galvanized steel, diamond plate, corrugated sheet, chain-link, water… plus a material preset table that adds color, roughness, metalness, wetness and macro variation to each one. At startup they're computed into height / ORM / albedo, the shader turns height into normals, triplanar projection kills the stretching, and puddles, wetness and color variation are layered on top.</p>
+
+        <blockquote>The content wasn't compressed. It was never stored as content in the first place.</blockquote>
+
+        <h2 id="layers">Six layers of generation</h2>
+        <h3>1. Geometry is a kit</h3>
+        <p>36 props, real metric dimensions, assembled from primitives, batched, instanced. A container isn't a model, it's a function of dimensions.</p>
+
+        <h3>2. Surfaces are functions</h3>
+        <p>Noise, distance fields and material parameters generate the surfaces. One 256×256 noise texture is enough, because the detail is computed, not painted. Triplanar projection handles the seams.</p>
+
+        <h3>3. Lighting is composition</h3>
+        <p>No baked lightmaps. A low warm sun, cold grey fog, a sky gradient, a PMREM environment probe, planar reflections on wet ground, plus a full post chain: SSAO, volumetric fog, motion blur, Karis bloom, auto exposure, ACES, FXAA and grain.</p>
+
+        <h3>4. Animation is simulation</h3>
+        <p>The Hound robot dog isn't a character with a skeletal animation file. It's an object hierarchy plus four-leg IK, spring damping and a procedural death simulation. Motion is a parametric system, not a recorded performance.</p>
+
+        <h3>5. Audio is synthesis</h3>
+        <p>Rain, wind, sea, gunshots and machinery are synthesized live with WebAudio buffers, filters, wave shapers and a compressor; the reverb impulse is code-generated too. It even ships an <code>OfflineAudioContext</code> self-test: run a scripted scene offline for 10 seconds and check peak, RMS, NaN and clipping.</p>
+
+        <h3>6. Verification is part of the product</h3>
+        <p>The build accepts URL parameters for a fixed seed, screenshot mode, benchmark, running one subsystem on its own, frozen enemies, a specific camera; it collects console errors into <code>window.__errors</code>; it has quality tiers that step down automatically on a weak GPU. This wasn't an afterthought. An agent with no human sitting next to it has to be able to see its own output.</p>
+
+        <h2 id="look">Why it looks better</h2>
+        <p>Most of the “AI 3D” we see is a scene script: a ground plane, a few boxes, default materials, one directional light, a casually placed camera. Saltline is an engine written for one scene. The gap isn't a single shader; it's a chain of decisions that reinforce each other.</p>
+
+        <ul>
+          <li><strong>One scale.</strong> Eye height 1.68m, a 40-foot container 12.19m, a bollard 0.7m. The brain judges “real” from these small references, not from polygon counts.</li>
+          <li><strong>The light has one idea.</strong> A warm low sun against cold grey fog, light bouncing off wet ground, strong silhouettes. The scene was designed to be seen in this light from the start.</li>
+          <li><strong>Materials vary.</strong> Roughness, wetness, rust, corrugation and decals all change. A single grey material just looks like plastic.</li>
+          <li><strong>Post-processing does the expensive part.</strong> Bloom, exposure, fog, motion blur and grain turn correct geometry into an image with air in it.</li>
+          <li><strong>Motion has weight.</strong> Acceleration, coyote time, the landing dip, camera bob, ADS field of view, recoil and shake are all parameterized. A still frame doesn't show it; a few seconds of play do.</li>
+          <li><strong>Detail establishes scale.</strong> Barriers, pallets, cable spools and container numbers aren't decoration. They tell the eye how big everything else is.</li>
+          <li><strong>Frame rate is also look.</strong> Batching, instancing, object pools, half-resolution effects and quality tiers keep the image responsive.</li>
+        </ul>
+
+        <p>One more smart choice: it avoids the hardest subjects in procedural work. No forests, faces, cloth, hair or daylight. A night scene, rain, fog, backlight and wet industrial surfaces are forgiving. The constraint hides the gaps and amplifies the contrast.</p>
+
+        <h2 id="old-way">Why the old pipeline didn't do this</h2>
+        <p>Procedural content isn't new. Terrain, vegetation, cities, materials, destruction — the game industry has used it for decades. It didn't become the default because it wasn't a good deal, not because nobody thought of it.</p>
+
+        <ul>
+          <li><strong>Size was never the bottleneck.</strong> 50GB Blu-rays and 100GB downloads are normal. Saving 99% of the size doesn't save 99% of the budget; people, iteration and review are the expensive parts.</li>
+          <li><strong>Players remember specificity.</strong> Procedural work naturally drifts toward “statistically plausible”. Hero assets, characters and key moments are still made by hand, because they need intent, not variation.</li>
+          <li><strong>The iteration loop is different.</strong> Artists are used to direct manipulation: drag a slider, see it now. A generator demands that you translate taste into parameters, after spending months building the tool first.</li>
+          <li><strong>Organizational risk.</strong> Outsourcing, certification, legal and single points of failure all favor an asset pipeline that many people can operate.</li>
+          <li><strong>The generator itself was too expensive.</strong> A tech-art team might need months. The economics only flip when writing the generator gets cheap enough.</li>
+        </ul>
+
+        <p>So the real change isn't “AI can write code”. It's that the cost of writing the machine that makes content collapsed. When the generator is cheaper than the asset, the pipeline flips.</p>
+
+        <h2 id="steal">What's worth borrowing</h2>
+        <p>For my own experiments, the useful lessons are much smaller than “build a 3D engine” — and much more practical.</p>
+
+        <ol>
+          <li><strong>Write generators, not content.</strong> Anything that repeats more than three times should become a parametric system: props, HUD, level blocks, material variants, animation layers.</li>
+          <li><strong>Put verification inside the artifact.</strong> A fixed seed, screenshot mode, benchmark, error collection and self-tests are worth more than another prompting trick. An agent that can't see its output can't iterate.</li>
+          <li><strong>Set the light, then model.</strong> One sun angle, one color temperature, one weather. Composition is cheaper than detail and moves “does this look expensive” further.</li>
+          <li><strong>Use meters, use a human camera.</strong> Eye height, field of view, door height, object dimensions should all be boringly real. Toy scale is the most common tell.</li>
+          <li><strong>Build a post-processing baseline.</strong> ACES, bloom, vignette, grain — four items buy you a tier.</li>
+          <li><strong>Mix pipelines.</strong> Procedural for repeated elements and backgrounds, hand-made or Blender-assisted for hero assets. “All procedural” is a valid research constraint, not a strategy every product should adopt.</li>
+        </ol>
+
+        <div class="callout">
+          <span class="mono-label">The one I'd keep</span>
+          <p>A build isn't a result until it can be inspected. The most important code in Saltline may not be the bloom. It's the screenshot toggle, the fixed seed and the self-tests.</p>
+        </div>
+
+        <h2 id="limits">What it doesn't prove</h2>
+        <p>It doesn't prove that 1.4MB is AAA. Saltline is a short piece of work: one map, a few enemies, simple AI, no narrative density, no long progression, no console certification. The $550 is an API bill; it doesn't include the human taste, selection and acceptance.</p>
+
+        <p>It also doesn't prove “all procedural” is the right strategy. This scene works because it was narrowed hard: one location, one time of day, one weather, one accent color. Swap in a sunlit forest, characters and cloth, and the same method exposes every weakness.</p>
+
+        <p>“Downloads nothing” also has a small asterisk: the page still pulls Google Fonts. Strictly speaking the game assets are self-contained, but the page is not a fully zero-request runtime.</p>
+
+        <p>What it does prove is more interesting: a model can write a coherent <em>content generator</em> — geometry kit, surface functions, lighting, animation simulation, audio and tests — and then use that generator to produce something playable. An asset stops being a file and becomes a function.</p>
+
+        <p class="article-end"><strong>Method /</strong> The file was downloaded from Saltline's standalone play page and unpacked locally; observations about size, shaders, materials, props, audio and debug switches all come from that file. Generation time, token counts and cost are the creator's own claims, not independently measured. Sources: <a href="https://saltline.games" target="_blank" rel="noopener">saltline.games</a>, <a href="https://huggingface.co/blog/softroyals/how-saltline-ai-game-was-built-1-4mb-html" target="_blank" rel="noopener">technical teardown</a>, <a href="https://www.techpowerup.com/354636/anthropics-fable-5-2-one-shots-a-playable-fps-game-in-just-8-hours" target="_blank" rel="noopener">TechPowerUp</a>. This is an engineering read, not a product review.</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>Next / Systems</p>
+          <h2 id="next-title">The 44GB VRAM problem</h2>
+        </div>
+        <a href="two-gpu-local-lab.html">
+          <span>Read next</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="Footer">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/open-source.html">Open source</a>
+        <a href="/competitions.html">Competitions</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a href="index.html">All notes <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

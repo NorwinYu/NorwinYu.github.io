@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>The last mile is taste — Norwin Yu</title>
+  <meta name="description" content="A generative interface gets you to the first draft; the last 10% still needs editing, judgment and taste.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="The last mile is taste — Norwin Yu">
+  <meta property="og:description" content="A generative interface gets you to the first draft; the last 10% still needs editing, judgment and taste.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/demo-three-kingdoms-battle.jpg">
+  <meta property="og:locale" content="en_US">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/last-mile-taste.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/last-mile-taste.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="article-nav" aria-label="Article navigation">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="lang-switch" href="/blog/last-mile-taste.html" hreflang="zh-CN">中文</a>
+      <span class="availability"><i aria-hidden="true"></i>Open to research conversations</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> All notes</a>
+        <p class="article-kicker"><span class="is-accent">Design</span><i aria-hidden="true"></i><span>Interface craft</span><i aria-hidden="true"></i><span>Opinion</span></p>
+        <h1>The last mile<br><em>is taste.</em></h1>
+        <p class="article-deck">A generative interface gets you to the first draft. The last 10% still needs editing, judgment and taste.</p>
+        <p class="article-cn">Generative UI can carry you to the first draft; the last 10% is still editing, judgment and taste.</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>November 2026</span>
+          <span>6 min</span>
+          <span>Field note / 03</span>
+        </div>
+        <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">Contents</p>
+        <nav class="article-toc" aria-label="Article contents">
+          <a href="#first-draft">The first 80%</a>
+          <a href="#failures">Three failures</a>
+          <a href="#compression">Taste is compression</a>
+          <a href="#method">A working method</a>
+          <a href="#rubric">A small rubric</a>
+          <a href="#editor">The editor's job</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>Context</dt><dd>AI-generated product interfaces</dd></div>
+          <div><dt>Examples</dt><dd>A 3D graph, a tactics game</dd></div>
+          <div><dt>Belief</dt><dd>Constraints beat decoration</dd></div>
+          <div><dt>Tools</dt><dd>Code, screenshots, editing</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>The first generated interface arrives fast. A header, a grid, a few cards, a gradient, a CTA. It looks like a product. It has the shape of one, and for about thirty seconds it's convincing.</p>
+        <p>Then you start using it. The primary action is the third-most prominent thing on the page. Every card carries the same weight. The empty state is a sentence nobody explained. There are eleven type sizes. The motion is decoration. The page is technically finished and conceptually not started.</p>
+
+        <p>This is the gap that matters now. Generation collapsed the cost of the first draft. It did not collapse the cost of editing.</p>
+
+        <h2 id="first-draft">The first 80%</h2>
+        <p>Models are very good at the average of the internet. That's exactly why they're right for a first draft: they know what a dashboard looks like, what a pricing page contains, which components usually sit together. If your question is “show me the conventional shape of this thing”, a machine is a decent intern.</p>
+        <p>Trouble starts when the conventional shape is not the answer. A dense technical graph shouldn't share a hierarchy with a SaaS landing page. A tactics game shouldn't share a rhythm with a settings page. The model still produces something plausible, because plausible is its job. Your job is noticing when plausible is wrong.</p>
+
+        <h2 id="failures">Three failures</h2>
+        <h3>Everything becomes a card</h3>
+        <p>Cards suit discrete, scannable items. They don't suit anything else. A page with twelve cards has no entrance for the eye. The interface isn't organizing information; it's dodging the decision about what matters most.</p>
+
+        <h3>Everything has the same weight</h3>
+        <p>Generated layouts tend to spread emphasis evenly, because emphasis requires a judgment call. The headline, the number, the testimonial and the footer link all sit at one visual level. The result is polite and unreadable. Hierarchy isn't a styling choice; it's the page's argument.</p>
+
+        <h3>Motion as meaning</h3>
+        <p>A fade-up on every section isn't a concept. Parallax isn't narrative. Motion should explain a relationship, confirm an action, or preserve context. If it does none of the three, the page is just breathing at itself.</p>
+
+        <blockquote>Generation gives you options. Editing is deleting most of them.</blockquote>
+
+        <figure class="article-figure">
+          <img src="/assets/img/demo-three-kingdoms-battle.jpg" alt="A dense tactics interface: unit panels, terrain and an action bar all present at once." width="1440" height="900" loading="lazy">
+          <figcaption><span>A dense interface can still be quiet: one board, one selected unit, one next step.</span><span>Beacon of the Three Kingdoms / battle interface</span></figcaption>
+        </figure>
+
+        <h2 id="compression">Taste is compression</h2>
+        <p>I used to think of taste as preference. Now I think it's closer to compression: saying the same thing with fewer decisions. A good screen has one dominant idea, a clear reading order, a type scale that does real work, and enough whitespace to let the idea breathe.</p>
+        <p>The compression shows up in the details. A 64px headline isn't necessarily better than a 48px one; it's better only when it changes the reading order. A border isn't better than a background; it's better only when it clarifies grouping without adding noise. Every element should justify the attention it takes.</p>
+        <p>This is also why “make it look nicer” is such a weak prompt. The useful instruction is “make the primary action obvious within two seconds, and delete everything competing with it”. That's an editorial instruction. It has criteria, and it can be checked.</p>
+
+        <h2 id="method">A working method</h2>
+        <p>When I use a model to make a screen, I don't start from a visual reference. I start from an outline:</p>
+        <ol>
+          <li><strong>What question does this screen answer?</strong> Write it as one sentence, not a feature name.</li>
+          <li><strong>What is the one action?</strong> If there are two primary actions, you need two screens.</li>
+          <li><strong>What is the reading order?</strong> Number the blocks before any styling.</li>
+          <li><strong>What can be deleted?</strong> Remove a section before you add one.</li>
+          <li><strong>What are the empty, loading and error states?</strong> The generated version usually forgets all three.</li>
+        </ol>
+        <p>Then generate, screenshot at 390, 768 and 1440, and compare the three. Responsive failure is often hierarchy failure in disguise: if the mobile layout doesn't know what matters, the desktop layout probably doesn't either.</p>
+        <p>The last pass is by hand. Not because the model can't write CSS, but because the last 10% is a series of small judgments that need a point of view: tighten this line, delete that divider, move the number out of the card, let the image lead. None of them is hard. Together they are the difference between a demo and a product.</p>
+
+        <h2 id="rubric">A small rubric</h2>
+        <p>I judge whether a screen is done with five questions. They're deliberately blunt:</p>
+        <ul>
+          <li><strong>Can I tell what this page does within two seconds?</strong> If not, the hierarchy is doing too much.</li>
+          <li><strong>Is there one obvious next step?</strong> If everything is clickable, nothing is.</li>
+          <li><strong>Does it survive at 390px?</strong> Mobile is the honest test of desktop decoration.</li>
+          <li><strong>Does deleting 30% lose meaning?</strong> Usually not. Delete it.</li>
+          <li><strong>Does the motion explain anything?</strong> If not, cut it.</li>
+        </ul>
+        <p>These aren't absolute standards of taste. They're filters. They make it harder for a plausible-looking screen to slide through without a point of view.</p>
+
+        <h2 id="editor">The editor's job</h2>
+        <p>The uncomfortable implication: the human role didn't disappear, it moved. Less time producing a draft, more time deciding which draft deserves to exist. That isn't a lower-grade job. It's the job that decides whether the work has a voice.</p>
+        <p>Models are good collaborators and bad editors of their own output. They keep adding until you stop them. The last mile is you stopping them, choosing the one idea worth keeping, and making everything else serve it.</p>
+
+        <p class="article-end"><strong>Note /</strong> This is a design field note, not an argument that generated interfaces are bad. The claim is narrower: generation changed the cost of production; it didn't remove the need for judgment. The screens mentioned here were edited by hand after generation.</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>Next / AI systems</p>
+          <h2 id="next-title">Agent loops need taste</h2>
+        </div>
+        <a href="agent-loops-need-taste.html">
+          <span>Read next</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="Footer">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/open-source.html">Open source</a>
+        <a href="/competitions.html">Competitions</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a href="index.html">All notes <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

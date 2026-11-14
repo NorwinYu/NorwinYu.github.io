@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>A fingerprint in the noise — Norwin Yu</title>
+  <meta name="description" content="Telling language models apart with a small classifier: clean data, error bars, and the limits of model attribution.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="A fingerprint in the noise — Norwin Yu">
+  <meta property="og:description" content="Telling language models apart with a small classifier: clean data, error bars, and the limits of model attribution.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/demo-name-that-llm.jpg">
+  <meta property="og:locale" content="en_US">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/name-that-llm.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/name-that-llm.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="article-nav" aria-label="Article navigation">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="lang-switch" href="/blog/name-that-llm.html" hreflang="zh-CN">中文</a>
+      <span class="availability"><i aria-hidden="true"></i>Open to research conversations</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> All notes</a>
+        <p class="article-kicker"><span class="is-accent">Featured research</span><i aria-hidden="true"></i><span>NLP / Evaluation</span><i aria-hidden="true"></i><span>Open data pool</span></p>
+        <h1>A fingerprint<br><em>in the noise.</em></h1>
+        <p class="article-deck">A small classifier taught me how to tell language models apart, and why clean data beats a bigger model.</p>
+        <p class="article-cn">Telling 18 language models apart with a small model: what helped wasn't a bigger classifier, it was cleaner data.</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>November 2026</span>
+          <span>9 min</span>
+          <span>Research note / 01</span>
+        </div>
+        <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">Contents</p>
+        <nav class="article-toc" aria-label="Article contents">
+          <a href="#question">The question</a>
+          <a href="#setup">Setup</a>
+          <a href="#clean">Clean the room first</a>
+          <a href="#error-bars">Error bars are results</a>
+          <a href="#three-seven">The 3.7 problem</a>
+          <a href="#changes">What changed</a>
+          <a href="#caveats">Limits</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>Model</dt><dd>Qwen3-1.7B + LoRA</dd></div>
+          <div><dt>Data</dt><dd>45,000 texts per round</dd></div>
+          <div><dt>Labels</dt><dd>18 model variants</dd></div>
+          <div><dt>Eval</dt><dd>2,699 held-out texts</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>Can you tell which model wrote a paragraph? Not “is this AI-written” — that question is already hard to win. I'm asking something narrower and stranger: given a piece of text, can you name its model family and its exact variant? This started as a benchmark exercise. It turned into a lesson about data hygiene, uncertainty, and how easily one number convinces us.</p>
+
+        <div class="stat-strip">
+          <div><strong>0.466</strong><span>Raw pool / balanced accuracy</span></div>
+          <div><strong>0.493</strong><span>Cleaned pool / balanced accuracy</span></div>
+          <div><strong>+0.026</strong><span>Both seeds move the same way</span></div>
+        </div>
+
+        <h2 id="question">The question</h2>
+        <p>Most “AI text detection” only cares whether a passage was machine-generated. Attribution asks the harder question: which machine? The framing is useful because it forces you to separate a model's own voice from everything else in the pipeline — the prompt, the register, formatting habits, and whatever post-processing the vendor does before the text reaches you.</p>
+        <p>If a classifier can learn that separation, it becomes a small, testable provenance tool. If it can't, the failure is usually more interesting than the accuracy. You find out what your labels actually contain.</p>
+
+        <h2 id="setup">Setup</h2>
+        <p>The work uses an open text pool covering 18 model variants. Each training round uses 45,000 texts — 2,500 per label — and is scored on 2,699 real competition texts whose prompts never appeared in training. The classifier is deliberately small: a Qwen3-1.7B base with LoRA. Two random seeds per condition. The goal is not to win a leaderboard but to find out which interventions actually change the result.</p>
+        <p>“Small” is the feature. A 1.7B model is cheap enough to rerun, and its mistakes are legible. When a large model fails, the reason may be buried in capacity; when a small one fails, you can usually point back at the data.</p>
+
+        <h2 id="clean">Clean the room first</h2>
+        <p>The first intervention wasn't architecture, it was housekeeping: remove obvious junk and off-topic text from the training pool while keeping labels balanced and the eval set fixed. The raw pool scores 0.466 balanced accuracy; after cleaning it scores 0.493. Same model, same data volume, same seeds, a 0.026 gain.</p>
+        <p>That is not a dramatic number, but it is useful. It says the classifier was spending a good part of its capacity on “this text came from this dataset” versus “this text looks like task text”, not on telling model voices apart. Cleaning didn't add information. It removed a competing signal.</p>
+
+        <blockquote>Better data didn't make the model smarter. It made the question easier to hear.</blockquote>
+
+        <div class="callout">
+          <span class="mono-label">The useful conclusion</span>
+          <p>If your attribution model learned the corpus instead of the model, more parameters only make it wrong with more confidence. Fix the corpus first.</p>
+        </div>
+
+        <p>The second seed tells the same story: 0.464 raw, 0.492 cleaned. The numbers move, the direction doesn't. That consistency matters more than the headline gain, because a single seed can make any intervention look like progress.</p>
+
+        <h2 id="error-bars">Error bars are results too</h2>
+        <p>The experiment scores three ways: all prompts, half the prompts held out of fitting, and two answers per prompt to get closer to the test distribution. The intervals are not decoration. Several ideas that looked promising on the point estimate collapsed once the range was drawn. One feature improved on the first seed but didn't reproduce on the second, so it never made the final file.</p>
+        <p>This is the least exciting and most trustworthy part of applied research. A result that survives prompt-level resampling and a result that only holds on one random seed are two different things. You can build on the first. The second is a rumor with a decimal point.</p>
+
+        <figure class="article-figure">
+          <img src="/assets/img/demo-name-that-llm.jpg" alt="Balanced accuracy for the raw pool versus the cleaned pool, two random seeds per condition." width="1500" height="780" loading="eager">
+          <figcaption><span>After removing junk and off-topic text, balanced accuracy rose by about 0.026 on both seeds.</span><span>Source / Name That LLM v11 notes</span></figcaption>
+        </figure>
+
+        <h2 id="three-seven">The 3.7 problem</h2>
+        <p>The most instructive failure came from two variants that should be different: Gemini 3.7 and 3.8, from the same source. A classifier trained only to separate them scores 0.498 AUC — essentially random. There is no stable signal in the text. On real mixed-source text the same comparison reaches 0.582: better, but still not a fingerprint you can draw provenance conclusions from.</p>
+        <p>Here attribution stops being a trick. A model's “voice” is not a stable property of its weights. It is the residue of training data, decoding settings, system prompt, and all the normalization the vendor does before you see the text. If two variants share one pipeline, the difference you want to detect may not exist in the output at all.</p>
+        <p>The reverse is also true. Some variants separate easily because their formatting and refusal style are distinctive. That isn't necessarily a deeper understanding of the model — it may just be a shortcut that vanishes when the vendor changes one template.</p>
+
+        <h2 id="changes">What changed</h2>
+        <p>After this, my defaults for eval work changed:</p>
+        <ul>
+          <li><strong>Split by prompt, not just by row.</strong> One prompt can generate texts that leak into each other. If the split doesn't respect the generation unit, the score is inflated.</li>
+          <li><strong>Report random seeds.</strong> One run is an anecdote, two are a direction, more are a result.</li>
+          <li><strong>Audit labels, not just models.</strong> A label is the publisher's claim; some are clean, some are marketing. A classifier learns that difference faithfully.</li>
+          <li><strong>Prefer boring baselines.</strong> A small model with a clean split is more of an instrument than a large one with a leaked split.</li>
+          <li><strong>Keep failed interventions.</strong> A feature that didn't reproduce is part of the result. Delete it and the research becomes a highlight reel.</li>
+        </ul>
+
+        <h2 id="caveats">Limits</h2>
+        <p>This is a small study on a public data pool, not a conclusion about all LLMs. The 1.7B classifier is a probe, not a production detector. Labels are only as good as the source. Attribution is adversarial by nature: vendors change serving stacks, prompts change behavior, and a model that looks distinctive today can be indistinguishable after one template update.</p>
+        <p>What generalizes is the method: isolate the signal, measure uncertainty, and treat a clean negative result as information too. Models can be wrong; evals shouldn't be.</p>
+
+        <p class="article-end"><strong>Method /</strong> Qwen3-1.7B + LoRA, 45,000 texts per round, 2,500 per label, two random seeds, 2,699 held-out real texts. The chart shows balanced accuracy; intervals reflect prompt-level resampling. The public pool and the exported chart are the source of the numbers above. This is a field report, not a peer-reviewed paper.</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>Next / Systems</p>
+          <h2 id="next-title">The 44GB VRAM problem</h2>
+        </div>
+        <a href="two-gpu-local-lab.html">
+          <span>Read next</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="Footer">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/open-source.html">Open source</a>
+        <a href="/competitions.html">Competitions</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a href="index.html">All notes <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

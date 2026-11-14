@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>80 and 46 — Norwin Yu</title>
+  <meta name="description" content="One 27B model: the docs say 80 tok/s, this machine gives 46. The difference is not luck, it is the power cap and the compute density of MTP.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="80 and 46 — Norwin Yu">
+  <meta property="og:description" content="One 27B model: the docs say 80 tok/s, this machine gives 46. The difference is not luck, it is the power cap and the compute density of MTP.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/eighty-and-forty-six.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/eighty-and-forty-six.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="article-nav" aria-label="Article navigation">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="lang-switch" href="/blog/eighty-and-forty-six.html" hreflang="zh-CN">中文</a>
+      <span class="availability"><i aria-hidden="true"></i>Open to research conversations</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> All notes</a>
+        <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Local inference</span><i aria-hidden="true"></i><span>Benchmarks</span></p>
+        <h1>80 and<br><em>46.</em></h1>
+        <p class="article-deck">Same 27B model, same vLLM fork: the docs say 80 tok/s, this machine gives 46. The difference is not luck.</p>
+        <p class="article-cn">Neither number is false. They do not measure the same thing — one is a theoretical ceiling, the other is this machine's everyday at 180W.</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>November 2026</span>
+          <span>9 min</span>
+          <span>Field note / 11</span>
+        </div>
+        <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">Contents</p>
+        <nav class="article-toc" aria-label="Article contents">
+          <a href="#numbers">Three numbers</a>
+          <a href="#thinking">The cost of thinking</a>
+          <a href="#why">Why not 80</a>
+          <a href="#power">Pinned at 180W</a>
+          <a href="#mtp">MTP/2 and MTP/3</a>
+          <a href="#prefill">Prefill is fine</a>
+          <a href="#proof">What it does not prove</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>Model</dt><dd>Qwen3.8-27B-FP8</dd></div>
+          <div><dt>VRAM</dt><dd>21.5 / 21.1 GB</dd></div>
+          <div><dt>Context</dt><dd>262,144 tokens</dd></div>
+          <div><dt>Power cap</dt><dd>180 W per card</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>Split a 27B FP8 model in half across two 22GB cards, turn on a 256K context, turn on MTP speculative decoding. The server comes up, it talks, it calls tools, the KV cache fits. Then I run the benchmark and get <strong>46 tok/s</strong>.</p>
+
+        <p>The fork's docs say 80. That is a big enough gap to investigate — because “local models are slow” and “my configuration is wrong” are two completely different conclusions, and they look the same.</p>
+
+        <h2 id="numbers">Three numbers</h2>
+        <p>Configuration first, otherwise the numbers mean nothing:</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Item</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Item">Model / precision</td><td data-label="Value">Qwen3.8-27B-FP8 · W8A16 (FP8 weights, FP16 activations)</td></tr>
+            <tr><td data-label="Item">Parallelism / speculative</td><td data-label="Value">TP=2 · MTP/3 · FLASHINFER attention</td></tr>
+            <tr><td data-label="Item">Context / KV</td><td data-label="Value">262,144 tokens · GPU KV cache 276,788 tokens</td></tr>
+            <tr><td data-label="Item">VRAM footprint</td><td data-label="Value">GPU0 21.5 GB / GPU1 21.1 GB</td></tr>
+            <tr><td data-label="Item">Power cap</td><td data-label="Value">180 W (default 250 W, maximum 280 W)</td></tr>
+            <tr><td data-label="Item">Software stack</td><td data-label="Value">vLLM 0.29.1rc0 SM75 fork · PyTorch 2.13+cu130 · CUDA 13.0 · driver 580</td></tr>
+          </tbody>
+        </table>
+
+        <div class="stat-strip is-four">
+          <div><strong>46.1</strong><span>tok/s · thinking on</span></div>
+          <div><strong>52.1</strong><span>tok/s · thinking off</span></div>
+          <div><strong>1,978</strong><span>tok/s prefill @4K</span></div>
+          <div><strong>276,788</strong><span>tokens KV cache</span></div>
+        </div>
+
+        <p>46 and 52 are both medians over three or more runs with warmup discarded, not the best run.</p>
+
+        <h2 id="thinking">The cost of thinking</h2>
+        <p>“Thinking” mode (a reasoning trace) decodes about 13% slower: 52.1 → 46.1. The reason has to do with MTP — speculative decoding depends on the draft token acceptance rate, and a reasoning trace is less predictable than prose, so drafts get rejected more often and the average number of tokens per step drops.</p>
+
+        <p>That gap may be invisible on other machines; on this one it is very stable, because it is not bounded by bandwidth, it is bounded by compute per step (next section).</p>
+
+        <h2 id="why">Why not 80</h2>
+        <p>Two reasons, neither mysterious.</p>
+
+        <p><strong>First, that 80 is a synthetic benchmark.</strong> The fork's docs say so themselves: both inputs are synthetic samples built for high speculative acceptance, used to compare throughput under equal conditions, not representative of real inference. Real draft acceptance is lower, so each step emits fewer tokens.</p>
+
+        <p><strong>Second, this machine is held at 180W.</strong> MTP/3 verifies three draft tokens per step, a textbook compute-bound load — exactly the kind the power wall is least forgiving about. Under load both cards sit pinned at 180W (peaks 182W / 179W), utilization 100%, SM clocks capped at 1845 / 1830 MHz. Meaning: <em>the cards are not below their clocks because of heat, but because of power.</em></p>
+
+        <h2 id="power">Pinned at 180W</h2>
+        <table class="compare-table">
+          <thead><tr><th>GPU</th><th>Peak</th><th>Mean</th><th>Cap</th><th>Max SM clock</th><th>Utilization</th></tr></thead>
+          <tbody>
+            <tr><td data-label="GPU">0</td><td data-label="Peak">182 W</td><td data-label="Mean">178 W</td><td data-label="Cap">180 W</td><td data-label="Max SM clock">1,845 MHz</td><td data-label="Utilization">100%</td></tr>
+            <tr><td data-label="GPU">1</td><td data-label="Peak">179 W</td><td data-label="Mean">175 W</td><td data-label="Cap">180 W</td><td data-label="Max SM clock">1,830 MHz</td><td data-label="Utilization">100%</td></tr>
+          </tbody>
+        </table>
+
+        <p>180W is not a hardware limit: the default cap is 250W and the maximum is 280W. It is a policy I set myself with <code>nvidia-smi -pl</code> plus restore-on-boot, because two full-power cards warm this room within half an hour.</p>
+
+        <p>This is a textbook trade: predictability (quiet, cool, no tripped breaker) in exchange for throughput. I write it down because the next time you see a figure like “local 27B at 46 tok/s”, the first question should be about the power cap, not about quantization.</p>
+
+        <h2 id="mtp">MTP/2 and MTP/3</h2>
+        <p>Intuition says more draft tokens means faster. Measured, it does not:</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Drafts</th><th>Thinking</th><th>Median</th><th>Min</th><th>Max</th><th>Std dev</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Drafts">MTP/2</td><td data-label="Thinking">off</td><td data-label="Median">50.8</td><td data-label="Min">49.4</td><td data-label="Max">51.7</td><td data-label="Std dev">0.88</td></tr>
+            <tr><td data-label="Drafts">MTP/2</td><td data-label="Thinking">on</td><td data-label="Median">46.1</td><td data-label="Min">43.7</td><td data-label="Max">50.4</td><td data-label="Std dev">2.41</td></tr>
+            <tr><td data-label="Drafts">MTP/3</td><td data-label="Thinking">off</td><td data-label="Median">51.2</td><td data-label="Min">45.5</td><td data-label="Max">56.8</td><td data-label="Std dev">4.27</td></tr>
+            <tr><td data-label="Drafts">MTP/3</td><td data-label="Thinking">on</td><td data-label="Median">45.6</td><td data-label="Min">42.6</td><td data-label="Max">49.4</td><td data-label="Std dev">2.34</td></tr>
+          </tbody>
+        </table>
+
+        <p>The difference is 0.4–0.5 tok/s, an order of magnitude smaller than the spread between runs. <strong>MTP/2 and MTP/3 are statistically indistinguishable on this machine.</strong></p>
+
+        <p>The MTP/3 “thinking off” group also exposes a sampling trap: six runs drifting from 56.8 all the way down to 45.5, the first few a cold-card gift, the steady state at 50–51. MTP/2 has σ 0.88 and settles to the same steady state quickly. So I left the configuration on the default MTP/3 — not because it is faster, but because there is no reason to change it.</p>
+
+        <h2 id="prefill">Prefill is fine</h2>
+        <p>If the power wall were the only cause, prefill should sag too. It does not:</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Prompt length</th><th>Time to first token</th><th>Prefill throughput</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Prompt length">74</td><td data-label="Time to first token">122 ms</td><td data-label="Prefill throughput">~600 tok/s (overhead-dominated)</td></tr>
+            <tr><td data-label="Prompt length">~1K</td><td data-label="Time to first token">940 ms</td><td data-label="Prefill throughput">1,244 tok/s</td></tr>
+            <tr><td data-label="Prompt length">~4K</td><td data-label="Time to first token">2.3 s</td><td data-label="Prefill throughput"><strong>1,978 tok/s</strong></td></tr>
+            <tr><td data-label="Prompt length">~16K</td><td data-label="Time to first token">13.2 s</td><td data-label="Prefill throughput">1,354 tok/s</td></tr>
+          </tbody>
+        </table>
+
+        <p>The fork's reference prefill for this model is 1,409–1,653 tok/s; we get 1,978 at 4K, above it. That is a good counter-check on the earlier explanation: prefill is less sensitive to “a few extra tokens of compute per step”, and so less dependent on power headroom.</p>
+
+        <h2 id="proof">What it does not prove</h2>
+        <p>These numbers do not show that a 2080 Ti is unsuited to local inference, and they do not show that MTP is useless — they show that at 180W, on this driver, on this fork, a 27B FP8 model reliably gives 46 tok/s, a 256K context, a 21GB-class VRAM footprint, and working tool calls.</p>
+
+        <p>They also cannot be compared directly with “a Mac with 48GB unified memory” or “a single 3090”, because context length, quantization and power cap all differ. To compare, you have to pin those three variables first.</p>
+
+        <p>The most useful conclusion is small: <strong>when you report tok/s, you have to report the power cap and the context length at the same time</strong>, otherwise the number describes only an unconstrained ideal case.</p>
+
+        <p class="article-end"><strong>Method /</strong> Data comes from measured records in <code>vllm-2080ti/RESULTS.md</code> on this machine: streaming requests, TTFT separated from decode by first-token time, fixed prompt and output lengths, at least five runs per item with median plus min/max/stdev, and one warmup discarded after every configuration change. The full configuration table is on the site's <a href="/local/text-stack.html">Local</a> page.</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>Related / Systems</p>
+          <h2 id="next-title">Three minutes per restart</h2>
+        </div>
+        <a href="restart-cost.html">
+          <span>Continue reading</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="Footer">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/open-source.html">Open source</a>
+        <a href="/competitions.html">Competitions</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a href="index.html">All notes <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

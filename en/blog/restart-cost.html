@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Three minutes per restart — Norwin Yu</title>
+  <meta name="description" content="Changing one parameter means reloading 55GB and waiting three minutes: on a machine like this, experiment design is the bottleneck.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Three minutes per restart — Norwin Yu">
+  <meta property="og:description" content="Changing one parameter means reloading 55GB and waiting three minutes: on a machine like this, experiment design is the bottleneck.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/restart-cost.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/restart-cost.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="article-nav" aria-label="Article navigation">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="lang-switch" href="/blog/restart-cost.html" hreflang="zh-CN">中文</a>
+      <span class="availability"><i aria-hidden="true"></i>Open to research conversations</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> All notes</a>
+        <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Experiment orchestration</span><i aria-hidden="true"></i><span>MoE</span></p>
+        <h1>Three minutes<br><em>per restart.</em></h1>
+        <p class="article-deck">On a machine where changing one parameter means reloading 35–55GB, the experiment design is the bottleneck, not the model.</p>
+        <p class="article-cn">I wrote the A/B tests out as a table, then realized every row in it costs three minutes, and I will change things a dozen times.</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>November 2026</span>
+          <span>10 min</span>
+          <span>Field note / 12</span>
+        </div>
+        <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">Contents</p>
+        <nav class="article-toc" aria-label="Article contents">
+          <a href="#cost">What three minutes means</a>
+          <a href="#batch">One restart, one group of tests</a>
+          <a href="#lost">Two optimizations the second card loses</a>
+          <a href="#nvlink">The idle NVLink</a>
+          <a href="#numa">The other half of 449 MB</a>
+          <a href="#cases">How cases are scored</a>
+          <a href="#pending">What is not measured yet</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>Model</dt><dd>MoE · UD-IQ4_XS</dd></div>
+          <div><dt>Context</dt><dd>128K</dd></div>
+          <div><dt>Load</dt><dd>35–55 GB</dd></div>
+          <div><dt>Restart</dt><dd>1–3 minutes</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>The goal was specific: run a 125B-class MoE at 128K context on two 22GB 2080 Ti cards, at UD-IQ4_XS. It is an order of magnitude bigger than a 27B dense model, and it works by loading only the experts that get hit; the price is that every configuration change makes the engine read 35 to 55GB back into memory, one to three minutes.</p>
+
+        <p>So the question stopped being “which parameter is faster” and became “how should I schedule these dozen-odd restarts”. This note is about the second question, plus two hardware-related things I found along the way.</p>
+
+        <h2 id="cost">What three minutes means</h2>
+        <p>Three minutes is not expensive by itself. What is expensive is how it changes the way you experiment:</p>
+
+        <ul>
+          <li>change one parameter at a time → a dozen-odd restarts → forty minutes, waiting only;</li>
+          <li>decide to “just try one more switch” → another three minutes, and the baseline for this restart is already dirty;</li>
+          <li>discover halfway through that the measurement method is wrong → not an edit to the script, a full rerun.</li>
+        </ul>
+
+        <p>So the first decision was not which parameter to pick, but <strong>fixing the measurement protocol</strong> so that the data from each restart is directly comparable: streaming requests; TTFT separated from decode by first-token time; fixed prompt and output lengths; at least five runs per item with median and min/max/stdev; and one warmup discarded after every configuration change.</p>
+
+        <p>The protocol was inherited from the previous project — the 27B work was measured the same way, including the numbers that the power cap explained away in <a href="eighty-and-forty-six.html">80 and 46</a>. Without one protocol the restart cost doubles, because you have to come back and re-measure.</p>
+
+        <h2 id="batch">One restart, one group of tests</h2>
+        <p>There is one orchestration rule: <strong>one engine configuration, one full group of tests</strong>. So the experiments are laid out in batches, not as a parameter table.</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Batch</th><th>Configuration</th><th>What this group answers</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Batch">0</td><td data-label="Configuration">Single card · 128K · images on</td><td data-label="What this group answers">Baseline: quality score and speed, the full case set</td></tr>
+            <tr><td data-label="Batch">1</td><td data-label="Configuration">Single card + BF16 tensor core switch</td><td data-label="What this group answers">What the 2080 Ti-specific optimization is actually worth (off/on alternating inside the batch)</td></tr>
+            <tr><td data-label="Batch">2</td><td data-label="Configuration">Single card vs layer split vs hand-set split points</td><td data-label="What this group answers">Is the second card extra capacity, or also faster</td></tr>
+            <tr><td data-label="Batch">3</td><td data-label="Configuration">Explicitly turn on the two optimizations the second card loses</td><td data-label="What this group answers">Can what was lost be recovered</td></tr>
+            <tr><td data-label="Batch">4</td><td data-label="Configuration">Two concurrent streams</td><td data-label="What this group answers">Is total tok/s worth making each stream slower</td></tr>
+            <tr><td data-label="Batch">5</td><td data-label="Configuration">KV precision 8-bit / k8v4 / q4_0</td><td data-label="What this group answers">How many experts the saved VRAM buys, and how much quality drops</td></tr>
+            <tr><td data-label="Batch">6</td><td data-label="Configuration">Chunk size and reserve</td><td data-label="What this group answers">Best prefill chunk value</td></tr>
+            <tr><td data-label="Batch">7</td><td data-label="Configuration">Head-to-head vLLM on the same hardware</td><td data-label="What this group answers">Tradeoffs between the two architectures for agent work (different models, not a speed contest)</td></tr>
+          </tbody>
+        </table>
+
+        <p>The value of this table is not that it is complete, it is that it <strong>admits the restart cost</strong>: every extra batch is another three minutes; so merge what can be merged, and alternate inside a batch what can be alternated.</p>
+
+        <div class="callout">
+          <span class="mono-label">Side note</span>
+          <p>For the concurrency batch, the docs give 82 tok/s for one stream and 89.2 combined for two (+8.8%), but each stream drops to about 44.6. So “use both cards fully” and “one person iterating on code faster” are two different things, and you have to decide which one you want.</p>
+        </div>
+
+        <h2 id="lost">Two optimizations the second card loses</h2>
+        <p>This was the least comfortable thing I found in the docs: the engine has two automatic optimizations that only apply on a single card.</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Optimization</th><th>Single card</th><th>Layer split (two cards)</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Optimization">Prefill CPU offload</td><td data-label="Single card">On by default</td><td data-label="Layer split (two cards)">Off by default, must be set explicitly</td></tr>
+            <tr><td data-label="Optimization">PCIe split ratio auto-tuning</td><td data-label="Single card">On by default</td><td data-label="Layer split (two cards)">Not used with CUDA layer split</td></tr>
+            <tr><td data-label="Optimization">Routing tail skip</td><td data-label="Single card">On</td><td data-label="Layer split (two cards)">Also applies</td></tr>
+          </tbody>
+        </table>
+
+        <p>In other words, <strong>adding the second card does not just add memory, it removes two optimizations.</strong> If you only benchmark end-to-end “one card vs two cards”, you fold those two effects into a single number and then draw a wrong conclusion — in either direction.</p>
+
+        <p>That is why batch 3 exists: turn the lost optimizations on explicitly first, then compare. Otherwise group B in the A/B is not “more hardware”, it is “more hardware minus two default optimizations”.</p>
+
+        <h2 id="nvlink">The idle NVLink</h2>
+        <p>The second hardware finding is more ironic: the two cards have NVLink NV2 between them, measured P2P bandwidth 44 GB/s. And layer split is the mode the docs say explicitly <strong>does not need</strong> NVLink — each card computes its own layers and passes them down serially, a few hundred KB per window.</p>
+
+        <p>The result: a 44 GB/s link sits essentially idle under layer split. What would use it is a different mode — split different experts across the two cards within the same token and compute them at once, with activations and results over P2P. The official docs have a “a 2080 Ti as helper is slower” conclusion, but it measured the old host-buffer version, and that machine's two cards could not NVLink at all.</p>
+
+        <p>So this is a textbook case of an official conclusion that does not apply to this machine: dual 2080 Ti + NVLink + a slow CPU is exactly the ideal hardware for that mode, and it has never been measured that way (not in public records, at least). It is scheduled as batch 8.</p>
+
+        <h2 id="numa">The other half of 449 MB</h2>
+        <p>One more, dumber thing. Before starting, I looked at free memory on the two NUMA nodes:</p>
+
+        <pre><code>node0  free 449 MB      ← GPU0 is on this node
+node1  free 12.4 GB     ← GPU1 is on this node</code></pre>
+
+        <p>The page cache had eaten node0. If the expert pool allocates per node, GPU0's half lands in remote memory and every access takes an extra hop. This is not a model problem, it is a placement problem.</p>
+
+        <p>A more dramatic reference comes from the docs: thread affinity alone (without changing a line of kernel) took a single 5090 from 142.82 to 207.75 tok/s, +45%. On a dual-socket machine with 88 threads there is far more room to place things wrong than on a single-socket desktop.</p>
+
+        <h2 id="cases">How cases are scored</h2>
+        <p>There is quality as well as speed. One rule I hold to: <strong>if a question can be scored by a program, never score it by eye</strong>. Cases fall into seven classes, scored from strongest to weakest:</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Class</th><th>Content</th><th>Scoring</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Class">A</td><td data-label="Content">Deterministic reasoning</td><td data-label="Scoring">Extract the last number, exact match</td></tr>
+            <tr><td data-label="Class">B</td><td data-label="Content">Code (reverse a linked list, LRU, binary search bounds, fix an off-by-one)</td><td data-label="Scoring">Extract the code → run unit tests</td></tr>
+            <tr><td data-label="Class">C</td><td data-label="Content">Instruction following (output only JSON, exactly three items, ban one word)</td><td data-label="Scoring">Parse + count + character check</td></tr>
+            <tr><td data-label="Class">D</td><td data-label="Content">Chinese ability (explanation, translation, long-document summary)</td><td data-label="Scoring">Keyword-table coverage + human spot check</td></tr>
+            <tr><td data-label="Class">E</td><td data-label="Content">Long-context retrieval (8K/32K/64K/128K × five positions)</td><td data-label="Scoring">Does the answer contain the planted unique string</td></tr>
+            <tr><td data-label="Class">F</td><td data-label="Content">Tool calls (single turn, multi turn, parameter types, not calling when it should not)</td><td data-label="Scoring">JSON schema validation; both endpoints tested</td></tr>
+            <tr><td data-label="Class">G</td><td data-label="Content">Vision (bar chart, table, text, counting)</td><td data-label="Scoring">The image is drawn by PIL, so the answer is the number that was drawn</td></tr>
+          </tbody>
+        </table>
+
+        <p>Class G deserves its own note: generate the image with a program, and ground truth needs no human labelling and admits no argument. That is far more reliable than asking “what is in this image” about a real screenshot — with the latter you are never sure whether the model was wrong or the label was.</p>
+
+        <h2 id="pending">What is not measured yet</h2>
+        <p>At this point I have to be clear: <strong>the batch table in this note is a plan, not a result.</strong> What is settled is only a handful of things — the restart cost, the two optimizations that go away with a second card, NVLink sitting idle under layer split, the NUMA imbalance, and the KV VRAM budget at 128K (about 2.21GB at 8-bit, 1.71GB for k8v4, 1.21GB for q4_0, saving 23% / 45%).</p>
+
+        <p>The real questions — “is two cards actually faster”, “can peer tier put NVLink to use”, “how many points does KV compression cost” — are all still pending. Once measured, this note becomes a data table; until then it is an experiment design document, which is also a thing worth writing down.</p>
+
+        <p class="article-end"><strong>Method /</strong> Hardware and cost figures come from <code>research/strata/EXPERIMENTS.md</code> on this machine and from the engine docs: 2 × RTX 2080 Ti 22GB, NVLink NV2 (measured P2P 44 GB/s), dual Xeon E5-2696 v4 (44C/88T), 94GB DDR4, driver 580 series. The batch table and the case set are an unexecuted plan; nothing in this note presents them as finished results.</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>Related / Evaluation</p>
+          <h2 id="next-title">The exam as evaluation</h2>
+        </div>
+        <a href="exam-as-eval.html">
+          <span>Continue reading</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="Footer">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/open-source.html">Open source</a>
+        <a href="/competitions.html">Competitions</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a href="index.html">All notes <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

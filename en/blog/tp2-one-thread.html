@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Parallel is not a split — Norwin Yu</title>
+  <meta name="description" content="MiniMax H3 on two 22GB 2080 Ti cards, from 1.31× to 2.97×: the real blocker was the host thread, not the tensor split.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Parallel is not a split — Norwin Yu">
+  <meta property="og:description" content="MiniMax H3 on two 22GB 2080 Ti cards, from 1.31× to 2.97×: the real blocker was the host thread, not the tensor split.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/tp2-one-thread.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/tp2-one-thread.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="article-nav" aria-label="Article navigation">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="lang-switch" href="/blog/tp2-one-thread.html" hreflang="zh-CN">中文</a>
+      <span class="availability"><i aria-hidden="true"></i>Open to research conversations</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> All notes</a>
+        <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Multi-GPU</span><i aria-hidden="true"></i><span>Video generation</span></p>
+        <h1>Parallel is not<br><em>a split.</em></h1>
+        <p class="article-deck">A 20B video model, two 22GB Turing cards. The first tensor-parallel version reached only 1.31×; the problem was not the interconnect, it was the thread that issues the calls.</p>
+        <p class="article-cn">I split the weights correctly, then spent two days learning that a correct split only puts half the work on the second card. It does not make it happen at the same time.</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>November 2026</span>
+          <span>10 min</span>
+          <span>Field note / 09</span>
+        </div>
+        <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">Contents</p>
+        <nav class="article-toc" aria-label="Article contents">
+          <a href="#fits">It fits, but it is not used</a>
+          <a href="#shard">The split was not the mistake</a>
+          <a href="#block">The block was not in the interconnect</a>
+          <a href="#thread">One thread per card</a>
+          <a href="#numbers">Results</a>
+          <a href="#transfer">Does this carry over?</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>Model</dt><dd>MiniMax H3 · 20.11B</dd></div>
+          <div><dt>Quantisation</dt><dd>W4A8 · int4 group 16</dd></div>
+          <div><dt>Single card</dt><dd>51 s / step</dd></div>
+          <div><dt>TP2</dt><dd>14 s / step</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>MiniMax H3 is a 20.11B joint streaming video and audio Transformer: 50 blocks, hidden 5376, FFN 14336. After W4A8 quantisation the DiT weights take 10.96 GiB on disk, which fits inside one 22GB card. It does produce clips.</p>
+
+        <p>The problem: the other card sat idle next to it. It was a 2U fan moving air.</p>
+
+        <h2 id="fits">It fits, but it is not used</h2>
+        <p>On one card, a smoke sample of 640×352 × 124 frames × 4 steps runs at about 51 seconds per step, 243 seconds for a 4-step clip. GPU1 at 97% utilisation, peak memory 19.1GB, the temperature sitting at 78 °C for four minutes. It was not that it could not run. It was that it could not run like that all afternoon.</p>
+
+        <p>So the goal was plain: get the second card into the loop. Not as a bigger memory pool — the model already fit — but to share the compute and, incidentally, cut the time one card spends hot.</p>
+
+        <h2 id="shard">The split was not the mistake</h2>
+        <p>The TP2 split was the standard one: qkv, out and fc1 split by column, fc2 by row, with a symmetric allreduce at the end of each block. Both cards hold the full input and output shapes across their 25 blocks, and half of every matrix.</p>
+
+        <p>It ran at 1.31×. The split logic was correct and the numbers were right, but the GPUs sat idle half the time. It did not look like communication cost — allreduce was only 13 ms/block, 3% of 420 ms — it looked like the two cards taking turns.</p>
+
+        <h2 id="block">The block was not in the interconnect</h2>
+        <p>The repository's <code>probes/</code> exists for this question: run the same GEMM on both cards concurrently, then switch to one thread per card, and record the time overlap in both cases. 95% overlap means both cards are computing at the same time; 5% overlap means they simply queued.</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Test</th><th>dev0</th><th>dev1</th><th>Concurrent time</th><th>Overlap</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Test">dense fp16 GEMM</td><td data-label="dev0">61.9</td><td data-label="dev1">58.0</td><td data-label="Concurrent time">61.0</td><td data-label="Overlap">95%</td></tr>
+            <tr><td data-label="Test">W4A8 GEMM</td><td data-label="dev0">103.3</td><td data-label="dev1">96.8</td><td data-label="Concurrent time">194.7</td><td data-label="Overlap">5%</td></tr>
+            <tr><td data-label="Test">W4A8 GEMM, one thread per card</td><td data-label="dev0">106.5</td><td data-label="dev1">97.1</td><td data-label="Concurrent time">106.8</td><td data-label="Overlap">91%</td></tr>
+          </tbody>
+        </table>
+
+        <p>Look at the second row: each card's GEMM alone is about 100 units, and running them concurrently takes 194.7 — exactly the sum. They did not run in parallel; they ran twice in series.</p>
+
+        <p>The cause was not NVLink, and not CUDA's stream scheduling. It was the W4A8 GEMM in <code>comfy-kitchen</code>: after launching the kernel it blocks the host thread that called it until the kernel finishes. The whole forward pass has one host thread, so the first GEMM blocks that thread and the second rank's kernel can only queue. The dense fp16 path does not block, which is why it reached 95% overlap — one split, two outcomes.</p>
+
+        <h2 id="thread">One thread per card</h2>
+        <p>The fix is a few lines: give each rank its own host thread (<code>_par</code> in <code>tp2.py</code>), so two threads launch the two cards' kernels. Overlap went from 5% to 91%, concurrent time from 194.7 to 106.8 — close to the single-card time, which is actual parallelism.</p>
+
+        <p>It is a pure scheduling change and touches no numbers: the output is bit-identical, frame MAE 0.0000. That matters — it shows the 2.97× was not bought by computing less.</p>
+
+        <h2 id="numbers">Results</h2>
+        <table class="compare-table">
+          <thead><tr><th>Metric</th><th>Single card</th><th>TP2</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Metric">Time per step</td><td data-label="Single card">~51 s</td><td data-label="TP2">~14 s</td></tr>
+            <tr><td data-label="Metric">4-step clip, end to end</td><td data-label="Single card">243 s</td><td data-label="TP2">82 s</td></tr>
+            <tr><td data-label="Metric">Speedup</td><td data-label="Single card">1×</td><td data-label="TP2">2.97×</td></tr>
+            <tr><td data-label="Metric">GPU utilisation</td><td data-label="Single card">GPU0 idle / GPU1 97%</td><td data-label="TP2">57% / 72%</td></tr>
+            <tr><td data-label="Metric">Peak memory</td><td data-label="Single card">19.1 GB</td><td data-label="TP2">11.6 + 19.7 GB</td></tr>
+            <tr><td data-label="Metric">Time running hot</td><td data-label="Single card">78 °C · 4 minutes</td><td data-label="TP2">75 °C · 1.4 minutes</td></tr>
+          </tbody>
+        </table>
+
+        <p>At output resolution (864×480, ref2va) the curve is the same story on another scale: 44.6 s/step on one card, 34.0 s (1.31×) for the first TP2, 19.8 s (2.25×) after one thread per card. Inside a fixed block, qkv plus attention is 211 ms, MLP 196 ms, allreduce 13 ms — 420 ms/block in total.</p>
+
+        <div class="callout">
+          <span class="mono-label">A check worth reusing</span>
+          <p>Do not judge whether parallelism worked by the end-to-end speedup. Measure overlap first: are the two cards' kernels really running at the same time, or just alternating. An end-to-end 1.31× can come from many causes. 5% overlap has one.</p>
+        </div>
+
+        <h2 id="transfer">Does this carry over?</h2>
+        <p>Yes, with limits. What holds here is the premise that <strong>the degree of parallelism is set by how the host side issues calls, not only by how the weights are split</strong>. Any kernel or library that blocks its caller turns parallelism into queueing once it is dropped into a single-threaded forward pass. The dense fp16 versus W4A8 comparison is the same model, the same split, with only the kernel implementation changed.</p>
+
+        <p>The parts that do not carry over need saying too: these numbers come from one machine, two 22GB 2080 Ti cards, a 250W power limit, driver 580 series, CUDA 13.0, fixed seed 42. They do not prove that other cards or other models will also reach 2.97×. The two cards also sit on different NUMA nodes, so half of the 13 ms allreduce is topology, and a dual-socket board would change it.</p>
+
+        <p>What is worth keeping is the diagnostic order: first confirm the split is correct (the numbers agree), then confirm the kernels really are concurrent (overlap), and only then optimise communication. Done the other way round, you spend a lot of time tuning a bandwidth problem that does not exist.</p>
+
+        <p class="article-end"><strong>Method /</strong> The data comes from the <a href="https://github.com/NorwinYu/minimax-h3-dual-2080ti" target="_blank" rel="noopener">NorwinYu/minimax-h3-dual-2080ti</a> repository's <code>docs/PERFORMANCE.md</code> and <code>probes/</code>; the numbers were measured on real renders on this machine, not estimated. Code is MIT; model weights are not distributed with the repository and follow MiniMax's own licence. How overlap is measured is documented in <code>docs/ARCHITECTURE.md</code>.</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>Related / Systems</p>
+          <h2 id="next-title">The 44GB memory problem</h2>
+        </div>
+        <a href="two-gpu-local-lab.html">
+          <span>Read next</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="Footer">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/open-source.html">Open source</a>
+        <a href="/competitions.html">Competitions</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a href="index.html">All notes <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

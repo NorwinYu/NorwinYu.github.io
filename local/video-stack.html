@@ -20,6 +20,8 @@
   <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/local/video-stack.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/zh/local/video-stack.html">
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
   <link rel="manifest" href="../manifest.webmanifest">
@@ -41,10 +43,11 @@
         <a href="../ai.html" data-nav="ai">Local</a>
         <a href="../open-source.html" data-nav="oss">Open source</a>
         <a href="../competitions.html" data-nav="competitions">Competitions</a>
-        <a href="../blog/index.html" data-nav="journal">Journal</a>
+        <a href="/en/blog/" data-nav="journal">Journal</a>
         <a href="../about.html" data-nav="about">About</a>
       </nav>
       <div class="topbar-actions">
+        <a class="lang-switch" href="/zh/local/video-stack.html" hreflang="zh-CN">中文</a>
         <span class="status"><i aria-hidden="true"></i>AI usage research</span>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
           Menu <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
@@ -63,7 +66,7 @@
       <a href="../ai.html" data-nav="ai">Local</a>
       <a href="../open-source.html" data-nav="oss">Open source</a>
       <a href="../competitions.html" data-nav="competitions">Competitions</a>
-      <a href="../blog/index.html" data-nav="journal">Journal</a>
+      <a href="/en/blog/" data-nav="journal">Journal</a>
       <a href="../about.html" data-nav="about">About</a>
     </nav>
     <div class="wrap mobile-menu-foot">
@@ -79,7 +82,7 @@
         <h1>20B on 2 × 22 GB.</h1>
         <p class="page-lede">MiniMax H3 is a 20.11B video-and-audio transformer. It does not fit on one card, so tensor parallelism is not an accelerator here — it is the difference between a usable run and a fan that runs for four minutes.</p>
         <div class="page-meta"><span><i></i>20.11B · 50 blocks</span><span>W4A8 · 10.96 GiB</span><span>TP2 · 2.97×</span><span>Measured / Sep–Nov 2026</span></div>
-        <div class="work-links"><a href="../ai.html">Local overview <span aria-hidden="true">→</span></a><a href="workflow.html">Wiring and workflow <span aria-hidden="true">→</span></a><a href="../blog/tp2-one-thread.html">Why sharding alone stalled <span aria-hidden="true">→</span></a></div>
+        <div class="work-links"><a href="../ai.html">Local overview <span aria-hidden="true">→</span></a><a href="workflow.html">Wiring and workflow <span aria-hidden="true">→</span></a><a href="/en/blog/tp2-one-thread.html">Why sharding alone stalled <span aria-hidden="true">→</span></a></div>
       </div>
     </header>
 
@@ -205,7 +208,7 @@ python scripts/bench.py examples/smoke_t2v.json smoke   # self-contained sample<
         <a href="../ai.html">Local</a>
         <a href="../open-source.html">Open source</a>
         <a href="../competitions.html">Competitions</a>
-        <a href="../blog/index.html">Journal</a>
+        <a href="/en/blog/">Journal</a>
         <a href="../about.html">About</a>
       </nav>
       <div class="footer-note">

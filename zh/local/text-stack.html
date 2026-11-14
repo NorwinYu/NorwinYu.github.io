@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>文本栈 — Norwin Yu</title>
+  <meta name="description" content="本地文本推理：27B FP8 配置、实测吞吐，以及这些数字背后的功耗上限。">
+  <meta name="author" content="Norwin Yu">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="文本栈 — Norwin Yu">
+  <meta property="og:description" content="本地文本推理：27B FP8 配置、实测吞吐，以及这些数字背后的功耗上限。">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/local/text-stack.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/zh/local/text-stack.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="index-page" data-page="ai">
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="topbar" data-header>
+    <div class="wrap topbar-inner">
+      <a class="brand" href="/zh/" aria-label="Norwin Yu — 首页">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
+      </a>
+      <nav class="main-nav" aria-label="主导航">
+        <a href="/zh/work/" data-nav="work">实验</a>
+        <a href="/zh/ai.html" data-nav="ai">本地</a>
+        <a href="/zh/open-source.html" data-nav="oss">开源</a>
+        <a href="/zh/competitions.html" data-nav="competitions">竞赛</a>
+        <a href="/blog/" data-nav="journal">日志</a>
+        <a href="/zh/about.html" data-nav="about">关于</a>
+      </nav>
+      <div class="topbar-actions">
+        <a class="lang-switch" href="/local/text-stack.html" hreflang="en">EN</a>
+        <span class="status"><i aria-hidden="true"></i>AI 使用研究</span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          菜单 <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true">
+    <div class="wrap mobile-menu-head">
+      <span class="mono-label">目录 / 2026</span>
+      <button class="menu-close" type="button" data-menu-close aria-label="关闭菜单">关闭 <span aria-hidden="true">×</span></button>
+    </div>
+    <nav class="wrap mobile-nav" aria-label="移动端主导航">
+      <a href="/zh/work/" data-nav="work">实验</a>
+      <a href="/zh/ai.html" data-nav="ai">本地</a>
+      <a href="/zh/open-source.html" data-nav="oss">开源</a>
+      <a href="/zh/competitions.html" data-nav="competitions">竞赛</a>
+      <a href="/blog/" data-nav="journal">日志</a>
+      <a href="/zh/about.html" data-nav="about">关于</a>
+    </nav>
+    <div class="wrap mobile-menu-foot">
+      <span>AI 使用研究 / 2026</span>
+      <span>欢迎交流研究</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <p class="section-kicker">本地 / 文本栈</p>
+        <h1>27B、256K、180 W。</h1>
+        <p class="page-lede">本机文本模型的参考页：完整的服务配置、它实际跑出的吞吐，以及一个能解释它与文档数字差距的数。</p>
+        <div class="page-meta"><span><i></i>Qwen3.8-27B-FP8</span><span>262,144 tokens</span><span>TP=2 · MTP/3</span><span>实测 / 2026 年 11 月</span></div>
+        <div class="work-links"><a href="/zh/ai.html">本地总览 <span aria-hidden="true">→</span></a><a href="workflow.html">接线与工作流 <span aria-hidden="true">→</span></a><a href="/blog/eighty-and-forty-six.html">为什么是 46，不是 80 <span aria-hidden="true">→</span></a></div>
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="cfg-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">01 / 配置</p><h2 id="cfg-title">实际生效的服务配置。</h2></div>
+        <p class="section-intro">这不是建议配置：这些数字就是用这套配置跑出来的，驱动也是这台机器今天启动时加载的那版。</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">文本推理服务配置</caption>
+          <thead><tr><th scope="col">设置</th><th scope="col">取值</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">模型</th><td data-label="取值">Qwen3.8-27B-FP8 · W8A16（FP8 权重，FP16 激活）</td></tr>
+            <tr><th scope="row">量化</th><td data-label="取值">fp8 e4m3 · 权重块 128×128 · 动态激活</td></tr>
+            <tr><th scope="row">KV cache</th><td data-label="取值">FP8 · 常驻 276,788 tokens</td></tr>
+            <tr><th scope="row">上下文</th><td data-label="取值">262,144 tokens（256K）</td></tr>
+            <tr><th scope="row">并行</th><td data-label="取值">TP=2 × PP=1 · 2 个 rank 跑在 2 张卡上</td></tr>
+            <tr><th scope="row">投机解码</th><td data-label="取值">MTP / 3 个 draft token</td></tr>
+            <tr><th scope="row">Attention / 线性注意力</th><td data-label="取值">FLASHINFER · FlashQLA 旧版 prefill（SM75）· Triton GDN 解码回退</td></tr>
+            <tr><th scope="row">CUDA graphs</th><td data-label="取值">PIECEWISE · 捕获大小 4</td></tr>
+            <tr><th scope="row">前缀缓存</th><td data-label="取值">已启用</td></tr>
+            <tr><th scope="row">序列 / token</th><td data-label="取值">max_num_seqs 1 · 批处理 token 2,048</td></tr>
+            <tr><th scope="row">GPU 显存占用</th><td data-label="取值">0.94 —— 桌面占用了 GPU0 上约 740 MiB</td></tr>
+            <tr><th scope="row">功耗上限</th><td data-label="取值">每卡 180 W（默认 250 W，最高 280 W）</td></tr>
+            <tr><th scope="row">软件栈</th><td data-label="取值">vLLM 0.29.1rc0 SM75 分支 · PyTorch 2.13+cu130 · Triton 3.7.1 · CUDA 13.0.88 · 驱动 580.178.04</td></tr>
+            <tr><th scope="row">OS</th><td data-label="取值">Ubuntu 24.04.5 LTS · 内核 7.0.0-43</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="tput-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">02 / 吞吐</p><h2 id="tput-title">解码、prefill，以及思考的代价。</h2></div>
+        <p class="section-intro">流式请求，TTFT 与 decode 分开计，提示和输出长度固定，取三次以上运行的中位数，预热丢掉。</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">解码吞吐</caption>
+          <thead><tr><th scope="col">解码测试</th><th scope="col">第 1 次</th><th scope="col">第 2 次</th><th scope="col">第 3 次</th><th scope="col">中位数</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">开思考 · 512 tokens</th><td data-label="第 1 次">47.5</td><td data-label="第 2 次">45.9</td><td data-label="第 3 次">46.1</td><td data-label="中位数">46.1 tok/s</td></tr>
+            <tr><th scope="row">关思考 · 512 tokens</th><td data-label="第 1 次">52.1</td><td data-label="第 2 次">52.9</td><td data-label="第 3 次">51.1</td><td data-label="中位数">52.1 tok/s</td></tr>
+          </tbody>
+        </table>
+        <table class="data-table">
+          <caption class="sr-only">prefill 延迟与吞吐</caption>
+          <thead><tr><th scope="col">提示 tokens</th><th scope="col">TTFT</th><th scope="col">Prefill 吞吐</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">74</th><td data-label="TTFT">122 ms</td><td data-label="Prefill 吞吐">~600 tok/s（开销主导）</td></tr>
+            <tr><th scope="row">1,170</th><td data-label="TTFT">940 ms</td><td data-label="Prefill 吞吐">1,244 tok/s</td></tr>
+            <tr><th scope="row">4,500</th><td data-label="TTFT">2,275 ms</td><td data-label="Prefill 吞吐">1,978 tok/s</td></tr>
+            <tr><th scope="row">17,830</th><td data-label="TTFT">13,167 ms</td><td data-label="Prefill 吞吐">1,354 tok/s</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="mtp-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">03 / 消融</p><h2 id="mtp-title">MTP/2 vs MTP/3。</h2></div>
+        <p class="section-intro">同一功耗上限下，每格六次运行。差异比运行之间的抖动还小 —— 这本身就是结果。</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">MTP draft token 消融</caption>
+          <thead><tr><th scope="col">draft token</th><th scope="col">思考</th><th scope="col">中位数</th><th scope="col">最小</th><th scope="col">最大</th><th scope="col">标准差</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">MTP/2</th><td data-label="思考">关</td><td data-label="中位数">50.8</td><td data-label="最小">49.4</td><td data-label="最大">51.7</td><td data-label="标准差">0.88</td></tr>
+            <tr><th scope="row">MTP/2</th><td data-label="思考">开</td><td data-label="中位数">46.1</td><td data-label="最小">43.7</td><td data-label="最大">50.4</td><td data-label="标准差">2.41</td></tr>
+            <tr><th scope="row">MTP/3</th><td data-label="思考">关</td><td data-label="中位数">51.2</td><td data-label="最小">45.5</td><td data-label="最大">56.8</td><td data-label="标准差">4.27</td></tr>
+            <tr><th scope="row">MTP/3</th><td data-label="思考">开</td><td data-label="中位数">45.6</td><td data-label="最小">42.6</td><td data-label="最大">49.4</td><td data-label="标准差">2.34</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>怎么读</span>MTP/2 和 MTP/3 在这里统计上分不出来。配置留在 MTP/3，是因为没有测出来的理由去改它，不是因为它更快。</p>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="power-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">04 / 功耗</p><h2 id="power-title">两张卡都顶在上限。</h2></div>
+        <p class="section-intro">180 W 是刻意定的，它也是实测 decode 与分支公布数字之间差距里最大的一项。</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">负载下的功耗与频率</caption>
+          <thead><tr><th scope="col">GPU</th><th scope="col">峰值功耗</th><th scope="col">平均功耗</th><th scope="col">上限</th><th scope="col">最高 SM 频率</th><th scope="col">占用率</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">0</th><td data-label="峰值功耗">182 W</td><td data-label="平均功耗">178 W</td><td data-label="上限">180 W</td><td data-label="最高 SM 频率">1,845 MHz</td><td data-label="占用率">100%</td></tr>
+            <tr><th scope="row">1</th><td data-label="峰值功耗">179 W</td><td data-label="平均功耗">175 W</td><td data-label="上限">180 W</td><td data-label="最高 SM 频率">1,830 MHz</td><td data-label="占用率">100%</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>注意</span>占用率是 100%，频率却卡在上限：这是功耗预算，不是散热预算。把上限提到 250 W，decode 会涨，室温也会涨。</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="repro-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">05 / 复现</p><h2 id="repro-title">把它重新拉起来。</h2></div>
+        <p class="section-intro">模型卷是一个不会自动挂载的 NTFS 分区。两条命令，然后起服务。</p>
+      </div>
+      <div class="wrap">
+        <pre><code>udisksctl mount -b /dev/nvme0n1p4     # 模型卷，不会自动挂载
+cd ~/vllm-2080ti && ./llm.sh start    # 后台 vLLM 服务，监听 :8000
+./llm.sh status                       # 服务、模型和 GPU 概览
+./llm.sh bench                        # 吞吐基准测试
+./llm.sh stop                         # 停止模型，不关机</code></pre>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="caveat-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">06 / 注意事项</p><h2 id="caveat-title">这些数字的前提。</h2></div>
+        <p class="section-intro">这一页每个数字都依赖三件事：功耗上限、驱动和上下文长度。</p>
+      </div>
+      <div class="wrap home-cap-grid">
+        <div class="home-cap-item"><span>01</span><h3>一个上限，一个驱动</h3><p>每卡 180 W，驱动 580.178.04。改动任意一项，decode 数字就会动；prefill 几乎不动。</p></div>
+        <div class="home-cap-item"><span>02</span><h3>256K 不是免费的</h3><p>KV cache 存 276,788 tokens，所以跑满 256K 上下文时并发约为 1.06×。这里的长上下文，意味着一次只能一个请求。</p></div>
+        <div class="home-cap-item"><span>03</span><h3>一台机器</h3><p>这些数字来自二手双路 Xeon 配 SM75 卡。可以用来决定本机跑什么，不适合拿去和数据中心比。</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <p><strong>Norwin Yu</strong><span>AI 使用研究 / 游戏与本地算力。</span></p>
+      </div>
+      <nav class="footer-nav" aria-label="页脚">
+        <span class="mono-label">目录</span>
+        <a href="/zh/work/">实验</a>
+        <a href="/zh/ai.html">本地</a>
+        <a href="/zh/open-source.html">开源</a>
+        <a href="/zh/competitions.html">竞赛</a>
+        <a href="/blog/">日志</a>
+        <a href="/zh/about.html">关于</a>
+      </nav>
+      <div class="footer-note">
+        <span class="mono-label">版本说明</span>
+        <p>字体为 Inter 与 IBM Plex Mono。手工编写，静态托管。没有追踪器、cookie 或密钥。</p>
+        <p>AI 使用研究 / 2026</p>
+      </div>
+      <div class="footer-status">
+        <span class="status"><i aria-hidden="true"></i>欢迎交流研究</span>
+        <a href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 Norwin Yu</span>
+      <span>最后更新 / 2026 年 11 月</span>
+      <span>无统计代码，运行时无外部请求。</span>
+    </div>
+  </footer>
+</body>
+</html>

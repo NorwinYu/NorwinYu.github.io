@@ -18,28 +18,31 @@
   <meta property="og:description" content="从浏览器到 Godot：机场大亨的三次返工，以及引擎如何改变 agent 的反馈回路。">
   <meta property="og:image" content="https://norwinyu.github.io/assets/img/demo-airport-tycoon.jpg">
   <meta property="og:locale" content="zh_CN">
-  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
-  <link rel="manifest" href="../manifest.webmanifest">
-  <link rel="preload" href="../assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/css/site.css">
-  <link rel="stylesheet" href="../assets/css/article.css">
-  <script src="../assets/js/site.js" defer></script>
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/godot-is-not-a-bigger-canvas.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/godot-is-not-a-bigger-canvas.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
 </head>
 <body class="article-page">
   <a class="skip-link" href="#main">跳到正文</a>
   <header class="site-header article-header" data-header>
     <div class="header-inner wrap">
-      <a class="brand" href="../index.html" aria-label="Norwin Yu — 首页">
+      <a class="brand" href="/zh/" aria-label="Norwin Yu — 首页">
         <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
         <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
       </a>
       <nav class="article-nav" aria-label="文章导航">
-        <a href="../work/index.html">实验</a>
-        <a href="../ai.html">本地</a>
-        <a href="index.html">日志</a>
-        <a href="../about.html">关于</a>
+        <a href="/zh/work/">实验</a>
+        <a href="/zh/ai.html">本地</a>
+        <a href="/blog/">日志</a>
+        <a href="/zh/about.html">关于</a>
       </nav>
+      <a class="lang-switch" href="/en/blog/godot-is-not-a-bigger-canvas.html" hreflang="en">EN</a>
       <span class="availability"><i aria-hidden="true"></i>开放研究交流</span>
     </div>
   </header>
@@ -47,7 +50,7 @@
   <main id="main">
     <header class="article-hero">
       <div class="wrap">
-        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> 全部笔记</a>
+        <a class="back-link" href="/blog/"><span aria-hidden="true">←</span> 全部笔记</a>
         <p class="article-kicker"><span class="is-accent">系统</span><i aria-hidden="true"></i><span>Godot</span><i aria-hidden="true"></i><span>现场复盘</span></p>
         <h1>引擎不是<br><em>更大的画布。</em></h1>
         <p class="article-deck">浏览器里，改一行就能刷新；Godot 里，先构建、再运行、再截图。机场大亨的 12 轮返工，基本都发生在“反馈变慢”之后。</p>
@@ -121,7 +124,7 @@
         <p>于是第二版开始补的不是贴图，而是结构：滑行道、登机口、廊桥、停机位、塔台和机库。飞机不再只是在地面上移动的模型，而是有航班、有排班、有上下客、有维护状态的经营对象。到这一步，游戏才第一次有“机场”的样子。</p>
 
         <figure class="article-figure">
-          <img decoding="async" src="../assets/img/demo-airport-tycoon.jpg" alt="机场大亨 3D 主菜单：夜间机场、航站楼和飞机。" width="1280" height="800" loading="eager">
+          <img decoding="async" src="/assets/img/demo-airport-tycoon.jpg" alt="机场大亨 3D 主菜单：夜间机场、航站楼和飞机。" width="1280" height="800" loading="eager">
           <figcaption><span>机场大亨 3D / Godot 4.6 桌面工程。所有几何和音效由代码生成。</span><span>项目截图</span></figcaption>
         </figure>
 
@@ -150,7 +153,7 @@
 
         <p>如果要再做一次，我会先定三件事：机场的尺度表、一个可检查的固定相机、以及一张“产品层清单”。先让飞机正确地停在地面上，再让它好看；先让一局游戏能结束，再让它变大。</p>
 
-        <p class="article-end"><strong>参考 /</strong> 已上传的 Godot 工程与截图：<a href="https://github.com/NorwinYu/airport-tycoon-3d" target="_blank" rel="noopener">NorwinYu/airport-tycoon-3d</a>。项目页：<a href="../work/index.html#airport">机场大亨 3D</a>。这是开发复盘，不是产品评测；文中不包含本地路径、网络地址或密钥。</p>
+        <p class="article-end"><strong>参考 /</strong> 已上传的 Godot 工程与截图：<a href="https://github.com/NorwinYu/airport-tycoon-3d" target="_blank" rel="noopener">NorwinYu/airport-tycoon-3d</a>。项目页：<a href="/zh/work/#airport">机场大亨 3D</a>。这是开发复盘，不是产品评测；文中不包含本地路径、网络地址或密钥。</p>
       </article>
 
       <div aria-hidden="true"></div>
@@ -174,14 +177,14 @@
     <div class="footer-bottom wrap">
       <span>© 2026 Norwin Yu</span>
       <nav class="article-footer-links" aria-label="页脚">
-        <a href="../work/index.html">实验</a>
-        <a href="../ai.html">本地</a>
-        <a href="../open-source.html">开源</a>
-        <a href="../competitions.html">竞赛</a>
-        <a href="index.html">日志</a>
-        <a href="../about.html">关于</a>
+        <a href="/zh/work/">实验</a>
+        <a href="/zh/ai.html">本地</a>
+        <a href="/zh/open-source.html">开源</a>
+        <a href="/zh/competitions.html">竞赛</a>
+        <a href="/blog/">日志</a>
+        <a href="/zh/about.html">关于</a>
       </nav>
-      <a href="index.html">全部笔记 <span aria-hidden="true">→</span></a>
+      <a href="/blog/">全部笔记 <span aria-hidden="true">→</span></a>
     </div>
   </footer>
 </body>

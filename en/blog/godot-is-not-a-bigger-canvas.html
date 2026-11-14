@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>An engine is not a bigger canvas — Norwin Yu</title>
+  <meta name="description" content="From the browser to Godot: three reworks of Airport Tycoon, and how an engine changes an agent's feedback loop.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="An engine is not a bigger canvas — Norwin Yu">
+  <meta property="og:description" content="From the browser to Godot: three reworks of Airport Tycoon, and how an engine changes an agent's feedback loop.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/demo-airport-tycoon.jpg">
+  <meta property="og:locale" content="en_US">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/godot-is-not-a-bigger-canvas.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/godot-is-not-a-bigger-canvas.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="article-nav" aria-label="Article navigation">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="lang-switch" href="/blog/godot-is-not-a-bigger-canvas.html" hreflang="zh-CN">中文</a>
+      <span class="availability"><i aria-hidden="true"></i>Open to research conversations</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> All notes</a>
+        <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Godot</span><i aria-hidden="true"></i><span>Field postmortem</span></p>
+        <h1>An engine is not<br><em>a bigger canvas.</em></h1>
+        <p class="article-deck">In the browser, change one line and refresh. In Godot, build, then run, then screenshot. Nearly all 12 rework rounds on Airport Tycoon came after the feedback got slow.</p>
+        <p class="article-cn">Changing engines does not turn a demo into a product by itself. It swaps one set of problems for another.</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>November 2026</span>
+          <span>8 min</span>
+          <span>Research note / 06</span>
+        </div>
+        <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">Contents</p>
+        <nav class="article-toc" aria-label="Article contents">
+          <a href="#switch">From browser to engine</a>
+          <a href="#toy">The first version looked like a toy</a>
+          <a href="#clipping">Clipping is not a rendering problem</a>
+          <a href="#airport">An airport is not one building</a>
+          <a href="#product">The product layer</a>
+          <a href="#distribution">Distribution is design too</a>
+          <a href="#learned">What I learned</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>Engine</dt><dd>Godot 4.6</dd></div>
+          <div><dt>Requests</dt><dd>12 rounds of feedback</dd></div>
+          <div><dt>Content</dt><dd>3 aircraft types · 8 destinations · 8 event types</dd></div>
+          <div><dt>Distribution</dt><dd>Desktop project, no Web export</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>The first version of Airport Tycoon began from an assumption that everything would line up: three.js had already produced a playable 3D demo, so handing the same task to Godot should just mean a bigger canvas. More geometry, better lighting, a real engine — the result ought to land closer to a finished product.</p>
+
+        <p>What actually happened was three reworks. The first: planes sank into the ground on landing. The second: the airport had no taxiways, no jet bridges, no terminal worth the name. The third: I asked it to become a finished product. None of them was the model failing to write code. Each time the engine separated “looks finished” from “is finished”.</p>
+
+        <div class="stat-strip is-four">
+          <div><strong>12</strong><span>rounds of explicit requirements</span></div>
+          <div><strong>3</strong><span>aircraft types: CRJ-900 / A320 / B787</span></div>
+          <div><strong>8</strong><span>destinations and event types</span></div>
+          <div><strong>0</strong><span>external art assets</span></div>
+        </div>
+
+        <h2 id="switch">From browser to engine</h2>
+        <p>The feedback loop in the browser is short: save, refresh, screenshot, read the console. The DOM and the canvas can both be inspected, and an error usually has a clear stack. Godot is not like that. It has its own scene tree, asset import, node lifecycle and export pipeline. First you confirm the engine starts, then that the scene loads, then that the camera, lighting and collision take effect — and only then whether it looks good.</p>
+
+        <p>That is not a flaw; it is what an engine costs. It gives you real 3D tools and splits the feedback into more layers. What the agent has to learn is no longer “write some JavaScript that runs”, but “launch a project, read its log, take a screenshot you can judge, then change the next thing”.</p>
+
+        <p>The most effective tool in this experiment was not a prompt. It was treating Godot as an observable external program: launch it from the command line, screenshot from a fixed camera, confirm scene state from the logs. Without that layer of observation, the model can only write engine code from imagination.</p>
+
+        <h2 id="toy">The first version looked like a toy</h2>
+        <p>The first version had planes, runways and a terminal, plus takeoffs, landings and revenue. It was playable, but it looked like a few boxes dropped on a lawn. The cause was not a lack of materials: the scale, the hierarchy and the basic components of an airport were all wrong.</p>
+
+        <p>A plane parked beside a terminal with no jet bridge attached is read as fake at once. A runway with no taxiway beside it makes planes lift off in place like helicopters. A terminal that is only a row of glass boxes, with no relation between the access road, the entrance, the gates and the tower, is not an airport — it is a scene with planes in it.</p>
+
+        <p>“Generate a bit more art” does not fix this. It needs an airport kit: runway, taxiway, stands, jet bridges, terminal, tower, hangars, fuel farm, and the spatial relations between them. Without those relations, the harder the model works on detail, the more the frame looks like a pile of individually correct parts.</p>
+
+        <h2 id="clipping">Clipping is not a rendering problem</h2>
+        <p>A plane sinking into the ground on landing looks like a rendering bug. It is a state problem: landing-gear height, the offset from the plane's origin to the ground, the runway's height, the last frame of the landing animation. If any one of them is misaligned, the plane sinks.</p>
+
+        <p>This kind of error is common in the browser too, but Godot makes it more visible, because the scene has a real node hierarchy and colliders. You cannot look at a screenshot and call it close enough; you have to put the plane on the ground and check the contact point between wheels and runway. Visual ground contact is a geometric contract, not a material parameter.</p>
+
+        <p>Only after the clipping was fixed did the second layer appear: the plane parked correctly, but no jet bridge connected to it; the jet bridge arrived, but no taxiway linked it to the runway; the taxiway arrived, but the terminal's proportions were wrong. Every fix for “this looks wrong” exposed the next “this is structurally wrong”.</p>
+
+        <h2 id="airport">An airport is not one building</h2>
+        <p>A real airport is a process system: the plane leaves the runway, taxis to a stand, the jet bridge docks, passengers get off and on, refuelling and catering and maintenance happen, then pushback, taxi, takeoff. Every step needs space and state. Build only a terminal and you get a postcard; build the process and you get a management game.</p>
+
+        <p>So the second version added structure rather than textures: taxiways, gates, jet bridges, stands, tower and hangars. Planes stopped being models moving across the ground and became operating objects with flights, schedules, boarding and maintenance state. That was the first point at which the game looked like an airport.</p>
+
+        <figure class="article-figure">
+          <img decoding="async" src="/assets/img/demo-airport-tycoon.jpg" alt="Airport Tycoon 3D main menu: an airport at night, the terminal and a plane." width="1280" height="800" loading="eager">
+          <figcaption><span>Airport Tycoon 3D / Godot 4.6 desktop project. Every mesh and sound is generated in code.</span><span>Project screenshot</span></figcaption>
+        </figure>
+
+        <h2 id="product">The product layer</h2>
+        <p>“It can take off and make money” is still not a product. A product needs a main menu, pause, settings, saves, win and bankruptcy screens; it needs buying, leasing, reselling, maintenance and condition decay; it needs routes, fares, demand and eight kinds of random event. The player has to know why they are making money, and why they are losing.</p>
+
+        <p>These systems are not “content”; they are the skeleton of the product. Without them, a simulation can be as real as it likes and a player will wander around it for five minutes. With them, even plain visuals will keep a player starting one more run, as long as the loop is complete and the feedback is clear.</p>
+
+        <p>The clearest dividing line in this rework was not “more models were added” but “a complete game flow started to exist”. Main menu, management, pause, results, autosave — the unglamorous things are the line between a demo and a product.</p>
+
+        <h2 id="distribution">Distribution is design too</h2>
+        <p>Godot gives you desktop builds and takes away one advantage of the browser: open it and play. Airport Tycoon is currently a macOS / Windows / Linux project with no Web export. For a demo that wants people to click and try it, that is a real loss.</p>
+
+        <p>That does not mean going back to the browser. The scene capability, lighting and tooling an engine brings are real. It means distribution has to be designed early: a downloadable desktop demo, a web slice, or a two-minute capture of the thing actually running? The three serve different purposes, and the decision cannot wait until the end.</p>
+
+        <p>In the end the project put the engine project, screenshots and notes into a public repository instead of pretending it had a web build. A plain choice: show what exists, and do not describe an unexported web build as coming soon.</p>
+
+        <h2 id="learned">What I learned</h2>
+        <ul>
+          <li><strong>An engine is not a bigger canvas; it is a longer feedback chain.</strong> Build the observation tools before letting the agent write content.</li>
+          <li><strong>Visual errors are usually geometric contracts.</strong> Clipping, ground contact, jet-bridge docking are coordinate and state problems, not material problems.</li>
+          <li><strong>A scene reads as real through relations, not parts.</strong> Get the relations between runway, taxiway, stands and terminal wrong and no number of models will look like an airport.</li>
+          <li><strong>The product layer needs its own budget.</strong> Menus, saves, results, events and failure feedback must not be eaten by “polish the visuals a little more”.</li>
+          <li><strong>Distribution is a design constraint.</strong> Desktop, web and video demos are three different products; do not promise them interchangeably.</li>
+        </ul>
+
+        <p>If I did it again I would settle three things first: a scale table for the airport, one fixed camera that can be inspected, and a product-layer checklist. Make the plane sit correctly on the ground before making it look good; make one run finishable before making it big.</p>
+
+        <p class="article-end"><strong>References /</strong> The uploaded Godot project and screenshots: <a href="https://github.com/NorwinYu/airport-tycoon-3d" target="_blank" rel="noopener">NorwinYu/airport-tycoon-3d</a>. Project page: <a href="/work/index.html#airport">Airport Tycoon 3D</a>. This is a development postmortem, not a product review; the text contains no local paths, network addresses or keys.</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>Next / Systems</p>
+          <h2 id="next-title">Recognition is only a draft</h2>
+        </div>
+        <a href="recognition-is-a-draft.html">
+          <span>Read next</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="Footer">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/open-source.html">Open source</a>
+        <a href="/competitions.html">Competitions</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a href="index.html">All notes <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

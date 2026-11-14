@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>开源 — Norwin Yu</title>
+  <meta name="description" content="对 Strata 与 Project Maya 的开源贡献：多 GPU benchmark、文档和 API 形状修正。">
+  <meta name="author" content="Norwin Yu">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="开源 — Norwin Yu">
+  <meta property="og:description" content="对 Strata 与 Project Maya 的开源贡献：多 GPU benchmark、文档和 API 形状修正。">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/open-source.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/zh/open-source.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="index-page" data-page="oss">
+  <a class="skip-link" href="#main">跳到正文</a>
+
+  <header class="topbar" data-header>
+    <div class="wrap topbar-inner">
+      <a class="brand" href="/zh/" aria-label="Norwin Yu — 首页">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
+      </a>
+      <nav class="main-nav" aria-label="主导航">
+        <a href="/zh/work/" data-nav="work">实验</a>
+        <a href="/zh/ai.html" data-nav="ai">本地</a>
+        <a href="/zh/open-source.html" data-nav="oss">开源</a>
+        <a href="/zh/competitions.html" data-nav="competitions">竞赛</a>
+        <a href="/blog/" data-nav="journal">日志</a>
+        <a href="/zh/about.html" data-nav="about">关于</a>
+      </nav>
+      <div class="topbar-actions">
+        <a class="lang-switch" href="/open-source.html" hreflang="en">EN</a>
+        <span class="status"><i aria-hidden="true"></i>AI 使用研究</span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          菜单 <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true">
+    <div class="wrap mobile-menu-head">
+      <span class="mono-label">目录 / 2026</span>
+      <button class="menu-close" type="button" data-menu-close aria-label="关闭菜单">关闭 <span aria-hidden="true">×</span></button>
+    </div>
+    <nav class="wrap mobile-nav" aria-label="移动端主导航">
+      <a href="/zh/work/" data-nav="work">实验</a>
+      <a href="/zh/ai.html" data-nav="ai">本地</a>
+        <a href="/zh/open-source.html" data-nav="oss">开源</a>
+      <a href="/zh/competitions.html" data-nav="competitions">竞赛</a>
+      <a href="/blog/" data-nav="journal">日志</a>
+      <a href="/zh/about.html" data-nav="about">关于</a>
+    </nav>
+    <div class="wrap mobile-menu-foot">
+      <span>AI 使用研究 / 2026</span>
+      <span>欢迎交流研究</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <p class="section-kicker">开源 / 2026</p>
+        <h1>开源贡献。</h1>
+        <p class="page-lede">对自己在用的工具做小而且具体的回报。大部分是在老硬件上跑 benchmark、写多 GPU 到底什么时候划算的文档，还有一个给 OpenAI 兼容客户端的 API 形状修正。</p>
+        <div class="page-meta"><span><i></i>02 个上游项目</span><span>08 个上游条目</span><span>43k+★ / 2.8k+★</span><span>贡献者，不是维护者</span></div>
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="oss-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">01 / 贡献</p><h2 id="oss-title">测量、文档，还有一个小修正。</h2></div>
+        <p class="section-intro">我在自己的机器暴露出缺口的地方动手：老显卡、慢 CPU、长上下文，以及需要标准 API 字段的客户端。上游补丁没被合并，报告也照样公开。</p>
+      </div>
+
+      <div class="wrap oss-grid">
+        <article class="oss-card" id="strata">
+          <div class="oss-card-head">
+            <div><p class="mono-label">Strata / 本地推理</p><h2>老显卡上的多 GPU。</h2></div>
+            <span class="oss-stars">43k+ ★</span>
+          </div>
+          <p class="oss-deck">上游：<a href="https://github.com/Niko1221/Strata" target="_blank" rel="noopener">Niko1221/Strata <span aria-hidden="true">↗</span></a>。Strata 让大模型跑在消费级硬件上。我的贡献是一系列 benchmark 报告和文档笔记，机器是双路 Xeon E5-2696 v4 上的两张 RTX 2080 Ti 22 GB。</p>
+          <dl class="oss-specs">
+            <div><dt>重点</dt><dd>层切分 vs 单卡、--batch、vLLM</dd></div>
+            <div><dt>硬件</dt><dd>2× 2080 Ti 22 GB · 双路 Xeon</dd></div>
+            <div><dt>形式</dt><dd>5 个上游 PR</dd></div>
+            <div><dt>数据</dt><dd>原始请求、配置、并发</dd></div>
+          </dl>
+          <div class="oss-result">
+            <span>报告结果 / 引擎 0.1.52</span>
+            <p>层切分 vs 单卡，UD-IQ4_XS：decode <strong>40.8 → 60.4 tok/s（+48%）</strong>；32K 全新 prompt <strong>768 → 1,269 tok/s（+65%）</strong>。</p>
+          </div>
+          <ul class="oss-links">
+            <li><a href="https://github.com/Niko1221/Strata/pull/4515" target="_blank" rel="noopener"><span>#4515</span>0.1.52 重跑：切分、IQ3_XXS</a></li>
+            <li><a href="https://github.com/Niko1221/Strata/pull/3929" target="_blank" rel="noopener"><span>#3929</span>切分 vs 单卡、--batch、vLLM</a></li>
+            <li><a href="https://github.com/Niko1221/Strata/pull/2662" target="_blank" rel="noopener"><span>#2662</span>这套配置的第一份社区报告</a></li>
+            <li><a href="https://github.com/Niko1221/Strata/pull/2665" target="_blank" rel="noopener"><span>#2665</span>文档：层切分什么时候划算</a></li>
+            <li><a href="https://github.com/Niko1221/Strata/pull/3930" target="_blank" rel="noopener"><span>#3930</span>文档：慢 CPU 的条件（未合并）</a></li>
+          </ul>
+        </article>
+
+        <article class="oss-card" id="maya">
+          <div class="oss-card-head">
+            <div><p class="mono-label">Project Maya / 大型 MoE 推理</p><h2>模型发现 + 一份 128K 报告。</h2></div>
+            <span class="oss-stars">2.8k+ ★</span>
+          </div>
+          <p class="oss-deck">上游：<a href="https://github.com/mw00/project-maya" target="_blank" rel="noopener">mw00/project-maya <span aria-hidden="true">↗</span></a>。Maya 让大型 MoE 模型分布在消费级 GPU 和系统内存上跑。我的贡献是一个服务端 API 字段修正，外加一份在 2080 Ti 双卡上的长上下文速度报告。</p>
+          <dl class="oss-specs">
+            <div><dt>特性</dt><dd><code>context_length</code> + <code>max_output_tokens</code></dd></div>
+            <div><dt>接口</dt><dd><code>GET /v1/models</code> · 客户端发现</dd></div>
+            <div><dt>报告</dt><dd>Maya-XS · DeepSeek-V4.1-Flash · 128K</dd></div>
+            <div><dt>硬件</dt><dd>2× 2080 Ti 22 GB · 94 GB DDR4</dd></div>
+          </dl>
+          <div class="oss-result">
+            <span>已进入 main / 535327b</span>
+            <p>模型列表现在会暴露通用客户端会读的字段名，同时保留原有的 <code>meta.n_ctx</code> 以做兼容。</p>
+          </div>
+          <ul class="oss-links">
+            <li><a href="https://github.com/mw00/project-maya/pull/649" target="_blank" rel="noopener"><span>#649</span>在 /v1/models 上暴露上下文字段</a></li>
+            <li><a href="https://github.com/mw00/project-maya/commit/535327b7dfbdb4b1df71af8ff329f010911dcaf2" target="_blank" rel="noopener"><span>commit</span>上游 main 上的改动</a></li>
+            <li><a href="https://github.com/mw00/project-maya/issues/659" target="_blank" rel="noopener"><span>#659</span>速度报告：2× 2080 Ti 上的 128K</a></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="how-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">02 / 方法</p><h2 id="how-title">我贡献什么。</h2></div>
+        <p class="section-intro">不是为了刷 commit 数加功能。有用的贡献往往就是那个测量，或者那句少了就让下一个人没法做决定的话。</p>
+      </div>
+      <div class="wrap home-cap-grid">
+        <div class="home-cap-item"><span>01</span><h3>去测那些别扭的机器</h3><p>老卡、慢 CPU、长上下文。社区需要人们手上真有的硬件跑出来的数字，而不只是干净的 benchmark 机器。</p></div>
+        <div class="home-cap-item"><span>02</span><h3>把原始数据交回去</h3><p>报告里有请求、配置、并发数据和脱敏后的设置，别人可以重跑，也可以质疑这个结果。</p></div>
+        <div class="home-cap-item"><span>03</span><h3>补上接口的缺口</h3><p>客户端查不到模型的上下文时，最小的有用补丁是那个 API 字段，不是更长的 README。</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <p><strong>Norwin Yu</strong><span>AI 使用研究 / 游戏与本地算力。</span></p>
+      </div>
+      <nav class="footer-nav" aria-label="页脚">
+        <span class="mono-label">目录</span>
+        <a href="/zh/work/">实验</a>
+        <a href="/zh/ai.html">本地</a>
+        <a href="/zh/open-source.html">开源</a>
+        <a href="/zh/competitions.html">竞赛</a>
+        <a href="/blog/">日志</a>
+        <a href="/zh/about.html">关于</a>
+      </nav>
+      <div class="footer-note">
+        <span class="mono-label">版本说明</span>
+        <p>字体为 Inter 与 IBM Plex Mono。手工编写，静态托管。没有追踪器、cookie 或密钥。</p>
+        <p>AI 使用研究 / 2026</p>
+      </div>
+      <div class="footer-status">
+        <span class="status"><i aria-hidden="true"></i>欢迎交流研究</span>
+        <a href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 Norwin Yu</span>
+      <span>最后更新 / 2026 年 11 月</span>
+      <span>无统计代码，运行时无外部请求。</span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Norwin Yu">
-  <title>Setup — Norwin Yu</title>
+  <title>Local — Norwin Yu</title>
   <meta name="description" content="Local environment and configuration: machines, OS and local runtime.">
   <meta name="author" content="Norwin Yu">
   <meta name="theme-color" content="#f7f5ef">
@@ -15,11 +15,13 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Setup — Norwin Yu">
+  <meta property="og:title" content="Local — Norwin Yu">
   <meta property="og:description" content="Local environment and configuration: machines, OS and local runtime.">
   <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/ai.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/zh/ai.html">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
   <link rel="manifest" href="manifest.webmanifest">
@@ -41,10 +43,11 @@
         <a href="ai.html" data-nav="ai">Local</a>
         <a href="open-source.html" data-nav="oss">Open source</a>
         <a href="competitions.html" data-nav="competitions">Competitions</a>
-        <a href="blog/index.html" data-nav="journal">Journal</a>
+        <a href="/en/blog/" data-nav="journal">Journal</a>
         <a href="about.html" data-nav="about">About</a>
       </nav>
       <div class="topbar-actions">
+        <a class="lang-switch" href="/zh/ai.html" hreflang="zh-CN">中文</a>
         <span class="status"><i aria-hidden="true"></i>AI usage research</span>
         <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
           Menu <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
@@ -63,7 +66,7 @@
       <a href="ai.html" data-nav="ai">Local</a>
         <a href="open-source.html" data-nav="oss">Open source</a>
       <a href="competitions.html" data-nav="competitions">Competitions</a>
-      <a href="blog/index.html" data-nav="journal">Journal</a>
+      <a href="/en/blog/" data-nav="journal">Journal</a>
       <a href="about.html" data-nav="about">About</a>
     </nav>
     <div class="wrap mobile-menu-foot">
@@ -132,7 +135,7 @@
         </div>
         <p class="table-note"><span>Note</span>Medians of five or more runs, warmup discarded, at the 180 W cap. The fork's published ~80 tok/s is a synthetic best case with high speculative acceptance; real MTP acceptance is lower, and a power limit penalises MTP because verifying several draft tokens per step is compute-heavy.</p>
       </div>
-      <div class="wrap work-links"><a href="local/text-stack.html">Full profile and ablations <span aria-hidden="true">→</span></a><a href="blog/eighty-and-forty-six.html">Why 46, not 80 <span aria-hidden="true">→</span></a></div>
+      <div class="wrap work-links"><a href="local/text-stack.html">Full profile and ablations <span aria-hidden="true">→</span></a><a href="/en/blog/eighty-and-forty-six.html">Why 46, not 80 <span aria-hidden="true">→</span></a></div>
       <div class="wrap"><p class="rig-quote">MTP/2 and MTP/3 are statistically the same here (50.8 vs 51.2 tok/s off; 46.1 vs 45.6 on). The draft count is not the bottleneck — the power cap, memory bandwidth and the Triton fallback that SM75 needs for decode are.</p></div>
     </section>
 
@@ -182,7 +185,7 @@
         <a href="ai.html">Local</a>
         <a href="open-source.html">Open source</a>
         <a href="competitions.html">Competitions</a>
-        <a href="blog/index.html">Journal</a>
+        <a href="/en/blog/">Journal</a>
         <a href="about.html">About</a>
       </nav>
       <div class="footer-note">
