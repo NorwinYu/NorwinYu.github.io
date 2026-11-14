@@ -96,7 +96,7 @@
       <div class="wrap thread-grid">
         <div class="thread-card"><span>01</span><h3>Quantisation</h3><p>What does a 1.6-bit local copy of a model cost a 3D scene? Ming Palace 3D is the quantisation probe.</p></div>
         <div class="thread-card"><span>02</span><h3>Leverage</h3><p>What changes when the model gets an agent/skill harness instead of a plain API loop? NEON BREACH is the no-harness control.</p></div>
-        <div class="thread-card"><span>03</span><h3>Asset pipeline</h3><p>Procedural code, generated images/video, or Blender-assisted? Mistvale is the current no-Blender baseline; the Blender comparison is next.</p></div>
+        <div class="thread-card"><span>03</span><h3>Asset pipeline</h3><p>Procedural code, generated images/video, or Blender-assisted? Mistvale is the no-Blender baseline; the Blender build is now in the comparison.</p></div>
         <div class="thread-card"><span>04</span><h3>Verification</h3><p>Playwright, screenshot review, collision checks and a six-gate harness. A build is not a result until it can be inspected.</p></div>
       </div>
 
@@ -108,7 +108,7 @@
             <tr><th scope="row">ECHO ZERO</th><td data-label="Tests">Full narrative pipeline + added voice layer</td><td data-label="Model">DeepSeek Flash + MiniMax H3</td><td data-label="Leverage">Code/UI/audio; generated art, video, music; Edge TTS</td></tr>
             <tr><th scope="row">烽火三国</th><td data-label="Tests">Generated assets inside a complete game loop</td><td data-label="Model">DeepSeek Flash + MiniMax H3</td><td data-label="Leverage">Code/UI/audio; generated image and video assets</td></tr>
             <tr><th scope="row">仙宗</th><td data-label="Tests">DeepSeek Flash's 3D capability</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Code/systems/docs; procedural assets; Playwright</td></tr>
-            <tr><th scope="row">雾谷农庄</th><td data-label="Tests">One-prompt, no-Blender baseline</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Procedural models, weather, audio; no external assets</td></tr>
+            <tr><th scope="row">雾谷农庄</th><td data-label="Tests">No-Blender vs Blender pipeline</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Procedural models, weather, audio; no external assets</td></tr>
             <tr><th scope="row">机场大亨 3D</th><td data-label="Tests">DeepSeek Flash + DSH + Godot engine path</td><td data-label="Model">DeepSeek Flash + DSH</td><td data-label="Leverage">Godot 4.6 / GDScript; procedural meshes and audio</td></tr>
             <tr><th scope="row">NEON BREACH</th><td data-label="Tests">No-harness control run</td><td data-label="Model">DeepSeek V4.1 Flash</td><td data-label="Leverage">Pure API, no skill; native WebGL; procedural assets</td></tr>
             <tr><th scope="row">明宫三维</th><td data-label="Tests">Quantised local vs original</td><td data-label="Model">DeepSeek-V4.1-Flash-1017 · Maya-XS</td><td data-label="Leverage">One Chinese prompt; single-file WebGL2; no skill</td></tr>
@@ -215,22 +215,22 @@
         <div class="work-case-media"><img decoding="async" src="../assets/img/demo-mistvale.jpg" alt="Mistvale Farm title screen with a farmhouse, well and vegetable garden at dusk." width="1600" height="1000" loading="lazy"></div>
         <div class="work-case-copy">
           <h2>雾谷农庄 <span>Mistvale Farm</span></h2>
-          <p>A third-person 3D farm-life game built with one DeepSeek Flash prompt: “做一款写实风的 3D 农场游戏.” Clear a plot, plant crops, tend them through a slow day/night cycle and turn a foggy valley into a home. Everything is generated in code — this is the no-Blender baseline for a later comparison against a Blender-assisted build.</p>
+          <p>A third-person 3D farm-life game built with one DeepSeek Flash prompt: “做一款写实风的 3D 农场游戏.” Clear a plot, plant crops, tend them through a slow day/night cycle and turn a foggy valley into a home. Everything is generated in code — this is the no-Blender baseline; the Blender-assisted build is now part of the comparison below.</p>
           <ul>
             <li>One prompt, no Blender, no external models, textures, fonts or audio files.</li>
             <li>Procedural crops, tools, weather, water shader and WebAudio soundscape.</li>
             <li>Static GitHub Pages build with local saves and mobile layout.</li>
-            <li>Kept as the baseline for a future comparison with a Blender-assisted version.</li>
+            <li>Compared with the Blender-assisted Harvest build below.</li>
           </ul>
           <dl class="work-specs">
             <div><dt>Stack</dt><dd>Three.js + Vite</dd></div>
             <div><dt>Scope</dt><dd>Farm loop · weather · saves</dd></div>
             <div><dt>Assets</dt><dd>100% procedural</dd></div>
-            <div><dt>Status</dt><dd>Live, non-commercial</dd></div>
+            <div><dt>Status</dt><dd>Live · Blender comparison</dd></div>
             <div><dt>Model</dt><dd>DeepSeek Flash · one prompt</dd></div>
-            <div><dt>Leverage</dt><dd>No Blender · procedural models, weather, audio · baseline for Blender comparison</dd></div>
+            <div><dt>Leverage</dt><dd>No Blender · procedural models, weather, audio · compared with Blender build</dd></div>
           </dl>
-          <div class="work-links"><a href="https://norwinyu.github.io/mistvale-farm/" target="_blank" rel="noopener">Play online <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/mistvale-farm" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+          <div class="work-links"><a href="https://norwinyu.github.io/mistvale-farm/" target="_blank" rel="noopener">Play online <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/mistvale-farm" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a><a href="#harvest">Blender build <span aria-hidden="true">→</span></a></div>
         </div>
       </article>
 
@@ -260,8 +260,8 @@
 
     <section class="section comparison-section" id="comparisons" aria-labelledby="comparisons-title">
       <div class="wrap section-head">
-        <div class="section-heading"><p class="section-kicker">02 / Comparisons</p><h2 id="comparisons-title">Two controlled runs.</h2></div>
-        <p class="section-intro">Not every build is a product. Run 01 tests the verification harness itself: the same brief with and without the photoreal-game gates. Run 02 compares one checkpoint in two weight formats.</p>
+        <div class="section-heading"><p class="section-kicker">02 / Comparisons</p><h2 id="comparisons-title">Three controlled runs.</h2></div>
+        <p class="section-intro">Not every build is a product. Run 01 tests the verification harness itself: the same brief with and without the photoreal-game gates. Run 02 compares one checkpoint in two weight formats. Run 03 compares one farm concept with and without Blender.</p>
       </div>
       <div class="wrap comparison-stack">
         <article class="comparison-run" id="neon">
@@ -303,6 +303,26 @@
           <div class="comparison-run-foot">
             <div class="work-links"><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/local/" target="_blank" rel="noopener">Local build <span aria-hidden="true">↗</span></a><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/" target="_blank" rel="noopener">Online build <span aria-hidden="true">↗</span></a><a href="/en/blog/two-taihe-halls.html">Compare in journal <span aria-hidden="true">→</span></a></div>
             <p class="work-muted">Same prompt; not a controlled model benchmark. The journal explains what is and is not comparable.</p>
+          </div>
+        </article>
+        <article class="comparison-run" id="harvest">
+          <div class="comparison-run-head">
+            <div><p class="section-kicker">Run 03 / Asset pipeline</p><h3>Same farm, two asset pipelines.</h3></div>
+            <p>One farm concept, two ways to get the assets: code and a prompt, or Blender scripts exporting GLB. The question is not which is prettier, but where the assets come from and how hard they are to revise.</p>
+          </div>
+          <div class="comparison-pair">
+            <figure class="comparison-panel">
+              <div class="comparison-panel-media"><img decoding="async" src="../assets/img/demo-mistvale.jpg" alt="Mistvale Farm title screen with a farmhouse, well and vegetable garden at dusk." width="1600" height="1000" loading="eager"></div>
+              <figcaption><span class="panel-label">A / No Blender</span><strong>Mistvale Farm</strong><span>One prompt · code-only · Three.js</span></figcaption>
+            </figure>
+            <figure class="comparison-panel">
+              <div class="comparison-panel-media"><img decoding="async" src="../assets/img/demo-harvest.jpg" alt="Harvest farm in daylight: barn, silo, fences, crops and a dirt path." width="1200" height="675" loading="eager"></div>
+              <figcaption><span class="panel-label">B / Blender</span><strong>拾穗 · Harvest</strong><span>Blender-generated assets · 39 props · GLB</span></figcaption>
+            </figure>
+          </div>
+          <div class="comparison-run-foot">
+            <div class="work-links"><a href="https://norwinyu.github.io/mistvale-farm/" target="_blank" rel="noopener">Mistvale online <span aria-hidden="true">↗</span></a><a href="https://norwinyu.github.io/harvest/" target="_blank" rel="noopener">Harvest online <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/harvest" target="_blank" rel="noopener">Harvest repo <span aria-hidden="true">↗</span></a></div>
+            <p class="work-muted">Same concept, different pipeline; not a controlled art comparison. Mistvale is the code-only baseline, Harvest is the Blender-assisted build.</p>
           </div>
         </article>
       </div>

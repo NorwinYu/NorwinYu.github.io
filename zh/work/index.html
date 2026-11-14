@@ -96,7 +96,7 @@
       <div class="wrap thread-grid">
         <div class="thread-card"><span>01</span><h3>量化</h3><p>把模型压到 1.6 bit 的地方版本，对 3D 场景意味着什么？明宫三维（Ming Palace 3D）就是那个量化探针。</p></div>
         <div class="thread-card"><span>02</span><h3>杠杆</h3><p>给模型一套 agent/skill 框架，和只给一个 API 循环，差在哪？NEON BREACH 是没走 harness 的对照组。</p></div>
-        <div class="thread-card"><span>03</span><h3>素材管线</h3><p>程序化代码、生成图片/视频，还是 Blender 辅助？雾谷农庄是目前不用 Blender 的基线；Blender 对比是下一步。</p></div>
+        <div class="thread-card"><span>03</span><h3>素材管线</h3><p>程序化代码、生成图片/视频，还是 Blender 辅助？雾谷农庄是不用 Blender 的基线；Blender 版现在已经进了对比。</p></div>
         <div class="thread-card"><span>04</span><h3>验证</h3><p>Playwright、截图复查、碰撞检查，加上六道关的 harness。构建跑得起来不算结果，能被人检查才算。</p></div>
       </div>
 
@@ -108,7 +108,7 @@
             <tr><th scope="row">ECHO ZERO</th><td data-label="测什么">完整叙事管线 + 追加的语音层</td><td data-label="模型">DeepSeek Flash + MiniMax H3</td><td data-label="杠杆">代码/UI/音频；生成美术、视频、音乐；Edge TTS</td></tr>
             <tr><th scope="row">烽火三国</th><td data-label="测什么">生成素材塞进一个完整的游戏循环</td><td data-label="模型">DeepSeek Flash + MiniMax H3</td><td data-label="杠杆">代码/UI/音频；生成的图片与视频素材</td></tr>
             <tr><th scope="row">仙宗</th><td data-label="测什么">DeepSeek Flash 的 3D 能力</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">代码/系统/文档；程序化素材；Playwright</td></tr>
-            <tr><th scope="row">雾谷农庄</th><td data-label="测什么">一句 prompt、不用 Blender 的基线</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">程序化模型、天气、音频；无外部素材</td></tr>
+            <tr><th scope="row">雾谷农庄</th><td data-label="测什么">无 Blender vs Blender 管线</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">程序化模型、天气、音频；无外部素材</td></tr>
             <tr><th scope="row">机场大亨 3D</th><td data-label="测什么">DeepSeek Flash + DSH + Godot 引擎路线</td><td data-label="模型">DeepSeek Flash + DSH</td><td data-label="杠杆">Godot 4.6 / GDScript；程序化网格与音频</td></tr>
             <tr><th scope="row">NEON BREACH</th><td data-label="测什么">无 harness 对照组</td><td data-label="模型">DeepSeek V4.1 Flash</td><td data-label="杠杆">纯 API，无 skill；原生 WebGL；程序化素材</td></tr>
             <tr><th scope="row">明宫三维</th><td data-label="测什么">量化版 vs 原版</td><td data-label="模型">DeepSeek-V4.1-Flash-1017 · Maya-XS</td><td data-label="杠杆">一句中文 prompt；单文件 WebGL2；无 skill</td></tr>
@@ -215,22 +215,22 @@
         <div class="work-case-media"><img decoding="async" src="/assets/img/demo-mistvale.jpg" alt="雾谷农庄标题画面：黄昏下的农舍、水井和菜园。" width="1600" height="1000" loading="lazy"></div>
         <div class="work-case-copy">
           <h2>雾谷农庄 <span>Mistvale Farm</span></h2>
-          <p>一款第三人称 3D 农场生活游戏，只用一句 DeepSeek Flash prompt 就搭起来：「做一款写实风的 3D 农场游戏」。开一块地、种下作物、在缓慢的昼夜循环里照料它们，把一个雾气弥漫的山谷变成家。全部在代码里生成——这是不用 Blender 的基线，之后要和一个 Blender 辅助的版本对比。</p>
+          <p>一款第三人称 3D 农场生活游戏，只用一句 DeepSeek Flash prompt 就搭起来：「做一款写实风的 3D 农场游戏」。开一块地、种下作物、在缓慢的昼夜循环里照料它们，把一个雾气弥漫的山谷变成家。全部在代码里生成——这是不用 Blender 的基线；Blender 辅助版现在也进了下面的对比。</p>
           <ul>
             <li>一句 prompt，不用 Blender，没有外部模型、贴图、字体或音频文件。</li>
             <li>程序化作物、工具、天气、水面 shader 和 WebAudio 环境声。</li>
             <li>静态 GitHub Pages 构建，本地存档，适配移动端。</li>
-            <li>保留为基线，用于将来与 Blender 辅助版本对比。</li>
+            <li>与下面 Blender 辅助的《拾穗》版本对比。</li>
           </ul>
           <dl class="work-specs">
             <div><dt>技术栈</dt><dd>Three.js + Vite</dd></div>
             <div><dt>规模</dt><dd>农场循环 · 天气 · 存档</dd></div>
             <div><dt>素材</dt><dd>100% 程序化</dd></div>
-            <div><dt>状态</dt><dd>已上线，非商业</dd></div>
+            <div><dt>状态</dt><dd>已上线 · Blender 对比</dd></div>
             <div><dt>模型</dt><dd>DeepSeek Flash · 一句 prompt</dd></div>
-            <div><dt>杠杆</dt><dd>不用 Blender · 程序化模型、天气、音频 · Blender 对比的基线</dd></div>
+            <div><dt>杠杆</dt><dd>不用 Blender · 程序化模型、天气、音频 · 与 Blender 版对比</dd></div>
           </dl>
-          <div class="work-links"><a href="https://norwinyu.github.io/mistvale-farm/" target="_blank" rel="noopener">在线试玩 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/mistvale-farm" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+          <div class="work-links"><a href="https://norwinyu.github.io/mistvale-farm/" target="_blank" rel="noopener">在线试玩 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/mistvale-farm" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a><a href="#harvest">Blender 版 <span aria-hidden="true">→</span></a></div>
         </div>
       </article>
 
@@ -260,8 +260,8 @@
 
     <section class="section comparison-section" id="comparisons" aria-labelledby="comparisons-title">
       <div class="wrap section-head">
-        <div class="section-heading"><p class="section-kicker">02 / 对比</p><h2 id="comparisons-title">两次受控运行。</h2></div>
-        <p class="section-intro">不是每个构建都是产品。Run 01 验证 harness 本身：同一份 brief，一次不走 photoreal-game 的 gates，一次走完整检查。Run 02 比较同一个 checkpoint 的两种权重格式。</p>
+        <div class="section-heading"><p class="section-kicker">02 / 对比</p><h2 id="comparisons-title">三次受控运行。</h2></div>
+        <p class="section-intro">不是每个构建都是产品。Run 01 验证 harness 本身：同一份 brief，一次不走 photoreal-game 的 gates，一次走完整检查。Run 02 比较同一个 checkpoint 的两种权重格式。Run 03 比较同一个农场概念在有无 Blender 下的两条资产管线。</p>
       </div>
       <div class="wrap comparison-stack">
         <article class="comparison-run" id="neon">
@@ -303,6 +303,26 @@
           <div class="comparison-run-foot">
             <div class="work-links"><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/local/" target="_blank" rel="noopener">本地版 <span aria-hidden="true">↗</span></a><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/" target="_blank" rel="noopener">线上版 <span aria-hidden="true">↗</span></a><a href="/blog/two-taihe-halls.html">日志里的对比 <span aria-hidden="true">→</span></a></div>
             <p class="work-muted">同一个 prompt；不是受控的模型 benchmark。哪些能比、哪些不能比，写在日志里。</p>
+          </div>
+        </article>
+        <article class="comparison-run" id="harvest">
+          <div class="comparison-run-head">
+            <div><p class="section-kicker">Run 03 / 资产管线</p><h3>同一座农场，两种资产管线。</h3></div>
+            <p>同一个农场概念，两种拿资产的方式：代码加 prompt，或者 Blender 脚本导出 GLB。问题不是谁更漂亮，而是资产从哪来、改起来难不难。</p>
+          </div>
+          <div class="comparison-pair">
+            <figure class="comparison-panel">
+              <div class="comparison-panel-media"><img decoding="async" src="/assets/img/demo-mistvale.jpg" alt="雾谷农庄标题画面：黄昏里的农舍、水井和菜园。" width="1600" height="1000" loading="eager"></div>
+              <figcaption><span class="panel-label">A / 无 Blender</span><strong>雾谷农庄</strong><span>单条 prompt · 全代码 · Three.js</span></figcaption>
+            </figure>
+            <figure class="comparison-panel">
+              <div class="comparison-panel-media"><img decoding="async" src="/assets/img/demo-harvest.jpg" alt="拾穗农庄的白天场景：谷仓、筒仓、栅栏、作物和土路。" width="1200" height="675" loading="eager"></div>
+              <figcaption><span class="panel-label">B / Blender</span><strong>拾穗 · Harvest</strong><span>Blender 生成资产 · 39 个道具 · GLB</span></figcaption>
+            </figure>
+          </div>
+          <div class="comparison-run-foot">
+            <div class="work-links"><a href="https://norwinyu.github.io/mistvale-farm/" target="_blank" rel="noopener">雾谷在线版 <span aria-hidden="true">↗</span></a><a href="https://norwinyu.github.io/harvest/" target="_blank" rel="noopener">拾穗在线版 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/harvest" target="_blank" rel="noopener">拾穗仓库 <span aria-hidden="true">↗</span></a></div>
+            <p class="work-muted">同一概念，不同管线；不是受控美术对比。雾谷是全代码基线，拾穗是 Blender 辅助版。</p>
           </div>
         </article>
       </div>
