@@ -17,7 +17,7 @@ Opening `index.html` directly also works, but a local server is better for check
 
 The site deploys from `main` through `.github/workflows/pages.yml` using GitHub Actions. In the repository, **Settings → Pages → Build and deployment** should be set to **GitHub Actions**.
 
-All internal links are relative, so the same files work as a user site (`username.github.io`) or a project site (`username.github.io/repo/`). The one deliberate exception is `404.html`: GitHub Pages serves that file at whatever path was requested, so its asset and navigation URLs are root-absolute (`/assets/…`).
+Most internal links are relative. The journal is split at `/blog/` (Chinese) and `/en/blog/` (English), so journal entry links, language switches and the 404 page use root-absolute paths. `404.html` is served by GitHub Pages at whatever path was requested, which is why its asset URLs are absolute; it redirects `/zh/…` misses to `/zh/404.html`.
 
 ## Conventions
 
@@ -56,9 +56,9 @@ Language layout:
 | `/blog/…` | Chinese journal (unchanged URLs) |
 | `/en/blog/…` | English journal |
 
-Every page carries one `<a class="lang-switch">` pointing at its counterpart and a pair of `hreflang` alternates. The mapping is by path: strip or add the `/zh/` prefix for site pages; `/blog/x.html` ↔ `/en/blog/x.html` for the journal. Pages under `zh/` and `en/` use root-absolute asset URLs (`/assets/…`) because they live one level deeper.
+Every content page carries one `<a class="lang-switch">` pointing at its counterpart and a pair of `hreflang` alternates. The mapping is by path: strip or add the `/zh/` prefix for site pages; `/blog/x.html` ↔ `/en/blog/x.html` for the journal. Pages under `zh/` and `en/` use root-absolute asset URLs (`/assets/…`) because they live one level deeper.
 
-When you add a page, add both languages and set the switch href and the hreflang pair; a missing counterpart is a broken switch.
+When you add a page, add both languages and set the switch href and the hreflang pair; a missing counterpart is a broken switch. Add a journal post to both `blog/index.html` and `en/blog/index.html`, with the same order and numbering.
 
 `ai.html` is the landing page for the **Local** section; the two pages under `local/` hold the full reference tables it summarises. Journal notes stay narrative — they link into `local/` rather than duplicating the tables.
 
