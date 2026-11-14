@@ -95,7 +95,7 @@
 
       <div class="wrap thread-grid">
         <div class="thread-card"><span>01</span><h3>Quantisation</h3><p>What does a 1.6-bit local copy of a model cost a 3D scene? Ming Palace 3D is the quantisation probe.</p></div>
-        <div class="thread-card"><span>02</span><h3>Leverage</h3><p>What changes when the model gets an agent/skill harness instead of a plain API loop? NEON BREACH is the no-skill control.</p></div>
+        <div class="thread-card"><span>02</span><h3>Leverage</h3><p>What changes when the model gets an agent/skill harness instead of a plain API loop? NEON BREACH is the no-harness control.</p></div>
         <div class="thread-card"><span>03</span><h3>Asset pipeline</h3><p>Procedural code, generated images/video, or Blender-assisted? Mistvale is the current no-Blender baseline; the Blender comparison is next.</p></div>
         <div class="thread-card"><span>04</span><h3>Verification</h3><p>Playwright, screenshot review, collision checks and a six-gate harness. A build is not a result until it can be inspected.</p></div>
       </div>
@@ -110,7 +110,7 @@
             <tr><th scope="row">仙宗</th><td data-label="Tests">DeepSeek Flash's 3D capability</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Code/systems/docs; procedural assets; Playwright</td></tr>
             <tr><th scope="row">雾谷农庄</th><td data-label="Tests">One-prompt, no-Blender baseline</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Procedural models, weather, audio; no external assets</td></tr>
             <tr><th scope="row">机场大亨 3D</th><td data-label="Tests">DeepSeek Flash + DSH + Godot engine path</td><td data-label="Model">DeepSeek Flash + DSH</td><td data-label="Leverage">Godot 4.6 / GDScript; procedural meshes and audio</td></tr>
-            <tr><th scope="row">NEON BREACH</th><td data-label="Tests">No-skill control run</td><td data-label="Model">DeepSeek V4.1 Flash</td><td data-label="Leverage">Pure API, no skill; native WebGL; procedural assets</td></tr>
+            <tr><th scope="row">NEON BREACH</th><td data-label="Tests">No-harness control run</td><td data-label="Model">DeepSeek V4.1 Flash</td><td data-label="Leverage">Pure API, no skill; native WebGL; procedural assets</td></tr>
             <tr><th scope="row">明宫三维</th><td data-label="Tests">Quantised local vs original</td><td data-label="Model">DeepSeek-V4.1-Flash-1017 · Maya-XS</td><td data-label="Leverage">One Chinese prompt; single-file WebGL2; no skill</td></tr>
             <tr><th scope="row">dsh-quota</th><td data-label="Tests">Tooling / route-aware state</td><td data-label="Model">DeepSeek V4.1 Flash</td><td data-label="Leverage">Code/tests/docs; config-driven adapters</td></tr>
             <tr><th scope="row">NorMark</th><td data-label="Tests">Desktop coding app</td><td data-label="Model">Not recorded</td><td data-label="Leverage">Electron / React / CodeMirror</td></tr>
@@ -261,27 +261,27 @@
     <section class="section comparison-section" id="comparisons" aria-labelledby="comparisons-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">02 / Comparisons</p><h2 id="comparisons-title">Two controlled runs.</h2></div>
-        <p class="section-intro">Not every build is a product. Each run has two sides: remove the skill from a 3D shooter, then compare one checkpoint in two weight formats.</p>
+        <p class="section-intro">Not every build is a product. Run 01 tests the verification harness itself: the same brief with and without the photoreal-game gates. Run 02 compares one checkpoint in two weight formats.</p>
       </div>
       <div class="wrap comparison-stack">
         <article class="comparison-run" id="neon">
           <div class="comparison-run-head">
-            <div><p class="section-kicker">Run 01 / Leverage</p><h3>No skill vs. skill.</h3></div>
-            <p>One brief, two loops: direct API calls, then the same brief with the photoreal-game skill. The second build is reserved; the pair is the point.</p>
+            <div><p class="section-kicker">Run 01 / Harness validation</p><h3>Does the harness change the result?</h3></div>
+            <p>One brief, two loops: a plain API loop, then the same brief through the photoreal-game harness. B is reserved until that build exists; the pair tests the harness, not the screenshot.</p>
           </div>
           <div class="comparison-pair">
             <figure class="comparison-panel">
               <div class="comparison-panel-media"><img decoding="async" src="../assets/img/demo-neon-breach.jpg" alt="Neon Breach first-person neon arena with a weapon and enemy." width="1280" height="800" loading="eager"></div>
-              <figcaption><span class="panel-label">A / No skill</span><strong>NEON BREACH</strong><span>Pure API · 5 waves · live</span></figcaption>
+              <figcaption><span class="panel-label">A / No harness</span><strong>NEON BREACH</strong><span>DeepSeek V4.1 Flash · pure API · live</span></figcaption>
             </figure>
             <figure class="comparison-panel is-empty">
-              <div class="comparison-panel-media comparison-placeholder"><span>B / 02</span><strong>Skill build<br>coming soon</strong><small>photoreal-game · same brief</small></div>
-              <figcaption><span class="panel-label">B / With skill</span><strong>Reserved slot</strong><span>Publish when the build is ready</span></figcaption>
+              <div class="comparison-panel-media comparison-placeholder"><span>B / 02</span><strong>Harnessed build<br>coming soon</strong><small>photoreal-game + gates · same brief</small></div>
+              <figcaption><span class="panel-label">B / With harness</span><strong>Reserved slot</strong><span>Publish when the harnessed build exists</span></figcaption>
             </figure>
           </div>
           <div class="comparison-run-foot">
             <div class="work-links"><a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">Play NEON <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/neon-breach" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
-            <p class="work-muted">A is the control. B is intentionally empty: no borrowed screenshot, no claim before the build exists.</p>
+            <p class="work-muted">A is the control. B is reserved. The question is not which screenshot looks better; it is whether the harness catches failures the plain loop ships.</p>
           </div>
         </article>
 

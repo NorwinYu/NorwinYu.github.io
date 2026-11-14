@@ -95,7 +95,7 @@
 
       <div class="wrap thread-grid">
         <div class="thread-card"><span>01</span><h3>量化</h3><p>把模型压到 1.6 bit 的地方版本，对 3D 场景意味着什么？明宫三维（Ming Palace 3D）就是那个量化探针。</p></div>
-        <div class="thread-card"><span>02</span><h3>杠杆</h3><p>给模型一套 agent/skill 框架，和只给一个 API 循环，差在哪？NEON BREACH 是没开 skill 的对照组。</p></div>
+        <div class="thread-card"><span>02</span><h3>杠杆</h3><p>给模型一套 agent/skill 框架，和只给一个 API 循环，差在哪？NEON BREACH 是没走 harness 的对照组。</p></div>
         <div class="thread-card"><span>03</span><h3>素材管线</h3><p>程序化代码、生成图片/视频，还是 Blender 辅助？雾谷农庄是目前不用 Blender 的基线；Blender 对比是下一步。</p></div>
         <div class="thread-card"><span>04</span><h3>验证</h3><p>Playwright、截图复查、碰撞检查，加上六道关的 harness。构建跑得起来不算结果，能被人检查才算。</p></div>
       </div>
@@ -110,7 +110,7 @@
             <tr><th scope="row">仙宗</th><td data-label="测什么">DeepSeek Flash 的 3D 能力</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">代码/系统/文档；程序化素材；Playwright</td></tr>
             <tr><th scope="row">雾谷农庄</th><td data-label="测什么">一句 prompt、不用 Blender 的基线</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">程序化模型、天气、音频；无外部素材</td></tr>
             <tr><th scope="row">机场大亨 3D</th><td data-label="测什么">DeepSeek Flash + DSH + Godot 引擎路线</td><td data-label="模型">DeepSeek Flash + DSH</td><td data-label="杠杆">Godot 4.6 / GDScript；程序化网格与音频</td></tr>
-            <tr><th scope="row">NEON BREACH</th><td data-label="测什么">不用 skill 的对照组</td><td data-label="模型">DeepSeek V4.1 Flash</td><td data-label="杠杆">纯 API，无 skill；原生 WebGL；程序化素材</td></tr>
+            <tr><th scope="row">NEON BREACH</th><td data-label="测什么">无 harness 对照组</td><td data-label="模型">DeepSeek V4.1 Flash</td><td data-label="杠杆">纯 API，无 skill；原生 WebGL；程序化素材</td></tr>
             <tr><th scope="row">明宫三维</th><td data-label="测什么">量化版 vs 原版</td><td data-label="模型">DeepSeek-V4.1-Flash-1017 · Maya-XS</td><td data-label="杠杆">一句中文 prompt；单文件 WebGL2；无 skill</td></tr>
             <tr><th scope="row">dsh-quota</th><td data-label="测什么">工具 / 按路由显示状态</td><td data-label="模型">DeepSeek V4.1 Flash</td><td data-label="杠杆">代码/测试/文档；配置驱动的适配器</td></tr>
             <tr><th scope="row">NorMark</th><td data-label="测什么">桌面编程应用</td><td data-label="模型">未记录</td><td data-label="杠杆">Electron / React / CodeMirror</td></tr>
@@ -261,27 +261,27 @@
     <section class="section comparison-section" id="comparisons" aria-labelledby="comparisons-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">02 / 对比</p><h2 id="comparisons-title">两次受控运行。</h2></div>
-        <p class="section-intro">不是每个构建都是产品。每组都有两边：先把 skill 从 3D 枪战里拿掉，再比较同一个 checkpoint 的两种权重格式。</p>
+        <p class="section-intro">不是每个构建都是产品。Run 01 验证 harness 本身：同一份 brief，一次不走 photoreal-game 的 gates，一次走完整检查。Run 02 比较同一个 checkpoint 的两种权重格式。</p>
       </div>
       <div class="wrap comparison-stack">
         <article class="comparison-run" id="neon">
           <div class="comparison-run-head">
-            <div><p class="section-kicker">Run 01 / 杠杆</p><h3>无 skill vs. 有 skill。</h3></div>
-            <p>同一份 brief，两种循环：直连 API，和加上 photoreal-game skill 的同一份 brief。第二个构建先留空；这一组才是重点。</p>
+            <div><p class="section-kicker">Run 01 / 验证 harness</p><h3>Harness 到底改变了什么？</h3></div>
+            <p>同一份 brief，两种循环：纯 API 循环，和走 photoreal-game harness 的同一份 brief。B 等构建出来再补；这一组验证的是 harness，不是截图。</p>
           </div>
           <div class="comparison-pair">
             <figure class="comparison-panel">
               <div class="comparison-panel-media"><img decoding="async" src="/assets/img/demo-neon-breach.jpg" alt="NEON BREACH 的第一人称霓虹竞技场，画面里有枪械和敌人。" width="1280" height="800" loading="eager"></div>
-              <figcaption><span class="panel-label">A / 无 skill</span><strong>NEON BREACH</strong><span>纯 API · 5 波 · 已上线</span></figcaption>
+              <figcaption><span class="panel-label">A / 无 harness</span><strong>NEON BREACH</strong><span>DeepSeek V4.1 Flash · 纯 API · 已上线</span></figcaption>
             </figure>
             <figure class="comparison-panel is-empty">
-              <div class="comparison-panel-media comparison-placeholder"><span>B / 02</span><strong>Skill 版<br>即将上线</strong><small>photoreal-game · 同一份 brief</small></div>
-              <figcaption><span class="panel-label">B / 有 skill</span><strong>预留位置</strong><span>构建完成后再发布</span></figcaption>
+              <div class="comparison-panel-media comparison-placeholder"><span>B / 02</span><strong>Harness 版<br>即将上线</strong><small>photoreal-game + gates · 同一份 brief</small></div>
+              <figcaption><span class="panel-label">B / 有 harness</span><strong>预留位置</strong><span>等 harness 版构建完成</span></figcaption>
             </figure>
           </div>
           <div class="comparison-run-foot">
             <div class="work-links"><a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">在线试玩 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/neon-breach" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
-            <p class="work-muted">A 是对照组。B 故意留空：不借截图，不在构建存在前下结论。</p>
+            <p class="work-muted">A 是对照。B 留坑。问题不是哪张截图更好看，而是 harness 能不能抓到纯循环漏掉的失败。</p>
           </div>
         </article>
 
