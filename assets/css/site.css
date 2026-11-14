@@ -3686,7 +3686,7 @@ html {
 }
 
 .home-coding-grid {
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 /* A section that holds a single wide card keeps the card from stretching. */

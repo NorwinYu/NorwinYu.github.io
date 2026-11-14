@@ -117,6 +117,7 @@
             <tr><th scope="row">RoomTessera 3D</th><td data-label="测什么">空间工具</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">代码/UI/测试；程序化几何</td></tr>
             <tr><th scope="row">MiniMax H3 TP2</th><td data-label="测什么">22 GB 卡上的多卡杠杆</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">张量并行节点，每个 rank 一个 host 线程</td></tr>
             <tr><th scope="row">sensorium</th><td data-label="测什么">不起子进程读硬件</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">Rust · ratatui · 进程内 NVML</td></tr>
+            <tr><th scope="row">MiniDSH</th><td data-label="测什么">Agent harness 对齐</td><td data-label="模型">未记录</td><td data-label="杠杆">Python 3.9+ · 核心零依赖 · MockModel + DeepSeek 适配器</td></tr>
           </tbody>
         </table>
         <p class="table-note"><span>怎么读</span>矩阵是实验设计，下面的案例记录才是证据：建了什么、生成了什么、交接在哪一步断掉。</p>
@@ -470,6 +471,33 @@
               <div><dt>状态</dt><dd>公开仓库</dd></div>
             </dl>
             <div class="work-links"><a href="https://github.com/NorwinYu/sensorium" target="_blank" rel="noopener">源码 <span aria-hidden="true">↗</span></a><a href="/blog/every-frame-four-percent.html">构建记录 <span aria-hidden="true">→</span></a><a href="/zh/ai.html">它读的那台机器 <span aria-hidden="true">→</span></a></div>
+          </div>
+        </article>
+        <article class="coding-card" id="minidsh">
+          <div class="coding-visual terminal">
+            <div class="term-window">
+              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>minidsh / plugins</span></div>
+              <div class="term-body">
+                <p><span>$</span> minidsh plugins</p>
+                <p><b>agent.basic</b><strong>on</strong></p>
+                <p><b>workflow</b><strong>off</strong></p>
+                <p class="term-dim">MockModel · Python 3.9+</p>
+                <p><span>session</span><b>JSONL · 可检查</b></p>
+              </div>
+            </div>
+          </div>
+          <div class="coding-body">
+            <p class="demo-kicker">Agent harness · Python</p>
+            <h3>MiniDSH <span>dsh-python-lab</span></h3>
+            <p>用 Python 拆解 DeepSeek Harness 的各层：插件、工具、审批、JSONL 会话、子 Agent、Skills、定时任务、Goal 和 PTC。默认用确定性 MockModel 跑通；DeepSeek 适配器单独开启。</p>
+            <p class="model-line"><span>模型</span>未记录 · Python 3.9+ · 核心零依赖</p>
+            <dl class="demo-specs">
+              <div><dt>技术栈</dt><dd>Python 3.9+</dd></div>
+              <div><dt>核心依赖</dt><dd>0</dd></div>
+              <div><dt>范围</dt><dd>Agent loop · 会话 · 子 Agent</dd></div>
+              <div><dt>状态</dt><dd>公开仓库</dd></div>
+            </dl>
+            <div class="demo-foot"><span>先跑 MockModel</span><a href="https://github.com/NorwinYu/dsh-python-lab" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
           </div>
         </article>
       </div>
