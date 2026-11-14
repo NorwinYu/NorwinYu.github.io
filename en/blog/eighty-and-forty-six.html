@@ -8,14 +8,14 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Norwin Yu">
   <title>80 and 46 — Norwin Yu</title>
-  <meta name="description" content="One 27B model: the docs say 80 tok/s, this machine gives 46. The difference is not luck, it is the power cap and the compute density of MTP.">
+  <meta name="description" content="One 27B model: the docs say 80 tok/s, the workstation gives 46. The difference is not luck, it is the power cap and the compute density of MTP.">
   <meta name="theme-color" content="#f7f5ef">
   <meta name="color-scheme" content="light">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
   <meta property="og:type" content="article">
   <meta property="og:title" content="80 and 46 — Norwin Yu">
-  <meta property="og:description" content="One 27B model: the docs say 80 tok/s, this machine gives 46. The difference is not luck, it is the power cap and the compute density of MTP.">
+  <meta property="og:description" content="One 27B model: the docs say 80 tok/s, the workstation gives 46. The difference is not luck, it is the power cap and the compute density of MTP.">
   <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
   <meta property="og:locale" content="en_US">
   <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/eighty-and-forty-six.html">
@@ -53,8 +53,8 @@
         <a class="back-link" href="index.html"><span aria-hidden="true">←</span> All notes</a>
         <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Local inference</span><i aria-hidden="true"></i><span>Benchmarks</span></p>
         <h1>80 and<br><em>46.</em></h1>
-        <p class="article-deck">Same 27B model, same vLLM fork: the docs say 80 tok/s, this machine gives 46. The difference is not luck.</p>
-        <p class="article-cn">Neither number is false. They do not measure the same thing — one is a theoretical ceiling, the other is this machine's everyday at 180W.</p>
+        <p class="article-deck">Same 27B model, same vLLM fork: the docs say 80 tok/s, the workstation gives 46. The difference is not luck.</p>
+        <p class="article-cn">Neither number is false. They do not measure the same thing — one is a theoretical ceiling, the other is the workstation's everyday at 180W.</p>
         <div class="article-meta">
           <span><i aria-hidden="true"></i>Norwin Yu</span>
           <span>November 2026</span>
@@ -124,7 +124,7 @@
 
         <p><strong>First, that 80 is a synthetic benchmark.</strong> The fork's docs say so themselves: both inputs are synthetic samples built for high speculative acceptance, used to compare throughput under equal conditions, not representative of real inference. Real draft acceptance is lower, so each step emits fewer tokens.</p>
 
-        <p><strong>Second, this machine is held at 180W.</strong> MTP/3 verifies three draft tokens per step, a textbook compute-bound load — exactly the kind the power wall is least forgiving about. Under load both cards sit pinned at 180W (peaks 182W / 179W), utilization 100%, SM clocks capped at 1845 / 1830 MHz. Meaning: <em>the cards are not below their clocks because of heat, but because of power.</em></p>
+        <p><strong>Second, the workstation is held at 180W.</strong> MTP/3 verifies three draft tokens per step, a textbook compute-bound load — exactly the kind the power wall is least forgiving about. Under load both cards sit pinned at 180W (peaks 182W / 179W), utilization 100%, SM clocks capped at 1845 / 1830 MHz. Meaning: <em>the cards are not below their clocks because of heat, but because of power.</em></p>
 
         <h2 id="power">Pinned at 180W</h2>
         <table class="compare-table">
@@ -152,7 +152,7 @@
           </tbody>
         </table>
 
-        <p>The difference is 0.4–0.5 tok/s, an order of magnitude smaller than the spread between runs. <strong>MTP/2 and MTP/3 are statistically indistinguishable on this machine.</strong></p>
+        <p>The difference is 0.4–0.5 tok/s, an order of magnitude smaller than the spread between runs. <strong>MTP/2 and MTP/3 are statistically indistinguishable on the workstation.</strong></p>
 
         <p>The MTP/3 “thinking off” group also exposes a sampling trap: six runs drifting from 56.8 all the way down to 45.5, the first few a cold-card gift, the steady state at 50–51. MTP/2 has σ 0.88 and settles to the same steady state quickly. So I left the configuration on the default MTP/3 — not because it is faster, but because there is no reason to change it.</p>
 
@@ -178,7 +178,7 @@
 
         <p>The most useful conclusion is small: <strong>when you report tok/s, you have to report the power cap and the context length at the same time</strong>, otherwise the number describes only an unconstrained ideal case.</p>
 
-        <p class="article-end"><strong>Method /</strong> Data comes from measured records in <code>vllm-2080ti/RESULTS.md</code> on this machine: streaming requests, TTFT separated from decode by first-token time, fixed prompt and output lengths, at least five runs per item with median plus min/max/stdev, and one warmup discarded after every configuration change. The full configuration table is on the site's <a href="/local/text-stack.html">Local</a> page.</p>
+        <p class="article-end"><strong>Method /</strong> Data comes from measured records in <code>vllm-2080ti/RESULTS.md</code> on the workstation: streaming requests, TTFT separated from decode by first-token time, fixed prompt and output lengths, at least five runs per item with median plus min/max/stdev, and one warmup discarded after every configuration change. The full configuration table is on the site's <a href="/local/text-stack.html">Local</a> page.</p>
       </article>
 
       <div aria-hidden="true"></div>

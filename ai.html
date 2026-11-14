@@ -112,7 +112,7 @@
     <section class="section section-alt" id="text-stack" aria-labelledby="text-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">02 / Text stack</p><h2 id="text-title">What the model actually decodes at.</h2></div>
-        <p class="section-intro">The serving configuration below is the one that ran the benchmarks: a 27B model across both cards with a 256K context, on the driver the machine boots today.</p>
+        <p class="section-intro">The serving configuration below is the one that ran the benchmarks: a 27B model across both cards with a 256K context, on the driver the workstation boots today.</p>
       </div>
       <div class="wrap table-wrap">
         <table class="data-table">
@@ -163,12 +163,12 @@
     <section class="section section-alt" aria-labelledby="caveat-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">04 / Caveats</p><h2 id="caveat-title">What these numbers are not.</h2></div>
-        <p class="section-intro">Every figure above comes from this machine, at this power cap, on this driver. Remove one of those and the number changes.</p>
+        <p class="section-intro">Every figure above comes from the workstation, at this power cap, on this driver. Remove one of those and the number changes.</p>
       </div>
       <div class="wrap home-cap-grid">
         <div class="home-cap-item"><span>01</span><h3>One cap, one driver</h3><p>The 180 W limit is a choice, not a hardware limit. Raising it to 250 W raises decode; the temperatures above are what keeps it at 180.</p></div>
         <div class="home-cap-item"><span>02</span><h3>Not a leaderboard</h3><p>These are single-machine medians on a used two-socket Xeon. They are useful for deciding what to run here, not for comparing against a datacentre.</p></div>
-        <div class="home-cap-item"><span>03</span><h3>Watched by the machine</h3><p>The same NVML fields behind these numbers are read by <a href="work/index.html#sensorium">sensorium</a>, the terminal monitor in the experiments list — no <code>nvidia-smi</code> subprocess in the loop.</p></div>
+        <div class="home-cap-item"><span>03</span><h3>Watched by the workstation</h3><p>The same NVML fields behind these numbers are read by <a href="work/index.html#sensorium">sensorium</a>, the terminal monitor in the experiments list — no <code>nvidia-smi</code> subprocess in the loop.</p></div>
       </div>
     </section>
   </main>

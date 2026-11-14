@@ -54,7 +54,7 @@
         <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Rust</span><i aria-hidden="true"></i><span>Observability</span></p>
         <h1>4%<br><em>per frame.</em></h1>
         <p class="article-deck">A terminal hardware monitor that forks no subprocesses: the data comes straight out of /proc, /sys and NVML, and the price is 4% to 6% of one core.</p>
-        <p class="article-cn">One nvidia-smi call is about a hundred milliseconds. Using an external command that has to run every frame to monitor this machine is a joke in itself.</p>
+        <p class="article-cn">One nvidia-smi call is about a hundred milliseconds. Using an external command that has to run every frame to monitor the workstation is a joke in itself.</p>
         <div class="article-meta">
           <span><i aria-hidden="true"></i>Norwin Yu</span>
           <span>November 2026</span>
@@ -91,7 +91,7 @@
         <p>The ready-made answer is to wire <code>nvidia-smi</code>, <code>sensors</code>, <code>free</code> and <code>iostat</code> together. I tried it. What came out had two problems: it was slow, and it lied.</p>
 
         <h2 id="why">Why not call a subprocess</h2>
-        <p>Slow is measured: one <code>nvidia-smi</code> call takes about a hundred milliseconds, and <code>sensors</code> burns a hundred to three hundred milliseconds of CPU on a dual-socket Xeon. For a dashboard refreshing at 1 second across six views, that means the monitor itself eats a large slice of a core — to find out what the machine is busy with, first make the machine busy.</p>
+        <p>Slow is measured: one <code>nvidia-smi</code> call takes about a hundred milliseconds, and <code>sensors</code> burns a hundred to three hundred milliseconds of CPU on a dual-socket Xeon. For a dashboard refreshing at 1 second across six views, that means the monitor itself eats a large slice of a core — to find out what the workstation is busy with, first make the workstation busy.</p>
 
         <p>The lying part is subtler: different tools define “used memory” differently, and they sample at different moments. Drawn side by side it looks orderly, but it is a collage of four sampling instants.</p>
 
@@ -141,7 +141,7 @@
         <p>Rendering takes the same route: no relayout of the whole tree, write straight into <code>ratatui</code>'s <code>Buffer</code>. A full 120×40 repaint is 0.2–0.35 milliseconds — three orders of magnitude cheaper than one <code>nvidia-smi</code> read. That is also why this tool can sit at a 1-second refresh and go almost unnoticed.</p>
 
         <h2 id="cost">The cost</h2>
-        <p>Measured on this machine, release build, with the machine itself loaded during sampling (load ≈ 2.5, jobs on the GPU):</p>
+        <p>Measured on the workstation, release build, with the workstation itself loaded during sampling (load ≈ 2.5, jobs on the GPU):</p>
 
         <table class="compare-table">
           <thead><tr><th>View</th><th>Share of one core</th><th>Per-frame render</th></tr></thead>
@@ -155,7 +155,7 @@
           </tbody>
         </table>
 
-        <p>Against the whole machine that is 0.05%–0.07%, with about 24 MiB resident and a 1.2 MB binary (strip + LTO). This machine has 88 threads, so “4% of one core” sounds scarier than “0.06% of the machine” — both framings are written down because they answer different questions.</p>
+        <p>Against the whole workstation that is 0.05%–0.07%, with about 24 MiB resident and a 1.2 MB binary (strip + LTO). The workstation has 88 threads, so “4% of one core” sounds scarier than “0.06% of the workstation” — both framings are written down because they answer different questions.</p>
 
         <h2 id="truth">Checking accuracy</h2>
         <p>The most dangerous failure for a monitoring tool is not a crash, it is quietly showing the wrong number. So it ships <code>--json</code>, which dumps one sample verbatim to be diffed field by field against an independent calculation:</p>

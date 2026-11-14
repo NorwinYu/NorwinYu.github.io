@@ -99,7 +99,7 @@
           <li><strong>Subjects</strong>: data structures, algorithms, operating systems, networks, databases — a score has to break down by subject before you can see which part is weak.</li>
         </ul>
 
-        <p>The question bank itself is not in the repo (copyright); what is in the repo is a skill for generating an original bank with AI (<code>skills/generate-bank</code>) plus a schema. This machine currently holds 617 questions, between 57 and 106 per stage across the eight stages.</p>
+        <p>The question bank itself is not in the repo (copyright); what is in the repo is a skill for generating an original bank with AI (<code>skills/generate-bank</code>) plus a schema. The workstation currently holds 617 questions, between 57 and 106 per stage across the eight stages.</p>
 
         <h2 id="paper">Paper mode</h2>
         <p>The most easily overlooked feature, and possibly the most important: <code>--paper N</code>. It assembles a paper by drawing N questions from each “stage × subject/profile” section, rather than drawing N questions at random.</p>
@@ -128,7 +128,7 @@
         <p>One small but critical detail: run records scrub keys automatically. The thing an evaluation tool leaks most easily is not the model, it is the config.</p>
 
         <h2 id="sixty">67 and 84</h2>
-        <p>Two runs on this machine, same model (<code>deepseek-v4.1-flash</code>, local 8080), 1 question per stage for 8 total, judge off (objective and code questions only):</p>
+        <p>Two runs on the workstation, same model (<code>deepseek-v4.1-flash</code>, local 8080), 1 question per stage for 8 total, judge off (objective and code questions only):</p>
 
         <table class="compare-table">
           <thead><tr><th>Run</th><th>Config difference</th><th>Weighted score</th><th>Grade</th><th>Coverage</th><th>Elapsed</th></tr></thead>

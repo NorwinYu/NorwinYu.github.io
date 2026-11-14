@@ -3679,3 +3679,17 @@ html {
 .article-header .lang-switch {
   margin-left: 14px;
 }
+
+/* Four tools now: two rows of two on the work page, a flexible row at home. */
+.coding-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.home-coding-grid {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* A section that holds a single wide card keeps the card from stretching. */
+.comparison-grid.is-single {
+  grid-template-columns: minmax(0, 760px);
+}

@@ -54,7 +54,7 @@
         <p class="article-kicker"><span class="is-accent">系统</span><i aria-hidden="true"></i><span>Rust</span><i aria-hidden="true"></i><span>可观测性</span></p>
         <h1>每帧<br><em>4%。</em></h1>
         <p class="article-deck">一个不 fork 任何子进程的终端硬件监控：数据直接从 /proc、/sys 和 NVML 读出来，代价是单核的 4% 到 6%。</p>
-        <p class="article-cn">nvidia-smi 一次大约一百毫秒。用一个每帧都要跑一遍的外部命令去监控这台机器，本身就是个笑话。</p>
+        <p class="article-cn">nvidia-smi 一次大约一百毫秒。用一个每帧都要跑一遍的外部命令去监控工作站，本身就是个笑话。</p>
         <div class="article-meta">
           <span><i aria-hidden="true"></i>Norwin Yu</span>
           <span>2026 年 11 月</span>
@@ -86,7 +86,7 @@
       </aside>
 
       <article class="article-body">
-        <p>这台工作站有 88 个线程、两张 22GB 的卡、七个硬盘分区。它跑推理、跑 ComfyUI、跑编译，噪音和热量都很大。我需要一块仪表盘：一眼看到每个核在干什么、两张卡现在多少度、功耗是撞了 180W 的墙还是没撞。</p>
+        <p>工作站有 88 个线程、两张 22GB 的卡、七个硬盘分区。它跑推理、跑 ComfyUI、跑编译，噪音和热量都很大。我需要一块仪表盘：一眼看到每个核在干什么、两张卡现在多少度、功耗是撞了 180W 的墙还是没撞。</p>
 
         <p>现成的答案是把 <code>nvidia-smi</code>、<code>sensors</code>、<code>free</code>、<code>iostat</code> 拼起来。我试过，拼出来的东西有两个问题：慢，和说谎。</p>
 
@@ -141,7 +141,7 @@
         <p>渲染也走同一条路：不重排整棵树，直接写 <code>ratatui</code> 的 <code>Buffer</code>。一帧 120×40 的全量重绘是 0.2–0.35 毫秒——比读一次 <code>nvidia-smi</code> 便宜三个数量级。这也是为什么这个工具能挂在 1 秒刷新上而几乎不被注意到。</p>
 
         <h2 id="cost">成本</h2>
-        <p>本机实测，release 构建，采样时机器本身有负载（load ≈ 2.5，GPU 上有任务）：</p>
+        <p>实测，release 构建，采样时机器本身有负载（load ≈ 2.5，GPU 上有任务）：</p>
 
         <table class="compare-table">
           <thead><tr><th>视图</th><th>占单核</th><th>单帧渲染</th></tr></thead>
@@ -155,7 +155,7 @@
           </tbody>
         </table>
 
-        <p>换成整机的比例是 0.05%–0.07%，常驻内存约 24 MiB，二进制 1.2 MB（strip + LTO）。这台机器有 88 个线程，所以“一个核的 4%”听上去比“整机的 0.06%”吓人——两种口径都写出来，是因为它们回答的是不同的问题。</p>
+        <p>换成整机的比例是 0.05%–0.07%，常驻内存约 24 MiB，二进制 1.2 MB（strip + LTO）。工作站有 88 个线程，所以“一个核的 4%”听上去比“整机的 0.06%”吓人——两种口径都写出来，是因为它们回答的是不同的问题。</p>
 
         <h2 id="truth">准确性怎么验</h2>
         <p>一个监控工具最危险的失败不是崩溃，是安静地显示错的数字。所以它带 <code>--json</code>，可以把一次采样原样导出，和独立计算结果逐字段对拍：</p>
@@ -167,7 +167,7 @@
           <li>只有 <code>--bench</code> 会把“稳态”和“首次采样”（NVML 初始化、首次全量传感器扫描、首次 <code>/proc</code> 遍历）分开报告——否则一次性开销会摊进平均值，看起来很漂亮。</li>
         </ul>
 
-        <p>还有一条更重要的原则：<strong>读不到就写读不到</strong>。多数发行版把 <code>/sys/class/powercap/*/energy_uj</code> 设成 root-only，普通用户拿不到 CPU 封装功耗，它就显示 <em>unavailable (energy_uj needs root)</em>，而不是画一条零线。本机主板没加载 Super-I/O 风扇驱动、也没有 <code>/dev/ipmi0</code>，机箱风扇转速读不到——那就空着。</p>
+        <p>还有一条更重要的原则：<strong>读不到就写读不到</strong>。多数发行版把 <code>/sys/class/powercap/*/energy_uj</code> 设成 root-only，普通用户拿不到 CPU 封装功耗，它就显示 <em>unavailable (energy_uj needs root)</em>，而不是画一条零线。工作站主板没加载 Super-I/O 风扇驱动、也没有 <code>/dev/ipmi0</code>，机箱风扇转速读不到——那就空着。</p>
 
         <blockquote>监控工具的可信度，取决于它在缺少数据时是否安静。</blockquote>
 

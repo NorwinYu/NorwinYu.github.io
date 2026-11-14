@@ -99,7 +99,7 @@
           <li><strong>科目</strong>：数据结构、算法、操作系统、网络、数据库——分数能拆到科目，才看得出“哪块不行”。</li>
         </ul>
 
-        <p>题库本身不入库（版权问题），仓库里给的是一套用 AI 生成原创题库的技能（<code>skills/generate-bank</code>）和 schema。本机现在有 617 道题，八个阶段从 57 到 106 道不等。</p>
+        <p>题库本身不入库（版权问题），仓库里给的是一套用 AI 生成原创题库的技能（<code>skills/generate-bank</code>）和 schema。工作站现在有 617 道题，八个阶段从 57 到 106 道不等。</p>
 
         <h2 id="paper">试卷模式</h2>
         <p>最容易被忽略、但可能是最重要的一个功能：<code>--paper N</code>。它按“阶段 × 学科/岗位”每个部分抽 N 题组卷，而不是随机抽 N 道题。</p>
@@ -128,7 +128,7 @@
         <p>还有一个很小但关键的细节：运行记录会自动抹除密钥。评测工具最容易泄漏的不是模型，是配置。</p>
 
         <h2 id="sixty">67 与 84</h2>
-        <p>本机跑过两次，同一个模型（<code>deepseek-v4.1-flash</code>，本地 8080），每阶段 1 题共 8 题，判官关闭（只有客观/代码题）：</p>
+        <p>工作站跑过两次，同一个模型（<code>deepseek-v4.1-flash</code>，本地 8080），每阶段 1 题共 8 题，判官关闭（只有客观/代码题）：</p>
 
         <table class="compare-table">
           <thead><tr><th>运行</th><th>配置差异</th><th>加权分</th><th>等级</th><th>覆盖率</th><th>耗时</th></tr></thead>
@@ -163,7 +163,7 @@
 
         <p>最后，8 题就是 8 题。试卷模式可以让这一次测量更有代表性，但它不能把 8 题变成 80 题。<strong>样本量不够时，最专业的输出是“样本量不够”。</strong></p>
 
-        <p class="article-end"><strong>方法 /</strong> 代码与文档见 <a href="https://github.com/NorwinYu/LMExamBench" target="_blank" rel="noopener">NorwinYu/LMExamBench</a>；两次运行记录来自本机 <code>runs/</code> 目录（2026-10-29，每次 8 题，判官关闭）。仓库不内置题库，本机 617 道题为自行生成，不随仓库分发。分数为框架的加权百分比，不是排行榜名次。</p>
+        <p class="article-end"><strong>方法 /</strong> 代码与文档见 <a href="https://github.com/NorwinYu/LMExamBench" target="_blank" rel="noopener">NorwinYu/LMExamBench</a>；两次运行记录来自工作站 <code>runs/</code> 目录（2026-10-29，每次 8 题，判官关闭）。仓库不内置题库，工作站 617 道题为自行生成，不随仓库分发。分数为框架的加权百分比，不是排行榜名次。</p>
       </article>
 
       <div aria-hidden="true"></div>

@@ -89,7 +89,7 @@
     <section class="section" aria-labelledby="cfg-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">01 / Configuration</p><h2 id="cfg-title">The resolved serving profile.</h2></div>
-        <p class="section-intro">Not a suggested config: this is the profile the benchmark numbers were produced with, on the driver the machine boots today.</p>
+        <p class="section-intro">Not a suggested config: this is the profile the benchmark numbers were produced with, on the driver the workstation boots today.</p>
       </div>
       <div class="wrap table-wrap">
         <table class="data-table">
@@ -187,10 +187,10 @@
       </div>
       <div class="wrap">
         <pre><code>udisksctl mount -b /dev/nvme0n1p4     # model volume, not auto-mounted
-cd ~/vllm-2080ti && ./llm.sh start    # detached vLLM server on :8000
+cd ~/vllm-2080ti && ./llm.sh start    # detached vLLM server on loopback
 ./llm.sh status                       # server, model and GPU overview
 ./llm.sh bench                        # throughput benchmark
-./llm.sh stop                         # stop the model, leave the machine on</code></pre>
+./llm.sh stop                         # stop the model, leave the workstation on</code></pre>
       </div>
     </section>
 

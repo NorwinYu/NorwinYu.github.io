@@ -177,7 +177,7 @@
       </div>
       <div class="wrap">
         <pre><code>export CUDA_VISIBLE_DEVICES=1,0          # GPU1 在前，这样 cuda:0 才是计算卡
-python main.py --listen 127.0.0.1 --port 8188     --reserve-vram 1.5 --vram-headroom 0.5     --disable-pinned-memory --fast-disk
+python main.py --listen 127.0.0.1 --port &lt;port&gt; --reserve-vram 1.5 --vram-headroom 0.5     --disable-pinned-memory --fast-disk
 
 python scripts/bench.py examples/smoke_t2v.json smoke   # 自带样例</code></pre>
       </div>
@@ -186,7 +186,7 @@ python scripts/bench.py examples/smoke_t2v.json smoke   # 自带样例</code></p
     <section class="section section-alt" aria-labelledby="vlimit-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">06 / 注意事项</p><h2 id="vlimit-title">这个加速比不是什么。</h2></div>
-        <p class="section-intro">2.97× 来自这台机器上的真实渲染，而且只对一种量化、一个模型和一对卡成立。</p>
+        <p class="section-intro">2.97× 来自工作站上的真实渲染，而且只对一种量化、一个模型和一对卡成立。</p>
       </div>
       <div class="wrap home-cap-grid">
         <div class="home-cap-item"><span>01</span><h3>不是通用的 TP 结论</h3><p>这些数字来自两张改造过的 22 GB Turing 卡、250 W 上限下的 W4A8。换卡、换量化或换模型形状，重叠率都会不同。</p></div>

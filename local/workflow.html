@@ -81,7 +81,7 @@
         <p class="section-kicker">Local / workflow</p>
         <h1>One machine, two audiences.</h1>
         <p class="page-lede">How the workstation is wired, what it actually serves on the LAN, and the path a request takes from a browser or an agent to a file in an output directory.</p>
-        <div class="page-meta"><span><i></i>192.168.1.10</span><span>8189 · 8190</span><span>2 × 22 GB</span><span>Snapshot / Nov 2026</span></div>
+        <div class="page-meta"><span><i></i>192.168.1.10</span><span>two services</span><span>2 × 22 GB</span><span>Snapshot / Nov 2026</span></div>
         <div class="work-links"><a href="../ai.html">Local overview <span aria-hidden="true">→</span></a><a href="video-stack.html">Video stack <span aria-hidden="true">→</span></a></div>
       </div>
     </header>
@@ -89,7 +89,7 @@
     <section class="section" aria-labelledby="wiring-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">01 / Wiring</p><h2 id="wiring-title">What is inside the box.</h2></div>
-        <p class="section-intro">A 2014-era X99 board with two 22-core Xeons, two modified 22 GB cards and one NVLink bridge. Everything below is read off the machine, not off a spec sheet.</p>
+        <p class="section-intro">A 2014-era X99 board with two 22-core Xeons, two modified 22 GB cards and one NVLink bridge. Everything below is read off the workstation, not off a spec sheet.</p>
       </div>
       <div class="wrap">
       <div class="diagram">
@@ -155,7 +155,7 @@
     <section class="section section-alt" aria-labelledby="lan-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">02 / On the LAN</p><h2 id="lan-title">What the network can reach.</h2></div>
-        <p class="section-intro">The machine is a generation server for the flat network, over Wi-Fi rather than the two wired ports. Six ports exist; two are running right now.</p>
+        <p class="section-intro">The workstation is a generation server for the flat network, over Wi-Fi rather than the two wired NICs. Six services exist; two are running right now.</p>
       </div>
       <div class="wrap">
       <div class="diagram">
@@ -174,28 +174,28 @@
           <text class="d-meta" x="140" y="146">Ubuntu 24.04.5 · 2 × RTX 2080 Ti 22 GB · 44 GB VRAM · 94 GB DDR4</text>
 
           <rect class="d-chip" x="140" y="162" width="196" height="46" rx="2"/>
-          <text class="d-chip-title" x="152" y="182">8189 · ComfyUI</text>
+          <text class="d-chip-title" x="152" y="182">ComfyUI · browser</text>
           <text class="d-meta" x="152" y="198">browser · running</text>
 
           <rect class="d-chip" x="352" y="162" width="196" height="46" rx="2"/>
-          <text class="d-chip-title" x="364" y="182">8190 · Agent API</text>
+          <text class="d-chip-title" x="364" y="182">Agent API · HTTP</text>
           <text class="d-meta" x="364" y="198">HTTP · running</text>
 
           <rect class="d-chip" x="564" y="162" width="196" height="46" rx="2"/>
-          <text class="d-chip-title" x="576" y="182">8188 · production</text>
+          <text class="d-chip-title" x="576" y="182">production UI</text>
           <text class="d-meta" x="576" y="198">film pipeline · stopped</text>
 
           <rect class="d-chip" x="140" y="216" width="196" height="46" rx="2"/>
-          <text class="d-chip-title" x="152" y="236">8765 · photo drop</text>
+          <text class="d-chip-title" x="152" y="236">photo drop</text>
           <text class="d-meta" x="152" y="252">phone upload · on demand</text>
 
           <rect class="d-chip" x="352" y="216" width="196" height="46" rx="2"/>
-          <text class="d-chip-title" x="364" y="236">8000 · vLLM</text>
+          <text class="d-chip-title" x="364" y="236">vLLM · local</text>
           <text class="d-meta" x="364" y="252">27B text · on demand</text>
 
           <rect class="d-chip d-chip-quiet" x="564" y="216" width="196" height="46" rx="2"/>
-          <text class="d-chip-title" x="576" y="236">3080 · DSH GUI</text>
-          <text class="d-meta" x="576" y="252">127.0.0.1 only</text>
+          <text class="d-chip-title" x="576" y="236">DSH GUI · loopback</text>
+          <text class="d-meta" x="576" y="252">local only</text>
 
           <path class="d-link-soft" d="M180 330 L180 276"/>
           <path class="d-link-soft" d="M450 330 L450 276"/>
@@ -203,7 +203,7 @@
 
           <rect class="d-node" x="40" y="330" width="250" height="66" rx="2"/>
           <text class="d-title" x="56" y="354">MacBook Pro</text>
-          <text class="d-meta" x="56" y="372">Safari · :8189 · :8765</text>
+          <text class="d-meta" x="56" y="372">Safari · UI · uploads</text>
 
           <rect class="d-node" x="320" y="330" width="250" height="66" rx="2"/>
           <text class="d-title" x="336" y="354">iPhone / iPad</text>
@@ -219,14 +219,14 @@
       <div class="wrap table-wrap">
         <table class="data-table">
           <caption class="sr-only">Services exposed on the workstation</caption>
-          <thead><tr><th scope="col">Port</th><th scope="col">Bind</th><th scope="col">Audience</th><th scope="col">State</th><th scope="col">What it does</th></tr></thead>
+          <thead><tr><th scope="col">Service</th><th scope="col">Binding</th><th scope="col">Audience</th><th scope="col">State</th><th scope="col">What it does</th></tr></thead>
           <tbody>
-            <tr><th scope="row">8189</th><td data-label="Bind">0.0.0.0</td><td data-label="Audience">Human</td><td data-label="State">Running</td><td data-label="What it does">ComfyUI 0.45 — H3 image and video graphs, node editor, queue</td></tr>
-            <tr><th scope="row">8190</th><td data-label="Bind">0.0.0.0</td><td data-label="Audience">Program / agent</td><td data-label="State">Running</td><td data-label="What it does">Agent API — submit jobs, poll status, list and download outputs</td></tr>
-            <tr><th scope="row">8188</th><td data-label="Bind">0.0.0.0</td><td data-label="Audience">Internal</td><td data-label="State">Stopped</td><td data-label="What it does">Production ComfyUI 0.36 for the film pipeline; not meant to be public</td></tr>
-            <tr><th scope="row">8765</th><td data-label="Bind">0.0.0.0</td><td data-label="Audience">Phone / tablet</td><td data-label="State">On demand</td><td data-label="What it does">Streaming file drop — uploads from iOS/Android land in a local folder</td></tr>
-            <tr><th scope="row">8000</th><td data-label="Bind">127.0.0.1</td><td data-label="Audience">Local tools</td><td data-label="State">On demand</td><td data-label="What it does">vLLM — the 27B text model, OpenAI-compatible</td></tr>
-            <tr><th scope="row">3080</th><td data-label="Bind">127.0.0.1</td><td data-label="Audience">This desk only</td><td data-label="State">Running</td><td data-label="What it does">DeepSeek Harness web GUI — the agent that edits this site</td></tr>
+            <tr><th scope="row">ComfyUI</th><td data-label="Binding">LAN</td><td data-label="Audience">Human</td><td data-label="State">Running</td><td data-label="What it does">ComfyUI 0.45 — H3 image and video graphs, node editor, queue</td></tr>
+            <tr><th scope="row">Agent API</th><td data-label="Binding">LAN</td><td data-label="Audience">Program / agent</td><td data-label="State">Running</td><td data-label="What it does">Agent API — submit jobs, poll status, list and download outputs</td></tr>
+            <tr><th scope="row">production ComfyUI</th><td data-label="Binding">LAN</td><td data-label="Audience">Internal</td><td data-label="State">Stopped</td><td data-label="What it does">Production ComfyUI 0.36 for the film pipeline; not meant to be public</td></tr>
+            <tr><th scope="row">photo drop</th><td data-label="Binding">LAN</td><td data-label="Audience">Phone / tablet</td><td data-label="State">On demand</td><td data-label="What it does">Streaming file drop — uploads from iOS/Android land in a local folder</td></tr>
+            <tr><th scope="row">vLLM</th><td data-label="Binding">loopback</td><td data-label="Audience">Local tools</td><td data-label="State">On demand</td><td data-label="What it does">vLLM — the 27B text model, OpenAI-compatible</td></tr>
+            <tr><th scope="row">DSH GUI</th><td data-label="Binding">loopback</td><td data-label="Audience">This desk only</td><td data-label="State">Running</td><td data-label="What it does">DeepSeek Harness web GUI — the agent that edits this site</td></tr>
           </tbody>
         </table>
         <p class="table-note"><span>Note</span>The image/video services are started by hand right now. Unit files exist in <code>h3-setup/systemd/</code> (h3-comfy, h3-agent) but are not installed, so a reboot leaves them down.</p>
@@ -239,7 +239,7 @@
         <p class="section-intro">Six steps, and only two of them involve a language model. The rest is queueing, memory planning and copying bytes.</p>
       </div>
       <div class="wrap pipeline-grid">
-        <div class="pipeline-step"><span>01</span><h3>Start</h3><p>ComfyUI comes up on 8189 and the agent API on 8190; both load the H3 nodes and the TP2 shard hooks.</p><em>Human</em></div>
+        <div class="pipeline-step"><span>01</span><h3>Start</h3><p>ComfyUI and the agent API come up; both load the H3 nodes and the TP2 shard hooks.</p><em>Human</em></div>
         <div class="pipeline-step"><span>02</span><h3>Describe</h3><p>Browser drags a graph, or an agent reads <code>/capabilities</code> to learn kinds, size presets and model names.</p><em>Both</em></div>
         <div class="pipeline-step"><span>03</span><h3>Submit</h3><p><code>POST /generate</code> with kind image or video. The queue is serial: one job owns both cards at a time.</p><em>Program</em></div>
         <div class="pipeline-step"><span>04</span><h3>Plan memory</h3><p>32B text encoder (27 GB) is sharded across both cards, released, then the DiT (12 GB) takes the same space.</p><em>Model</em></div>
@@ -284,8 +284,8 @@ GET  /files/&lt;name&gt;     download a file</code></pre>
         <p class="section-intro">It is a lab service on a home network, not a hosted product. Three consequences worth stating plainly.</p>
       </div>
       <div class="wrap home-cap-grid">
-        <div class="home-cap-item"><span>01</span><h3>No authentication</h3><p>8189 and 8190 bind 0.0.0.0 with no token. Anyone on the Wi-Fi can queue a job and read the output folder. That is the trade for zero-friction access from a phone.</p></div>
-        <div class="home-cap-item"><span>02</span><h3>LAN only</h3><p>No port forwarding, no tunnel and no public DNS. The router's NAT is the boundary; the machine's address is a DHCP lease.</p></div>
+        <div class="home-cap-item"><span>01</span><h3>No authentication</h3><p>The UI and the API bind the LAN interface with no token. Anyone on the Wi-Fi can queue a job and read the output folder. That is the trade for zero-friction access from a phone.</p></div>
+        <div class="home-cap-item"><span>02</span><h3>LAN only</h3><p>No port forwarding, no tunnel and no public DNS. The router's NAT is the boundary; the workstation's address is a DHCP lease.</p></div>
         <div class="home-cap-item"><span>03</span><h3>One job at a time</h3><p>The queue is serial and the cards are the bottleneck. This is a workstation that answers when asked, not a service with a queue you can burst.</p></div>
       </div>
     </section>
@@ -293,12 +293,12 @@ GET  /files/&lt;name&gt;     download a file</code></pre>
     <section class="section section-alt" aria-labelledby="files-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">06 / Files</p><h2 id="files-title">Where things land.</h2></div>
-        <p class="section-intro">Everything stays on the machine: references in, renders out, uploads beside them.</p>
+        <p class="section-intro">Everything stays on the workstation: references in, renders out, uploads beside them.</p>
       </div>
       <div class="wrap">
         <pre><code>~/ComfyUI-img/input/      reference images, dropped in by hand or over the API
 ~/ComfyUI-img/output/     renders — currently ~709 MB of images, video and audio
-~/received/               phone uploads via the 8765 drop page
+~/received/               phone uploads via the drop page
 /data                     large datasets and model work (separate ext4 partition)
 /mnt/hdd                  cold archive (3 TB NTFS)</code></pre>
       </div>

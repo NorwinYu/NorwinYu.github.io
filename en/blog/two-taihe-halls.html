@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Norwin Yu">
   <title>Two Taihe Halls — Norwin Yu</title>
-  <meta name="description" content="Two generations of one brief: a DeepSeek V4.1 Flash build run locally through Maya, and the online DeepSeek Flash 1017 one. The difference is the trade-off, not who is better.">
+  <meta name="description" content="One checkpoint, two sets of weights: a local Maya-XS quantisation at ~1.6 bits per expert, and the original. Each produced a draggable Taihe Hall from one prompt.">
   <meta name="theme-color" content="#f7f5ef">
   <meta name="color-scheme" content="light">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -53,8 +53,8 @@
         <a class="back-link" href="/en/blog/"><span aria-hidden="true">←</span> All notes</a>
         <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Local models</span><i aria-hidden="true"></i><span>WebGL2</span></p>
         <h1>Two<br><em>Taihe Halls.</em></h1>
-        <p class="article-deck">One brief, two points in time, two models: one run locally through Maya, one the version that is online now. The difference is the trade-off, not who is better.</p>
-        <p class="article-cn">A one-sentence prompt produces a palace you can drag around. What is worth looking at is where each run spent its money.</p>
+        <p class="article-deck">One checkpoint, two sets of weights: one squeezed to ~1.6 bits per expert to fit two 22GB cards, one the original. Two halls, two different trade-offs.</p>
+        <p class="article-cn">The question is not whether a local run can do it. It is what a 1.6-bit copy drops on the way.</p>
         <div class="article-meta">
           <span><i aria-hidden="true"></i>Norwin Yu</span>
           <span>November 2026</span>
@@ -77,24 +77,26 @@
           <a href="#take">What I take from it</a>
         </nav>
         <dl class="article-aside-facts">
-          <div><dt>Local</dt><dd>DeepSeek V4.1 Flash</dd></div>
-          <div><dt>Serving</dt><dd>Maya · 131K context</dd></div>
-          <div><dt>Online</dt><dd>DeepSeek Flash 1017</dd></div>
+          <div><dt>Local</dt><dd>Maya-XS · ~1.6 bits</dd></div>
+          <div><dt>Hardware</dt><dd>2 × 22 GB + 94 GB RAM</dd></div>
+          <div><dt>Online</dt><dd>Original</dd></div>
           <div><dt>Size</dt><dd>91 KB / 85 KB</dd></div>
         </dl>
       </aside>
 
       <article class="article-body">
-        <p>On the evening of November 6 I had an agent generate a Ming palace from a one-sentence Chinese prompt on this machine: single file, native WebGL2, an angle you can drag with the mouse. A week later, on November 13, the same brief produced another build, and that is the one online now.</p>
+        <p>On the evening of November 6 I had an agent generate a Ming palace from a one-sentence Chinese prompt: single file, native WebGL2, an angle you can drag with the mouse. It ran the Maya-XS quantisation of DeepSeek-V4.1-Flash-1017 — about 1.6 bits per expert, 93 GB, tensor-parallel across two 22GB cards and 94 GB of RAM at 131K context. A week later, on November 13, the original model produced another build from the same brief, and that is the one online now.</p>
 
-        <p>Both work, both are a few tens of KB, both depend on no external files. But put them side by side and you can see the two models spent the money in completely different places — one bought atmosphere, one bought structure.</p>
+        <p>So this is not a comparison of two models; it is one checkpoint in two sets of weights, an aggressive quantisation against the original. Both work, both are a few tens of KB, both depend on no external files. Put them side by side and you can see the budget went to completely different places — one bought atmosphere, one bought structure.</p>
 
         <h2 id="two">Two runs</h2>
         <table class="compare-table">
-          <thead><tr><th>Item</th><th>Local build</th><th>Online build</th></tr></thead>
+          <thead><tr><th>Item</th><th>Local build (quantised)</th><th>Online build (original)</th></tr></thead>
           <tbody>
-            <tr><td data-label="Item">Model</td><td data-label="Local build">DeepSeek V4.1 Flash (deepseek-v4.1-flash)</td><td data-label="Online build">DeepSeek Flash 1017</td></tr>
-            <tr><td data-label="Item">Serving</td><td data-label="Local build">Local Maya, 131,072 context</td><td data-label="Online build">Not recorded</td></tr>
+            <tr><td data-label="Item">Weights</td><td data-label="Local build (quantised)">Maya-XS · ~1.6 bits per expert · 93 GB</td><td data-label="Online build (original)">Original</td></tr>
+            <tr><td data-label="Item">Hardware</td><td data-label="Local build (quantised)">2 × RTX 2080 Ti 22GB + 94 GB RAM · TP=2</td><td data-label="Online build (original)">Not recorded</td></tr>
+            <tr><td data-label="Item">Context</td><td data-label="Local build (quantised)">131,072</td><td data-label="Online build (original)">Not recorded</td></tr>
+            <tr><td data-label="Item">Sampling</td><td data-label="Local build (quantised)">temp 1.0 · top_p 1.0 · reasoning high</td><td data-label="Online build (original)">Not recorded</td></tr>
             <tr><td data-label="Item">Date</td><td data-label="Local build">2026-11-06</td><td data-label="Online build">2026-11-13</td></tr>
             <tr><td data-label="Item">Output</td><td data-label="Local build">Single-file HTML · 91,195 B</td><td data-label="Online build">Single-file HTML · 85,402 B</td></tr>
             <tr><td data-label="Item">Lines / functions</td><td data-label="Local build">2,333 lines · 41 functions</td><td data-label="Online build">2,317 lines · 53 functions</td></tr>
@@ -114,6 +116,8 @@
         <p>The interface is two buttons (reset view, auto-rotate) and one line of hint text. It gives you no camera presets — it behaves more like a scene, and leaves you to turn it yourself.</p>
 
         <p>The session log shows this run took 129 steps and 15 writes or edits to the same file. The prompt itself was one sentence, plus one extra requirement: “work independently, do not consult other files or online material”.</p>
+
+        <p>Worth holding on to how small the weights were: Maya-XS keeps about 1.6 bits per expert, 93 GB in total, which only fits with two 22GB cards plus 94 GB of RAM. Decode ran around 25 tok/s. This is not a demo-scale model; it is one of the largest things this hardware can run.</p>
 
         <p>That build is online too, with nothing changed in the file: <a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/local/" target="_blank" rel="noopener">the local build</a>. Drag it side by side with the newer one.</p>
 
@@ -144,20 +148,20 @@
         <p>I have to be clear about this: it is not an A/B test.</p>
 
         <ul>
-          <li>the models are not the same generation — one is V4.1 Flash served locally, the other is 1017;</li>
+          <li>the weights differ (quantised vs original) — which is the variable under study, but the sampling settings were not aligned;</li>
           <li>only the local prompt is confirmed word for word; the online build is recorded on this site as nothing more than “a one-sentence Chinese prompt”;</li>
           <li>a week apart, and the toolchain, the scaffolding and the agent presets may all have changed in between;</li>
           <li>no shared scoring rubric — whether it looks good depends on which one you wanted.</li>
         </ul>
 
-        <p>So the only thing I can say is this: <strong>under one brief, both models got from a single sentence to an interactive single-file scene, and each made trade-offs you can point at.</strong></p>
+        <p>So the only thing I can say is this: <strong>at 1.6 bits per expert the task did not collapse — it still got from a single sentence to an interactive single-file scene, it just spent the budget elsewhere.</strong></p>
 
         <h2 id="take">What I take from it</h2>
-        <p>If the goal is “one screenshot that can serve as a cover image”, the local build's atmosphere is the better deal; if the goal is “a building that can be explained”, the online build's view presets and double-eave detail are more useful.</p>
+        <p>If the goal is “one screenshot that can serve as a cover image”, the quantised build's warm light still holds up; if the goal is “a building that can be explained”, the original's view presets and double-eave detail are more useful. That difference cannot be attributed to quantisation alone — the sampling and the prompt were not aligned either.</p>
 
-        <p>What actually surprised me was not the quality but the size: both sit around 90 KB, both zero assets, zero dependencies. Neither model saved the palace as a model file; it wrote the palace as a program.</p>
+        <p>What actually surprised me was not the quality but the size: both sit around 90 KB, both zero assets, zero dependencies. The model did not save the palace as a model file; it wrote the palace as a program — and the run that wrote it had about 1.6 bits per expert.</p>
 
-        <p class="article-end"><strong>Method /</strong> The local build comes from an archived session on 2026-11-06 (provider <code>maya</code>, model <code>deepseek-v4.1-flash</code>, 131,072 context), output a single-file HTML; the online build is <a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/" target="_blank" rel="noopener">deepseek-flash-1017-ming-palace</a> (repository created 2026-11-13). Function counts, draw calls, and texture and framebuffer counts come from a static search over both HTML files, not a runtime profile; the screenshots are each build's first screen at 1440×900.</p>
+        <p class="article-end"><strong>Method /</strong> The local build comes from an archived session on 2026-11-06 (provider <code>maya</code>, model <code>deepseek-v4.1-flash</code>, pack <code>DeepSeek-V4.1-Flash-1017-GGUF/Maya-XS</code>, 131,072 context, TP=2), output a single-file HTML; the online build is <a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/" target="_blank" rel="noopener">deepseek-flash-1017-ming-palace</a> (repository created 2026-11-13). Function counts, draw calls, and texture and framebuffer counts come from a static search over both HTML files, not a runtime profile; the screenshots are each build's first screen at 1440×900.</p>
       </article>
 
       <div aria-hidden="true"></div>

@@ -92,7 +92,7 @@
 
         <h2 id="arithmetic">The arithmetic illusion</h2>
         <p>Two cards give you 44GB of total VRAM, but they are not one 44GB card. The distinction isn't pedantry. It decides which models run comfortably, which only run slowly, and which leave you staring at CUDA out of memory at one in the morning.</p>
-        <p>A model that fits on a single card avoids card-to-card communication entirely. A model split across two cards has to coordinate at every layer boundary that crosses the split. This machine has NVLink — NV2, two bonded links at 25.78 GB/s each — so the coordination doesn't go over PCIe. Fast wires aren't free wires, though: the allreduce per block is still 13 ms, the two cards sit on different NUMA nodes, and the host thread that launches kernels is sometimes more expensive than the link. The second card isn't free memory. It's memory you have to schedule to use.</p>
+        <p>A model that fits on a single card avoids card-to-card communication entirely. A model split across two cards has to coordinate at every layer boundary that crosses the split. The workstation has NVLink — NV2, two bonded links at 25.78 GB/s each — so the coordination doesn't go over PCIe. Fast wires aren't free wires, though: the allreduce per block is still 13 ms, the two cards sit on different NUMA nodes, and the host thread that launches kernels is sometimes more expensive than the link. The second card isn't free memory. It's memory you have to schedule to use.</p>
 
         <blockquote>VRAM is a budget, not a number. Context, KV cache, activations and the framework itself each take a line.</blockquote>
 
@@ -116,7 +116,7 @@
 
         <h2 id="turing">The Turing limits</h2>
         <p>The 2080 Ti is Turing, not Ampere. That has practical consequences: no BF16, so modern training recipes need translation; many inference kernels are tuned for Ampere or newer, and while they run on Turing they aren't always the fast path. Flash attention, quantized kernels and fused operators all have to be verified against the actual card, not against the README.</p>
-        <p>Memory bandwidth is still decent — about 616 GB/s per card — and FP16 tensor cores are there. Inference, especially quantized inference, is far from unusable. Fine-tuning is a different story: no BF16 plus the 22GB per-card ceiling turns every experiment into careful accounting. Small LoRAs are fine. Full fine-tuning is not what this machine is for.</p>
+        <p>Memory bandwidth is still decent — about 616 GB/s per card — and FP16 tensor cores are there. Inference, especially quantized inference, is far from unusable. Fine-tuning is a different story: no BF16 plus the 22GB per-card ceiling turns every experiment into careful accounting. Small LoRAs are fine. Full fine-tuning is not what the workstation is for.</p>
         <p>Then there's the unglamorous physics: two 250W cards (I cap mine at 180W), dual Xeons and spinning disks produce heat and noise, and make the room noticeably warmer than the rest of the house. It's a space heater that answers questions occasionally.</p>
 
         <h2 id="bottleneck">The bottleneck moves</h2>
@@ -125,13 +125,13 @@
 
         <div class="callout">
           <span class="mono-label">What to measure</span>
-          <p>Time to first token, decode speed at 4k / 16k / 32k, peak VRAM, and the point where the machine starts swapping. A local model that's only fast on an empty prompt is a demo, not a tool.</p>
+          <p>Time to first token, decode speed at 4k / 16k / 32k, peak VRAM, and the point where the workstation starts swapping. A local model that's only fast on an empty prompt is a demo, not a tool.</p>
         </div>
 
         <p>There's a second, quieter bottleneck: the person. A local model that takes 90 seconds to answer changes the rhythm of work. You stop asking small questions, start batching them, start writing better prompts, because the feedback loop is expensive. That constraint can be a feature — but only if you design around it instead of pretending it isn't there.</p>
 
         <h2 id="routing">Routing is design</h2>
-        <p>The most useful thing this machine taught me isn't how to run large models locally. It's how to route between local and cloud without romance on either side.</p>
+        <p>The most useful thing the workstation taught me isn't how to run large models locally. It's how to route between local and cloud without romance on either side.</p>
 
         <table class="compare-table">
           <thead><tr><th>Work</th><th>Where</th><th>Why</th></tr></thead>
@@ -148,7 +148,7 @@
 
         <h2 id="instrument">It's an instrument, not a data center</h2>
         <p>I've stopped trying to turn the workstation into a small cloud. It isn't one. It's an instrument, for questions that need the data to stay home, that need a hundred cheap iterations, or that simply want to hear the fans spin up.</p>
-        <p>That framing makes the constraints useful. Limited VRAM forces quantization and batch discipline; slow decode forces tighter prompts and tighter scope; 22GB per card forces you to choose models that respect the split. The machine isn't a limit on ambition. It's a set of design constraints you can actually hear.</p>
+        <p>That framing makes the constraints useful. Limited VRAM forces quantization and batch discipline; slow decode forces tighter prompts and tighter scope; 22GB per card forces you to choose models that respect the split. The workstation isn't a limit on ambition. It's a set of design constraints you can actually hear.</p>
 
         <blockquote>The best local setup isn't the one that runs the largest model. It's the one that makes the next experiment cheap enough to try.</blockquote>
 
@@ -159,10 +159,10 @@
           <li><strong>Leave headroom.</strong> If the model occupies 43.5GB of 44GB, it doesn't fit. The next prompt will find the edge.</li>
           <li><strong>Keep the model card.</strong> Quantization scheme, chat template, context ceiling, the tasks it's actually good at.</li>
           <li><strong>Separate experiments from serving.</strong> A Jupyter notebook and a systemd unit have different failure modes.</li>
-          <li><strong>Don't leave keys on the machine.</strong> Local isn't safe. Env files, keys and tokens need the same discipline as a server.</li>
+          <li><strong>Don't leave keys on the workstation.</strong> Local isn't safe. Env files, keys and tokens need the same discipline as a server.</li>
         </ul>
 
-        <p>The 44GB problem has no clean solution. It has a set of working trade-offs, a few models genuinely worth keeping, and a daily reminder that capability is always shaped by the machine that runs it. That isn't a limitation. It's the design brief.</p>
+        <p>The 44GB problem has no clean solution. It has a set of working trade-offs, a few models genuinely worth keeping, and a daily reminder that capability is always shaped by the workstation that runs it. That isn't a limitation. It's the design brief.</p>
 
         <p class="article-end"><strong>Hardware /</strong> 2 × RTX 2080 Ti (22GB each, NVLink NV2 dual link, 2 × 25.78 GB/s), 94GB DDR4, dual Xeon E5-2696 v4 (44C / 88T), Ubuntu 24.04.5 LTS. The numbers are 4-bit inference weight-size estimates and exclude KV cache, activations and framework overhead. No tokens/s claim is made here; measure your own workload.</p>
       </article>

@@ -148,7 +148,7 @@
 
         <p>The result: a 44 GB/s link sits essentially idle under layer split. What would use it is a different mode — split different experts across the two cards within the same token and compute them at once, with activations and results over P2P. The official docs have a “a 2080 Ti as helper is slower” conclusion, but it measured the old host-buffer version, and that machine's two cards could not NVLink at all.</p>
 
-        <p>So this is a textbook case of an official conclusion that does not apply to this machine: dual 2080 Ti + NVLink + a slow CPU is exactly the ideal hardware for that mode, and it has never been measured that way (not in public records, at least). It is scheduled as batch 8.</p>
+        <p>So this is a textbook case of an official conclusion that does not apply to the workstation: dual 2080 Ti + NVLink + a slow CPU is exactly the ideal hardware for that mode, and it has never been measured that way (not in public records, at least). It is scheduled as batch 8.</p>
 
         <h2 id="numa">The other half of 449 MB</h2>
         <p>One more, dumber thing. Before starting, I looked at free memory on the two NUMA nodes:</p>
@@ -183,7 +183,7 @@ node1  free 12.4 GB     ← GPU1 is on this node</code></pre>
 
         <p>The real questions — “is two cards actually faster”, “can peer tier put NVLink to use”, “how many points does KV compression cost” — are all still pending. Once measured, this note becomes a data table; until then it is an experiment design document, which is also a thing worth writing down.</p>
 
-        <p class="article-end"><strong>Method /</strong> Hardware and cost figures come from <code>research/strata/EXPERIMENTS.md</code> on this machine and from the engine docs: 2 × RTX 2080 Ti 22GB, NVLink NV2 (measured P2P 44 GB/s), dual Xeon E5-2696 v4 (44C/88T), 94GB DDR4, driver 580 series. The batch table and the case set are an unexecuted plan; nothing in this note presents them as finished results.</p>
+        <p class="article-end"><strong>Method /</strong> Hardware and cost figures come from <code>research/strata/EXPERIMENTS.md</code> on the workstation and from the engine docs: 2 × RTX 2080 Ti 22GB, NVLink NV2 (measured P2P 44 GB/s), dual Xeon E5-2696 v4 (44C/88T), 94GB DDR4, driver 580 series. The batch table and the case set are an unexecuted plan; nothing in this note presents them as finished results.</p>
       </article>
 
       <div aria-hidden="true"></div>

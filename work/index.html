@@ -81,7 +81,7 @@
         <p class="section-kicker">Experiments / 2026</p>
         <h1>Experiments in code.</h1>
         <p class="page-lede">Games are one probe, coding tools are another, and the rig itself is the third. All of them test how far an LLM can carry a real production pipeline — generated assets, code, UI, verification and deployment — and where a human still has to intervene.</p>
-        <div class="page-meta"><span><i></i>05 game probes</span><span>02 comparisons</span><span>03 coding tools</span><span>02 local systems</span><span>Live / source linked</span></div>
+        <div class="page-meta"><span><i></i>05 game probes</span><span>02 comparisons</span><span>04 coding tools</span><span>01 local system</span><span>Live / source linked</span></div>
       </div>
     </header>
 
@@ -92,7 +92,7 @@
       </div>
 
       <div class="wrap thread-grid">
-        <div class="thread-card"><span>01</span><h3>Model capability</h3><p>Can a local model carry a 3D scene from one prompt? Ming Palace 3D is the local-model probe.</p></div>
+        <div class="thread-card"><span>01</span><h3>Quantisation</h3><p>What does a 1.6-bit local copy of a model cost a 3D scene? Ming Palace 3D is the quantisation probe.</p></div>
         <div class="thread-card"><span>02</span><h3>Leverage</h3><p>What changes when the model gets an agent/skill harness instead of a plain API loop? NEON BREACH is the no-skill control.</p></div>
         <div class="thread-card"><span>03</span><h3>Asset pipeline</h3><p>Procedural code, generated images/video, or Blender-assisted? Mistvale is the current no-Blender baseline; the Blender comparison is next.</p></div>
         <div class="thread-card"><span>04</span><h3>Verification</h3><p>Playwright, screenshot review, collision checks and a six-gate harness. A build is not a result until it can be inspected.</p></div>
@@ -109,7 +109,7 @@
             <tr><th scope="row">雾谷农庄</th><td data-label="Tests">One-prompt, no-Blender baseline</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Procedural models, weather, audio; no external assets</td></tr>
             <tr><th scope="row">机场大亨 3D</th><td data-label="Tests">DeepSeek Flash + DSH + Godot engine path</td><td data-label="Model">DeepSeek Flash + DSH</td><td data-label="Leverage">Godot 4.6 / GDScript; procedural meshes and audio</td></tr>
             <tr><th scope="row">NEON BREACH</th><td data-label="Tests">No-skill control run</td><td data-label="Model">DeepSeek V4.1 Flash</td><td data-label="Leverage">Pure API, no skill; native WebGL; procedural assets</td></tr>
-            <tr><th scope="row">明宫三维</th><td data-label="Tests">Local-model comparison</td><td data-label="Model">DeepSeek Flash 1017 · local</td><td data-label="Leverage">One Chinese prompt; single-file WebGL2; no skill</td></tr>
+            <tr><th scope="row">明宫三维</th><td data-label="Tests">Quantised local vs original</td><td data-label="Model">DeepSeek-V4.1-Flash-1017 · Maya-XS</td><td data-label="Leverage">One Chinese prompt; single-file WebGL2; no skill</td></tr>
             <tr><th scope="row">dsh-quota</th><td data-label="Tests">Tooling / route-aware state</td><td data-label="Model">DeepSeek V4.1 Flash</td><td data-label="Leverage">Code/tests/docs; config-driven adapters</td></tr>
             <tr><th scope="row">NorMark</th><td data-label="Tests">Desktop coding app</td><td data-label="Model">Not recorded</td><td data-label="Leverage">Electron / React / CodeMirror</td></tr>
             <tr><th scope="row">RoomTessera 3D</th><td data-label="Tests">Spatial tooling</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Code/UI/tests; procedural geometry</td></tr>
@@ -283,11 +283,11 @@
         <article class="comparison-card" id="ming-palace">
           <div class="comparison-media"><img decoding="async" src="../assets/img/demo-ming-palace.jpg" alt="A 3D reconstruction of a Ming palace hall with a golden roof and white stone terrace." width="1600" height="1000" loading="lazy"></div>
           <div class="comparison-body">
-            <p class="demo-kicker">Local-model run · WebGL2</p>
+            <p class="demo-kicker">Quantised run · WebGL2</p>
             <h3>明宫三维 <span>Ming Palace 3D</span></h3>
-            <p>A single-file study of Ming imperial architecture, generated from one Chinese prompt by DeepSeek Flash 1017. The same brief was run a week earlier through a local Maya server, and the two builds are compared side by side in the journal.</p>
+            <p>A single-file study of Ming imperial architecture, generated from one Chinese prompt. This is the original build; the same checkpoint quantised to ~1.6 bits per expert and served locally produced a second one, and the two are compared side by side in the journal.</p>
             <dl class="work-specs">
-              <div><dt>Model</dt><dd>DeepSeek Flash 1017</dd></div>
+              <div><dt>Model</dt><dd>DeepSeek-V4.1-Flash-1017 · original</dd></div>
               <div><dt>Prompt</dt><dd>One Chinese prompt</dd></div>
               <div><dt>Output</dt><dd>Single HTML · WebGL2</dd></div>
               <div><dt>Scope</dt><dd>Architecture · shaders</dd></div>
@@ -382,15 +382,45 @@
             <div class="demo-foot"><span>Spatial editing</span><a href="https://norwinyu.github.io/roomtessera-3d/" target="_blank" rel="noopener">Play <span aria-hidden="true">↗</span></a></div>
           </div>
         </article>
+
+        <article class="coding-card" id="sensorium">
+          <div class="coding-visual terminal">
+            <div class="term-window">
+              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>sensorium / overview</span></div>
+              <div class="term-body">
+                <p><span>GPU0</span><b>97% · 21.5 GB · 71 °C</b></p>
+                <p><span>GPU1</span><b>72% · 19.7 GB · 75 °C</b></p>
+                <p class="term-dim">power 180 / 180 W · capped</p>
+                <p><span>CPU</span><strong>4.6% of one core</strong></p>
+                <p class="term-dim">88 threads · 0.05% of the box</p>
+                <p><span>repaint</span><b>0.34 ms</b></p>
+              </div>
+            </div>
+          </div>
+          <div class="coding-body">
+            <p class="demo-kicker">Tooling · Rust</p>
+            <h3>sensorium <span>机器的感官中枢</span></h3>
+            <p>A terminal hardware monitor written in Rust: CPU, GPU, memory, temperatures, fans, power, disks and network, read straight from <code>/proc</code>, <code>/sys</code> and NVML with no child processes at all.</p>
+            <dl class="demo-specs">
+              <div><dt>Stack</dt><dd>Rust · ratatui</dd></div>
+              <div><dt>Cost</dt><dd>~4–6% of one core</dd></div>
+              <div><dt>Memory</dt><dd>~24 MiB resident</dd></div>
+              <div><dt>Refresh</dt><dd>1 s · 0.2–0.35 ms repaint</dd></div>
+              <div><dt>Binary</dt><dd>~1.2 MB · stripped, LTO</dd></div>
+              <div><dt>Status</dt><dd>Public repo</dd></div>
+            </dl>
+            <div class="work-links"><a href="https://github.com/NorwinYu/sensorium" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a><a href="/en/blog/every-frame-four-percent.html">Build note <span aria-hidden="true">→</span></a><a href="../ai.html">The rig it reads <span aria-hidden="true">→</span></a></div>
+          </div>
+        </article>
       </div>
     </section>
 
     <section class="section" id="systems" aria-labelledby="systems-title">
       <div class="wrap section-head">
-        <div class="section-heading"><p class="section-kicker">04 / Local systems</p><h2 id="systems-title">What the rig actually runs.</h2></div>
-        <p class="section-intro">Two systems measured on this machine rather than quoted from a project page: a 20B video model made to use both cards, and a monitor that reads the same hardware without forking a single process.</p>
+        <div class="section-heading"><p class="section-kicker">04 / Local system</p><h2 id="systems-title">What the rig actually runs.</h2></div>
+        <p class="section-intro">One system, measured on the workstation rather than quoted from a project page: a 20B video model made to use both cards, at the cost of a host-thread bug that took a probe to find. The terminal monitor that reads the same hardware now sits with the coding tools.</p>
       </div>
-      <div class="wrap comparison-grid">
+      <div class="wrap comparison-grid is-single">
         <article class="comparison-card" id="h3-tp2">
           <div class="comparison-media is-term">
             <div class="term-window">
@@ -418,36 +448,6 @@
               <div><dt>Status</dt><dd>Public repo · MIT code</dd></div>
             </dl>
             <div class="work-links"><a href="../local/video-stack.html">Measurements <span aria-hidden="true">→</span></a><a href="https://github.com/NorwinYu/minimax-h3-dual-2080ti" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a><a href="/en/blog/tp2-one-thread.html">Build note <span aria-hidden="true">→</span></a></div>
-          </div>
-        </article>
-
-        <article class="comparison-card" id="sensorium">
-          <div class="comparison-media is-term">
-            <div class="term-window">
-              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>sensorium / overview</span></div>
-              <div class="term-body">
-                <p><span>GPU0</span><b>97% · 21.5 GB · 71 °C</b></p>
-                <p><span>GPU1</span><b>72% · 19.7 GB · 75 °C</b></p>
-                <p class="term-dim">power 180 / 180 W · capped</p>
-                <p><span>CPU</span><strong>4.6% of one core</strong></p>
-                <p class="term-dim">88 threads · 0.05% of the box</p>
-                <p><span>repaint</span><b>0.34 ms</b></p>
-              </div>
-            </div>
-          </div>
-          <div class="comparison-body">
-            <p class="demo-kicker">Tooling · Rust</p>
-            <h3>sensorium <span>机器的感官中枢</span></h3>
-            <p>A terminal hardware monitor written in Rust: CPU, GPU, memory, temperatures, fans, power, disks and network, read straight from <code>/proc</code>, <code>/sys</code> and NVML with no child processes at all.</p>
-            <dl class="work-specs">
-              <div><dt>Stack</dt><dd>Rust · ratatui</dd></div>
-              <div><dt>Cost</dt><dd>~4–6% of one core</dd></div>
-              <div><dt>Memory</dt><dd>~24 MiB resident</dd></div>
-              <div><dt>Refresh</dt><dd>1 s · 0.2–0.35 ms repaint</dd></div>
-              <div><dt>Binary</dt><dd>~1.2 MB · stripped, LTO</dd></div>
-              <div><dt>Status</dt><dd>Public repo</dd></div>
-            </dl>
-            <div class="work-links"><a href="https://github.com/NorwinYu/sensorium" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a><a href="/en/blog/every-frame-four-percent.html">Build note <span aria-hidden="true">→</span></a><a href="../ai.html">The rig it reads <span aria-hidden="true">→</span></a></div>
           </div>
         </article>
       </div>

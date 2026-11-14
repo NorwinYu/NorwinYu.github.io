@@ -8,14 +8,14 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Norwin Yu">
   <title>两座太和殿 — Norwin Yu</title>
-  <meta name="description" content="同一个题目的两次生成：本地 Maya 跑的 DeepSeek V4.1 Flash，和线上那版 DeepSeek Flash 1017。差别在取舍，不在谁更强。">
+  <meta name="description" content="同一个 checkpoint，两种权重：本地 Maya-XS 量化版（每专家约 1.6 bit）和原版，各自从一句话生成了一座可拖动的太和殿。">
   <meta name="theme-color" content="#f7f5ef">
   <meta name="color-scheme" content="light">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
   <meta property="og:type" content="article">
   <meta property="og:title" content="两座太和殿 — Norwin Yu">
-  <meta property="og:description" content="同一个题目的两次生成：本地 Maya 跑的 DeepSeek V4.1 Flash，和线上那版 DeepSeek Flash 1017。差别在取舍，不在谁更强。">
+  <meta property="og:description" content="同一个 checkpoint，两种权重：本地 Maya-XS 量化版（每专家约 1.6 bit）和原版，各自从一句话生成了一座可拖动的太和殿。">
   <meta property="og:image" content="https://norwinyu.github.io/assets/img/demo-ming-local.jpg">
   <meta property="og:locale" content="zh_CN">
   <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/two-taihe-halls.html">
@@ -53,8 +53,8 @@
         <a class="back-link" href="/blog/"><span aria-hidden="true">←</span> 全部笔记</a>
         <p class="article-kicker"><span class="is-accent">系统</span><i aria-hidden="true"></i><span>本地模型</span><i aria-hidden="true"></i><span>WebGL2</span></p>
         <h1>两座<br><em>太和殿。</em></h1>
-        <p class="article-deck">同一个题目，两个时间点，两个模型：一次在本地 Maya 上跑，一次是现在线上那版。差别在取舍，不在谁更强。</p>
-        <p class="article-cn">一句话 prompt 就能生成一座可拖动的宫殿。真正值得看的是两次生成各自把钱花在了哪里。</p>
+        <p class="article-deck">同一个 checkpoint，两种权重：一份压到每专家约 1.6 bit 塞进两张 22GB 卡，一份是原版。两座太和殿，差别在取舍。</p>
+        <p class="article-cn">真正的问题不是「本地能不能做」，而是「压到 1.6 bit 之后，丢掉了什么」。</p>
         <div class="article-meta">
           <span><i aria-hidden="true"></i>Norwin Yu</span>
           <span>2026 年 11 月</span>
@@ -77,24 +77,26 @@
           <a href="#take">留下的判断</a>
         </nav>
         <dl class="article-aside-facts">
-          <div><dt>本地</dt><dd>DeepSeek V4.1 Flash</dd></div>
-          <div><dt>服务</dt><dd>Maya · 131K 上下文</dd></div>
-          <div><dt>线上</dt><dd>DeepSeek Flash 1017</dd></div>
+          <div><dt>本地</dt><dd>Maya-XS · 约 1.6 bit</dd></div>
+          <div><dt>硬件</dt><dd>2 × 22 GB + 94 GB 内存</dd></div>
+          <div><dt>线上</dt><dd>原版</dd></div>
           <div><dt>体积</dt><dd>91 KB / 85 KB</dd></div>
         </dl>
       </aside>
 
       <article class="article-body">
-        <p>十一月六日晚上，我在这台机器上让 agent 用一句中文 prompt 生成了一个明朝宫殿：单文件、原生 WebGL2、鼠标能拖着换角度。一周后的十一月十三日，同一个题目又生成了一版，现在挂在线上。</p>
+        <p>十一月六日晚上，我在本地让 agent 用一句中文 prompt 生成了一个明朝宫殿：单文件、原生 WebGL2、鼠标能拖着换角度。跑的是 DeepSeek-V4.1-Flash-1017 的 Maya-XS 量化包——每专家约 1.6 bit、93 GB，两张 22GB 的卡加 94 GB 内存做 TP=2，131K 上下文。一周后的十一月十三日，同一个题目的原版做了另一版，现在挂在线上。</p>
 
-        <p>两版都能用，都只有几十 KB，都不依赖任何外部文件。但把它们并排放在一起看，能看出两个模型把钱花在了完全不同的地方——一版买氛围，一版买结构。</p>
+        <p>所以这不是「两个模型」的对比，是同一个 checkpoint 的两种权重：一边激进量化，一边原版。两版都能用，都只有几十 KB，都不依赖任何外部文件；但并排看，能看出预算花在了完全不同的地方——一版买氛围，一版买结构。</p>
 
         <h2 id="two">两次运行</h2>
         <table class="compare-table">
-          <thead><tr><th>项</th><th>本地那版</th><th>线上那版</th></tr></thead>
+          <thead><tr><th>项</th><th>本地那版（量化）</th><th>线上那版（原版）</th></tr></thead>
           <tbody>
-            <tr><td data-label="项">模型</td><td data-label="本地那版">DeepSeek V4.1 Flash（deepseek-v4.1-flash）</td><td data-label="线上那版">DeepSeek Flash 1017</td></tr>
-            <tr><td data-label="项">服务方式</td><td data-label="本地那版">本地 Maya，131,072 上下文</td><td data-label="线上那版">未记录</td></tr>
+            <tr><td data-label="项">权重</td><td data-label="本地那版（量化）">Maya-XS · 每专家约 1.6 bit · 93 GB</td><td data-label="线上那版（原版）">原版</td></tr>
+            <tr><td data-label="项">硬件</td><td data-label="本地那版（量化）">2 × RTX 2080 Ti 22GB + 94 GB 内存 · TP=2</td><td data-label="线上那版（原版）">未记录</td></tr>
+            <tr><td data-label="项">上下文</td><td data-label="本地那版（量化）">131,072</td><td data-label="线上那版（原版）">未记录</td></tr>
+            <tr><td data-label="项">采样</td><td data-label="本地那版（量化）">temp 1.0 · top_p 1.0 · reasoning high</td><td data-label="线上那版（原版）">未记录</td></tr>
             <tr><td data-label="项">日期</td><td data-label="本地那版">2026-11-06</td><td data-label="线上那版">2026-11-13</td></tr>
             <tr><td data-label="项">产物</td><td data-label="本地那版">单文件 HTML · 91,195 B</td><td data-label="线上那版">单文件 HTML · 85,402 B</td></tr>
             <tr><td data-label="项">行数 / 函数</td><td data-label="本地那版">2,333 行 · 41 个函数</td><td data-label="线上那版">2,317 行 · 53 个函数</td></tr>
@@ -114,6 +116,8 @@
         <p>界面只有两个按钮（复位视角、自转）和一行操作提示。它没有给你视角预设——它更像在做一个场景，让你自己转着看。</p>
 
         <p>从会话记录看，这次生成用了 129 个步骤、15 次写入或编辑同一个文件。prompt 的原文就是一句话，还额外要求「独立完成，不参考其他文件和网络资料」。</p>
+
+        <p>值得记住的是权重有多小：Maya-XS 把每个专家压到约 1.6 bit，整个包 93 GB，靠两张 22GB 的卡加 94 GB 内存才装下；解码速度大约 25 tok/s。这不是一个「能跑就行」的演示规模，而是这套配置上能跑的最大模型之一。</p>
 
         <p>这一版现在也在线，文件未做任何改动：<a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/local/" target="_blank" rel="noopener">本地版</a>。可以和新版并排拖着看。</p>
 
@@ -144,20 +148,20 @@
         <p>必须说清楚：这不是 A/B 测试。</p>
 
         <ul>
-          <li>模型不是同一代，一个是本地服务的 V4.1 Flash，一个是 1017；</li>
+          <li>权重不同（量化 vs 原版）正是要观察的变量，但两边的采样参数没有对齐；</li>
           <li>prompt 只确认了本地那次的原文，线上那版在站点里只记为「一句中文 prompt」；</li>
           <li>两次相隔一周，期间工具链、脚手架和 agent 预设都可能变过；</li>
           <li>没有共同评分标准，好看与否取决于你想要哪一种。</li>
         </ul>
 
-        <p>所以能说的只有一件事：<strong>在同一个题目下，两个模型都能从一句话走到一个可交互的单文件场景，而且各自做出了可以辨认的取舍。</strong></p>
+        <p>所以能说的只有一件事：<strong>压到每专家 1.6 bit 之后，这个任务没有崩——它仍然从一句话走到了可交互的单文件场景，只是把钱花在了不同的地方。</strong></p>
 
         <h2 id="take">留下的判断</h2>
-        <p>如果目标是「一张能当封面图的截图」，本地那版的氛围更划算；如果目标是「一个能讲清楚的建筑」，线上那版的视角预设和重檐细节更有用。</p>
+        <p>如果目标是「一张能当封面图的截图」，量化版的暖光仍然成立；如果目标是「一个能讲清楚的建筑」，原版的视角预设和重檐细节更有用。但这份差别不能单独归因给量化——采样和 prompt 也没对齐。</p>
 
-        <p>真正让我意外的不是质量，而是体积：两版都在 90 KB 上下，都是零素材、零依赖。模型没有把宫殿存成模型文件，它是把宫殿写成了一段程序。</p>
+        <p>真正让我意外的不是质量，而是体积：两版都在 90 KB 上下，都是零素材、零依赖。模型没有把宫殿存成模型文件，它是把宫殿写成了一段程序；而写出这段程序的那一边，权重只剩 1.6 bit。</p>
 
-        <p class="article-end"><strong>方法 /</strong> 本地版来自 2026-11-06 的归档会话（provider <code>maya</code>，model <code>deepseek-v4.1-flash</code>，131,072 上下文），产物为单文件 HTML；线上版为 <a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/" target="_blank" rel="noopener">deepseek-flash-1017-ming-palace</a>（仓库 2026-11-13 创建）。函数数、绘制调用、纹理与 framebuffer 数量由对两份 HTML 的静态检索得出，不是运行时 profile；截图分别是两版在 1440×900 下的首屏。</p>
+        <p class="article-end"><strong>方法 /</strong> 本地版来自 2026-11-06 的归档会话（provider <code>maya</code>，model <code>deepseek-v4.1-flash</code>，量化包 <code>DeepSeek-V4.1-Flash-1017-GGUF/Maya-XS</code>，131,072 上下文，TP=2），产物为单文件 HTML；线上版为 <a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/" target="_blank" rel="noopener">deepseek-flash-1017-ming-palace</a>（仓库 2026-11-13 创建）。函数数、绘制调用、纹理与 framebuffer 数量由对两份 HTML 的静态检索得出，不是运行时 profile；截图分别是两版在 1440×900 下的首屏。</p>
       </article>
 
       <div aria-hidden="true"></div>

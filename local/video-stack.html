@@ -177,7 +177,7 @@
       </div>
       <div class="wrap">
         <pre><code>export CUDA_VISIBLE_DEVICES=1,0          # GPU1 first, so cuda:0 is the compute card
-python main.py --listen 127.0.0.1 --port 8188     --reserve-vram 1.5 --vram-headroom 0.5     --disable-pinned-memory --fast-disk
+python main.py --listen 127.0.0.1 --port &lt;port&gt; --reserve-vram 1.5 --vram-headroom 0.5     --disable-pinned-memory --fast-disk
 
 python scripts/bench.py examples/smoke_t2v.json smoke   # self-contained sample</code></pre>
       </div>
@@ -186,7 +186,7 @@ python scripts/bench.py examples/smoke_t2v.json smoke   # self-contained sample<
     <section class="section section-alt" aria-labelledby="vlimit-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">06 / Caveats</p><h2 id="vlimit-title">What the speedup is not.</h2></div>
-        <p class="section-intro">The 2.97× comes from real renders on this machine, and it is specific to a quantisation, a model and a pair of cards.</p>
+        <p class="section-intro">The 2.97× comes from real renders on the workstation, and it is specific to a quantisation, a model and a pair of cards.</p>
       </div>
       <div class="wrap home-cap-grid">
         <div class="home-cap-item"><span>01</span><h3>Not a general TP result</h3><p>These numbers come from W4A8 on two modified 22 GB Turing cards at a 250 W limit. Different cards, quantisation or model shape will produce different overlaps.</p></div>

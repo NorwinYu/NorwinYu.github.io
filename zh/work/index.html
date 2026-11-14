@@ -81,7 +81,7 @@
         <p class="section-kicker">实验 / 2026</p>
         <h1>代码里的实验。</h1>
         <p class="page-lede">游戏是一组探针，编程工具是另一组，机器本身是第三组。它们都在问同一条真实的生产管线——生成素材、代码、UI、验证和部署——LLM 能推多远，以及人还必须在哪一步介入。</p>
-        <div class="page-meta"><span><i></i>05 个游戏探针</span><span>02 组对比</span><span>03 个编程工具</span><span>02 套本地系统</span><span>在线 / 附源码</span></div>
+        <div class="page-meta"><span><i></i>05 个游戏探针</span><span>02 组对比</span><span>04 个编程工具</span><span>01 套本地系统</span><span>在线 / 附源码</span></div>
       </div>
     </header>
 
@@ -92,7 +92,7 @@
       </div>
 
       <div class="wrap thread-grid">
-        <div class="thread-card"><span>01</span><h3>模型能力</h3><p>本地模型能不能从一个 prompt 撑起一个 3D 场景？明宫三维（Ming Palace 3D）就是那个本地模型探针。</p></div>
+        <div class="thread-card"><span>01</span><h3>量化</h3><p>把模型压到 1.6 bit 的地方版本，对 3D 场景意味着什么？明宫三维（Ming Palace 3D）就是那个量化探针。</p></div>
         <div class="thread-card"><span>02</span><h3>杠杆</h3><p>给模型一套 agent/skill 框架，和只给一个 API 循环，差在哪？NEON BREACH 是没开 skill 的对照组。</p></div>
         <div class="thread-card"><span>03</span><h3>素材管线</h3><p>程序化代码、生成图片/视频，还是 Blender 辅助？雾谷农庄是目前不用 Blender 的基线；Blender 对比是下一步。</p></div>
         <div class="thread-card"><span>04</span><h3>验证</h3><p>Playwright、截图复查、碰撞检查，加上六道关的 harness。构建跑得起来不算结果，能被人检查才算。</p></div>
@@ -109,7 +109,7 @@
             <tr><th scope="row">雾谷农庄</th><td data-label="测什么">一句 prompt、不用 Blender 的基线</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">程序化模型、天气、音频；无外部素材</td></tr>
             <tr><th scope="row">机场大亨 3D</th><td data-label="测什么">DeepSeek Flash + DSH + Godot 引擎路线</td><td data-label="模型">DeepSeek Flash + DSH</td><td data-label="杠杆">Godot 4.6 / GDScript；程序化网格与音频</td></tr>
             <tr><th scope="row">NEON BREACH</th><td data-label="测什么">不用 skill 的对照组</td><td data-label="模型">DeepSeek V4.1 Flash</td><td data-label="杠杆">纯 API，无 skill；原生 WebGL；程序化素材</td></tr>
-            <tr><th scope="row">明宫三维</th><td data-label="测什么">本地模型对比</td><td data-label="模型">DeepSeek Flash 1017 · 本地</td><td data-label="杠杆">一句中文 prompt；单文件 WebGL2；无 skill</td></tr>
+            <tr><th scope="row">明宫三维</th><td data-label="测什么">量化版 vs 原版</td><td data-label="模型">DeepSeek-V4.1-Flash-1017 · Maya-XS</td><td data-label="杠杆">一句中文 prompt；单文件 WebGL2；无 skill</td></tr>
             <tr><th scope="row">dsh-quota</th><td data-label="测什么">工具 / 按路由显示状态</td><td data-label="模型">DeepSeek V4.1 Flash</td><td data-label="杠杆">代码/测试/文档；配置驱动的适配器</td></tr>
             <tr><th scope="row">NorMark</th><td data-label="测什么">桌面编程应用</td><td data-label="模型">未记录</td><td data-label="杠杆">Electron / React / CodeMirror</td></tr>
             <tr><th scope="row">RoomTessera 3D</th><td data-label="测什么">空间工具</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">代码/UI/测试；程序化几何</td></tr>
@@ -132,7 +132,7 @@
         <div class="pipeline-step"><span>03</span><h3>代码</h3><p>用 DeepSeek Flash 写系统、UI、游戏逻辑和程序化音频。</p><em>模型</em></div>
         <div class="pipeline-step"><span>04</span><h3>集成</h3><p>把素材、状态、存档、输入和移动端布局接成一个能玩的构建。</p><em>双方</em></div>
         <div class="pipeline-step"><span>05</span><h3>验证</h3><p>Playwright 检查、截图复查、碰撞与回路测试，最后手动试玩。</p><em>双方</em></div>
-        <div class="pipeline-step"><span>06</span><h3>部署</h3><p>静态产物、源码说明，以及一条能在本机复现的运行路径。</p><em>人</em></div>
+        <div class="pipeline-step"><span>06</span><h3>部署</h3><p>静态产物、源码说明，以及一条能在工作站复现的运行路径。</p><em>人</em></div>
       </div>
       <p class="wrap pipeline-note"><span>这测的是什么</span>不是「LLM 能不能写游戏」，而是生产管线的哪些环节扛得住模型生成、交接在哪一步断掉、结果需要多少验证。</p>
     </section>
@@ -283,11 +283,11 @@
         <article class="comparison-card" id="ming-palace">
           <div class="comparison-media"><img decoding="async" src="/assets/img/demo-ming-palace.jpg" alt="明代宫殿大殿的 3D 复原，金色屋顶和白色石台基。" width="1600" height="1000" loading="lazy"></div>
           <div class="comparison-body">
-            <p class="demo-kicker">本地模型运行 · WebGL2</p>
+            <p class="demo-kicker">量化版运行 · WebGL2</p>
             <h3>明宫三维 <span>Ming Palace 3D</span></h3>
-            <p>一份单文件的明代宫廷建筑研究，由 DeepSeek Flash 1017 从一句中文 prompt 生成。同一题目在一周前还通过本地 Maya 跑过一版，两版的并排对比写在日志里。</p>
+            <p>一份单文件的明代宫廷建筑研究，从一句中文 prompt 生成。这是原版；同一个 checkpoint 被压到每专家约 1.6 bit 在本地跑出另一版，两版并排对比写在日志里。</p>
             <dl class="work-specs">
-              <div><dt>模型</dt><dd>DeepSeek Flash 1017</dd></div>
+              <div><dt>模型</dt><dd>DeepSeek-V4.1-Flash-1017 · 原版</dd></div>
               <div><dt>Prompt</dt><dd>一句中文 prompt</dd></div>
               <div><dt>输出</dt><dd>单个 HTML · WebGL2</dd></div>
               <div><dt>规模</dt><dd>建筑 · shader</dd></div>
@@ -382,15 +382,45 @@
             <div class="demo-foot"><span>空间编辑</span><a href="https://norwinyu.github.io/roomtessera-3d/" target="_blank" rel="noopener">试玩 <span aria-hidden="true">↗</span></a></div>
           </div>
         </article>
+
+        <article class="coding-card" id="sensorium">
+          <div class="coding-visual terminal">
+            <div class="term-window">
+              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>sensorium / 总览</span></div>
+              <div class="term-body">
+                <p><span>GPU0</span><b>97% · 21.5 GB · 71 °C</b></p>
+                <p><span>GPU1</span><b>72% · 19.7 GB · 75 °C</b></p>
+                <p class="term-dim">功耗 180 / 180 W · 已封顶</p>
+                <p><span>CPU</span><strong>单核 4.6%</strong></p>
+                <p class="term-dim">88 线程 · 占整机 0.05%</p>
+                <p><span>重绘</span><b>0.34 ms</b></p>
+              </div>
+            </div>
+          </div>
+          <div class="coding-body">
+            <p class="demo-kicker">工具 · Rust</p>
+            <h3>sensorium <span>机器的感官中枢</span></h3>
+            <p>一个用 Rust 写的终端硬件监控：CPU、GPU、内存、温度、风扇、功耗、磁盘和网络，直接读 <code>/proc</code>、<code>/sys</code> 和 NVML，完全不起子进程。</p>
+            <dl class="demo-specs">
+              <div><dt>技术栈</dt><dd>Rust · ratatui</dd></div>
+              <div><dt>开销</dt><dd>约占单核 4–6%</dd></div>
+              <div><dt>内存</dt><dd>常驻约 24 MiB</dd></div>
+              <div><dt>刷新</dt><dd>1 s · 重绘 0.2–0.35 ms</dd></div>
+              <div><dt>二进制</dt><dd>约 1.2 MB · stripped，LTO</dd></div>
+              <div><dt>状态</dt><dd>公开仓库</dd></div>
+            </dl>
+            <div class="work-links"><a href="https://github.com/NorwinYu/sensorium" target="_blank" rel="noopener">源码 <span aria-hidden="true">↗</span></a><a href="/blog/every-frame-four-percent.html">构建记录 <span aria-hidden="true">→</span></a><a href="/zh/ai.html">它读的那台机器 <span aria-hidden="true">→</span></a></div>
+          </div>
+        </article>
       </div>
     </section>
 
     <section class="section" id="systems" aria-labelledby="systems-title">
       <div class="wrap section-head">
-        <div class="section-heading"><p class="section-kicker">04 / 本地系统</p><h2 id="systems-title">这台机器实际在跑什么。</h2></div>
-        <p class="section-intro">两套系统都是在本机实测的，不是从项目页上抄的：一个被迫用上两张卡的 20B 视频模型，一个不起任何子进程就能读到同一套硬件的监控器。</p>
+        <div class="section-heading"><p class="section-kicker">04 / 本地系统</p><h2 id="systems-title">工作站实际在跑什么。</h2></div>
+        <p class="section-intro">一套系统，在双路 Xeon + 2 × RTX 2080 Ti 的工作站上实测，不是从项目页上抄的：一个被迫用上两张卡的 20B 视频模型，代价是一处要用探针才找得到的 host 线程问题。读同一套硬件的终端监控器已经移到上面的编程工具里。</p>
       </div>
-      <div class="wrap comparison-grid">
+      <div class="wrap comparison-grid is-single">
         <article class="comparison-card" id="h3-tp2">
           <div class="comparison-media is-term">
             <div class="term-window">
@@ -418,36 +448,6 @@
               <div><dt>状态</dt><dd>公开仓库 · MIT 代码</dd></div>
             </dl>
             <div class="work-links"><a href="/zh/local/video-stack.html">实测数据 <span aria-hidden="true">→</span></a><a href="https://github.com/NorwinYu/minimax-h3-dual-2080ti" target="_blank" rel="noopener">源码 <span aria-hidden="true">↗</span></a><a href="/blog/tp2-one-thread.html">构建记录 <span aria-hidden="true">→</span></a></div>
-          </div>
-        </article>
-
-        <article class="comparison-card" id="sensorium">
-          <div class="comparison-media is-term">
-            <div class="term-window">
-              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>sensorium / 总览</span></div>
-              <div class="term-body">
-                <p><span>GPU0</span><b>97% · 21.5 GB · 71 °C</b></p>
-                <p><span>GPU1</span><b>72% · 19.7 GB · 75 °C</b></p>
-                <p class="term-dim">功耗 180 / 180 W · 已封顶</p>
-                <p><span>CPU</span><strong>单核 4.6%</strong></p>
-                <p class="term-dim">88 线程 · 占整机 0.05%</p>
-                <p><span>重绘</span><b>0.34 ms</b></p>
-              </div>
-            </div>
-          </div>
-          <div class="comparison-body">
-            <p class="demo-kicker">工具 · Rust</p>
-            <h3>sensorium <span>机器的感官中枢</span></h3>
-            <p>一个用 Rust 写的终端硬件监控：CPU、GPU、内存、温度、风扇、功耗、磁盘和网络，直接读 <code>/proc</code>、<code>/sys</code> 和 NVML，完全不起子进程。</p>
-            <dl class="work-specs">
-              <div><dt>技术栈</dt><dd>Rust · ratatui</dd></div>
-              <div><dt>开销</dt><dd>约占单核 4–6%</dd></div>
-              <div><dt>内存</dt><dd>常驻约 24 MiB</dd></div>
-              <div><dt>刷新</dt><dd>1 s · 重绘 0.2–0.35 ms</dd></div>
-              <div><dt>二进制</dt><dd>约 1.2 MB · stripped，LTO</dd></div>
-              <div><dt>状态</dt><dd>公开仓库</dd></div>
-            </dl>
-            <div class="work-links"><a href="https://github.com/NorwinYu/sensorium" target="_blank" rel="noopener">源码 <span aria-hidden="true">↗</span></a><a href="/blog/every-frame-four-percent.html">构建记录 <span aria-hidden="true">→</span></a><a href="/zh/ai.html">它读的那台机器 <span aria-hidden="true">→</span></a></div>
           </div>
         </article>
       </div>

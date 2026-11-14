@@ -8,14 +8,14 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Norwin Yu">
   <title>80 与 46 — Norwin Yu</title>
-  <meta name="description" content="同一个 27B 模型：文档说 80 tok/s，这台机器给 46。差的不是运气，是功耗上限和 MTP 的计算密度。">
+  <meta name="description" content="同一个 27B 模型：文档说 80 tok/s，工作站给 46。差的不是运气，是功耗上限和 MTP 的计算密度。">
   <meta name="theme-color" content="#f7f5ef">
   <meta name="color-scheme" content="light">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
   <meta property="og:type" content="article">
   <meta property="og:title" content="80 与 46 — Norwin Yu">
-  <meta property="og:description" content="同一个 27B 模型：文档说 80 tok/s，这台机器给 46。差的不是运气，是功耗上限和 MTP 的计算密度。">
+  <meta property="og:description" content="同一个 27B 模型：文档说 80 tok/s，工作站给 46。差的不是运气，是功耗上限和 MTP 的计算密度。">
   <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
   <meta property="og:locale" content="zh_CN">
   <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/eighty-and-forty-six.html">
@@ -53,8 +53,8 @@
         <a class="back-link" href="/blog/"><span aria-hidden="true">←</span> 全部笔记</a>
         <p class="article-kicker"><span class="is-accent">系统</span><i aria-hidden="true"></i><span>本地推理</span><i aria-hidden="true"></i><span>基准</span></p>
         <h1>80 与<br><em>46。</em></h1>
-        <p class="article-deck">同一个 27B 模型、同一个 vLLM 分支，文档写 80 tok/s，这台机器给 46。差的不是运气。</p>
-        <p class="article-cn">两个数字都不假。它们测的不是同一件事——一个测理论上限，一个测这台机器在 180W 下的日常。</p>
+        <p class="article-deck">同一个 27B 模型、同一个 vLLM 分支，文档写 80 tok/s，工作站给 46。差的不是运气。</p>
+        <p class="article-cn">两个数字都不假。它们测的不是同一件事——一个测理论上限，一个测工作站在 180W 下的日常。</p>
         <div class="article-meta">
           <span><i aria-hidden="true"></i>Norwin Yu</span>
           <span>2026 年 11 月</span>
@@ -117,14 +117,14 @@
         <h2 id="thinking">思考的代价</h2>
         <p>“思考”模式（reasoning trace）解码慢约 13%：52.1 → 46.1。原因和 MTP 有关——投机解码要靠草稿 token 的接受率，而推理痕迹的可预测性比正文低，草稿更容易被否决，每步平均吐出的 token 数下降。</p>
 
-        <p>这个差距在别的机器上可能不明显，在这台上很稳定，因为它不是被带宽卡住的，是被每步的计算量卡住的（下一节）。</p>
+        <p>这个差距换上别的硬件可能不明显，在双路 Xeon + 2 × 2080 Ti 的这套配置上却稳定，因为它不是被带宽卡住的，是被每步的计算量卡住的（下一节）。</p>
 
         <h2 id="why">为什么不是 80</h2>
         <p>两个原因，都不神秘。</p>
 
         <p><strong>第一，那个 80 是合成基准。</strong>分支文档自己写着：两者的输入是为高投机接受率构造的合成样本，用于同等条件下的吞吐对比，不代表真实推理。真实草稿接受率更低，于是每步吐出的 token 更少。</p>
 
-        <p><strong>第二，这台机器被压在 180W。</strong>MTP/3 每步要验证三个草稿 token，是典型的计算密集负载——恰恰是功耗墙最不宽容的那类。两张卡在满载时都稳定贴在 180W（峰值 182W / 179W），利用率 100%，SM 时钟封在 1845 / 1830 MHz。也就是说：<em>卡没跑满频率，不是因为热，是因为电。</em></p>
+        <p><strong>第二，工作站被压在 180W。</strong>MTP/3 每步要验证三个草稿 token，是典型的计算密集负载——恰恰是功耗墙最不宽容的那类。两张卡在满载时都稳定贴在 180W（峰值 182W / 179W），利用率 100%，SM 时钟封在 1845 / 1830 MHz。也就是说：<em>卡没跑满频率，不是因为热，是因为电。</em></p>
 
         <h2 id="power">撞在 180W 上</h2>
         <table class="compare-table">
@@ -152,7 +152,7 @@
           </tbody>
         </table>
 
-        <p>差别都在 0.4–0.5 tok/s，比跑与跑之间的离散度小一个量级。<strong>MTP/2 与 MTP/3 在这台机器上统计上无法区分。</strong></p>
+        <p>差别都在 0.4–0.5 tok/s，比跑与跑之间的离散度小一个量级。<strong>MTP/2 与 MTP/3 在工作站上统计上无法区分。</strong></p>
 
         <p>MTP/3 那一组的“思考关”还暴露了一个采样陷阱：六次从 56.8 一路漂到 45.5，前面几次是冷卡的赠品，稳态在 50–51。MTP/2 的 σ 只有 0.88，很快就落到同一个稳态。所以我把配置留在了默认的 MTP/3——不是因为更快，而是因为没有理由改。</p>
 
@@ -178,7 +178,7 @@
 
         <p>最有用的结论其实很小：<strong>报 tok/s 的时候，必须同时报功耗上限和上下文长度</strong>，否则这个数字只描述了一个不受约束的理想情况。</p>
 
-        <p class="article-end"><strong>方法 /</strong> 数据来自本机 <code>vllm-2080ti/RESULTS.md</code> 的实测记录：流式请求、用首 token 时间分离 TTFT 与解码、固定 prompt 与输出长度、每项至少五轮取中位数并记 min/max/stdev、每次配置变更后丢弃一次 warmup。完整配置表见站点 <a href="/zh/local/text-stack.html">本地推理</a> 页。</p>
+        <p class="article-end"><strong>方法 /</strong> 数据来自工作站 <code>vllm-2080ti/RESULTS.md</code> 的实测记录：流式请求、用首 token 时间分离 TTFT 与解码、固定 prompt 与输出长度、每项至少五轮取中位数并记 min/max/stdev、每次配置变更后丢弃一次 warmup。完整配置表见站点 <a href="/zh/local/text-stack.html">本地推理</a> 页。</p>
       </article>
 
       <div aria-hidden="true"></div>

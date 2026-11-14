@@ -148,7 +148,7 @@
 
         <p>结果是：44 GB/s 的链路在层切分下基本闲置。真正能用上它的是另一种模式——在同一个 token 内把不同专家分到两张卡上同时算，激活与结果走 P2P。官方文档里有一条“2080 Ti 当 helper 会更慢”的结论，但它测的是旧的 host 缓冲版本，而且那台机器的两张卡根本不能 NVLink。</p>
 
-        <p>所以这是一个“官方结论不适用于本机”的典型：双 2080 Ti + NVLink + 慢 CPU，恰好是这种模式的理想硬件，而它从来没被这样测过（至少公开记录里没有）。这被排成了批次 8。</p>
+        <p>所以这是一个“官方结论不适用于工作站”的典型：双 2080 Ti + NVLink + 慢 CPU，恰好是这种模式的理想硬件，而它从来没被这样测过（至少公开记录里没有）。这被排成了批次 8。</p>
 
         <h2 id="numa">449 MB 的另一半</h2>
         <p>还有一件更笨的事。启动前看了一眼两个 NUMA 节点的空闲内存：</p>
@@ -183,7 +183,7 @@ node1  空闲 12.4 GB     ← GPU1 在这个节点</code></pre>
 
         <p>真正要回答的问题——“双卡到底是不是更快”“peer tier 能不能把 NVLink 用起来”“KV 压缩会掉多少分”——都还在待测。等测完，这一篇会变成数据表；在那之前，它是一份实验设计说明，这也是一种值得写下来的东西。</p>
 
-        <p class="article-end"><strong>方法 /</strong> 硬件与成本数字来自本机 <code>research/strata/EXPERIMENTS.md</code> 与引擎文档：2 × RTX 2080 Ti 22GB、NVLink NV2（实测 P2P 44 GB/s）、双路 Xeon E5-2696 v4（44C/88T）、94GB DDR4、驱动 580 系列。批次表与用例集是待执行计划，文中没有把它们写成已完成的结果。</p>
+        <p class="article-end"><strong>方法 /</strong> 硬件与成本数字来自工作站 <code>research/strata/EXPERIMENTS.md</code> 与引擎文档：2 × RTX 2080 Ti 22GB、NVLink NV2（实测 P2P 44 GB/s）、双路 Xeon E5-2696 v4（44C/88T）、94GB DDR4、驱动 580 系列。批次表与用例集是待执行计划，文中没有把它们写成已完成的结果。</p>
       </article>
 
       <div aria-hidden="true"></div>
