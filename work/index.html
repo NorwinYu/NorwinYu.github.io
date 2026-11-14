@@ -261,15 +261,26 @@
     <section class="section comparison-section" id="comparisons" aria-labelledby="comparisons-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">02 / Comparisons</p><h2 id="comparisons-title">Three controlled runs.</h2></div>
-        <p class="section-intro">Not every build is a product. Run 01 tests the harness against a no-skill city-kart build. Run 02 compares one checkpoint in two weight formats. Run 03 compares one farm concept with and without Blender.</p>
+        <p class="section-intro">Not every build is a product. Run 01 tests the harness — the skill and its six gates — against a no-skill city-kart build. Run 02 compares one checkpoint in two weight formats. Run 03 compares one farm concept with and without Blender.</p>
       </div>
       <div class="wrap comparison-stack">
                         <article class="comparison-run" id="city-kart">
           <div class="comparison-run-head">
             <div><p class="section-kicker">Run 01 / Harness validation</p><h3>Does the harness change the result?</h3></div>
-            <p>One city-kart brief, two loops: Sundown Circuit without the skill, SUNSET DISTRICT through the photoreal-game skill and harness. The comparison asks what the harness changes and what it catches.</p>
+            <p>The Photoreal Game Harness here means the skill: the photoreal-game procedure plus its six gates. One city-kart brief, two loops: Sundown Circuit without it, SUNSET DISTRICT through it. The comparison asks what the harness changes and what it catches.</p>
           </div>
-          <div class="comparison-pair">
+                    <div class="harness-strip">
+            <p class="mono-label">Harness = skill + six gates</p>
+            <ul class="harness-gates">
+              <li><span>01</span>Shader</li>
+              <li><span>02</span>Object census</li>
+              <li><span>03</span>Collision</li>
+              <li><span>04</span>Lights</li>
+              <li><span>05</span>Loop</li>
+              <li><span>06</span>Look</li>
+            </ul>
+          </div>
+<div class="comparison-pair">
             <figure class="comparison-panel">
               <div class="comparison-panel-media"><img decoding="async" src="../assets/img/demo-city-kart.webp" alt="Sundown Circuit city kart race: karts on a neon-lit street with a cyan boost pad." width="1280" height="720" loading="eager"></div>
               <figcaption><span class="panel-label">A / No skill</span><strong>Sundown Circuit / 落日环线</strong><span>3 laps · 860 m · 6 karts</span></figcaption>
@@ -281,7 +292,7 @@
           </div>
           <div class="comparison-run-foot">
             <div class="work-links"><a href="https://norwinyu.github.io/city-kart/" target="_blank" rel="noopener">Play Sundown Circuit <span aria-hidden="true">↗</span></a><a href="https://norwinyu.github.io/sunset-district/" target="_blank" rel="noopener">Play Sunset District <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/city-kart" target="_blank" rel="noopener">Repo 01 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/sunset-district" target="_blank" rel="noopener">Repo 02 <span aria-hidden="true">↗</span></a></div>
-            <p class="work-muted" id="neon">A is the no-skill control; B is the skill run. Not a controlled model benchmark. Earlier control: <a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">NEON BREACH</a>.</p>
+            <p class="work-muted" id="neon">A is the no-skill control; B is the skill run. Not a controlled model benchmark. <a href="/en/blog/agent-loops-need-taste.html">Read the harness notes <span aria-hidden="true">→</span></a> · Earlier control: <a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">NEON BREACH</a>.</p>
           </div>
         </article>
 
@@ -496,13 +507,7 @@
       </div>
     </section>
 
-    <section class="section section-alt" aria-labelledby="harness-title">
-      <div class="wrap section-head">
-        <div class="section-heading"><p class="section-kicker">Also in the lab</p><h2 id="harness-title">The verification harness.</h2></div>
-        <p class="section-intro">The Photoreal Game Harness is a portable skill and six-gate check for agents building 3D games: shaders, object census, collision, lights, loop and look. It is the unglamorous part that makes the games above possible.</p>
-      </div>
-      <div class="wrap work-links"><a href="/en/blog/agent-loops-need-taste.html">Read the harness notes <span aria-hidden="true">→</span></a><a href="../competitions.html">Competitions <span aria-hidden="true">→</span></a></div>
-    </section>
+
   </main>
 
   <footer class="site-footer">

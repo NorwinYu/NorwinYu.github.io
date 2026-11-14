@@ -261,15 +261,26 @@
     <section class="section comparison-section" id="comparisons" aria-labelledby="comparisons-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">02 / 对比</p><h2 id="comparisons-title">三次受控运行。</h2></div>
-        <p class="section-intro">不是每个构建都是产品。Run 01 用一台无 skill 的城市卡丁车对照一台走 harness 的城市卡丁车。Run 02 比较同一个 checkpoint 的两种权重格式。Run 03 比较同一个农场概念在有无 Blender 下的两条资产管线。</p>
+        <p class="section-intro">不是每个构建都是产品。Run 01 用一台无 skill 的城市卡丁车对照一台走 harness（skill + 六道关）的城市卡丁车。Run 02 比较同一个 checkpoint 的两种权重格式。Run 03 比较同一个农场概念在有无 Blender 下的两条资产管线。</p>
       </div>
       <div class="wrap comparison-stack">
                         <article class="comparison-run" id="city-kart">
           <div class="comparison-run-head">
             <div><p class="section-kicker">Run 01 / 验证 harness</p><h3>Harness 到底改变了什么？</h3></div>
-            <p>同一份城市卡丁车 brief，两种循环：落日环线不走 skill，SUNSET DISTRICT 走 photoreal-game skill 和 harness。这里验证的是 harness 改变了什么、抓到了什么。</p>
+            <p>这里的 Photoreal Game Harness 就是 skill：photoreal-game 的流程加六道关。同一份城市卡丁车 brief，两种循环：落日环线不走 skill，SUNSET DISTRICT 走它。这里验证的是 harness 改变了什么、抓到了什么。</p>
           </div>
-          <div class="comparison-pair">
+                    <div class="harness-strip">
+            <p class="mono-label">Harness = skill + 六道关</p>
+            <ul class="harness-gates">
+              <li><span>01</span>Shader</li>
+              <li><span>02</span>对象普查</li>
+              <li><span>03</span>碰撞</li>
+              <li><span>04</span>灯光</li>
+              <li><span>05</span>回路</li>
+              <li><span>06</span>观感</li>
+            </ul>
+          </div>
+<div class="comparison-pair">
             <figure class="comparison-panel">
               <div class="comparison-panel-media"><img decoding="async" src="/assets/img/demo-city-kart.webp" alt="落日环线城市卡丁车比赛：霓虹街道上的卡丁车与青色加速带。" width="1280" height="720" loading="eager"></div>
               <figcaption><span class="panel-label">A / 无 skill</span><strong>落日环线 · Sundown Circuit</strong><span>3 圈 · 860 米 · 6 台卡丁车</span></figcaption>
@@ -281,7 +292,7 @@
           </div>
           <div class="comparison-run-foot">
             <div class="work-links"><a href="https://norwinyu.github.io/city-kart/" target="_blank" rel="noopener">玩落日环线 <span aria-hidden="true">↗</span></a><a href="https://norwinyu.github.io/sunset-district/" target="_blank" rel="noopener">玩 SUNSET DISTRICT <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/city-kart" target="_blank" rel="noopener">仓库 01 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/sunset-district" target="_blank" rel="noopener">仓库 02 <span aria-hidden="true">↗</span></a></div>
-            <p class="work-muted" id="neon">A 是无 skill 对照，B 是 skill run。不是受控模型 benchmark。更早的对照：<a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">NEON BREACH</a>。</p>
+            <p class="work-muted" id="neon">A 是无 skill 对照，B 是 skill run。不是受控模型 benchmark。<a href="/blog/agent-loops-need-taste.html">读 harness 笔记 <span aria-hidden="true">→</span></a> · 更早的对照：<a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">NEON BREACH</a>。</p>
           </div>
         </article>
 
@@ -496,13 +507,7 @@
       </div>
     </section>
 
-    <section class="section section-alt" aria-labelledby="harness-title">
-      <div class="wrap section-head">
-        <div class="section-heading"><p class="section-kicker">也在实验室里</p><h2 id="harness-title">验证 harness。</h2></div>
-        <p class="section-intro">Photoreal Game Harness 是一套可移植的 skill 加六道关的检查，给做 3D 游戏的 agent 用：shader、对象普查、碰撞、灯光、回路和观感。正是这块不体面的活，让上面的游戏跑得起来。</p>
-      </div>
-      <div class="wrap work-links"><a href="/blog/agent-loops-need-taste.html">读 harness 笔记 <span aria-hidden="true">→</span></a><a href="/zh/competitions.html">竞赛 <span aria-hidden="true">→</span></a></div>
-    </section>
+
   </main>
 
   <footer class="site-footer">
