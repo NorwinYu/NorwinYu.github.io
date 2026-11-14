@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Two Taihe Halls — Norwin Yu</title>
+  <meta name="description" content="Two generations of one brief: a DeepSeek V4.1 Flash build run locally through Maya, and the online DeepSeek Flash 1017 one. The difference is the trade-off, not who is better.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Two Taihe Halls — Norwin Yu">
+  <meta property="og:description" content="Two generations of one brief: a DeepSeek V4.1 Flash build run locally through Maya, and the online DeepSeek Flash 1017 one. The difference is the trade-off, not who is better.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/demo-ming-local.jpg">
+  <meta property="og:locale" content="en_US">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/two-taihe-halls.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/two-taihe-halls.html">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="article-nav" aria-label="Article navigation">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a class="lang-switch" href="/blog/two-taihe-halls.html" hreflang="zh-CN">中文</a>
+      <span class="availability"><i aria-hidden="true"></i>Open to research conversations</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="/en/blog/"><span aria-hidden="true">←</span> All notes</a>
+        <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Local models</span><i aria-hidden="true"></i><span>WebGL2</span></p>
+        <h1>Two<br><em>Taihe Halls.</em></h1>
+        <p class="article-deck">One brief, two points in time, two models: one run locally through Maya, one the version that is online now. The difference is the trade-off, not who is better.</p>
+        <p class="article-cn">A one-sentence prompt produces a palace you can drag around. What is worth looking at is where each run spent its money.</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>November 2026</span>
+          <span>8 min</span>
+          <span>Research note / 14</span>
+        </div>
+        <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">Contents</p>
+        <nav class="article-toc" aria-label="Article contents">
+          <a href="#two">Two runs</a>
+          <a href="#local">The local build</a>
+          <a href="#online">The online build</a>
+          <a href="#numbers">The countable part</a>
+          <a href="#not">This is not a controlled comparison</a>
+          <a href="#take">What I take from it</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>Local</dt><dd>DeepSeek V4.1 Flash</dd></div>
+          <div><dt>Serving</dt><dd>Maya · 131K context</dd></div>
+          <div><dt>Online</dt><dd>DeepSeek Flash 1017</dd></div>
+          <div><dt>Size</dt><dd>91 KB / 85 KB</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>On the evening of November 6 I had an agent generate a Ming palace from a one-sentence Chinese prompt on this machine: single file, native WebGL2, an angle you can drag with the mouse. A week later, on November 13, the same brief produced another build, and that is the one online now.</p>
+
+        <p>Both work, both are a few tens of KB, both depend on no external files. But put them side by side and you can see the two models spent the money in completely different places — one bought atmosphere, one bought structure.</p>
+
+        <h2 id="two">Two runs</h2>
+        <table class="compare-table">
+          <thead><tr><th>Item</th><th>Local build</th><th>Online build</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Item">Model</td><td data-label="Local build">DeepSeek V4.1 Flash (deepseek-v4.1-flash)</td><td data-label="Online build">DeepSeek Flash 1017</td></tr>
+            <tr><td data-label="Item">Serving</td><td data-label="Local build">Local Maya, 131,072 context</td><td data-label="Online build">Not recorded</td></tr>
+            <tr><td data-label="Item">Date</td><td data-label="Local build">2026-11-06</td><td data-label="Online build">2026-11-13</td></tr>
+            <tr><td data-label="Item">Output</td><td data-label="Local build">Single-file HTML · 91,195 B</td><td data-label="Online build">Single-file HTML · 85,402 B</td></tr>
+            <tr><td data-label="Item">Lines / functions</td><td data-label="Local build">2,333 lines · 41 functions</td><td data-label="Online build">2,317 lines · 53 functions</td></tr>
+            <tr><td data-label="Item">Draw calls</td><td data-label="Local build">3</td><td data-label="Online build">5</td></tr>
+            <tr><td data-label="Item">Offscreen rendering</td><td data-label="Local build">None</td><td data-label="Online build">1 framebuffer</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="local">The local build</h2>
+        <figure class="article-figure">
+          <img decoding="async" src="/assets/img/demo-ming-local.jpg" alt="Local Maya build of the Taihe Hall: warm orange morning light, a gold roof, the white stone triple terrace, side halls to either side, bronze lions in the foreground." width="1600" height="1000" loading="lazy">
+          <figcaption><span>Maya · DeepSeek V4.1 Flash, 2026-11-06.</span><span>91 KB · single file</span></figcaption>
+        </figure>
+
+        <p>It chose the light between dusk and dawn: an orange sky, warm gold roofs, a white stone base with a little warm bounce, the whole frame pushed dark, a vignette in the corners. The composition is not a straight elevation but an oblique view in perspective, one side hall kept to the left and the right, bronze lions crouched in the foreground, the courtyard paved in square bricks.</p>
+
+        <p>The interface is two buttons (reset view, auto-rotate) and one line of hint text. It gives you no camera presets — it behaves more like a scene, and leaves you to turn it yourself.</p>
+
+        <p>The session log shows this run took 129 steps and 15 writes or edits to the same file. The prompt itself was one sentence, plus one extra requirement: “work independently, do not consult other files or online material”.</p>
+
+        <h2 id="online">The online build</h2>
+        <figure class="article-figure">
+          <img decoding="async" src="/assets/img/demo-ming-1017.jpg" alt="Online build of the Taihe Hall: bright hazy sky, double-eaved hip roof, straight-on elevation, four view presets (front, side, back, top) on the right." width="1600" height="1000" loading="lazy">
+          <figcaption><span>DeepSeek Flash 1017, 2026-11-13.</span><span>85 KB · single file</span></figcaption>
+        </figure>
+
+        <p>This one goes the other way: a bright hazy sky, a centred straight-on elevation, the layering of the double-eaved hip roof pushed to the front, and the beasts on the ridge, the bracket sets under the eaves and the position of the plaque all more considered than in the local build. The side halls are gone, the foreground swaps to two bronze tripods, and the white stone balustrades line up section by section.</p>
+
+        <p>The interface changed approach as well: four view presets on the right (front, side, back, top), latitude and longitude in the top left corner, and one line along the bottom: “drag to orbit · scroll to zoom · double-click to reset”. It is closer to a drawing of a building you can turn than to a courtyard at dusk.</p>
+
+        <h2 id="numbers">The countable part</h2>
+        <p>Both builds are hand-written WebGL2, no three.js or anything like it. These are the differences you can actually count:</p>
+
+        <ul>
+          <li>the local build: 41 functions, 3 draw calls, 1 texture, 0 offscreen buffers;</li>
+          <li>the online build: 53 functions, 5 draw calls, 2 textures, 1 framebuffer;</li>
+          <li>91,195 bytes local, 85,402 bytes online, with almost the same line count (2,333 / 2,317).</li>
+        </ul>
+
+        <p>The framebuffer entry deserves a paragraph of its own: offscreen rendering is what makes post-processing possible — fog, tone mapping, or drawing the scene into a texture first and compositing afterwards. The online build's sky and sense of air most likely come from there; the local build spent the budget on more geometry instead (side halls, lions, courtyard) and finished in 3 draw calls.</p>
+
+        <blockquote>Same amount of code: one spent it on more model, the other on better compositing.</blockquote>
+
+        <h2 id="not">This is not a controlled comparison</h2>
+        <p>I have to be clear about this: it is not an A/B test.</p>
+
+        <ul>
+          <li>the models are not the same generation — one is V4.1 Flash served locally, the other is 1017;</li>
+          <li>only the local prompt is confirmed word for word; the online build is recorded on this site as nothing more than “a one-sentence Chinese prompt”;</li>
+          <li>a week apart, and the toolchain, the scaffolding and the agent presets may all have changed in between;</li>
+          <li>no shared scoring rubric — whether it looks good depends on which one you wanted.</li>
+        </ul>
+
+        <p>So the only thing I can say is this: <strong>under one brief, both models got from a single sentence to an interactive single-file scene, and each made trade-offs you can point at.</strong></p>
+
+        <h2 id="take">What I take from it</h2>
+        <p>If the goal is “one screenshot that can serve as a cover image”, the local build's atmosphere is the better deal; if the goal is “a building that can be explained”, the online build's view presets and double-eave detail are more useful.</p>
+
+        <p>What actually surprised me was not the quality but the size: both sit around 90 KB, both zero assets, zero dependencies. Neither model saved the palace as a model file; it wrote the palace as a program.</p>
+
+        <p class="article-end"><strong>Method /</strong> The local build comes from an archived session on 2026-11-06 (provider <code>maya</code>, model <code>deepseek-v4.1-flash</code>, 131,072 context), output a single-file HTML; the online build is <a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/" target="_blank" rel="noopener">deepseek-flash-1017-ming-palace</a> (repository created 2026-11-13). Function counts, draw calls, and texture and framebuffer counts come from a static search over both HTML files, not a runtime profile; the screenshots are each build's first screen at 1440×900.</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>Related / Local</p>
+          <h2 id="next-title">Ming Palace 3D</h2>
+        </div>
+        <a href="/work/#ming-palace">
+          <span>The case note</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="Footer">
+        <a href="/work/">Experiments</a>
+        <a href="/ai.html">Local</a>
+        <a href="/open-source.html">Open source</a>
+        <a href="/competitions.html">Competitions</a>
+        <a href="/en/blog/">Journal</a>
+        <a href="/about.html">About</a>
+      </nav>
+      <a href="/en/blog/">All notes <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>
