@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Setup — Norwin Yu</title>
+  <meta name="description" content="Local environment and configuration: machines, OS and local runtime.">
+  <meta name="author" content="Norwin Yu">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Setup — Norwin Yu">
+  <meta property="og:description" content="Local environment and configuration: machines, OS and local runtime.">
+  <meta property="og:image" content="assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preload" href="assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/site.css">
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body class="index-page" data-page="ai">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar" data-header>
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="work/index.html" data-nav="work">Experiments</a>
+        <a href="ai.html" data-nav="ai">Setup</a>
+        <a href="open-source.html" data-nav="oss">Open source</a>
+        <a href="competitions.html" data-nav="competitions">Competitions</a>
+        <a href="blog/index.html" data-nav="journal">Journal</a>
+        <a href="about.html" data-nav="about">About</a>
+      </nav>
+      <div class="topbar-actions">
+        <span class="status"><i aria-hidden="true"></i>AI usage research</span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          Menu <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true">
+    <div class="wrap mobile-menu-head">
+      <span class="mono-label">Index / 2026</span>
+      <button class="menu-close" type="button" data-menu-close aria-label="Close menu">Close <span aria-hidden="true">×</span></button>
+    </div>
+    <nav class="wrap mobile-nav" aria-label="Mobile primary">
+      <a href="work/index.html" data-nav="work">Experiments</a>
+      <a href="ai.html" data-nav="ai">Setup</a>
+        <a href="open-source.html" data-nav="oss">Open source</a>
+      <a href="competitions.html" data-nav="competitions">Competitions</a>
+      <a href="blog/index.html" data-nav="journal">Journal</a>
+      <a href="about.html" data-nav="about">About</a>
+    </nav>
+    <div class="wrap mobile-menu-foot">
+      <span>AI usage research / 2026</span>
+      <span>Open to research conversations</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <p class="section-kicker">Setup / 2026</p>
+        <h1>Local environment &amp; configuration.</h1>
+        <p class="page-lede">Two machines and two operating systems. This is the hardware and local runtime behind the experiments — the part that decides what can run, how fast, and what stays on the desk.</p>
+        <div class="page-meta"><span><i></i>02 machines</span><span>44 GB VRAM</span><span>94 GB DDR4</span><span>Snapshot / Nov 2026</span></div>
+      </div>
+    </header>
+
+    <section class="section" id="rig" aria-labelledby="rig-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">01 / Local environment</p><h2 id="rig-title">Two machines, one workflow.</h2></div>
+        <p class="section-intro">A portable studio and a used-parts workstation. The Mac is where the experiments are made; the 2080 Ti pair is where the models come home to.</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table rig-table">
+          <caption class="sr-only">Computer specifications</caption>
+          <thead><tr><th scope="col">Machine</th><th scope="col">Compute</th><th scope="col">Memory</th><th scope="col">Storage</th><th scope="col">OS</th><th scope="col">Role</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><span class="machine-name">MacBook Pro</span><em>The quiet half</em></th><td data-label="Compute">Apple silicon</td><td data-label="Memory">48 GB unified</td><td data-label="Storage">1 TB SSD</td><td data-label="OS">macOS</td><td data-label="Role">Design, code and writing; daily carry.</td></tr>
+            <tr><th scope="row"><span class="machine-name">Workstation</span><em>The loud half</em></th><td data-label="Compute">2 × RTX 2080 Ti · 22 GB each</td><td data-label="Memory">44 GB VRAM + 94 GB DDR4</td><td data-label="Storage">4 TB NVMe</td><td data-label="OS">Ubuntu 24.04 LTS</td><td data-label="Role">Local inference, experiments and heat.</td></tr>
+          </tbody>
+        </table>
+        <div class="rig-notes">
+          <div><span class="mono-label">Two cards ≠ one pool</span><p>44 GB total, 22 GB each. No NVLink: tensor splits cross PCIe, and the KV cache takes a line item. The second card is memory with a commute.</p></div>
+          <div><span class="mono-label">Good at</span><p>7B–32B quantized inference, embeddings, classification, private batches and small LoRA runs.</p></div>
+          <div><span class="mono-label">Not good at</span><p>70B at usable context, frontier reasoning, long-context research and image or video generation at speed.</p></div>
+        </div>
+        <p class="rig-quote">Built from used parts: 2 × Xeon E5-2696 v4, 2 × RTX 2080 Ti at 22 GB, 94 GB DDR4. Still cheaper than renting.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <p><strong>Norwin Yu</strong><span>AI usage research / games &amp; local compute.</span></p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <span class="mono-label">Index</span>
+        <a href="work/index.html">Experiments</a>
+        <a href="ai.html">Setup</a>
+        <a href="open-source.html">Open source</a>
+        <a href="competitions.html">Competitions</a>
+        <a href="blog/index.html">Journal</a>
+        <a href="about.html">About</a>
+      </nav>
+      <div class="footer-note">
+        <span class="mono-label">Colophon</span>
+        <p>Set in Inter and IBM Plex Mono. Hand-built, statically served. No trackers, cookies or keys.</p>
+        <p>AI usage research / 2026</p>
+      </div>
+      <div class="footer-status">
+        <span class="status"><i aria-hidden="true"></i>Open to research conversations</span>
+        <a href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 Norwin Yu</span>
+      <span>Last updated / November 2026</span>
+      <span>No analytics. No external requests at runtime.</span>
+    </div>
+  </footer>
+</body>
+</html>

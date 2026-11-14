@@ -1,0 +1,17 @@
+{
+  "name": "Norwin Yu — AI usage research",
+  "short_name": "Norwin Yu",
+  "description": "Games, coding tools and local inference experiments.",
+  "lang": "en",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f7f5ef",
+  "theme_color": "#f7f5ef",
+  "icons": [
+    { "src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/img/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

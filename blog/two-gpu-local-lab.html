@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>44GB 的问题 — Norwin Yu</title>
+  <meta name="description" content="两张 RTX 2080 Ti、44GB 显存、能跑什么、不能跑什么，以及本地推理真正的瓶颈。">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="44GB 的问题 — Norwin Yu">
+  <meta property="og:description" content="两张 RTX 2080 Ti、44GB 显存、能跑什么、不能跑什么，以及本地推理真正的瓶颈。">
+  <meta property="og:image" content="../assets/img/og.png">
+  <meta property="og:locale" content="zh_CN">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="preload" href="../assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/article.css">
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="../index.html" aria-label="Norwin Yu — 首页">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
+      </a>
+      <nav class="article-nav" aria-label="文章导航">
+        <a href="../work/index.html">实验</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <span class="availability"><i aria-hidden="true"></i>开放研究交流</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> 全部笔记</a>
+        <p class="article-kicker"><span class="is-accent">系统</span><i aria-hidden="true"></i><span>本地算力</span><i aria-hidden="true"></i><span>现场笔记</span></p>
+        <h1>44GB 的<br><em>问题。</em></h1>
+        <p class="article-deck">两张 RTX 2080 Ti、44GB 显存：能跑什么，不能跑什么，以及本地推理真正的瓶颈通常不是模型大小。</p>
+        <p class="article-cn">两张 22GB 的 2080 Ti 不是一张 44GB 的卡。这个区别决定了很多事。</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>2026 年 11 月</span>
+          <span>8 分钟</span>
+          <span>现场笔记 / 02</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">目录</p>
+        <nav class="article-toc" aria-label="文章目录">
+          <a href="#arithmetic">算术的假象</a>
+          <a href="#fits">到底能跑什么</a>
+          <a href="#turing">Turing 的边界</a>
+          <a href="#bottleneck">瓶颈会移动</a>
+          <a href="#routing">路由也是设计</a>
+          <a href="#instrument">它是仪器，不是机房</a>
+          <a href="#checklist">一份清单</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>GPU</dt><dd>2 × RTX 2080 Ti</dd></div>
+          <div><dt>显存</dt><dd>22GB 每张 / 共 44GB</dd></div>
+          <div><dt>连接</dt><dd>PCIe，无 NVLink</dd></div>
+          <div><dt>系统</dt><dd>Ubuntu 24.04 LTS</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>桌子下面这台工作站有两张 RTX 2080 Ti，合计 44GB 显存，还有一张让我想关门的电费单。它是用旧零件拼的，比正常对话还吵。但它改变了我对本地 AI 的理解，超过任何一张 benchmark 图。</p>
+
+        <p>第一课在第一个模型加载之前就来了：22 加 22，不等于 44，至少不等于任何有意义的那种 44。</p>
+
+        <h2 id="arithmetic">算术的假象</h2>
+        <p>两张卡给你 44GB 总显存，但它们不是一张 44GB 的卡。这个区别不是抠字眼。它决定了哪些模型能舒服地跑，哪些只能慢慢跑，哪些会让你在凌晨一点盯着 CUDA out of memory。</p>
+        <p>一个能放进单卡的模型，完全避开了卡间通信。一个跨两张卡切分的模型，每一个跨过切分点的 layer 边界都要协调。没有 NVLink，这种协调走 PCIe。带宽有限，延迟真实存在，而且同步开销会随切分数量增长。第二张卡不是免费内存，它是带通勤的内存。</p>
+
+        <blockquote>显存是预算，不是一个数字。上下文、KV cache、激活值和框架本身都要占一行。</blockquote>
+
+        <p>所以“44GB 能装下吗”很少是正确的问题。正确的问题是：在我真正需要的上下文长度下，能跑的最大模型是什么？速度还够用吗？留出的余量能扛住下一次驱动更新吗？</p>
+
+        <h2 id="fits">到底能跑什么</h2>
+        <p>下面是我用的粗略地图。数字是 4-bit 推理的权重大小，不含 KV cache、框架、视觉塔，也不含碎片化。把它当起点，不是保证。</p>
+
+        <table class="compare-table">
+          <thead><tr><th>模型规模</th><th>4-bit 权重</th><th>放在哪</th><th>现实</th></tr></thead>
+          <tbody>
+            <tr><td data-label="模型规模">7B–8B</td><td data-label="4-bit 权重">约 4–5GB</td><td data-label="放在哪">单卡</td><td data-label="现实">舒服。还能留出长上下文和 batch。</td></tr>
+            <tr><td data-label="模型规模">13B–14B</td><td data-label="4-bit 权重">约 7–9GB</td><td data-label="放在哪">单卡</td><td data-label="现实">舒服。22GB 不是问题。</td></tr>
+            <tr><td data-label="模型规模">27B–32B</td><td data-label="4-bit 权重">约 16–20GB</td><td data-label="放在哪">单卡，紧</td><td data-label="现实">中等上下文能跑；KV cache 决定结果。</td></tr>
+            <tr><td data-label="模型规模">70B</td><td data-label="4-bit 权重">约 35–40GB</td><td data-label="放在哪">两张卡</td><td data-label="现实">短上下文纸面能跑，很慢，不是日常主力。</td></tr>
+          </tbody>
+        </table>
+
+        <p>7B 是甜点。量化后的 7B/8B 能留下几 GB 给上下文和 batch，速度可用，失败一次的成本是几分钟而不是一个下午。14B 在 22GB 卡上很舒服。32B 单卡紧、双卡有余量。70B 是演示，不是日常。</p>
+        <p>这也是“本地模型是便宜版 GPT”这个说法失败的原因。7B 不是更差的前沿模型，它是另一种仪器：私密、可预测、永远在线，在一条窄任务带上表现不错。用它跑那条带。</p>
+
+        <h2 id="turing">Turing 的边界</h2>
+        <p>2080 Ti 是 Turing，不是 Ampere。这有实际后果：没有 BF16，现代训练配方需要翻译；很多推理 kernel 为 Ampere 或更新架构优化，Turing 能用，但不总是快路径。Flash attention、量化 kernel、融合算子，都要对着实际卡验证，而不是对着 README。</p>
+        <p>显存带宽仍然不错——每张约 616 GB/s——FP16 tensor core 也在。推理，尤其是量化推理，远没有到不能用。微调就不同了：没有 BF16，加上 22GB 的单卡上限，每次实验都变成仔细的会计。小 LoRA 可以，全量微调不是这台机器的重点。</p>
+        <p>还有不性感的物理问题：两张 250W 卡加 CPU 和硬盘会发热、会吵，会让房间明显比别处暖。它是一台偶尔回答问题的暖气。</p>
+
+        <h2 id="bottleneck">瓶颈会移动</h2>
+        <p>短上下文时，瓶颈常常是 decode：一次生成一个 token，受显存带宽限制，2080 Ti 的带宽就是天花板。长上下文时，prefill 和 KV cache 变成主角。一个 4k 上下文下很快的模型，32k 时可能像换了台机器，尽管权重没变。</p>
+        <p>所以只报告一个 tokens/s 的本地推理 benchmark，对产品决策基本没用。你需要的是“在我的上下文长度、我的 batch、我的真实 prompt 分布下”的 tokens/s。其他都是感觉。</p>
+
+        <div class="callout">
+          <span class="mono-label">该测什么</span>
+          <p>首 token 延迟、4k / 16k / 32k 的 decode 速度、峰值显存，以及机器开始 swap 的那个点。一个只在空 prompt 上快的本地模型是 demo，不是工具。</p>
+        </div>
+
+        <p>还有第二个更安静的瓶颈：人。一个要 90 秒才回答的本地模型会改变工作节奏。你不再问小问题，开始攒问题，开始写更好的 prompt，因为反馈回路很贵。这个约束可能是特性——但前提是你围着它设计，而不是假装它不存在。</p>
+
+        <h2 id="routing">路由也是设计</h2>
+        <p>这台机器教给我最有用的，不是怎么在本地跑大模型，而是如何在本地和云端之间路由，且两边都不带浪漫。</p>
+
+        <table class="compare-table">
+          <thead><tr><th>工作</th><th>放哪里</th><th>为什么</th></tr></thead>
+          <tbody>
+            <tr><td data-label="工作">私密笔记、草稿、embedding</td><td data-label="放哪里">本地</td><td data-label="为什么">数据不出桌；量大也便宜。</td></tr>
+            <tr><td data-label="工作">分类、抽取、过滤</td><td data-label="放哪里">本地</td><td data-label="为什么">小模型够用，迭代快。</td></tr>
+            <tr><td data-label="工作">困难推理、模糊设计</td><td data-label="放哪里">云端</td><td data-label="为什么">前沿能力仍然是前沿。</td></tr>
+            <tr><td data-label="工作">长上下文研究</td><td data-label="放哪里">云端</td><td data-label="为什么">KV cache 和上下文窗口不是公平竞争。</td></tr>
+            <tr><td data-label="工作">图像与运动生成</td><td data-label="放哪里">云端 / 租</td><td data-label="为什么">消费级显存的形状不对。</td></tr>
+          </tbody>
+        </table>
+
+        <p>规则很无聊：私密、量大、定义清楚的工作先本地；模糊推理、大上下文、视觉生成上云。有意思的是边界，每个项目都会把它移动一点。</p>
+
+        <h2 id="instrument">它是仪器，不是机房</h2>
+        <p>我不再试图把工作站变成一朵小云。它不是。它是一台仪器，用来问那些需要数据留在家里、需要一百次便宜迭代、或者单纯想听见风扇转起来的问题。</p>
+        <p>这个框架让约束变得有用。显存有限，逼你做量化和 batch 纪律；decode 慢，逼你把 prompt 和范围收紧；没有 NVLink，逼你选择尊重切分的模型。机器不是对野心的限制，是一组恰好听得见的设计约束。</p>
+
+        <blockquote>最好的本地配置不是能跑最大模型的那套，而是能让下一次实验便宜到值得尝试的那套。</blockquote>
+
+        <h2 id="checklist">一份清单</h2>
+        <ul>
+          <li><strong>钉住软件栈。</strong> 驱动、CUDA、PyTorch、推理服务器版本写进笔记。“上周还能跑”不是复现策略。</li>
+          <li><strong>按真实上下文测。</strong> 记录 4k、16k、32k 的首 token 延迟、decode 速度和峰值显存。</li>
+          <li><strong>留余量。</strong> 如果模型占了 44GB 里的 43.5GB，它就没装下。下一次 prompt 会找到边缘。</li>
+          <li><strong>保留模型卡片。</strong> 量化方式、chat template、上下文上限、它真正擅长的任务。</li>
+          <li><strong>实验和服务分开。</strong> Jupyter notebook 和 systemd unit 的故障模式不一样。</li>
+          <li><strong>不要把密钥放进机器。</strong> 本地不等于安全。环境文件、key、token 需要和服务器一样的纪律。</li>
+        </ul>
+
+        <p>44GB 的问题没有干净解。它只有一组工作 trade-off、几个真正值得留下的模型，以及每天提醒你：能力总是被运行它的机器塑造。那不是限制，那是设计 brief。</p>
+
+        <p class="article-end"><strong>硬件 /</strong> 2 × RTX 2080 Ti（每张 22GB，PCIe，无 NVLink）、94GB DDR4、双路 Xeon E5-2696 v4、Ubuntu 24.04 LTS。数字是 4-bit 推理的权重大小估算，不含 KV cache、激活值和框架开销。这里不声称任何 tokens/s；请测自己的工作负载。</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>下一篇 / 设计</p>
+          <h2 id="next-title">最后一公里是审美</h2>
+        </div>
+        <a href="last-mile-taste.html">
+          <span>继续阅读</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="页脚">
+        <a href="../work/index.html">实验</a>
+        <a href="../ai.html">环境</a>
+        <a href="../open-source.html">开源</a>
+        <a href="../competitions.html">竞赛</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <a href="index.html">全部笔记 <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Open source — Norwin Yu</title>
+  <meta name="description" content="Open source contributions to Strata and Project Maya: multi-GPU benchmarks, docs and API shape fixes.">
+  <meta name="author" content="Norwin Yu">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="About — Norwin Yu">
+  <meta property="og:description" content="Open source contributions to Strata and Project Maya: multi-GPU benchmarks, docs and API shape fixes.">
+  <meta property="og:image" content="assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preload" href="assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/site.css">
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body class="index-page" data-page="oss">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar" data-header>
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="work/index.html" data-nav="work">Experiments</a>
+        <a href="ai.html" data-nav="ai">Setup</a>
+        <a href="open-source.html" data-nav="oss">Open source</a>
+        <a href="competitions.html" data-nav="competitions">Competitions</a>
+        <a href="blog/index.html" data-nav="journal">Journal</a>
+        <a href="about.html" data-nav="about">About</a>
+      </nav>
+      <div class="topbar-actions">
+        <span class="status"><i aria-hidden="true"></i>AI usage research</span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          Menu <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true">
+    <div class="wrap mobile-menu-head">
+      <span class="mono-label">Index / 2026</span>
+      <button class="menu-close" type="button" data-menu-close aria-label="Close menu">Close <span aria-hidden="true">×</span></button>
+    </div>
+    <nav class="wrap mobile-nav" aria-label="Mobile primary">
+      <a href="work/index.html" data-nav="work">Experiments</a>
+      <a href="ai.html" data-nav="ai">Setup</a>
+        <a href="open-source.html" data-nav="oss">Open source</a>
+      <a href="competitions.html" data-nav="competitions">Competitions</a>
+      <a href="blog/index.html" data-nav="journal">Journal</a>
+      <a href="about.html" data-nav="about">About</a>
+    </nav>
+    <div class="wrap mobile-menu-foot">
+      <span>AI usage research / 2026</span>
+      <span>Open to research conversations</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <p class="section-kicker">Open source / 2026</p>
+        <h1>Open source contributions.</h1>
+        <p class="page-lede">Small, specific returns to tools I use. Mostly benchmarks on old hardware, documentation about when multi-GPU actually pays, and one API-shape fix for OpenAI-compatible clients.</p>
+        <div class="page-meta"><span><i></i>02 upstream projects</span><span>08 upstream items</span><span>43k+★ / 2.8k+★</span><span>Contributor, not maintainer</span></div>
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="oss-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">01 / Contributions</p><h2 id="oss-title">Measurements, docs and a small fix.</h2></div>
+        <p class="section-intro">I contribute where my own rig exposes a gap: old cards, a slow CPU, long context and clients that need standard API fields. The reports are public even where the upstream patch was not merged.</p>
+      </div>
+
+      <div class="wrap oss-grid">
+        <article class="oss-card" id="strata">
+          <div class="oss-card-head">
+            <div><p class="mono-label">Strata / local inference</p><h2>Multi-GPU on old cards.</h2></div>
+            <span class="oss-stars">43k+ ★</span>
+          </div>
+          <p class="oss-deck">Upstream: <a href="https://github.com/Niko1221/Strata" target="_blank" rel="noopener">Niko1221/Strata <span aria-hidden="true">↗</span></a>. Strata runs a large model on consumer hardware. My contribution is a series of benchmark reports and docs notes for two RTX 2080 Ti 22 GB cards on a dual-socket Xeon E5-2696 v4.</p>
+          <dl class="oss-specs">
+            <div><dt>Focus</dt><dd>Layer split vs one card, --batch, vLLM</dd></div>
+            <div><dt>Hardware</dt><dd>2× 2080 Ti 22 GB · dual Xeon</dd></div>
+            <div><dt>Form</dt><dd>5 upstream PRs</dd></div>
+            <div><dt>Data</dt><dd>Raw requests, configs, concurrency</dd></div>
+          </dl>
+          <div class="oss-result">
+            <span>Reported result / engine 0.1.52</span>
+            <p>Layer split vs one card, UD-IQ4_XS: decode <strong>40.8 → 60.4 tok/s (+48%)</strong>; 32K fresh prompt <strong>768 → 1,269 tok/s (+65%)</strong>.</p>
+          </div>
+          <ul class="oss-links">
+            <li><a href="https://github.com/Niko1221/Strata/pull/4515" target="_blank" rel="noopener"><span>#4515</span>0.1.52 re-run: split, IQ3_XXS</a></li>
+            <li><a href="https://github.com/Niko1221/Strata/pull/3929" target="_blank" rel="noopener"><span>#3929</span>Split vs one GPU, --batch, vLLM</a></li>
+            <li><a href="https://github.com/Niko1221/Strata/pull/2662" target="_blank" rel="noopener"><span>#2662</span>First community report on this rig</a></li>
+            <li><a href="https://github.com/Niko1221/Strata/pull/2665" target="_blank" rel="noopener"><span>#2665</span>Docs: when the layer split pays</a></li>
+            <li><a href="https://github.com/Niko1221/Strata/pull/3930" target="_blank" rel="noopener"><span>#3930</span>Docs: slow CPU condition (open)</a></li>
+          </ul>
+        </article>
+
+        <article class="oss-card" id="maya">
+          <div class="oss-card-head">
+            <div><p class="mono-label">Project Maya / large MoE inference</p><h2>Model discovery + a 128K report.</h2></div>
+            <span class="oss-stars">2.8k+ ★</span>
+          </div>
+          <p class="oss-deck">Upstream: <a href="https://github.com/mw00/project-maya" target="_blank" rel="noopener">mw00/project-maya <span aria-hidden="true">↗</span></a>. Maya runs large MoE models across consumer GPUs and system memory. My contribution is a server API field fix plus a long-context speed report on the 2080 Ti pair.</p>
+          <dl class="oss-specs">
+            <div><dt>Feature</dt><dd><code>context_length</code> + <code>max_output_tokens</code></dd></div>
+            <div><dt>Endpoint</dt><dd><code>GET /v1/models</code> · client discovery</dd></div>
+            <div><dt>Report</dt><dd>Maya-XS · DeepSeek-V4.1-Flash · 128K</dd></div>
+            <div><dt>Hardware</dt><dd>2× 2080 Ti 22 GB · 94 GB DDR4</dd></div>
+          </dl>
+          <div class="oss-result">
+            <span>Landed on main / 535327b</span>
+            <p>The model listing now exposes the field names generic clients read, while keeping the existing <code>meta.n_ctx</code> for compatibility.</p>
+          </div>
+          <ul class="oss-links">
+            <li><a href="https://github.com/mw00/project-maya/pull/649" target="_blank" rel="noopener"><span>#649</span>Expose context fields on /v1/models</a></li>
+            <li><a href="https://github.com/mw00/project-maya/commit/535327b7dfbdb4b1df71af8ff329f010911dcaf2" target="_blank" rel="noopener"><span>commit</span>Change on upstream main</a></li>
+            <li><a href="https://github.com/mw00/project-maya/issues/659" target="_blank" rel="noopener"><span>#659</span>Speed report: 128K on 2× 2080 Ti</a></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="how-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">02 / Method</p><h2 id="how-title">What I contribute.</h2></div>
+        <p class="section-intro">Not features for the sake of a commit count. The useful contribution is usually the measurement or the missing sentence that lets the next person make a decision.</p>
+      </div>
+      <div class="wrap home-cap-grid">
+        <div class="home-cap-item"><span>01</span><h3>Measure the awkward rig</h3><p>Old cards, slow CPUs, long context. The community needs numbers from the hardware people actually own, not only clean benchmark boxes.</p></div>
+        <div class="home-cap-item"><span>02</span><h3>Return the raw data</h3><p>Reports include requests, configs, concurrency data and sanitized settings so someone else can rerun or challenge the result.</p></div>
+        <div class="home-cap-item"><span>03</span><h3>Fix the interface gap</h3><p>When a client cannot discover a model's context, the smallest useful patch is the API field, not a longer README.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <p><strong>Norwin Yu</strong><span>AI usage research / games &amp; local compute.</span></p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <span class="mono-label">Index</span>
+        <a href="work/index.html">Experiments</a>
+        <a href="ai.html">Setup</a>
+        <a href="open-source.html">Open source</a>
+        <a href="competitions.html">Competitions</a>
+        <a href="blog/index.html">Journal</a>
+        <a href="about.html">About</a>
+      </nav>
+      <div class="footer-note">
+        <span class="mono-label">Colophon</span>
+        <p>Set in Inter and IBM Plex Mono. Hand-built, statically served. No trackers, cookies or keys.</p>
+        <p>AI usage research / 2026</p>
+      </div>
+      <div class="footer-status">
+        <span class="status"><i aria-hidden="true"></i>Open to research conversations</span>
+        <a href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 Norwin Yu</span>
+      <span>Last updated / November 2026</span>
+      <span>No analytics. No external requests at runtime.</span>
+    </div>
+  </footer>
+</body>
+</html>

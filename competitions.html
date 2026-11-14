@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Competitions — Norwin Yu</title>
+  <meta name="description" content="Selected data science and machine learning competition results.">
+  <meta name="author" content="Norwin Yu">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Competitions — Norwin Yu">
+  <meta property="og:description" content="Selected data science and machine learning competition results.">
+  <meta property="og:image" content="assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preload" href="assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/site.css">
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body class="index-page" data-page="competitions">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar" data-header>
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="work/index.html" data-nav="work">Experiments</a>
+        <a href="ai.html" data-nav="ai">Setup</a>
+        <a href="open-source.html" data-nav="oss">Open source</a>
+        <a href="competitions.html" data-nav="competitions">Competitions</a>
+        <a href="blog/index.html" data-nav="journal">Journal</a>
+        <a href="about.html" data-nav="about">About</a>
+      </nav>
+      <div class="topbar-actions">
+        <span class="status"><i aria-hidden="true"></i>AI usage research</span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          Menu <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true">
+    <div class="wrap mobile-menu-head">
+      <span class="mono-label">Index / 2026</span>
+      <button class="menu-close" type="button" data-menu-close aria-label="Close menu">Close <span aria-hidden="true">×</span></button>
+    </div>
+    <nav class="wrap mobile-nav" aria-label="Mobile primary">
+      <a href="work/index.html" data-nav="work">Experiments</a>
+      <a href="ai.html" data-nav="ai">Setup</a>
+        <a href="open-source.html" data-nav="oss">Open source</a>
+      <a href="competitions.html" data-nav="competitions">Competitions</a>
+      <a href="blog/index.html" data-nav="journal">Journal</a>
+      <a href="about.html" data-nav="about">About</a>
+    </nav>
+    <div class="wrap mobile-menu-foot">
+      <span>AI usage research / 2026</span>
+      <span>Open to research conversations</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <p class="section-kicker">Competitions / 2020 – 2026</p>
+        <h1>Rankings, with the receipts.</h1>
+        <p class="page-lede">Only results I can point to a leaderboard or submission for. The older entries are historical; the 2026 Kaggle entries are works in progress, not medal claims.</p>
+        <div class="page-meta"><span><i></i>04 entries</span><span>NLP · logistics · prompt optimization</span><span>Rank 14</span><span>45 / 102</span></div>
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="results-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">01 / Results</p><h2 id="results-title">Selected competitions.</h2></div>
+        <p class="section-intro">The useful output is not the certificate. It is the method, the failure mode and the thing I would do differently next time.</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table competition-table">
+          <caption class="sr-only">Selected competitions and results</caption>
+          <thead><tr><th scope="col">Year / event</th><th scope="col">Task</th><th scope="col">Approach</th><th scope="col">Result</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><span>2026</span>Kaggle · Name That LLM</th><td data-label="Task">18-way attribution of passages to model variants.</td><td data-label="Approach">TF-IDF baseline → feature, SVM and hierarchical experiments → Qwen3-1.7B LoRA with prompt-level splits and seed checks.</td><td data-label="Result">190k passages; +0.026 balanced accuracy from data cleaning. <a href="../blog/name-that-llm.html">Research note ↗</a></td></tr>
+            <tr><th scope="row"><span>2026</span>Kaggle · Gemma 4 Prompt Optimization</th><td data-label="Task">Prompt optimization against a fixed evaluation harness.</td><td data-label="Approach">Multiple notebook iterations, topic scraping, a public Dockerfile and repeated submission cycles.</td><td data-label="Result">In progress. No rank or medal claimed.</td></tr>
+            <tr><th scope="row"><span>2020</span>中国大学生保险数字科技挑战赛</th><td data-label="Task">Dialogue intent recognition from anonymized character and word IDs.</td><td data-label="Approach">Word2vec 128d, Transformer + BiLSTM, focal/F1 hybrid loss for class imbalance.</td><td data-label="Result">Rank 14 overall · 4th in East China · 0.29306 macro F1.</td></tr>
+            <tr><th scope="row"><span>2020</span>天池 · 饿了么骑士行为预估</th><td data-label="Task">Predict a courier's next action during COVID-19.</td><td data-label="Approach">LightGBM with wave, order and distance features, extended from a public baseline.</td><td data-label="Result">45 / 102 · 0.751 online score.</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>Note</span>Historical results are shown as recorded at the time. Current Kaggle entries do not claim a leaderboard position.</p>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="takeaways-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">02 / Takeaways</p><h2 id="takeaways-title">What the competitions changed.</h2></div>
+        <p class="section-intro">Three habits that survived the leaderboard and made the game work better.</p>
+      </div>
+      <div class="wrap home-cap-grid">
+        <div class="home-cap-item"><span>01</span><h3>Align the metric</h3><p>Macro F1, balanced accuracy and online score reward different behaviour. Pick the loss and split that match the metric, not the leaderboard folklore.</p></div>
+        <div class="home-cap-item"><span>02</span><h3>Build the split first</h3><p>Prompt-level splits and seed checks catch more leakage than another model. A clean negative result is information.</p></div>
+        <div class="home-cap-item"><span>03</span><h3>Keep the failures</h3><p>The feature that did not replicate and the loss that did not help are part of the result. They are also the most useful interview material.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <p><strong>Norwin Yu</strong><span>AI usage research / games &amp; local compute.</span></p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <span class="mono-label">Index</span>
+        <a href="work/index.html">Experiments</a>
+        <a href="ai.html">Setup</a>
+        <a href="open-source.html">Open source</a>
+        <a href="competitions.html">Competitions</a>
+        <a href="blog/index.html">Journal</a>
+        <a href="about.html">About</a>
+      </nav>
+      <div class="footer-note">
+        <span class="mono-label">Colophon</span>
+        <p>Set in Inter and IBM Plex Mono. Hand-built, statically served. No trackers, cookies or keys.</p>
+        <p>AI usage research / 2026</p>
+      </div>
+      <div class="footer-status">
+        <span class="status"><i aria-hidden="true"></i>Open to research conversations</span>
+        <a href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 Norwin Yu</span>
+      <span>Last updated / November 2026</span>
+      <span>No analytics. No external requests at runtime.</span>
+    </div>
+  </footer>
+</body>
+</html>

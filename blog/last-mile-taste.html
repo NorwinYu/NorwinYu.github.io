@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>最后一公里是审美 — Norwin Yu</title>
+  <meta name="description" content="生成式界面能把你送到第一版；最后那 10%，仍然要靠编辑、判断和审美。">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="最后一公里是审美 — Norwin Yu">
+  <meta property="og:description" content="生成式界面能把你送到第一版；最后那 10%，仍然要靠编辑、判断和审美。">
+  <meta property="og:image" content="../assets/img/demo-three-kingdoms-battle.jpg">
+  <meta property="og:locale" content="zh_CN">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="preload" href="../assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/article.css">
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="../index.html" aria-label="Norwin Yu — 首页">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
+      </a>
+      <nav class="article-nav" aria-label="文章导航">
+        <a href="../work/index.html">实验</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <span class="availability"><i aria-hidden="true"></i>开放研究交流</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> 全部笔记</a>
+        <p class="article-kicker"><span class="is-accent">设计</span><i aria-hidden="true"></i><span>界面手艺</span><i aria-hidden="true"></i><span>观点</span></p>
+        <h1>最后一公里<br><em>是审美。</em></h1>
+        <p class="article-deck">生成式界面能把你送到第一版。最后那 10%，仍然要靠编辑、判断和审美。</p>
+        <p class="article-cn">生成式界面能把你送到第一版；最后那 10%，仍然要靠编辑、判断和审美。</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>2026 年 11 月</span>
+          <span>6 分钟</span>
+          <span>现场笔记 / 03</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">目录</p>
+        <nav class="article-toc" aria-label="文章目录">
+          <a href="#first-draft">前 80%</a>
+          <a href="#failures">三种失败</a>
+          <a href="#compression">审美是压缩</a>
+          <a href="#method">一套工作方法</a>
+          <a href="#rubric">一张小评分表</a>
+          <a href="#editor">编辑的工作</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>语境</dt><dd>AI 生成的产品界面</dd></div>
+          <div><dt>例子</dt><dd>3D 图谱、战棋游戏</dd></div>
+          <div><dt>信念</dt><dd>约束胜过装饰</dd></div>
+          <div><dt>工具</dt><dd>代码、截图、编辑</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>第一版生成界面来得很快。一个 header、一个 grid、几张卡、一个渐变、一个 CTA。它看起来像一个产品，有产品的形状，大约三十秒内很有说服力。</p>
+        <p>然后你开始用。主操作是页面上第三显眼的东西。每张卡权重一样。空状态是一句谁也没解释清楚的话。字号有十一个层级。动效是装饰。页面技术上完成了，概念上还没开始。</p>
+
+        <p>这就是现在真正重要的差距。生成把第一版草稿的成本打平了，但没有把编辑的成本打平。</p>
+
+        <h2 id="first-draft">前 80%</h2>
+        <p>模型非常擅长互联网的平均值。这正是它适合第一版的原因：它知道 dashboard 长什么样、pricing page 有什么、哪些组件通常放一起。如果你的问题是“给我看这个东西的常规形状”，机器是个不错的实习生。</p>
+        <p>麻烦从“常规形状不是答案”开始。一个密集的技术图谱不该和 SaaS landing page 有同样的层级。一个战棋游戏不该和设置页有同样的节奏。模型仍然会产出看起来合理的东西，因为合理就是它的工作。你的工作是发现“合理”什么时候是错的。</p>
+
+        <h2 id="failures">三种失败</h2>
+        <h3>所有东西都变成卡片</h3>
+        <p>卡片适合独立、可扫描的条目，不适合其他一切。一个页面有十二张卡，眼睛就没有入口。界面不是在组织信息，而是在逃避“什么最重要”的决定。</p>
+
+        <h3>所有东西权重一样</h3>
+        <p>生成布局经常平均分配强调，因为强调需要做判断。标题、数据、推荐语、页脚链接占同一个视觉层级，结果礼貌但不可读。层级不是样式选择，它是页面的论点。</p>
+
+        <h3>动效被当成意义</h3>
+        <p>每个 section 都 fade-up 不是概念，parallax 不是叙事。动效应该解释关系、确认操作或保留上下文。三件事都不做，它就只是页面在自己喘气。</p>
+
+        <blockquote>生成给你选项，编辑是删掉其中大部分。</blockquote>
+
+        <figure class="article-figure">
+          <img src="../assets/img/demo-three-kingdoms-battle.jpg" alt="密集的战棋界面：单位面板、地形和操作栏同时存在。" width="1440" height="900" loading="lazy">
+          <figcaption><span>密集的界面也可以很安静：一个棋盘、一个选中单位、一个下一步。</span><span>烽火三国 / 战斗界面</span></figcaption>
+        </figure>
+
+        <h2 id="compression">审美是压缩</h2>
+        <p>我以前觉得审美是偏好。现在觉得它更接近压缩：用更少的决定，说同一件事。好屏幕有一个主导想法、清晰的阅读顺序、真正干活的字号层级，以及足够让想法呼吸的留白。</p>
+        <p>压缩体现在细节里。64px 标题不一定比 48px 好；它只有在改变阅读顺序时才好。边框不一定比背景好；它只有在不增加噪音地澄清分组时才好。每个元素都应该证明自己占用的注意力。</p>
+        <p>这也是“做得好看一点”这么弱的 prompt 的原因。有用的指令是“让主操作两秒内明显，并删掉所有和它竞争的东西”。那是编辑指令，有标准，可以检查。</p>
+
+        <h2 id="method">一套工作方法</h2>
+        <p>我用模型做屏幕时，不从视觉参考开始，而从大纲开始：</p>
+        <ol>
+          <li><strong>这个屏幕回答哪个问题？</strong> 写成一句话，不是功能名。</li>
+          <li><strong>唯一动作是什么？</strong> 如果有两个主操作，你需要两个屏幕。</li>
+          <li><strong>阅读顺序是什么？</strong> 在 styling 之前先给区块编号。</li>
+          <li><strong>什么可以删？</strong> 加一个 section 前先删一个。</li>
+          <li><strong>空、加载、错误状态是什么？</strong> 生成版通常三个都忘了。</li>
+        </ol>
+        <p>然后生成，在 390、768、1440 三个宽度截图，对比三张。响应式失败经常是层级失败的伪装：如果手机布局不知道什么重要，桌面布局大概也不知道。</p>
+        <p>最后一轮是手工的。不是模型不会写 CSS，而是最后 10% 是一连串需要观点的小判断：收紧这行、删掉那条分隔线、把数字移出卡片、让图片成为主角。每一个都不难，合起来就是 demo 和产品的区别。</p>
+
+        <h2 id="rubric">一张小评分表</h2>
+        <p>我用五个问题判断一个屏幕是否完成。它们故意很钝：</p>
+        <ul>
+          <li><strong>两秒内能看出这个页面干什么吗？</strong> 不能，说明层级做了太多事。</li>
+          <li><strong>有一个明显的下一步吗？</strong> 如果什么都能点，就什么都不是。</li>
+          <li><strong>390px 下还能活吗？</strong> 手机是桌面装饰的诚实测试。</li>
+          <li><strong>删掉 30% 会失去意义吗？</strong> 通常不会。删。</li>
+          <li><strong>动效解释了什么东西吗？</strong> 没有就删。</li>
+        </ul>
+        <p>这些不是审美绝对标准，是过滤器。它们让一个看起来合理的屏幕，没那么容易在没有观点的情况下溜过去。</p>
+
+        <h2 id="editor">编辑的工作</h2>
+        <p>不舒服的暗示是：人的角色没有消失，它在移动。花在产出一稿上的时间少了，花在决定哪一稿值得存在上的时间多了。那不是更低级的工作，那是决定作品有没有声音的工作。</p>
+        <p>模型是很好的合作者，也是自己输出的糟糕编辑。你叫停之前，它会一直加。最后一公里，是你叫停、选出唯一值得保留的想法，并让其他一切为它服务。</p>
+
+        <p class="article-end"><strong>说明 /</strong> 这是一篇设计现场笔记，不是说生成界面很差。论点更窄：生成改变了生产成本，没有消除判断的必要。文中提到的屏幕是在生成之后手工编辑的。</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>下一篇 / AI 系统</p>
+          <h2 id="next-title">Agent 循环需要审美</h2>
+        </div>
+        <a href="agent-loops-need-taste.html">
+          <span>继续阅读</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="页脚">
+        <a href="../work/index.html">实验</a>
+        <a href="../ai.html">环境</a>
+        <a href="../open-source.html">开源</a>
+        <a href="../competitions.html">竞赛</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <a href="index.html">全部笔记 <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

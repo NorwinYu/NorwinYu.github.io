@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>1.4MB 到底买到了什么 — Norwin Yu</title>
+  <meta name="description" content="Saltline 不是压缩奇迹，而是把资产变成函数：模型写的不是场景，而是造场景的生成器。">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="1.4MB 到底买到了什么 — Norwin Yu">
+  <meta property="og:description" content="拆开 Saltline：零素材、模型写出的内容管线，以及“场景脚本”和“生成器”的差别。">
+  <meta property="og:image" content="../assets/img/og.png">
+  <meta property="og:locale" content="zh_CN">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="preload" href="../assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/article.css">
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="../index.html" aria-label="Norwin Yu — 首页">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
+      </a>
+      <nav class="article-nav" aria-label="文章导航">
+        <a href="../work/index.html">实验</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <span class="availability"><i aria-hidden="true"></i>开放研究交流</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> 全部笔记</a>
+        <p class="article-kicker"><span class="is-accent">系统</span><i aria-hidden="true"></i><span>WebGL</span><i aria-hidden="true"></i><span>生成式管线</span></p>
+        <h1>1.4MB<br><em>到底买到了什么。</em></h1>
+        <p class="article-deck">Saltline 不是压缩奇迹。它是一个由模型写出来的生成器，在运行时把内容造出来。</p>
+        <p class="article-cn">拆开之后，真正值得看的不是 1.4MB，而是“零素材”背后的那套生产管线。</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>2026 年 11 月</span>
+          <span>11 分钟</span>
+          <span>研究笔记 / 05</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">目录</p>
+        <nav class="article-toc" aria-label="文章目录">
+          <a href="#number">先拆开这个数字</a>
+          <a href="#zero">零素材，不等于零内容</a>
+          <a href="#layers">六层生成</a>
+          <a href="#look">为什么观感更好</a>
+          <a href="#old-way">为什么旧管线不这么做</a>
+          <a href="#steal">可以借鉴什么</a>
+          <a href="#limits">它没有证明什么</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>文件</dt><dd>1,423,668 字节</dd></div>
+          <div><dt>gzip</dt><dd>约 443KB</dd></div>
+          <div><dt>外部素材</dt><dd>0 图片 / 音频 / 模型</dd></div>
+          <div><dt>生成</dt><dd>约 8 小时 · 约 $550 API</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>我把那个独立的 HTML 文件下载下来，拆开看了。第一个意外是，标题里的数字是真的：1,423,668 字节，约 6,195 行，gzip 后约 443KB。第二个意外是，真正有意思的不是 1.4MB，而是零：没有图片文件、没有音频文件、没有 3D 模型文件。</p>
+
+        <p>这个游戏叫 <a href="https://saltline.games" target="_blank" rel="noopener">Saltline</a>，一个雨夜集装箱码头的第一人称射击 Demo。它经常被描述成“1.4MB 的 3A 大作”。这个说法错得很有信息量：它不是 3A，1.4MB 也不是压缩技术的胜利。它是一个单文件浏览器游戏，内容不是加载进来的，而是运行时用代码生成的。</p>
+
+        <div class="stat-strip">
+          <div><strong>1.42 MB</strong><span>单个 HTML，未压缩</span></div>
+          <div><strong>443 KB</strong><span>实际传输 gzip 后</span></div>
+          <div><strong>0</strong><span>独立图片 / 音频 / 模型</span></div>
+        </div>
+
+        <h2 id="number">先拆开这个数字</h2>
+        <p>构成比总数更重要。大约一半是内联进同一个文件的 three.js，另一半是游戏本身：世界构建、材质、shader、玩家与敌人逻辑、关卡数据、UI 和音频合成。</p>
+
+        <figure class="article-figure budget-figure">
+          <div class="budget-chart" role="img" aria-label="大致体积构成：three.js 约 700KB，游戏代码约 690KB，素材为 0。">
+            <div class="budget-row"><span>three.js 运行时</span><i class="budget-w49"></i><b>约 700 KB</b></div>
+            <div class="budget-row"><span>游戏与 shader</span><i class="budget-w48"></i><b>约 690 KB</b></div>
+            <div class="budget-row"><span>图片 / 音频 / 模型</span><i class="is-empty budget-w1"></i><b>0 B</b></div>
+          </div>
+          <figcaption><span>1.42MB 文件的大致构成。</span><span>本地拆包 / 2026</span></figcaption>
+        </figure>
+
+        <p>这就是为什么“文件小”这个讨论经常跑偏。传统游戏大，是因为贴图、模型、动画和音频是数据。Saltline 把这些数据换成了过程。代码比它生成的内容小，不是因为它把内容压小了，而是因为它从来没有把内容存下来。</p>
+
+        <p>这也不是史无前例。2004 年的 <em>.kkrieger</em> 就用 96KB 装下过一个完整 FPS。真正新的不是“程序化生成”这个想法，而是写生成器的成本：一个模型、一条 prompt、约八小时，以及据创作者说约 550 美元的 API 账单。</p>
+
+        <h2 id="zero">零素材，不等于零内容</h2>
+        <p>场景里有集装箱、叉车、防撞墩、灯杆、铁丝网、托盘、木箱、系缆桩、岗亭、楼梯、检修通道和船。它们没有一个是作为 mesh 加载的，而是由一张“套件表”拼出来，尺寸用的是真实米制：</p>
+
+        <pre><code>container40:    [12.19, 2.59, 2.44, "paint_blue", "metal"]
+container40hc:  [12.19, 2.90, 2.44, "paint_green", "metal"]
+jersey_barrier: [3.00, 0.81, 0.60, "concrete", "concrete"]
+light_mast:     [0.50, 14.0, 0.50, "steel_galv", "metal"]</code></pre>
+
+        <p>场景本质上是一张坐标表，加上一套拼装函数。箱体、圆柱、挤出体、旋转体组合成道具，静态几何合并，重复物体用实例化。所谓“美术”，在这里不是模型文件，而是尺寸、材质键和摆放位置。</p>
+
+        <p>表面也一样。没有贴图图集，代码里有约 29 个表面函数：沥青、混凝土、锈、镀锌钢、花纹钢板、瓦楞板、铁丝网、水……再加一张材质预设表，为每种表面补上颜色、粗糙度、金属度、湿润度和宏观色差。启动时把它们算成 height / ORM / albedo，shader 再把 height 转成法线，用三平面投影消除拉伸，叠加水洼、湿润和色差。</p>
+
+        <blockquote>内容不是被压缩了，而是从来没有以内容的形式被存下来。</blockquote>
+
+        <h2 id="layers">六层生成</h2>
+        <h3>1. 几何是套件</h3>
+        <p>36 种道具，真实米制尺寸，用图元拼装、合批、实例化。集装箱不是模型，是尺寸的函数。</p>
+
+        <h3>2. 表面是函数</h3>
+        <p>噪声、距离场和材质参数生成表面。一张 256×256 的噪声纹理就够，因为细节是算出来的，不是画出来的。三平面投影负责消除接缝。</p>
+
+        <h3>3. 光照是构图</h3>
+        <p>没有烘焙 lightmap。低角度暖太阳、冷灰雾、天空渐变、PMREM 环境探针、湿地面平面反射，再加一整条后处理：SSAO、体积雾、运动模糊、Karis bloom、自动曝光、ACES、FXAA 和颗粒。</p>
+
+        <h3>4. 动画是解算</h3>
+        <p>Hound 机器狗不是带骨骼动画文件的角色，而是一棵对象层级加四腿 IK、弹簧阻尼和程序化死亡模拟。动作是参数化系统，不是录制的表演。</p>
+
+        <h3>5. 音频是合成</h3>
+        <p>雨、风、海、枪声、机械声都由 WebAudio 的 buffer、滤波、waveshaper 和压缩器现场合成，混响的 impulse 也是代码生成。它甚至内置了一个 <code>OfflineAudioContext</code> 自测：离线跑 10 秒脚本场景，检查 peak、RMS、NaN 和削波。</p>
+
+        <h3>6. 验证是产品的一部分</h3>
+        <p>构建支持固定 seed、截图模式、benchmark、单独运行某个子系统、冻结敌人、指定相机等 URL 参数；把 console 错误收集到 <code>window.__errors</code>；有画质分级，遇到弱 GPU 自动降档。这不是顺手加的。一个没有人类在旁边的 agent，必须能看见自己的输出。</p>
+
+        <h2 id="look">为什么观感更好</h2>
+        <p>我们平时看到的“AI 3D”大多数是场景脚本：一块地、几个盒子、默认材质、一盏平行光、一个随手放的相机。Saltline 是为一个场景写的一套引擎。差距不是某一个 shader，而是一串互相加强的决定。</p>
+
+        <ul>
+          <li><strong>尺度统一。</strong>眼高 1.68m，40 尺集装箱 12.19m，系缆桩 0.7m。人脑判断“真实”靠的是这些小参照物，不是面数。</li>
+          <li><strong>光线只有一个主意。</strong>暖色低太阳对冷灰雾，湿地面反光，强剪影。场景从设计开始就是为了在这种光下被看。</li>
+          <li><strong>材质有变化。</strong>粗糙度、湿度、锈、瓦楞、贴花都在变。单一灰色材质看起来就是塑料。</li>
+          <li><strong>后处理做了“贵”的那部分。</strong>Bloom、曝光、雾、运动模糊和颗粒，把正确的几何变成有空气感的画面。</li>
+          <li><strong>运动有重量。</strong>加速度、coyote time、落地下沉、镜头 bob、ADS 视野、后坐力和震动都参数化了。静帧看不出来，玩几秒就知道了。</li>
+          <li><strong>细节用来建立尺度。</strong>防撞墩、托盘、线缆盘、集装箱编号不是装饰，它们告诉眼睛其他东西有多大。</li>
+          <li><strong>帧率也是观感。</strong>合批、实例化、对象池、半分辨率效果和画质分级，让画面保持响应。</li>
+        </ul>
+
+        <p>还有一个聪明选择：它避开了程序化最难的主题。没有森林、人脸、布料、毛发或白天。夜景、雨、雾、逆光和湿润的工业表面是宽容的。约束把缺口藏起来，也把对比放大。</p>
+
+        <h2 id="old-way">为什么旧管线不这么做</h2>
+        <p>程序化内容不新。地形、植被、城市、材质、破坏效果，游戏工业用了几十年。它没有成为默认，不是没人想到，而是不划算。</p>
+
+        <ul>
+          <li><strong>体积从来不是瓶颈。</strong>50GB 蓝光、100GB 下载都很正常。省掉 99% 的体积，不会省掉 99% 的预算；人、迭代和审核才是贵的部分。</li>
+          <li><strong>玩家记住的是具体性。</strong>程序化天然趋向“统计上合理”。英雄资产、角色和关键瞬间仍然要手工做，因为它们需要意图，不是变化。</li>
+          <li><strong>迭代回路不一样。</strong>艺术家习惯直接操作：拖滑块，马上看到。生成器要求把审美翻译成参数，还要先花几个月把工具做出来。</li>
+          <li><strong>组织风险。</strong>外包、认证、法务和单点依赖，都更偏向“很多人能操作的资产管线”。</li>
+          <li><strong>生成器本身太贵。</strong>一个 tech-art 团队可能要花几个月。只有当写生成器变得足够便宜，经济账才会翻过来。</li>
+        </ul>
+
+        <p>所以真正的变化不是“AI 会写代码”，而是写“造内容的机器”的成本塌了。当生成器比资产便宜，管线就会反过来。</p>
+
+        <h2 id="steal">可以借鉴什么</h2>
+        <p>对我自己的实验来说，有用的经验比“做一个 3D 引擎”小得多，也实际得多。</p>
+
+        <ol>
+          <li><strong>写生成器，不写内容。</strong>任何会重复三次以上的东西，都应该变成参数化系统：道具、HUD、关卡块、材质变体、动画层。</li>
+          <li><strong>把验证放进产物里。</strong>固定 seed、截图模式、benchmark、错误收集和自测，比另一个 prompt 技巧更有价值。看不见输出的 agent 没法迭代。</li>
+          <li><strong>先定光，再建模。</strong>一个太阳角度、一个色温、一种天气。构图比细节便宜，但对“看起来贵不贵”的影响更大。</li>
+          <li><strong>用米制，用人的相机。</strong>眼高、视野、门高、物体尺寸都应该无聊地真实。玩具尺度是最常见的破绽。</li>
+          <li><strong>做一条后处理基线。</strong>ACES、bloom、暗角、颗粒，四项就能拉开一档。</li>
+          <li><strong>用混合管线。</strong>重复元素和背景程序化，英雄资产手工或 Blender 辅助。“全程序化”是有效的研究约束，不是所有产品都该采用的策略。</li>
+        </ol>
+
+        <div class="callout">
+          <span class="mono-label">我会保留的一条</span>
+          <p>一个 build 在能被检查之前，不算结果。Saltline 里最重要的代码也许不是 bloom，而是截图开关、固定 seed 和自测。</p>
+        </div>
+
+        <h2 id="limits">它没有证明什么</h2>
+        <p>它没有证明 1.4MB 就是 3A。Saltline 是一段很短的任务：一张地图、少量敌人、简单 AI，没有叙事密度、长线成长，也没有主机认证。550 美元是 API 账单，不含人的审美、筛选和验收。</p>
+
+        <p>它也没有证明“全程序化”是正确策略。这个场景成立，是因为它被收得很窄：一个地点、一个时段、一种天气、一个强调色。换成阳光下的森林、角色和布料，同样的方法会暴露所有弱点。</p>
+
+        <p>“什么都不下载”也有一个小星号：页面仍然引用了 Google Fonts。严格说，游戏素材是自包含的，但页面在运行时不是完全零请求。</p>
+
+        <p>它真正证明的更有意思：模型可以写出一套连贯的<em>内容生成器</em>——几何套件、表面函数、光照、动画解算、音频和测试——再用这套生成器产出一个可玩的东西。资产不再是一个文件，而是一个函数。</p>
+
+        <p class="article-end"><strong>方法 /</strong> 文件从 Saltline 的独立游玩页下载后在本地拆包；尺寸、shader、材质、道具、音频和调试开关的观察都来自那个文件。生成时间、token 数和成本是创作者自述，没有独立测量。来源：<a href="https://saltline.games" target="_blank" rel="noopener">saltline.games</a>、<a href="https://huggingface.co/blog/softroyals/how-saltline-ai-game-was-built-1-4mb-html" target="_blank" rel="noopener">技术拆解</a>、<a href="https://www.techpowerup.com/354636/anthropics-fable-5-2-one-shots-a-playable-fps-game-in-just-8-hours" target="_blank" rel="noopener">TechPowerUp</a>。这是一次工程阅读，不是产品评测。</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>下一篇 / 系统</p>
+          <h2 id="next-title">44GB 显存问题</h2>
+        </div>
+        <a href="two-gpu-local-lab.html">
+          <span>继续阅读</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="页脚">
+        <a href="../work/index.html">实验</a>
+        <a href="../ai.html">环境</a>
+        <a href="../open-source.html">开源</a>
+        <a href="../competitions.html">竞赛</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <a href="index.html">全部笔记 <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

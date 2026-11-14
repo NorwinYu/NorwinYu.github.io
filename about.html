@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>AI usage research — Norwin Yu</title>
+  <meta name="description" content="AI usage research, research areas and method from Norwin Yu.">
+  <meta name="author" content="Norwin Yu">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="About — Norwin Yu">
+  <meta property="og:description" content="AI usage research, research areas and method from Norwin Yu.">
+  <meta property="og:image" content="assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preload" href="assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/site.css">
+  <script src="assets/js/site.js" defer></script>
+</head>
+<body class="index-page" data-page="about">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar" data-header>
+    <div class="wrap topbar-inner">
+      <a class="brand" href="index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="work/index.html" data-nav="work">Experiments</a>
+        <a href="ai.html" data-nav="ai">Setup</a>
+        <a href="open-source.html" data-nav="oss">Open source</a>
+        <a href="competitions.html" data-nav="competitions">Competitions</a>
+        <a href="blog/index.html" data-nav="journal">Journal</a>
+        <a href="about.html" data-nav="about">About</a>
+      </nav>
+      <div class="topbar-actions">
+        <span class="status"><i aria-hidden="true"></i>AI usage research</span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          Menu <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true">
+    <div class="wrap mobile-menu-head">
+      <span class="mono-label">Index / 2026</span>
+      <button class="menu-close" type="button" data-menu-close aria-label="Close menu">Close <span aria-hidden="true">×</span></button>
+    </div>
+    <nav class="wrap mobile-nav" aria-label="Mobile primary">
+      <a href="work/index.html" data-nav="work">Experiments</a>
+      <a href="ai.html" data-nav="ai">Setup</a>
+        <a href="open-source.html" data-nav="oss">Open source</a>
+      <a href="competitions.html" data-nav="competitions">Competitions</a>
+      <a href="blog/index.html" data-nav="journal">Journal</a>
+      <a href="about.html" data-nav="about">About</a>
+    </nav>
+    <div class="wrap mobile-menu-foot">
+      <span>AI usage research / 2026</span>
+      <span>Open to research conversations</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <p class="section-kicker">About / 2026</p>
+        <h1>Norwin Yu.</h1>
+        <p class="page-lede">Independent AI usage research. I study how models, interfaces and local hardware meet — lately through browser games, agent harnesses and the verification layer that keeps both honest.</p>
+        <div class="page-meta"><span><i></i>AI usage research</span><span>Open to research conversations</span><span><a href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub ↗</a></span></div>
+      </div>
+    </header>
+
+    <section class="section" aria-labelledby="capabilities-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">01 / Research areas</p><h2 id="capabilities-title">Research areas.</h2></div>
+        <p class="section-intro">Six domains, each backed by something shipped, tested or written down. The point is the handoff between them: model behaviour, interface craft, local infrastructure and the writing that makes the experiments legible.</p>
+      </div>
+      <div class="wrap table-wrap">
+        <table class="data-table capability-table">
+          <caption class="sr-only">Capabilities, tools and evidence</caption>
+          <thead><tr><th scope="col">Domain</th><th scope="col">Focus</th><th scope="col">Tools</th><th scope="col">Selected evidence</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><span class="row-num">01</span>AI systems &amp; agents<em lang="zh-CN">智能体系统</em></th><td data-label="Focus">Agent workflows that survive real inputs: retrieval, tool use, memory, routing, guardrails and evaluation.</td><td data-label="Tools">Agent orchestration · RAG · Evals · Local inference · Prompt systems</td><td data-label="Evidence">Name That LLM; multi-tool agent harnesses; multimodal production pipelines.</td></tr>
+            <tr><th scope="row"><span class="row-num">02</span>Product experiments<em lang="zh-CN">产品实验</em></th><td data-label="Focus">Static-first front ends, pragmatic APIs and deploy paths that one person can actually maintain.</td><td data-label="Tools">TypeScript · React · Node · Python · GitHub Actions</td><td data-label="Evidence">Game + tooling pipeline probes; static deployment; 73-check Playwright regression.</td></tr>
+            <tr><th scope="row"><span class="row-num">03</span>Spatial interfaces<em lang="zh-CN">空间界面</em></th><td data-label="Focus">Three.js, WebGL and Godot interfaces where depth and motion make information easier to hold.</td><td data-label="Tools">Three.js · WebGL · Godot · Shaders · Interaction design</td><td data-label="Evidence">Tactical battlefield; 3D sect mountain gate; cinematic game UI.</td></tr>
+            <tr><th scope="row"><span class="row-num">04</span>Local infrastructure<em lang="zh-CN">本地基础设施</em></th><td data-label="Focus">Linux, CUDA, containers and local GPU workflows. Systems I can rebuild from notes.</td><td data-label="Tools">Linux · CUDA · Docker · Self-hosting · Observability</td><td data-label="Evidence">Two-GPU home lab; local inference; static deploy pipelines.</td></tr>
+            <tr><th scope="row"><span class="row-num">05</span>Research &amp; writing<em lang="zh-CN">研究与写作</em></th><td data-label="Focus">Small experiments with methods, caveats and the failed attempts left in the record.</td><td data-label="Tools">Benchmarks · Data analysis · Visual essays · Documentation</td><td data-label="Evidence">Name That LLM; The 44 GB problem; game build postmortems.</td></tr>
+            <tr><th scope="row"><span class="row-num">06</span>Interface design<em lang="zh-CN">界面设计</em></th><td data-label="Focus">Editorial hierarchy, typography and restrained motion, built in code rather than a mockup.</td><td data-label="Tools">Art direction · Typography · Motion · Prototyping</td><td data-label="Evidence">This site; product surfaces across the games.</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>Also in the toolkit</span>Git / GitHub Actions · Figma · SQL / Redis · Docker Compose · headless visual QA · Blender basics.</p>
+      </div>
+    </section>
+
+    <section class="section section-alt" aria-labelledby="principles-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">02 / Principles</p><h2 id="principles-title">Method.</h2></div>
+        <p class="section-intro">Four defaults that show up in the code, the writing and the way a project gets scoped.</p>
+      </div>
+      <div class="wrap home-cap-grid principles-grid">
+        <div class="home-cap-item"><span>01</span><h3>Local before cloud</h3><p>Private data stays on the desk. Use frontier models where the capability gap is real, not by default.</p></div>
+        <div class="home-cap-item"><span>02</span><h3>Ship the loop</h3><p>A playable slice with an end state beats a polished scene with no game. The fifth run is the test.</p></div>
+        <div class="home-cap-item"><span>03</span><h3>Measure, then trust</h3><p>Prompt-level splits, seed checks and screenshots. A single run is an anecdote, not a result.</p></div>
+        <div class="home-cap-item"><span>04</span><h3>Write it down</h3><p>Method, caveat, failure. The notes are how the next project starts faster.</p></div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="now-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">03 / Now</p><h2 id="now-title">Currently.</h2></div>
+        <p class="section-intro">A snapshot, not a résumé. For the full list of work, use the work page; for the machines and model routing, use Setup.</p>
+      </div>
+      <div class="wrap home-split">
+        <div class="home-panel"><h3>Current experiments</h3><p>Games, comparisons and coding tools, plus the harness around them. The next step is a tighter loop between generated assets, playtesting, a Blender-assisted comparison and visual verification.</p><a class="home-panel-link" href="work/index.html">Selected experiments <span aria-hidden="true">→</span></a></div>
+        <div class="home-panel"><h3>Research conversations</h3><p>Open to conversations around AI usage, game prototypes, developer tools and local inference. The fastest route is a short note with the question, the constraint and the deadline.</p><a class="home-panel-link" href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <p><strong>Norwin Yu</strong><span>AI usage research / games &amp; local compute.</span></p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <span class="mono-label">Index</span>
+        <a href="work/index.html">Experiments</a>
+        <a href="ai.html">Setup</a>
+        <a href="open-source.html">Open source</a>
+        <a href="competitions.html">Competitions</a>
+        <a href="blog/index.html">Journal</a>
+        <a href="about.html">About</a>
+      </nav>
+      <div class="footer-note">
+        <span class="mono-label">Colophon</span>
+        <p>Set in Inter and IBM Plex Mono. Hand-built, statically served. No trackers, cookies or keys.</p>
+        <p>AI usage research / 2026</p>
+      </div>
+      <div class="footer-status">
+        <span class="status"><i aria-hidden="true"></i>Open to research conversations</span>
+        <a href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 Norwin Yu</span>
+      <span>Last updated / November 2026</span>
+      <span>No analytics. No external requests at runtime.</span>
+    </div>
+  </footer>
+</body>
+</html>

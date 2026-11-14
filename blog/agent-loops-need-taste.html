@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Agent 循环需要审美 — Norwin Yu</title>
+  <meta name="description" content="更多工具不等于更强的 agent。真正稀缺的，是一个知道什么时候该停下来的循环。">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Agent 循环需要审美 — Norwin Yu">
+  <meta property="og:description" content="更多工具不等于更强的 agent。真正稀缺的，是一个知道什么时候该停下来的循环。">
+  <meta property="og:image" content="../assets/img/og.png">
+  <meta property="og:locale" content="zh_CN">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="preload" href="../assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <link rel="stylesheet" href="../assets/css/article.css">
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="../index.html" aria-label="Norwin Yu — 首页">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span>
+      </a>
+      <nav class="article-nav" aria-label="文章导航">
+        <a href="../work/index.html">实验</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <span class="availability"><i aria-hidden="true"></i>开放研究交流</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="index.html"><span aria-hidden="true">←</span> 全部笔记</a>
+        <p class="article-kicker"><span class="is-accent">AI 系统</span><i aria-hidden="true"></i><span>Agent 设计</span><i aria-hidden="true"></i><span>现场笔记</span></p>
+        <h1>Agent 循环<br><em>需要审美。</em></h1>
+        <p class="article-deck">更多工具不等于更强的 agent。真正稀缺的，是一个知道什么时候该停下来的循环。</p>
+        <p class="article-cn">更多工具不等于更强的智能体。真正稀缺的，是一个知道什么时候该停下来的循环。</p>
+        <div class="article-meta">
+          <span><i aria-hidden="true"></i>Norwin Yu</span>
+          <span>2026 年 11 月</span>
+          <span>7 分钟</span>
+          <span>现场笔记 / 04</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">目录</p>
+        <nav class="article-toc" aria-label="文章目录">
+          <a href="#fifth-run">第五次运行</a>
+          <a href="#tool-belt">工具带的陷阱</a>
+          <a href="#product">循环是产品</a>
+          <a href="#stop">审美是停止函数</a>
+          <a href="#measure">该测什么</a>
+          <a href="#handoff">交接</a>
+          <a href="#checklist">清单</a>
+        </nav>
+        <dl class="article-aside-facts">
+          <div><dt>语境</dt><dd>工具型 agent</dd></div>
+          <div><dt>失败</dt><dd>没有出口的循环</dd></div>
+          <div><dt>信念</dt><dd>判断力胜过工具数量</dd></div>
+          <div><dt>测试</dt><dd>固定任务，读 trace</dd></div>
+        </dl>
+      </aside>
+
+      <article class="article-body">
+        <p>每个 agent demo 都能成功一次。真正有意思的问题是第五次运行：输入是真实的，工具很慢，用户不关心架构。</p>
+        <p>我见到的大多数失败不是推理失败，而是循环失败：找到答案后还在搜；因为能用就调用工具；没读文件就编辑；没验证就总结；做完不可逆的事才问权限。模型常常是有能力的，循环没有审美。</p>
+
+        <h2 id="fifth-run">第五次运行</h2>
+        <p>第一次运行是彩排。prompt 很干净，工具秒回，happy path 很清楚。第五次运行会有一个格式错误的输入、一个不稳定的 API、一个过期缓存，以及一个昨天就想要结果的用户。设计就住在这里。</p>
+        <p>我在意的是能被中断、检查、恢复的 agent。不是因为中断优雅，而是因为真实工作本来就会被打断。一个连工具暂停都活不过的循环，只是一个绑了大模型的脚本。</p>
+
+        <blockquote>Demo 证明模型能行动。产品证明循环能停下来。</blockquote>
+
+        <h2 id="tool-belt">工具带的陷阱</h2>
+        <p>加工具感觉像加能力。实际上，每个工具都增加一个分支、一个 schema、一种错误模式，以及一种新的自信犯错方式。搜索空间比有用行为增长得更快。一个有二十个工具的 agent，在聚焦任务上经常不如三个工具加一条清楚的指令。</p>
+        <p>工具带还掩盖了真正的瓶颈：上下文。一长串工具描述会和任务、历史、检索文档、约束抢注意力。模型花在决定用哪个工具上的注意力，比花在“任务是不是已经完成”上的还多。</p>
+        <p>我的默认做法是从能完成循环的最小集合开始：一个读工具、一个写工具、一个向人求助的方式。等到某条 trace 证明没有它循环就推进不了，再加第四个。</p>
+
+        <h2 id="product">循环是产品</h2>
+        <p>一个有用的 agent 循环和其他产品界面有相同的部分：</p>
+        <ul>
+          <li><strong>入口状态。</strong> 开始前 agent 知道什么？缺什么？绝不能假设什么？</li>
+          <li><strong>观察。</strong> 什么算证据？工具结果、截图、测试通过、人的确认？</li>
+          <li><strong>动作。</strong> 什么能改变世界？哪些可逆？哪些需要检查？</li>
+          <li><strong>出口。</strong> 完成长什么样？谁决定？预算耗尽时发生什么？</li>
+        </ul>
+        <p>大多数团队写了 prompt，跳过了出口。然后惊讶 agent 一直不停。出口不是最后加上的护栏，它是规格说明。</p>
+
+        <div class="callout">
+          <span class="mono-label">设计规则</span>
+          <p>加工具之前，先写出循环停止的条件。写不出来，说明你还没有任务，只有探索。</p>
+        </div>
+
+        <h2 id="stop">审美是停止函数</h2>
+        <p>Agent 的审美不是什么神秘的美感天赋，而是一组关于“够了”的判断：这个证据够了，这个结果够好了，这条路不值得再来一个 token。它是在正确时刻停下来的能力，也是区分“完成”和“预算耗尽”的能力。</p>
+        <p>这种判断至少可以部分编码。三个机制干掉了大部分工作：</p>
+        <ul>
+          <li><strong>预算。</strong> token、时间、尝试次数、工具调用都有上限。到上限时，agent 报告它有什么、没做什么。它不静默循环。</li>
+          <li><strong>成功检查。</strong> 测试、schema、diff、引用或人的确认。模型之外的东西决定循环是否完成。</li>
+          <li><strong>循环检测。</strong> 重复动作、重复搜索，或者两轮没有状态变化。停下来解释，而不是永远重试。</li>
+        </ul>
+        <p>这些都不需要更聪明的模型，需要一个编辑对“这场戏什么时候结束”的感觉。</p>
+
+        <h2 id="measure">该测什么</h2>
+        <p>Agent 评测经常被报成一个成功率。这个数字藏起了最有意思的部分。我想看：</p>
+        <ul>
+          <li><strong>固定任务上的成功。</strong> 每次相同输入，有清楚的通过条件。</li>
+          <li><strong>每次成功的成本。</strong> token、工具调用、墙钟时间。便宜的失败还是失败，昂贵的成功是设计异味。</li>
+          <li><strong>失败模式。</strong> 答错、循环、过早停止、不安全动作、输出不可读。每种指向不同的修法。</li>
+          <li><strong>恢复能力。</strong> 工具报错或人纠正后，agent 能不能不从头开始？</li>
+          <li><strong>trace 的可读性。</strong> 人能不能两分钟解释发生了什么？不能，说明循环不够可观察，也不够可改进。</li>
+        </ul>
+        <p>trace 不是日志堆。它是一个叙事：agent 相信什么、尝试什么、什么变了、为什么停。如果 trace 撑不起这个叙事，agent 还没准备好处理任何重要的事。</p>
+
+        <h2 id="handoff">交接</h2>
+        <p>一个严肃 agent 最重要的工具是交接。循环说：“我做了能做的；这是状态，这是不确定性，这是我要你做的。”这不是自主性的失败，这是让自主性安全到可用的特性。</p>
+        <p>好的交接很具体。不是“出错了”，而是“部署在第 3 步失败；迁移已执行，但应用还在旧镜像；我没有碰生产流量。”人能立刻行动。坏的交接倒出堆栈，然后叫它透明。</p>
+        <p>我先设计交接，再在循环赢得信任的地方移除它。顺序很重要。信任靠证据授予，不靠 demo。</p>
+
+        <h2 id="checklist">清单</h2>
+        <ul>
+          <li><strong>一个任务，一个成功条件。</strong> 写 prompt 前先写这两个。</li>
+          <li><strong>最少工具。</strong> 只有 trace 证明缺能力时才加。</li>
+          <li><strong>硬预算。</strong> token、时间、尝试、工具调用。让 agent 看得见上限。</li>
+          <li><strong>行动前先有状态。</strong> 读后写；迁移前快照；不可逆前先问。</li>
+          <li><strong>重复就停。</strong> 状态没变，不要用同样方式再来一次。</li>
+          <li><strong>给人类看 trace。</strong> 可读叙事，不是原始日志。</li>
+          <li><strong>干净交接。</strong> 状态、不确定性、下一步。</li>
+        </ul>
+
+        <p>模型会继续变好，循环仍然需要编辑。一个感觉聪明的 agent 和一个感觉累人的 agent，差别很少在模型，而在知道工作什么时候结束的审美。</p>
+
+        <p class="article-end"><strong>语境 /</strong> 来自构建工具型 agent 和验证 harness 的笔记，包括六道门的 Photoreal Game Harness。这里不声称任何模型 benchmark；论点关于循环设计和评测实践。</p>
+      </article>
+
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title">
+      <div class="wrap">
+        <div>
+          <p>回到 / 日志</p>
+          <h2 id="next-title">全部笔记</h2>
+        </div>
+        <a href="index.html">
+          <span>浏览</span>
+          <span class="circle-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer article-footer">
+    <div class="footer-bottom wrap">
+      <span>© 2026 Norwin Yu</span>
+      <nav class="article-footer-links" aria-label="页脚">
+        <a href="../work/index.html">实验</a>
+        <a href="../ai.html">环境</a>
+        <a href="../open-source.html">开源</a>
+        <a href="../competitions.html">竞赛</a>
+        <a href="index.html">日志</a>
+        <a href="../about.html">关于</a>
+      </nav>
+      <a href="index.html">全部笔记 <span aria-hidden="true">→</span></a>
+    </div>
+  </footer>
+</body>
+</html>

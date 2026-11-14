@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Experiments — Norwin Yu</title>
+  <meta name="description" content="Game and coding experiments used to study LLM capability, production pipelines and verification.">
+  <meta name="author" content="Norwin Yu">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Experiments — Norwin Yu">
+  <meta property="og:description" content="Game and coding experiments used to study LLM capability, production pipelines and verification.">
+  <meta property="og:image" content="../assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="../manifest.webmanifest">
+  <link rel="preload" href="../assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <script src="../assets/js/site.js" defer></script>
+</head>
+<body class="index-page" data-page="work">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar" data-header>
+    <div class="wrap topbar-inner">
+      <a class="brand" href="../index.html" aria-label="Norwin Yu — home">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span>
+      </a>
+      <nav class="main-nav" aria-label="Primary">
+        <a href="index.html" data-nav="work">Experiments</a>
+        <a href="../ai.html" data-nav="ai">Setup</a>
+        <a href="../open-source.html" data-nav="oss">Open source</a>
+        <a href="../competitions.html" data-nav="competitions">Competitions</a>
+        <a href="../blog/index.html" data-nav="journal">Journal</a>
+        <a href="../about.html" data-nav="about">About</a>
+      </nav>
+      <div class="topbar-actions">
+        <span class="status"><i aria-hidden="true"></i>AI usage research</span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          Menu <span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu aria-hidden="true">
+    <div class="wrap mobile-menu-head">
+      <span class="mono-label">Index / 2026</span>
+      <button class="menu-close" type="button" data-menu-close aria-label="Close menu">Close <span aria-hidden="true">×</span></button>
+    </div>
+    <nav class="wrap mobile-nav" aria-label="Mobile primary">
+      <a href="index.html" data-nav="work">Experiments</a>
+      <a href="../ai.html" data-nav="ai">Setup</a>
+        <a href="../open-source.html" data-nav="oss">Open source</a>
+      <a href="../competitions.html" data-nav="competitions">Competitions</a>
+      <a href="../blog/index.html" data-nav="journal">Journal</a>
+      <a href="../about.html" data-nav="about">About</a>
+    </nav>
+    <div class="wrap mobile-menu-foot">
+      <span>AI usage research / 2026</span>
+      <span>Open to research conversations</span>
+    </div>
+  </div>
+
+  <main id="main">
+    <header class="page-hero">
+      <div class="wrap">
+        <p class="section-kicker">Experiments / 2026</p>
+        <h1>Experiments in code.</h1>
+        <p class="page-lede">Games are one probe; coding is the other. Both test how far an LLM can carry a real production pipeline — generated assets, code, UI, verification and deployment — and where a human still has to intervene.</p>
+        <div class="page-meta"><span><i></i>05 game probes</span><span>02 comparisons</span><span>03 coding tools</span><span>Live / source linked</span></div>
+      </div>
+    </header>
+
+    <section class="section research-map" id="map" aria-labelledby="map-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">The map</p><h2 id="map-title">One catalogue, four variables.</h2></div>
+        <p class="section-intro">The projects are not a list of games. Each one isolates a variable: model capability, the amount of leverage around it, the asset pipeline, or the verification loop.</p>
+      </div>
+
+      <div class="wrap thread-grid">
+        <div class="thread-card"><span>01</span><h3>Model capability</h3><p>Can a local model carry a 3D scene from one prompt? Ming Palace 3D is the local-model probe.</p></div>
+        <div class="thread-card"><span>02</span><h3>Leverage</h3><p>What changes when the model gets an agent/skill harness instead of a plain API loop? NEON BREACH is the no-skill control.</p></div>
+        <div class="thread-card"><span>03</span><h3>Asset pipeline</h3><p>Procedural code, generated images/video, or Blender-assisted? Mistvale is the current no-Blender baseline; the Blender comparison is next.</p></div>
+        <div class="thread-card"><span>04</span><h3>Verification</h3><p>Playwright, screenshot review, collision checks and a six-gate harness. A build is not a result until it can be inspected.</p></div>
+      </div>
+
+      <div class="wrap table-wrap matrix-wrap">
+        <table class="data-table experiment-matrix">
+          <caption class="sr-only">Experiment map: projects and the variable each one tests</caption>
+          <thead><tr><th scope="col">Experiment</th><th scope="col">What it tests</th><th scope="col">Model</th><th scope="col">Leverage</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">ECHO ZERO</th><td data-label="Tests">Full narrative pipeline + added voice layer</td><td data-label="Model">DeepSeek Flash + MiniMax H3</td><td data-label="Leverage">Code/UI/audio; generated art, video, music; Edge TTS</td></tr>
+            <tr><th scope="row">烽火三国</th><td data-label="Tests">Generated assets inside a complete game loop</td><td data-label="Model">DeepSeek Flash + MiniMax H3</td><td data-label="Leverage">Code/UI/audio; generated image and video assets</td></tr>
+            <tr><th scope="row">仙宗</th><td data-label="Tests">DeepSeek Flash's 3D capability</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Code/systems/docs; procedural assets; Playwright</td></tr>
+            <tr><th scope="row">雾谷农庄</th><td data-label="Tests">One-prompt, no-Blender baseline</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Procedural models, weather, audio; no external assets</td></tr>
+            <tr><th scope="row">机场大亨 3D</th><td data-label="Tests">DeepSeek Flash + DSH + Godot engine path</td><td data-label="Model">DeepSeek Flash + DSH</td><td data-label="Leverage">Godot 4.6 / GDScript; procedural meshes and audio</td></tr>
+            <tr><th scope="row">NEON BREACH</th><td data-label="Tests">No-skill control run</td><td data-label="Model">DeepSeek V4.1 Flash</td><td data-label="Leverage">Pure API, no skill; native WebGL; procedural assets</td></tr>
+            <tr><th scope="row">明宫三维</th><td data-label="Tests">Local-model comparison</td><td data-label="Model">DeepSeek Flash 1017 · local</td><td data-label="Leverage">One Chinese prompt; single-file WebGL2; no skill</td></tr>
+            <tr><th scope="row">dsh-quota</th><td data-label="Tests">Tooling / route-aware state</td><td data-label="Model">DeepSeek V4.1 Flash</td><td data-label="Leverage">Code/tests/docs; config-driven adapters</td></tr>
+            <tr><th scope="row">NorMark</th><td data-label="Tests">Desktop coding app</td><td data-label="Model">Not recorded</td><td data-label="Leverage">Electron / React / CodeMirror</td></tr>
+            <tr><th scope="row">RoomTessera 3D</th><td data-label="Tests">Spatial tooling</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Code/UI/tests; procedural geometry</td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>How to read it</span>The matrix is the experiment design. The case notes below are the evidence: what was built, what was generated, and where the handoff broke.</p>
+      </div>
+    </section>
+
+    <section class="section pipeline-section" aria-labelledby="pipeline-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">The method</p><h2 id="pipeline-title">The pipeline behind each build.</h2></div>
+        <p class="section-intro">The output can be a playable game or a working tool, but the object of study is the pipeline. Each build exercises the same loop, with different constraints and different failure modes.</p>
+      </div>
+      <div class="wrap pipeline-grid">
+        <div class="pipeline-step"><span>01</span><h3>Scope</h3><p>Fix the loop, the constraints and the verification target before generating anything.</p><em>Human</em></div>
+        <div class="pipeline-step"><span>02</span><h3>Assets</h3><p>Generate scenes, characters, units, video and audio with MiniMax H3.</p><em>Model</em></div>
+        <div class="pipeline-step"><span>03</span><h3>Code</h3><p>Build systems, UI, game logic and procedural audio with DeepSeek Flash.</p><em>Model</em></div>
+        <div class="pipeline-step"><span>04</span><h3>Integrate</h3><p>Wire assets, state, saves, input and mobile layout into one playable build.</p><em>Both</em></div>
+        <div class="pipeline-step"><span>05</span><h3>Verify</h3><p>Playwright checks, screenshot review, collision and loop tests, then manual play.</p><em>Both</em></div>
+        <div class="pipeline-step"><span>06</span><h3>Deploy</h3><p>Static artifact, source notes and a reproducible path to run it locally.</p><em>Human</em></div>
+      </div>
+      <p class="wrap pipeline-note"><span>What this measures</span>Not “can an LLM write a game?” but which parts of a production pipeline survive model generation, where the handoff breaks, and how much verification the result needs.</p>
+    </section>
+
+    <div class="wrap section-head work-section-head">
+      <div class="section-heading"><p class="section-kicker">01 / Game probes</p><h2>Five games as stress tests.</h2></div>
+      <p class="section-intro">Playable outputs that force the pipeline to handle state, input, assets, mobile layout and a complete loop.</p>
+    </div>
+
+    <div class="wrap">
+      <article class="work-case" id="echo-zero">
+        <div class="work-case-media"><img src="../assets/img/demo-echo-zero.jpg" alt="ECHO ZERO title screen with a dark ring structure above clouds" width="1440" height="900" loading="eager"></div>
+        <div class="work-case-copy">
+          <h2>零号信标 <span>ECHO ZERO / 蓝光游戏</span></h2>
+          <p>A future-noir visual novel about memory, signal and a city that forgets. Three branching chapters, a gallery and an ending loop — built as a complete narrative surface, not a scene demo.</p>
+          <ul>
+            <li>Generated scenes, character art, video and Chinese voice; code, UI and sound design by DeepSeek Flash.</li>
+            <li>Save / load, chapter select, gallery, settings and mobile layout.</li>
+            <li>Static GitHub Pages build; no backend and no runtime API keys.</li>
+          </ul>
+          <dl class="work-specs">
+            <div><dt>Format</dt><dd>3 chapters · branching choices</dd></div>
+            <div><dt>Media</dt><dd>MiniMax H3 + Edge TTS + WebAudio</dd></div>
+            <div><dt>Build</dt><dd>Static single-page app</dd></div>
+            <div><dt>Status</dt><dd>Live, non-commercial</dd></div>
+            <div><dt>Model</dt><dd>DeepSeek Flash + MiniMax H3</dd></div>
+            <div><dt>Leverage</dt><dd>Code, UI, audio · MiniMax art/video/music · additional Chinese voice (Edge TTS)</dd></div>
+          </dl>
+          <div class="work-links"><a href="https://norwinyu.github.io/echo-zero/" target="_blank" rel="noopener">Play online <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/echo-zero" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </article>
+
+      <article class="work-case" id="three-kingdoms">
+        <div class="work-case-media"><img src="../assets/img/demo-three-kingdoms.jpg" alt="Beacon of the Three Kingdoms main menu" width="1440" height="900" loading="eager"></div>
+        <div class="work-case-copy">
+          <h2>烽火三国 <span>Beacon of the Three Kingdoms</span></h2>
+          <p>A browser tactics vertical slice: 12 × 9 grid, 47 generals, 11 cities, weather, fire, morale, reinforcements and boss cut-ins. The goal was a complete loop — deploy, move, attack, level up, lose — not a cinematic trailer.</p>
+          <ul>
+            <li>Turn order, terrain, counterattacks, flanking, supplies and auto-battle.</li>
+            <li>Generated portraits, unit art, terrain and video via MiniMax H3.</li>
+            <li>Code, UI, systems and procedural audio via DeepSeek Flash.</li>
+          </ul>
+          <dl class="work-specs">
+            <div><dt>Scope</dt><dd>47 generals · 11 cities</dd></div>
+            <div><dt>Battle</dt><dd>12 × 9 grid · weather · fire</dd></div>
+            <div><dt>Stack</dt><dd>Three.js + MiniMax H3</dd></div>
+            <div><dt>Status</dt><dd>Non-commercial demo</dd></div>
+            <div><dt>Model</dt><dd>DeepSeek Flash + MiniMax H3</dd></div>
+            <div><dt>Leverage</dt><dd>Code, UI, audio · MiniMax-generated image and video assets</dd></div>
+          </dl>
+          <div class="work-links"><a href="https://norwinyu.github.io/three-kingdoms-slg/" target="_blank" rel="noopener">Play online <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/three-kingdoms-slg" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a><a href="../blog/last-mile-taste.html">Build notes <span aria-hidden="true">→</span></a></div>
+        </div>
+      </article>
+
+      <article class="work-case" id="immortal-sect">
+        <div class="work-case-media"><img src="../assets/img/demo-immortal-sect.jpg" alt="Immortal Sect mountain gate at dusk" width="1440" height="900" loading="eager"></div>
+        <div class="work-case-copy">
+          <h2>仙宗 <span>Immortal Sect / 修仙宗门</span></h2>
+          <p>A 3D cultivation-sect management prototype used to test DeepSeek Flash's 3D capability: seven disciples, building upgrades, daily duties, third-person movement, combat and tribulation. The whole playable chapter runs in the browser with no backend.</p>
+          <ul>
+            <li>Procedural models, materials and audio; no external asset files.</li>
+            <li>localStorage saves, old-save migration, mobile layout and pause/settings.</li>
+            <li>73 Playwright checks covering desktop, phone, layout and legacy saves.</li>
+          </ul>
+          <dl class="work-specs">
+            <div><dt>Scope</dt><dd>7 disciples · 12-day chapter</dd></div>
+            <div><dt>Stack</dt><dd>Three.js + TypeScript + Vite</dd></div>
+            <div><dt>Validation</dt><dd>73 Playwright checks</dd></div>
+            <div><dt>Status</dt><dd>Playable prototype</dd></div>
+            <div><dt>Model</dt><dd>DeepSeek Flash</dd></div>
+            <div><dt>Leverage</dt><dd>3D capability test · code, systems, docs, Playwright checks · procedural assets</dd></div>
+          </dl>
+          <div class="work-links"><a href="https://norwinyu.github.io/ImmortalSect/" target="_blank" rel="noopener">Play online <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/ImmortalSect" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </article>
+
+      <article class="work-case" id="mistvale">
+        <div class="work-case-media"><img src="../assets/img/demo-mistvale.jpg" alt="Mistvale Farm title screen with a farmhouse, well and vegetable garden at dusk." width="1600" height="1000" loading="eager"></div>
+        <div class="work-case-copy">
+          <h2>雾谷农庄 <span>Mistvale Farm</span></h2>
+          <p>A third-person 3D farm-life game built with one DeepSeek Flash prompt: “做一款写实风的 3D 农场游戏.” Clear a plot, plant crops, tend them through a slow day/night cycle and turn a foggy valley into a home. Everything is generated in code — this is the no-Blender baseline for a later comparison against a Blender-assisted build.</p>
+          <ul>
+            <li>One prompt, no Blender, no external models, textures, fonts or audio files.</li>
+            <li>Procedural crops, tools, weather, water shader and WebAudio soundscape.</li>
+            <li>Static GitHub Pages build with local saves and mobile layout.</li>
+            <li>Kept as the baseline for a future comparison with a Blender-assisted version.</li>
+          </ul>
+          <dl class="work-specs">
+            <div><dt>Stack</dt><dd>Three.js + Vite</dd></div>
+            <div><dt>Scope</dt><dd>Farm loop · weather · saves</dd></div>
+            <div><dt>Assets</dt><dd>100% procedural</dd></div>
+            <div><dt>Status</dt><dd>Live, non-commercial</dd></div>
+            <div><dt>Model</dt><dd>DeepSeek Flash · one prompt</dd></div>
+            <div><dt>Leverage</dt><dd>No Blender · procedural models, weather, audio · baseline for Blender comparison</dd></div>
+          </dl>
+          <div class="work-links"><a href="https://norwinyu.github.io/mistvale-farm/" target="_blank" rel="noopener">Play online <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/mistvale-farm" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </article>
+
+      <article class="work-case" id="airport">
+        <div class="work-case-media"><img src="../assets/img/demo-airport-tycoon.jpg" alt="Airport Tycoon 3D main menu in Godot." width="1280" height="800" loading="eager"></div>
+        <div class="work-case-copy">
+          <h2>机场大亨 3D <span>Airport Tycoon 3D</span></h2>
+          <p>A Godot 4.6 airport management sim built as a test of DeepSeek Flash + DSH + Godot: buy or lease aircraft, open routes, build terminals and survive storms, strikes, oil spikes and inspections. Every mesh and sound is generated in code.</p>
+          <ul>
+            <li>Full loop from menu to win/bankruptcy, with manual and automatic saves.</li>
+            <li>3 aircraft, 8 destinations, 8 event types and a day/night cycle.</li>
+            <li>Desktop build. No public web export yet, so no online link is claimed.</li>
+          </ul>
+          <dl class="work-specs">
+            <div><dt>Engine</dt><dd>Godot 4.6</dd></div>
+            <div><dt>Scope</dt><dd>3 aircraft · 8 routes</dd></div>
+            <div><dt>Platform</dt><dd>macOS · Windows · Linux</dd></div>
+            <div><dt>Status</dt><dd>Desktop build</dd></div>
+            <div><dt>Model</dt><dd>DeepSeek Flash + DSH</dd></div>
+            <div><dt>Leverage</dt><dd>Godot 4.6 · GDScript · procedural meshes and audio</dd></div>
+          </dl>
+          <div class="work-links"><span class="work-muted">Source / build on request · web export pending</span></div>
+        </div>
+      </article>
+
+    </div>
+
+    <section class="section comparison-section" id="comparisons" aria-labelledby="comparisons-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">02 / Comparisons</p><h2 id="comparisons-title">Two controlled runs.</h2></div>
+        <p class="section-intro">Not every build is a product. These two ask a narrower question: what changes when a local model does the work, and what changes when a skill is removed from the loop?</p>
+      </div>
+      <div class="wrap comparison-grid">
+        <article class="comparison-card" id="neon">
+          <div class="comparison-media"><img src="../assets/img/demo-neon-breach.jpg" alt="Neon Breach first-person neon arena with a weapon and enemy." width="1280" height="800" loading="eager"></div>
+          <div class="comparison-body">
+            <p class="demo-kicker">No-skill control · WebGL</p>
+            <h3>NEON BREACH <span>霓虹突袭</span></h3>
+            <p>A five-wave first-person arena shooter built through direct API calls, with no skill instructions. Kept as the control run for comparing skill-assisted work against a plain model loop.</p>
+            <dl class="work-specs">
+              <div><dt>Mode</dt><dd>Pure API · no skill</dd></div>
+              <div><dt>Stack</dt><dd>Native WebGL · single file</dd></div>
+              <div><dt>Scope</dt><dd>5 waves · 3-phase boss</dd></div>
+              <div><dt>Status</dt><dd>Live</dd></div>
+              <div><dt>Model</dt><dd>DeepSeek V4.1 Flash</dd></div>
+              <div><dt>Leverage</dt><dd>Pure API, no skill · code/UI/audio procedural</dd></div>
+            </dl>
+            <div class="work-links"><a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">Play online <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/neon-breach" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+
+        <article class="comparison-card" id="ming-palace">
+          <div class="comparison-media"><img src="../assets/img/demo-ming-palace.jpg" alt="A 3D reconstruction of a Ming palace hall with a golden roof and white stone terrace." width="1600" height="1000" loading="eager"></div>
+          <div class="comparison-body">
+            <p class="demo-kicker">Local-model run · WebGL2</p>
+            <h3>明宫三维 <span>Ming Palace 3D</span></h3>
+            <p>A single-file study of Ming imperial architecture, generated from one Chinese prompt by DeepSeek Flash 1017 running locally. The comparison against the larger hosted models is still being written up.</p>
+            <dl class="work-specs">
+              <div><dt>Model</dt><dd>DeepSeek Flash 1017 · local</dd></div>
+              <div><dt>Prompt</dt><dd>One Chinese prompt</dd></div>
+              <div><dt>Output</dt><dd>Single HTML · WebGL2</dd></div>
+              <div><dt>Scope</dt><dd>Architecture · shaders</dd></div>
+              <div><dt>Status</dt><dd>Live · more context to come</dd></div>
+              <div><dt>Leverage</dt><dd>No skill · custom WebGL2 · procedural geometry</dd></div>
+            </dl>
+            <div class="work-links"><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/" target="_blank" rel="noopener">View online <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/deepseek-flash-1017-ming-palace" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section section-alt coding-section" id="coding" aria-labelledby="coding-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">03 / Coding &amp; tooling</p><h2 id="coding-title">Tools that make the stack legible.</h2></div>
+        <p class="section-intro">Coding experiments are not side quests. They are where the model work becomes inspectable: quota state, local-first documents, spatial editing and the harnesses that verify a build.</p>
+      </div>
+      <div class="wrap coding-grid">
+        <article class="coding-card">
+          <div class="coding-visual terminal">
+            <div class="term-window">
+              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>dsh / quota status</span></div>
+              <div class="term-body">
+                <p><span>$</span> dsh quota status</p>
+                <p><b>OpenCode Go</b><strong>96% left</strong></p>
+                <p class="term-dim">rolling window · 1h 0m reset</p>
+                <p><b>DeepSeek API</b><strong>¥42.50</strong></p>
+                <p class="term-dim">balance source</p>
+                <p><b>Ark Coding Plan</b><strong>¥188 / ¥200</strong></p>
+              </div>
+            </div>
+          </div>
+          <div class="coding-body">
+            <p class="demo-kicker">Tooling · TypeScript</p>
+            <h3>dsh-quota</h3>
+            <p>Route-aware quota and spend widgets for DeepSeek Harness. A model switch changes what the UI should show: plan remaining, API balance or locally recorded spend.</p>
+            <p class="model-line"><span>Model</span>DeepSeek V4.1 Flash · Code, tests and docs · config-driven adapters · 51 tests</p>
+            <dl class="demo-specs">
+              <div><dt>Stack</dt><dd>TypeScript · Node · YAML</dd></div>
+              <div><dt>Validation</dt><dd>51 tests</dd></div>
+              <div><dt>Status</dt><dd>Local tool</dd></div>
+            </dl>
+            <div class="demo-foot"><span>Source on request</span><span>No secrets in config</span></div>
+          </div>
+        </article>
+
+        <article class="coding-card">
+          <div class="coding-visual app-mock">
+            <div class="app-window">
+              <div class="app-titlebar"><span class="app-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>NorMark — notes.md</span></div>
+              <div class="app-body">
+                <div class="app-sidebar">
+                  <span>Workspace</span><i></i><i></i><i></i><i class="is-active"></i><i></i>
+                </div>
+                <div class="app-page">
+                  <small>01 / NOTES</small>
+                  <strong>Build notes</strong>
+                  <p>Keep the pipeline inspectable.</p>
+                  <p>Measure. Write it down. Remove the extra.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="coding-body">
+            <p class="demo-kicker">macOS app · Electron</p>
+            <h3>NorMark</h3>
+            <p>A Markdown reader and editor for Mac with CodeMirror, live preview, workspaces, PDF export, focus mode and typewriter mode.</p>
+            <p class="model-line"><span>Model</span>Not recorded · Electron / React / CodeMirror app · no model note in the repo</p>
+            <dl class="demo-specs">
+              <div><dt>Stack</dt><dd>Electron · React · TS</dd></div>
+              <div><dt>Focus</dt><dd>Writing · preview</dd></div>
+              <div><dt>Status</dt><dd>Public repo</dd></div>
+            </dl>
+            <div class="demo-foot"><span>Desktop app</span><a href="https://github.com/NorwinYu/normark" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+
+        <article class="coding-card">
+          <div class="coding-visual">
+            <img src="../assets/img/demo-roomtessera.jpg" alt="RoomTessera 3D interface with a floor plan, furniture and a 3D cutaway view." width="1440" height="900" loading="eager">
+          </div>
+          <div class="coding-body">
+            <p class="demo-kicker">Spatial tool · React Three Fiber</p>
+            <h3>RoomTessera 3D</h3>
+            <p>Upload a floor plan and get an editable 3D apartment: wall recognition, 15 furniture types, materials, measurement and local saves.</p>
+            <p class="model-line"><span>Model</span>DeepSeek Flash · Code, UI and tests · procedural geometry and materials</p>
+            <dl class="demo-specs">
+              <div><dt>Stack</dt><dd>React · Three.js · Vite</dd></div>
+              <div><dt>Scope</dt><dd>Walls · furniture · light</dd></div>
+              <div><dt>Status</dt><dd>Live preview</dd></div>
+            </dl>
+            <div class="demo-foot"><span>Spatial editing</span><a href="https://norwinyu.github.io/roomtessera-3d/" target="_blank" rel="noopener">Play <span aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="harness-title">
+      <div class="wrap section-head">
+        <div class="section-heading"><p class="section-kicker">Also in the lab</p><h2 id="harness-title">The verification harness.</h2></div>
+        <p class="section-intro">The Photoreal Game Harness is a portable skill and six-gate check for agents building 3D games: shaders, object census, collision, lights, loop and look. It is the unglamorous part that makes the games above possible.</p>
+      </div>
+      <div class="wrap work-links"><a href="../blog/agent-loops-need-taste.html">Read the harness notes <span aria-hidden="true">→</span></a><a href="../competitions.html">Competitions <span aria-hidden="true">→</span></a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <span class="brand-mark" aria-hidden="true">N<span>Y</span></span>
+        <p><strong>Norwin Yu</strong><span>AI usage research / games &amp; local compute.</span></p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <span class="mono-label">Index</span>
+        <a href="../work/index.html">Experiments</a>
+        <a href="../ai.html">Setup</a>
+        <a href="../open-source.html">Open source</a>
+        <a href="../competitions.html">Competitions</a>
+        <a href="../blog/index.html">Journal</a>
+        <a href="../about.html">About</a>
+      </nav>
+      <div class="footer-note">
+        <span class="mono-label">Colophon</span>
+        <p>Set in Inter and IBM Plex Mono. Hand-built, statically served. No trackers, cookies or keys.</p>
+        <p>AI usage research / 2026</p>
+      </div>
+      <div class="footer-status">
+        <span class="status"><i aria-hidden="true"></i>Open to research conversations</span>
+        <a href="https://github.com/NorwinYu" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <span>© 2026 Norwin Yu</span>
+      <span>Last updated / November 2026</span>
+      <span>No analytics. No external requests at runtime.</span>
+    </div>
+  </footer>
+</body>
+</html>
