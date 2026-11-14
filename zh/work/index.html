@@ -81,7 +81,7 @@
         <p class="section-kicker">实验 / 2026</p>
         <h1>代码里的实验。</h1>
         <p class="page-lede">游戏是一组探针，编程工具是另一组，机器本身是第三组。它们都在问同一条真实的生产管线——生成素材、代码、UI、验证和部署——LLM 能推多远，以及人还必须在哪一步介入。</p>
-        <div class="page-meta"><span><i></i>05 个游戏探针</span><span>02 组对比</span><span>04 个编程工具</span><span>01 套本地系统</span><span>在线 / 附源码</span></div>
+        <div class="page-meta"><span><i></i>05 个游戏探针</span><span>02 组对比</span><span>04 个编程工具</span><span>05 类工作负载</span><span>在线 / 附源码</span></div>
       </div>
     </header>
 
@@ -417,9 +417,24 @@
 
     <section class="section" id="systems" aria-labelledby="systems-title">
       <div class="wrap section-head">
-        <div class="section-heading"><p class="section-kicker">04 / 本地系统</p><h2 id="systems-title">工作站实际在跑什么。</h2></div>
-        <p class="section-intro">一套系统，在双路 Xeon + 2 × RTX 2080 Ti 的工作站上实测，不是从项目页上抄的：一个被迫用上两张卡的 20B 视频模型，代价是一处要用探针才找得到的 host 线程问题。读同一套硬件的终端监控器已经移到上面的编程工具里。</p>
+        <div class="section-heading"><p class="section-kicker">04 / 工作负载</p><h2 id="systems-title">工作站实际在跑什么。</h2></div>
+        <p class="section-intro">五类负载共享同一份 44 GB 显存预算：一个跨两张卡的 20B 视频模型、一个静图模型、一个音乐模型、一个 256K 上下文的 27B 文本模型，以及让这些数字站得住的基准。只有视频那一行需要靠探针才让第二张卡真正干活。</p>
       </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">工作站承载的工作负载，以及各自的限制</caption>
+          <thead><tr><th scope="col">工作负载</th><th scope="col">模型</th><th scope="col">限制</th><th scope="col">实测</th><th scope="col">细节</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">视频</th><td data-label="模型">MiniMax H3 · 20.11B · W4A8</td><td data-label="限制">73 帧 · 原生 1344×768 · 4 步 Turbo</td><td data-label="实测">4 步片段 82 秒 · 相对单卡 2.97×</td><td data-label="细节"><a href="/zh/local/video-stack.html">视频栈</a></td></tr>
+            <tr><th scope="row">图片</th><td data-label="模型">H3-Image DiT · W4A8</td><td data-label="限制">6 步 · cfg 1.0 · 预设 1344×768 到 6272×2688</td><td data-label="实测">这里没有单独测速</td><td data-label="细节"><a href="/zh/local/workflow.html#api-title">接口契约</a></td></tr>
+            <tr><th scope="row">音频</th><td data-label="模型">MiniMax Music3 · fp16</td><td data-label="限制">30 步 · cfg 1.7 · 歌词可带 [verse]/[chorus]</td><td data-label="实测">这里没有单独测速</td><td data-label="细节"><a href="/zh/local/workflow.html#api-title">接口契约</a></td></tr>
+            <tr><th scope="row">文本</th><td data-label="模型">Qwen3.8-27B-FP8 · W8A16</td><td data-label="限制">256K 上下文 · 一次一条序列</td><td data-label="实测">思考 46 tok/s · 非思考 52 · 4K 预填充 1,978 tok/s</td><td data-label="细节"><a href="/zh/local/text-stack.html">文本栈</a></td></tr>
+            <tr><th scope="row">实验</th><td data-label="模型">Strata 125B MoE · LMExamBench · TP2 探针</td><td data-label="限制">128K 上下文 · 8 个评测阶段 · 每卡 22 GB</td><td data-label="实测">探针与计划；评测每次 8 题</td><td data-label="细节"><a href="/blog/restart-cost.html">重启成本</a> · <a href="/blog/exam-as-eval.html">评测</a></td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>同一份预算</span>每一行都在争同样的 44 GB 显存，彼此不能同时跑：视频模型采样时独占两张卡，要跑文本模型得先把它停掉。</p>
+      </div>
+
       <div class="wrap comparison-grid is-single">
         <article class="comparison-card" id="h3-tp2">
           <div class="comparison-media is-term">
@@ -436,7 +451,7 @@
             </div>
           </div>
           <div class="comparison-body">
-            <p class="demo-kicker">本地系统 · SM75</p>
+            <p class="demo-kicker">视频 · SM75 · TP2</p>
             <h3>MiniMax H3 TP2 <span>双卡张量并行</span></h3>
             <p>一个 20.11B 的视频与音频 transformer，跑 W4A8，切分到两张 22 GB 的 Turing 卡上。关键不是它塞得下——而是光靠切分只到 1.31×。</p>
             <dl class="work-specs">

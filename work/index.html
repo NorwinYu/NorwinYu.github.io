@@ -81,7 +81,7 @@
         <p class="section-kicker">Experiments / 2026</p>
         <h1>Experiments in code.</h1>
         <p class="page-lede">Games are one probe, coding tools are another, and the rig itself is the third. All of them test how far an LLM can carry a real production pipeline — generated assets, code, UI, verification and deployment — and where a human still has to intervene.</p>
-        <div class="page-meta"><span><i></i>05 game probes</span><span>02 comparisons</span><span>04 coding tools</span><span>01 local system</span><span>Live / source linked</span></div>
+        <div class="page-meta"><span><i></i>05 game probes</span><span>02 comparisons</span><span>04 coding tools</span><span>05 workloads</span><span>Live / source linked</span></div>
       </div>
     </header>
 
@@ -417,9 +417,24 @@
 
     <section class="section" id="systems" aria-labelledby="systems-title">
       <div class="wrap section-head">
-        <div class="section-heading"><p class="section-kicker">04 / Local system</p><h2 id="systems-title">What the rig actually runs.</h2></div>
-        <p class="section-intro">One system, measured on the workstation rather than quoted from a project page: a 20B video model made to use both cards, at the cost of a host-thread bug that took a probe to find. The terminal monitor that reads the same hardware now sits with the coding tools.</p>
+        <div class="section-heading"><p class="section-kicker">04 / Workloads</p><h2 id="systems-title">What the workstation runs.</h2></div>
+        <p class="section-intro">Five workloads share one 44 GB budget: a 20B video model across both cards, a still-image model, a music model, a 27B text model at 256K, and the benchmarks that keep all of it honest. Only the video row needed a probe to make the second card count.</p>
       </div>
+      <div class="wrap table-wrap">
+        <table class="data-table">
+          <caption class="sr-only">Workloads the workstation runs, with the limits that bound each one</caption>
+          <thead><tr><th scope="col">Workload</th><th scope="col">Model</th><th scope="col">Limits</th><th scope="col">Measured</th><th scope="col">Details</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Video</th><td data-label="Model">MiniMax H3 · 20.11B · W4A8</td><td data-label="Limits">73 frames · 1344×768 native · 4-step Turbo</td><td data-label="Measured">82 s per 4-step clip · 2.97× over one card</td><td data-label="Details"><a href="/local/video-stack.html">video stack</a></td></tr>
+            <tr><th scope="row">Image</th><td data-label="Model">H3-Image DiT · W4A8</td><td data-label="Limits">6 steps · cfg 1.0 · presets from 1344×768 to 6272×2688</td><td data-label="Measured">not benchmarked here</td><td data-label="Details"><a href="/local/workflow.html#api-title">API contract</a></td></tr>
+            <tr><th scope="row">Audio</th><td data-label="Model">MiniMax Music3 · fp16</td><td data-label="Limits">30 steps · cfg 1.7 · lyrics with [verse]/[chorus]</td><td data-label="Measured">not benchmarked here</td><td data-label="Details"><a href="/local/workflow.html#api-title">API contract</a></td></tr>
+            <tr><th scope="row">Text</th><td data-label="Model">Qwen3.8-27B-FP8 · W8A16</td><td data-label="Limits">256K context · one sequence at a time</td><td data-label="Measured">46 tok/s thinking · 52 off · 1,978 tok/s prefill at 4K</td><td data-label="Details"><a href="/local/text-stack.html">text stack</a></td></tr>
+            <tr><th scope="row">Experiments</th><td data-label="Model">Strata 125B MoE · LMExamBench · TP2 probes</td><td data-label="Limits">128K context · 8 eval stages · 22 GB per card</td><td data-label="Measured">probes and plans; eval runs of 8 questions</td><td data-label="Details"><a href="/en/blog/restart-cost.html">restarts</a> · <a href="/en/blog/exam-as-eval.html">evals</a></td></tr>
+          </tbody>
+        </table>
+        <p class="table-note"><span>One budget</span>Every row competes for the same 44 GB of VRAM. Nothing here runs at the same time as anything else: the video model owns both cards while it samples, and the text model has to be stopped first.</p>
+      </div>
+
       <div class="wrap comparison-grid is-single">
         <article class="comparison-card" id="h3-tp2">
           <div class="comparison-media is-term">
@@ -436,7 +451,7 @@
             </div>
           </div>
           <div class="comparison-body">
-            <p class="demo-kicker">Local systems · SM75</p>
+            <p class="demo-kicker">Video · SM75 · TP2</p>
             <h3>MiniMax H3 TP2 <span>双卡张量并行</span></h3>
             <p>A 20.11B video-and-audio transformer in W4A8, sharded across two 22 GB Turing cards. The interesting part is not that it fits — it is that sharding alone only reached 1.31×.</p>
             <dl class="work-specs">
