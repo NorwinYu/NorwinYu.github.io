@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Blender 是资产编译器 — Norwin Yu</title>
+  <meta name="description" content="雾谷农庄与拾穗：同一个农场概念，两条资产管线，Blender 到底买到了什么。">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Blender 是资产编译器 — Norwin Yu">
+  <meta property="og:description" content="雾谷农庄与拾穗：同一个农场概念，两条资产管线，Blender 到底买到了什么。">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/demo-harvest.jpg">
+  <meta property="og:locale" content="zh_CN">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="canonical" href="https://norwinyu.github.io/blog/blender-as-compiler.html">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/blender-as-compiler.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/blender-as-compiler.html">
+  <link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/blender-as-compiler.html">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header article-header" data-header><div class="header-inner wrap"><a class="brand" href="/zh/" aria-label="Norwin Yu — 首页"><span class="brand-mark" aria-hidden="true">N<span>Y</span></span><span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span></a><nav class="article-nav" aria-label="文章导航"><a href="/zh/work/">实验</a><a href="/zh/ai.html">本地</a><a href="/blog/">日志</a><a href="/zh/about.html">关于</a></nav><a class="lang-switch" href="/en/blog/blender-as-compiler.html" hreflang="en">EN</a><span class="availability"><i aria-hidden="true"></i>开放研究交流</span></div></header>
+
+  <main id="main">
+    <header class="article-hero"><div class="wrap">
+      <a class="back-link" href="/blog/"><span aria-hidden="true">←</span> 全部笔记</a>
+      <p class="article-kicker"><span class="is-accent">系统</span><i aria-hidden="true"></i><span>资产管线</span><i aria-hidden="true"></i><span>Blender</span></p>
+      <h1>Blender 是<br><em>资产编译器。</em></h1>
+      <p class="article-deck">同一个农场概念，一条全代码管线，一条 Blender 管线。差别不在“谁更写实”，而在资产从哪来、怎么改、怎么复用。</p>
+      <p class="article-cn">Blender 的价值不是替你建模，而是把资产变成可重复构建的代码产物。</p>
+      <div class="article-meta"><span><i aria-hidden="true"></i>Norwin Yu</span><span>2026 年 11 月</span><span>9 分钟</span><span>研究笔记 / 16</span></div>
+      <p class="ai-disclosure">写作：AI 代写 · 素材与校对：Norwin Yu</p>
+    </div></header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside"><p class="mono-label">目录</p><nav class="article-toc" aria-label="文章目录"><a href="#two">两条管线</a><a href="#does">Blender 做了什么</a><a href="#cost">代价</a><a href="#buys">买到了什么</a><a href="#limits">没证明什么</a><a href="#take">结论</a></nav>
+        <dl class="article-aside-facts"><div><dt>资产</dt><dd>39 个脚本化道具</dd></div><div><dt>贴图</dt><dd>27.7MB → 2.97MB</dd></div><div><dt>作物</dt><dd>4 种 × 4 阶段</dd></div><div><dt>外部素材</dt><dd>0</dd></div></dl>
+      </aside>
+
+      <article class="article-body">
+        <p><a href="https://norwinyu.github.io/mistvale-farm/" target="_blank" rel="noopener">雾谷农庄</a> 是 no-Blender 基线：一句 prompt，Three.js，所有模型、贴图、天气和声音都在代码里生成。它证明模型能搭出一个完整农场循环。</p>
+        <p><a href="https://norwinyu.github.io/harvest/" target="_blank" rel="noopener">拾穗 · Harvest</a> 是同一个农场概念的另一条路：资产由本机 Blender 脚本生成，导出 GLB，再内联进单文件游戏。它证明的是另一件事：资产可以从“手写几何”变成“可重复构建的产物”。</p>
+
+        <div class="stat-strip is-four"><div><strong>39</strong><span>脚本化道具</span></div><div><strong>27.7→2.97MB</strong><span>源贴图 → 包体</span></div><div><strong>4×4</strong><span>作物 × 生长阶段</span></div><div><strong>0</strong><span>外部素材文件</span></div></div>
+
+        <h2 id="two">两条管线</h2>
+        <p>雾谷的资产是“代码里的形状”：一个箱子、一棵树、一块地，都是运行时拼出来的几何。拾穗的资产是“Blender 里的结果”：脚本用 bmesh 建面、倒角、按世界尺度做 UV，再用 Cycles 把 AO 烘进顶点色，最后导出 GLB。</p>
+        <p>两者都没有外部图片或模型文件。区别是：一个把生成逻辑放在浏览器，一个把生成逻辑放在 Blender，再把结果打包回去。</p>
+
+        <h2 id="does">Blender 做了什么</h2>
+        <p>拾穗的 Blender 目录没有手工建模，全是脚本：</p>
+        <ul>
+          <li><strong>套件：</strong>农舍、水井、栅栏、出货箱、稻草人、树、工具，共 39 个资产。</li>
+          <li><strong>作物：</strong>4 种作物 × 4 个生长阶段，按同一套命名和尺寸生成。</li>
+          <li><strong>贴图：</strong>木板、瓦片、灰泥、树皮、石头、泥土、草地、锈铁，加上 6 张 alpha 叶卡。</li>
+          <li><strong>AO：</strong>每个资产单独用 Cycles 烘环境光遮蔽，写进顶点色，物体底部自然变暗。</li>
+          <li><strong>UV：</strong>按世界坐标投影，每种材质有“多少米一个贴图周期”，所以 0.5m 的箱子和 8m 的房子密度一致。</li>
+        </ul>
+        <p>这些工作如果让模型在浏览器里逐件生成，也能做；但每次改一个尺寸、换一种材质，都要重新推导几何关系。Blender 把这些关系变成了可重跑的脚本和可检查的中间产物。</p>
+
+        <figure class="article-figure"><img decoding="async" src="/assets/img/demo-harvest.jpg" alt="拾穗农庄的白天场景：谷仓、筒仓、栅栏、作物和土路。" width="1200" height="675" loading="eager"><figcaption><span>拾穗 · Harvest：Blender 生成资产，GLB 内联进单文件。</span><span>项目截图</span></figcaption></figure>
+
+        <h2 id="cost">代价</h2>
+        <p>这条管线不是免费的。它多了一个 Blender 构建步骤，多了一套 Python 资产脚本，多了一个 GLB 打包/内联环节。源贴图 27.7MB，最终压到 2.97MB，但游戏文件本身仍然是 11MB 级别——比一个纯代码 demo 大得多。</p>
+        <p>它也更难“随手改”：改一个模型，不是改一行数组，而是改脚本、重跑 Blender、重新导出、重新打包。资产越多，构建链越长。</p>
+
+        <h2 id="buys">买到了什么</h2>
+        <ul>
+          <li><strong>可重复：</strong>同一份脚本跑两次，资产结构和尺寸一致；不是每次让模型即兴发挥。</li>
+          <li><strong>可检查：</strong>AO、UV、材质周期能在 Blender 里单独看，不必等整个游戏跑起来。</li>
+          <li><strong>资产密度：</strong>39 个道具、16 个作物阶段、9 种地表和 6 张叶卡，可以系统地铺满一个场景。</li>
+          <li><strong>尺度一致：</strong>农舍 8×6m、栅栏柱 1.25m、地块 1m、眼高 1.68m；这些数字进入资产，而不是散落在代码里。</li>
+        </ul>
+        <p>所以 Blender 在这里更像一个 <em>asset compiler</em>：输入是脚本和参数，输出是 GLB、贴图和可以打包的资产。它不是“更会建模”，而是“让资产生产变成一条可重复的流水线”。</p>
+
+        <h2 id="limits">没证明什么</h2>
+        <p>这不是一场受控美术对比。两条管线的场景、时间、资产目标和构建预算都不同；雾谷的标题画面是黄昏，拾穗的 hero 是白天。把它们并排，是为了看管线差异，不是给“Blender 一定更好”下结论。</p>
+        <p>它也没有证明全代码管线不够好。雾谷仍然是更轻、更快、更容易改的基线；拾穗买到的是资产密度和可重复性，不是“更高级”。</p>
+
+        <h2 id="take">结论</h2>
+        <p>如果只记一句：Blender 的价值不在“手工建模”，而在把资产变成可重复构建的中间产物。它让 39 个道具、16 个作物阶段和 9 种地表可以在同一条管线里被生成、检查和复用。</p>
+        <p>这也是我之后想继续用它的原因：不是因为 Blender 更漂亮，而是因为它让“改资产”这件事有了工程上的落点。</p>
+
+        <!-- Skill repository URL pending: add when provided. -->
+        <p class="article-end"><strong>参考 /</strong> <a href="https://norwinyu.github.io/mistvale-farm/" target="_blank" rel="noopener">雾谷农庄</a> · <a href="https://norwinyu.github.io/harvest/" target="_blank" rel="noopener">拾穗 · Harvest</a> · <a href="https://github.com/NorwinYu/harvest" target="_blank" rel="noopener">Harvest 源码</a> · <a href="/zh/work/#harvest">Work 里的对比</a>。数字来自 Harvest 的 README 和构建记录；这不是受控美术评测。</p>
+      </article>
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title"><div class="wrap"><div><p>下一篇 / 系统</p><h2 id="next-title">同一个 harness，换一个类型</h2></div><a href="/blog/harness-second-genre.html"><span>继续阅读</span><span class="circle-arrow" aria-hidden="true">→</span></a></div></section>
+  </main>
+
+  <footer class="site-footer article-footer"><div class="footer-bottom wrap"><span>© 2026 Norwin Yu</span><nav class="article-footer-links" aria-label="页脚"><a href="/zh/work/">实验</a><a href="/zh/ai.html">本地</a><a href="/zh/open-source.html">开源</a><a href="/zh/competitions.html">竞赛</a><a href="/blog/">日志</a><a href="/zh/about.html">关于</a></nav><a href="/blog/">全部笔记 <span aria-hidden="true">→</span></a></div></footer>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Eight gates, 318 KB — Norwin Yu</title>
+  <meta name="description" content="Black Ice and Neon Breach: how one harness turns a playable FPS into a shippable one.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Eight gates, 318 KB — Norwin Yu">
+  <meta property="og:description" content="Black Ice and Neon Breach: how one harness turns a playable FPS into a shippable one.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/demo-black-ice.jpg">
+  <meta property="og:locale" content="en_US">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="canonical" href="https://norwinyu.github.io/en/blog/eight-gates-318kb.html">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/eight-gates-318kb.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/eight-gates-318kb.html">
+  <link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/eight-gates-318kb.html">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header><div class="header-inner wrap"><a class="brand" href="/" aria-label="Norwin Yu — home"><span class="brand-mark" aria-hidden="true">N<span>Y</span></span><span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span></a><nav class="article-nav" aria-label="Article navigation"><a href="/work/">Experiments</a><a href="/ai.html">Local</a><a href="/en/blog/">Journal</a><a href="/about.html">About</a></nav><a class="lang-switch" href="/blog/eight-gates-318kb.html" hreflang="zh-CN">中文</a><span class="availability"><i aria-hidden="true"></i>Open to research conversations</span></div></header>
+
+  <main id="main">
+    <header class="article-hero"><div class="wrap">
+      <a class="back-link" href="/en/blog/"><span aria-hidden="true">←</span> All notes</a>
+      <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Harness</span><i aria-hidden="true"></i><span>FPS</span></p>
+      <h1>Eight gates,<br><em>318 KB.</em></h1>
+      <p class="article-deck">Black Ice isn't another model-written FPS. The useful part is how one harness turns “it runs” into “it ships”.</p>
+      <p class="article-cn">A harness is not a style prompt. It is a checklist that is allowed to say no.</p>
+      <div class="article-meta"><span><i aria-hidden="true"></i>Norwin Yu</span><span>November 2026</span><span>8 min</span><span>Research note / 15</span></div>
+      <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+    </div></header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside"><p class="mono-label">Contents</p><nav class="article-toc" aria-label="Article contents"><a href="#two">Two entry points</a><a href="#gates">What 8/8 means</a><a href="#numbers">The countable part</a><a href="#caught">What the harness caught</a><a href="#limits">What it doesn't prove</a><a href="#take">Conclusion</a></nav>
+        <dl class="article-aside-facts"><div><dt>Black Ice</dt><dd>8/8 gates</dd></div><div><dt>Scale</dt><dd>163 draw calls · 127k tris</dd></div><div><dt>Size</dt><dd>318 KB · single file</dd></div><div><dt>Control</dt><dd>Neon · no skill</dd></div></dl>
+      </aside>
+
+      <article class="article-body">
+        <p><a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">NEON BREACH</a> answered “can it be written at all”: five waves, a three-phase boss, a pure API loop, no skill, no product gate. It proved a model could generate a playable shooter. It did not prove the result could be shipped.</p>
+        <p><a href="https://norwinyu.github.io/black-ice/game.html" target="_blank" rel="noopener">BLACK ICE</a> is the second half of the question. It is still a single-file browser FPS with zero external assets, but it passed an explicit acceptance run: 8/8 gates, 163 draw calls, 127k triangles, 12 lights, 318 KB.</p>
+
+        <div class="stat-strip is-four"><div><strong>8/8</strong><span>acceptance gates</span></div><div><strong>163</strong><span>draw calls</span></div><div><strong>127k</strong><span>triangles</span></div><div><strong>318 KB</strong><span>single file</span></div></div>
+
+        <h2 id="two">Two entry points</h2>
+        <p>Neon starts with “make it exist”. It has no settings screen, no save, no touch layout, no quality tiers; it has a complete combat loop but not a complete game shell. As a no-skill control, that is useful: it shows where a plain model loop stops.</p>
+        <p>Black Ice starts with “define what done means”. Title, settings, pause, failure, results, relay objectives, four enemy roles, a boss, touch, audio, performance and mobile checks. It is not Neon plus UI. It is a build that began with rejection criteria.</p>
+
+        <h2 id="gates">What 8/8 means</h2>
+        <p>The harness is not a longer prompt. It is six core checks plus two product checks:</p>
+        <ul>
+          <li><strong>Shader:</strong> no shader compile/link failure, no uncaught runtime exception.</li>
+          <li><strong>Object census:</strong> meshes, instances and near props have identity; nothing hides by being unlisted.</li>
+          <li><strong>Collision:</strong> the collision contract uses the same movement code the player uses.</li>
+          <li><strong>Lights:</strong> every light has a physical anchor; no floating light for a screenshot.</li>
+          <li><strong>Loop:</strong> start, objective, failure and restart close; not just one good frame.</li>
+          <li><strong>Look:</strong> checked from fixed cameras and exposure; not a lucky screenshot.</li>
+          <li><strong>Product / mobile:</strong> settings, pause, persistence, touch, objective chain, HUD and performance budgets.</li>
+        </ul>
+        <p>These checks are unglamorous, even boring. They sit exactly between “the demo looks finished” and “the game can be played”.</p>
+
+        <h2 id="numbers">The countable part</h2>
+        <p>Black Ice's numbers are small: 318 KB, 163 draw calls, 127k triangles, 12 lights. The size is not a compression trick; there are no asset files. Geometry, materials, audio and UI are generated in code. Small is a consequence of content existing as functions.</p>
+        <p>But small is not simple. It has four enemy roles, three relay objectives, a boss, full movement/aim/reload/interact, touch controls and a 6–10 minute run. Few assets; plenty of loop.</p>
+
+        <figure class="article-figure"><img decoding="async" src="/assets/img/demo-black-ice.jpg" alt="Black Ice arctic outpost firefight with robots, relay towers and a first-person weapon." width="1280" height="720" loading="eager"><figcaption><span>Black Ice / 白夜站: 8/8 gates, 318 KB single file.</span><span>Project screenshot</span></figcaption></figure>
+
+        <h2 id="caught">What the harness caught</h2>
+        <ul>
+          <li><strong>No shell:</strong> without settings, pause, results and restart, a player cannot really begin or end a run.</li>
+          <li><strong>No input closure:</strong> desktop working does not mean touch works; touch needs its own layout and state.</li>
+          <li><strong>No physical contract:</strong> visually grounded is not collision-grounded; players, planes and karts clip.</li>
+          <li><strong>No performance budget:</strong> a screenshot can look fine while the frame rate is unplayable.</li>
+          <li><strong>No observability:</strong> if the agent cannot see its output, it is guessing at acceptance.</li>
+        </ul>
+        <blockquote>A gate is not a style prompt. It is a rule that can reject you.</blockquote>
+
+        <h2 id="limits">What it doesn't prove</h2>
+        <p>It does not prove 318 KB is a commercial FPS. This is a 6–10 minute single-player vertical slice: no long progression, narrative density or network. It also does not prove the harness replaces taste. A gate can check presence, not quality.</p>
+        <p>And it does not prove “skill always beats no skill”. Neon is still a complete no-skill control. What it lacks is the product layer, not model capability. The pair exists to show which part the harness adds.</p>
+
+        <h2 id="take">Conclusion</h2>
+        <p>If I take one thing from Black Ice, it is the order of acceptance: define done before writing content; make the gate able to say no before asking the model for more. 318 KB is a nice result, but the eight gates are what make it hold.</p>
+
+        <!-- Skill repository URL pending: add when provided. -->
+        <p class="article-end"><strong>Reference /</strong> <a href="https://norwinyu.github.io/black-ice/game.html" target="_blank" rel="noopener">Black Ice online</a> · <a href="https://github.com/NorwinYu/black-ice" target="_blank" rel="noopener">source</a> · <a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">Neon Breach control</a> · <a href="/work/#comparisons">the four runs in Work</a>. Numbers come from Black Ice's acceptance record; this is an engineering review, not a product review.</p>
+      </article>
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title"><div class="wrap"><div><p>Next / Systems</p><h2 id="next-title">Blender is an asset compiler</h2></div><a href="/en/blog/blender-as-compiler.html"><span>Read next</span><span class="circle-arrow" aria-hidden="true">→</span></a></div></section>
+  </main>
+
+  <footer class="site-footer article-footer"><div class="footer-bottom wrap"><span>© 2026 Norwin Yu</span><nav class="article-footer-links" aria-label="Footer"><a href="/work/">Experiments</a><a href="/ai.html">Local</a><a href="/open-source.html">Open source</a><a href="/competitions.html">Competitions</a><a href="/en/blog/">Journal</a><a href="/about.html">About</a></nav><a href="/en/blog/">All notes <span aria-hidden="true">→</span></a></div></footer>
+</body>
+</html>

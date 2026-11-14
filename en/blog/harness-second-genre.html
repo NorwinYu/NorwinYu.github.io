@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>The same harness, a second genre — Norwin Yu</title>
+  <meta name="description" content="From a 3D shooter to city karts: what a harness can reuse and what it has to rewrite.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="The same harness, a second genre — Norwin Yu">
+  <meta property="og:description" content="From a 3D shooter to city karts: what a harness can reuse and what it has to rewrite.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/demo-sunset-district.jpg">
+  <meta property="og:locale" content="en_US">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="canonical" href="https://norwinyu.github.io/en/blog/harness-second-genre.html">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/harness-second-genre.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/harness-second-genre.html">
+  <link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/harness-second-genre.html">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header><div class="header-inner wrap"><a class="brand" href="/" aria-label="Norwin Yu — home"><span class="brand-mark" aria-hidden="true">N<span>Y</span></span><span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span></a><nav class="article-nav" aria-label="Article navigation"><a href="/work/">Experiments</a><a href="/ai.html">Local</a><a href="/en/blog/">Journal</a><a href="/about.html">About</a></nav><a class="lang-switch" href="/blog/harness-second-genre.html" hreflang="zh-CN">中文</a><span class="availability"><i aria-hidden="true"></i>Open to research conversations</span></div></header>
+
+  <main id="main">
+    <header class="article-hero"><div class="wrap">
+      <a class="back-link" href="/en/blog/"><span aria-hidden="true">←</span> All notes</a>
+      <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Harness</span><i aria-hidden="true"></i><span>Genre transfer</span></p>
+      <h1>The same harness,<br><em>a second genre.</em></h1>
+      <p class="article-deck">If the harness only works in an FPS, it is not a harness; it is a one-off checklist. City karts are the second test.</p>
+      <p class="article-cn">The question is not “does skill help?” but “how much survives a genre change?”</p>
+      <div class="article-meta"><span><i aria-hidden="true"></i>Norwin Yu</span><span>November 2026</span><span>9 min</span><span>Research note / 17</span></div>
+      <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+    </div></header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside"><p class="mono-label">Contents</p><nav class="article-toc" aria-label="Article contents"><a href="#four">Four builds</a><a href="#same">What transfers</a><a href="#rewrite">What must be rewritten</a><a href="#numbers">Numbers</a><a href="#limits">What it doesn't prove</a><a href="#take">Conclusion</a></nav>
+        <dl class="article-aside-facts"><div><dt>Genres</dt><dd>2</dd></div><div><dt>Builds</dt><dd>4</dd></div><div><dt>Sunset checks</dt><dd>31/31</dd></div><div><dt>Sunset scale</dt><dd>636 draw calls</dd></div></dl>
+      </aside>
+
+      <article class="article-body">
+        <p><a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">NEON BREACH</a> and <a href="https://norwinyu.github.io/black-ice/game.html" target="_blank" rel="noopener">BLACK ICE</a> proved the harness could change a 3D shooter. But that might only mean the checks happened to fit shooters. The real test is another genre: <a href="https://norwinyu.github.io/city-kart/" target="_blank" rel="noopener">Sundown Circuit</a> and <a href="https://norwinyu.github.io/sunset-district/" target="_blank" rel="noopener">SUNSET DISTRICT</a>.</p>
+
+        <div class="stat-strip is-four"><div><strong>2</strong><span>genres</span></div><div><strong>4</strong><span>builds</span></div><div><strong>31/31</strong><span>Sunset playtest checks</span></div><div><strong>636</strong><span>Sunset draw calls</span></div></div>
+
+        <h2 id="four">Four builds</h2>
+        <ul>
+          <li><strong>NEON BREACH:</strong> no skill, pure API, five waves and a three-phase boss.</li>
+          <li><strong>BLACK ICE:</strong> harnessed, 8/8 gates, 318 KB, 163 draw calls.</li>
+          <li><strong>Sundown Circuit:</strong> no skill, 3 laps, 860m, 6 karts.</li>
+          <li><strong>SUNSET DISTRICT:</strong> same skill/harness, 4 laps, 5 rivals, 636 draw calls, 539,883 triangles, 4 lights.</li>
+        </ul>
+        <p>They are not a controlled model benchmark: the scenes, budgets and design goals differ. They are evidence for whether the harness still works after a genre change.</p>
+
+        <h2 id="same">What transfers</h2>
+        <ul>
+          <li><strong>Shader / page errors:</strong> every WebGL game must compile and start.</li>
+          <li><strong>Object census:</strong> both genres need to know what is in the scene and whether near props have identity.</li>
+          <li><strong>Light anchors:</strong> every light needs a physical source, not a screenshot-only light.</li>
+          <li><strong>Product shell:</strong> title, settings, pause, results, persistence and mobile — genre-independent.</li>
+          <li><strong>Mobile:</strong> 390×844 with no overflow and usable touch; both genres need it.</li>
+          <li><strong>Performance budget:</strong> draw calls, triangles and lights have different limits, but the idea of a limit transfers.</li>
+        </ul>
+
+        <h2 id="rewrite">What must be rewritten</h2>
+        <p>The first things to fail are collision and the definition of the loop.</p>
+        <p>The shooter collision gate assumes a walkable rectangular set, cargo coordinates and ray occlusion. A racing world is a continuous corridor with 204 barrier colliders; the player must be pushed back onto the track, not allowed to walk through buildings. The old collision contract has to be re-expressed as barrier push / wall clamp / track containment / progress checks.</p>
+        <p>The loop changes too. An FPS objective is “clear this wave / kill the boss”; a race is “hold a podium for four laps / beat the clock / finish with a chassis”. The product gate still applies, but success and failure conditions must be rewritten.</p>
+        <p>Input is the same story. Mouse aim plus WASD does not transfer to a kart. You need throttle, brake, steering, drift charge and nitro, plus a touch layout with separate steering zones. A gate can check that touch exists; it cannot design a good touch scheme.</p>
+
+        <h2 id="numbers">Numbers</h2>
+        <p>Black Ice passed 8/8 gates at 318 KB, 163 draw calls, 127k triangles and 12 lights. SUNSET DISTRICT passed 31/31 playtest checks at 636 draw calls, 539,883 triangles, 4 lights and a 390×844 mobile run.</p>
+        <p>These numbers are not a ranking. They show that one harness can produce checkable delivery conditions in two genres, while the budgets and failure modes remain different.</p>
+
+        <figure class="article-figure"><img decoding="async" src="/assets/img/demo-sunset-district.jpg" alt="Sunset District city kart race: two karts on a wet downtown street." width="960" height="540" loading="eager"><figcaption><span>SUNSET DISTRICT: 4 laps, 5 rivals, 636 draw calls.</span><span>Project screenshot</span></figcaption></figure>
+
+        <h2 id="limits">What it doesn't prove</h2>
+        <p>It does not prove the harness can be copied unchanged into any genre. It proves the opposite: transfer has a cost. Collision contracts, success conditions, input and performance budgets all need rewriting. What transfers is the discipline and the product checklist, not every line of gate code.</p>
+        <p>It also does not prove “skill always wins”. Sundown and Neon are complete no-skill builds; they lack the product layer and the acceptance loop, not the ability to write.</p>
+
+        <h2 id="take">Conclusion</h2>
+        <p>With one genre, the harness can look like an FPS trick. The second genre exposes its actual structure: generic product/performance/observation checks transfer, world contracts do not.</p>
+        <p>That is why the city karts belong in the same comparison: not for another demo, but to see what remains after a genre change.</p>
+
+        <!-- Skill repository URL pending: add when provided. -->
+        <p class="article-end"><strong>Reference /</strong> <a href="https://norwinyu.github.io/neon-breach/" target="_blank" rel="noopener">Neon Breach</a> · <a href="https://norwinyu.github.io/black-ice/game.html" target="_blank" rel="noopener">Black Ice</a> · <a href="https://norwinyu.github.io/city-kart/" target="_blank" rel="noopener">Sundown Circuit</a> · <a href="https://norwinyu.github.io/sunset-district/" target="_blank" rel="noopener">Sunset District</a> · <a href="/work/#comparisons">the comparisons in Work</a>. Numbers come from each project's acceptance record; this is not a controlled model review.</p>
+      </article>
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title"><div class="wrap"><div><p>Back to / Journal</p><h2 id="next-title">All notes</h2></div><a href="/en/blog/"><span>Browse</span><span class="circle-arrow" aria-hidden="true">→</span></a></div></section>
+  </main>
+
+  <footer class="site-footer article-footer"><div class="footer-bottom wrap"><span>© 2026 Norwin Yu</span><nav class="article-footer-links" aria-label="Footer"><a href="/work/">Experiments</a><a href="/ai.html">Local</a><a href="/open-source.html">Open source</a><a href="/competitions.html">Competitions</a><a href="/en/blog/">Journal</a><a href="/about.html">About</a></nav><a href="/en/blog/">All notes <span aria-hidden="true">→</span></a></div></footer>
+</body>
+</html>

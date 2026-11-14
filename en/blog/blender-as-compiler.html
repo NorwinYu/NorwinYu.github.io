@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Blender is an asset compiler — Norwin Yu</title>
+  <meta name="description" content="Mistvale and Harvest: one farm concept, two asset pipelines, and what Blender actually buys.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Blender is an asset compiler — Norwin Yu">
+  <meta property="og:description" content="Mistvale and Harvest: one farm concept, two asset pipelines, and what Blender actually buys.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/demo-harvest.jpg">
+  <meta property="og:locale" content="en_US">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="canonical" href="https://norwinyu.github.io/en/blog/blender-as-compiler.html">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/blender-as-compiler.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/blender-as-compiler.html">
+  <link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/blender-as-compiler.html">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header><div class="header-inner wrap"><a class="brand" href="/" aria-label="Norwin Yu — home"><span class="brand-mark" aria-hidden="true">N<span>Y</span></span><span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span></a><nav class="article-nav" aria-label="Article navigation"><a href="/work/">Experiments</a><a href="/ai.html">Local</a><a href="/en/blog/">Journal</a><a href="/about.html">About</a></nav><a class="lang-switch" href="/blog/blender-as-compiler.html" hreflang="zh-CN">中文</a><span class="availability"><i aria-hidden="true"></i>Open to research conversations</span></div></header>
+
+  <main id="main">
+    <header class="article-hero"><div class="wrap">
+      <a class="back-link" href="/en/blog/"><span aria-hidden="true">←</span> All notes</a>
+      <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Asset pipeline</span><i aria-hidden="true"></i><span>Blender</span></p>
+      <h1>Blender is an<br><em>asset compiler.</em></h1>
+      <p class="article-deck">One farm concept, a code-only pipeline and a Blender pipeline. The difference is not “which is prettier”; it is where assets come from and how hard they are to revise.</p>
+      <p class="article-cn">Blender's value is not modelling for you. It is turning assets into reproducible build outputs.</p>
+      <div class="article-meta"><span><i aria-hidden="true"></i>Norwin Yu</span><span>November 2026</span><span>9 min</span><span>Research note / 16</span></div>
+      <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+    </div></header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside"><p class="mono-label">Contents</p><nav class="article-toc" aria-label="Article contents"><a href="#two">Two pipelines</a><a href="#does">What Blender does</a><a href="#cost">The cost</a><a href="#buys">What it buys</a><a href="#limits">What it doesn't prove</a><a href="#take">Conclusion</a></nav>
+        <dl class="article-aside-facts"><div><dt>Assets</dt><dd>39 scripted props</dd></div><div><dt>Textures</dt><dd>27.7MB → 2.97MB</dd></div><div><dt>Crops</dt><dd>4 × 4 growth stages</dd></div><div><dt>External assets</dt><dd>0</dd></div></dl>
+      </aside>
+
+      <article class="article-body">
+        <p><a href="https://norwinyu.github.io/mistvale-farm/" target="_blank" rel="noopener">Mistvale Farm</a> is the no-Blender baseline: one prompt, Three.js, every model, texture, weather system and sound generated in code. It proves a model can assemble a complete farm loop.</p>
+        <p><a href="https://norwinyu.github.io/harvest/" target="_blank" rel="noopener">Harvest / 拾穗</a> takes the same farm concept down another path: assets are generated by local Blender scripts, exported as GLB, then inlined into a single-file game. It proves something different: assets can move from “geometry written in code” to “a reproducible build output”.</p>
+
+        <div class="stat-strip is-four"><div><strong>39</strong><span>scripted props</span></div><div><strong>27.7→2.97MB</strong><span>source textures → package</span></div><div><strong>4×4</strong><span>crops × growth stages</span></div><div><strong>0</strong><span>external asset files</span></div></div>
+
+        <h2 id="two">Two pipelines</h2>
+        <p>Mistvale's assets are shapes in code: a crate, a tree, a plot, assembled at runtime. Harvest's assets are results in Blender: scripts build faces with bmesh, bevel them, project UVs at world scale, bake AO into vertex colours with Cycles, and export GLB.</p>
+        <p>Neither uses external images or model files. The difference is where the generation logic lives: one in the browser, one in Blender before packaging.</p>
+
+        <h2 id="does">What Blender does</h2>
+        <ul>
+          <li><strong>Kit:</strong> farmhouse, well, fences, shipping box, scarecrow, trees and tools — 39 assets.</li>
+          <li><strong>Crops:</strong> four crops × four growth stages, generated from one naming and sizing convention.</li>
+          <li><strong>Textures:</strong> wood, tiles, plaster, bark, stone, dirt, grass, rust, plus six alpha leaf cards.</li>
+          <li><strong>AO:</strong> each asset is baked separately with Cycles into vertex colour, so objects sit on the ground instead of floating.</li>
+          <li><strong>UV:</strong> projected by world coordinates; each material has a “metres per tile” value, so a 0.5m crate and an 8m house share texture density.</li>
+        </ul>
+        <p>A browser could generate each of these too, but every size or material change would require re-deriving the geometry relationships. Blender turns those relationships into a rerunnable script and a checkable intermediate.</p>
+
+        <figure class="article-figure"><img decoding="async" src="/assets/img/demo-harvest.jpg" alt="Harvest farm in daylight: barn, silo, fences, crops and a dirt path." width="1200" height="675" loading="eager"><figcaption><span>Harvest / 拾穗: Blender-generated assets, GLB inlined into one file.</span><span>Project screenshot</span></figcaption></figure>
+
+        <h2 id="cost">The cost</h2>
+        <p>The pipeline is not free. It adds a Blender build step, a Python asset layer and a GLB packaging/inlining stage. Source textures are 27.7MB and compress to 2.97MB, but the game file is still around 11MB — much larger than a pure-code demo.</p>
+        <p>It is also harder to change casually: one model change means editing a script, rerunning Blender, re-exporting and repackaging. The more assets, the longer the chain.</p>
+
+        <h2 id="buys">What it buys</h2>
+        <ul>
+          <li><strong>Repeatability:</strong> the same script produces the same asset structure and dimensions; no per-run improvisation.</li>
+          <li><strong>Inspectability:</strong> AO, UVs and material tiling can be checked inside Blender before the game runs.</li>
+          <li><strong>Asset density:</strong> 39 props, 16 crop stages, nine surface families and six leaf cards can cover a scene systematically.</li>
+          <li><strong>Scale consistency:</strong> an 8×6m farmhouse, 1.25m fence posts, 1m plots and 1.68m eye height enter the asset, not scattered code.</li>
+        </ul>
+        <p>So Blender acts more like an <em>asset compiler</em>: script and parameters in, GLB and textures out. It is not “better modelling”; it is asset production becoming a repeatable pipeline.</p>
+
+        <h2 id="limits">What it doesn't prove</h2>
+        <p>This is not a controlled art comparison. The two builds have different scenes, times of day, asset targets and build budgets; Mistvale's title screen is dusk, Harvest's hero image is daylight. They sit together to show pipeline differences, not to crown a winner.</p>
+        <p>It also does not prove code-only is worse. Mistvale remains lighter, faster to change and easier to ship. Harvest buys asset density and repeatability, not superiority.</p>
+
+        <h2 id="take">Conclusion</h2>
+        <p>If I keep one sentence: Blender's value is not hand-modelling, but turning assets into reproducible intermediate outputs. It lets 39 props, 16 crop stages and nine surface families be generated, checked and reused in one pipeline.</p>
+        <p>That is why I want to keep using it: not because Blender is prettier, but because it gives “change an asset” an engineering landing point.</p>
+
+        <!-- Skill repository URL pending: add when provided. -->
+        <p class="article-end"><strong>Reference /</strong> <a href="https://norwinyu.github.io/mistvale-farm/" target="_blank" rel="noopener">Mistvale Farm</a> · <a href="https://norwinyu.github.io/harvest/" target="_blank" rel="noopener">Harvest</a> · <a href="https://github.com/NorwinYu/harvest" target="_blank" rel="noopener">Harvest source</a> · <a href="/work/#harvest">the comparison in Work</a>. Numbers come from Harvest's README and build record; this is not a controlled art review.</p>
+      </article>
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title"><div class="wrap"><div><p>Next / Systems</p><h2 id="next-title">The same harness, a second genre</h2></div><a href="/en/blog/harness-second-genre.html"><span>Read next</span><span class="circle-arrow" aria-hidden="true">→</span></a></div></section>
+  </main>
+
+  <footer class="site-footer article-footer"><div class="footer-bottom wrap"><span>© 2026 Norwin Yu</span><nav class="article-footer-links" aria-label="Footer"><a href="/work/">Experiments</a><a href="/ai.html">Local</a><a href="/open-source.html">Open source</a><a href="/competitions.html">Competitions</a><a href="/en/blog/">Journal</a><a href="/about.html">About</a></nav><a href="/en/blog/">All notes <span aria-hidden="true">→</span></a></div></footer>
+</body>
+</html>
