@@ -94,7 +94,7 @@
       </div>
 
       <div class="wrap thread-grid">
-        <div class="thread-card"><span>01</span><h3>量化</h3><p>把模型压到 1.6 bit 的地方版本，对 3D 场景意味着什么？明宫三维（Ming Palace 3D）就是那个量化探针。</p></div>
+        <div class="thread-card"><span>01</span><h3>量化</h3><p>把模型压到 1.6 bit 的地方版本，对 3D 场景意味着什么？明宫三维（Ming Palace 3D）就是那个量化探针；同一份 brief 后来又交给 Fable 5.2 重写了一遍。</p></div>
         <div class="thread-card"><span>02</span><h3>杠杆</h3><p>给模型一套 agent/skill 框架，和只给一个 API 循环，差在哪？NEON BREACH 是没走 harness 的对照组。</p></div>
         <div class="thread-card"><span>03</span><h3>素材管线</h3><p>程序化代码、生成图片/视频，还是 Blender 辅助？雾谷农庄是不用 Blender 的基线；Blender 版现在已经进了对比。</p></div>
         <div class="thread-card"><span>04</span><h3>验证</h3><p>Playwright、截图复查、碰撞检查，加上六道关的 harness。构建跑得起来不算结果，能被人检查才算。</p></div>
@@ -112,7 +112,7 @@
             <tr><th scope="row">雾谷农庄</th><td data-label="测什么">无 Blender vs Blender 管线</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">程序化模型、天气、音频；无外部素材</td></tr>
             <tr><th scope="row">机场大亨 3D</th><td data-label="测什么">DeepSeek Flash + DSH + Godot 引擎路线</td><td data-label="模型">DeepSeek Flash + DSH</td><td data-label="杠杆">Godot 4.6 / GDScript；程序化网格与音频</td></tr>
             <tr><th scope="row">NEON BREACH</th><td data-label="测什么">无 harness 对照组</td><td data-label="模型">DeepSeek V4.1 Flash</td><td data-label="杠杆">纯 API，无 skill；原生 WebGL；程序化素材</td></tr>
-            <tr><th scope="row">明宫三维</th><td data-label="测什么">量化版 vs 原版</td><td data-label="模型">DeepSeek-V4.1-Flash-1017 · Maya-XS</td><td data-label="杠杆">一句中文 prompt；单文件 WebGL2；无 skill</td></tr>
+            <tr><th scope="row">明宫三维</th><td data-label="测什么">量化版 vs 原版 vs Fable 5.2</td><td data-label="模型">DeepSeek-V4.1-Flash-1017 · Maya-XS · Fable 5.2</td><td data-label="杠杆">一句中文 prompt；单文件 WebGL2；无 skill</td></tr>
             <tr><th scope="row">dsh-quota</th><td data-label="测什么">工具 / 按路由显示状态</td><td data-label="模型">DeepSeek V4.1 Flash</td><td data-label="杠杆">代码/测试/文档；配置驱动的适配器</td></tr>
             <tr><th scope="row">NorMark</th><td data-label="测什么">桌面编程应用</td><td data-label="模型">未记录</td><td data-label="杠杆">Electron / React / CodeMirror</td></tr>
             <tr><th scope="row">RoomTessera 3D</th><td data-label="测什么">空间工具</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">代码/UI/测试；程序化几何</td></tr>
@@ -285,7 +285,7 @@
     <section class="section comparison-section" id="comparisons" aria-labelledby="comparisons-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">02 / 对比</p><h2 id="comparisons-title">四次受控运行。</h2></div>
-        <p class="section-intro">不是每个构建都是产品。Run 01 用一台无 skill 的 3D 枪战对照一台走 harness 的 3D 枪战。Run 02 把同一个问题换到城市卡丁车。Run 03 比较同一个 checkpoint 的两种权重格式。Run 04 比较同一个农场概念在有无 Blender 下的两条资产管线。</p>
+        <p class="section-intro">不是每个构建都是产品。Run 01 用一台无 skill 的 3D 枪战对照一台走 harness 的 3D 枪战。Run 02 把同一个问题换到城市卡丁车。Run 03 把同一份 brief 渲染三次：本地量化版、线上原版，再让 Fable 5.2 从零写一个单文件构建。Run 04 比较同一个农场概念在有无 Blender 下的两条资产管线。</p>
       </div>
       <div class="wrap comparison-stack">
                         <article class="comparison-run" id="neon">
@@ -343,10 +343,10 @@
 
         <article class="comparison-run" id="ming-palace">
           <div class="comparison-run-head">
-            <div><p class="section-kicker">Run 03 / 模型</p><h3>同一个 checkpoint，两种权重格式。</h3></div>
-            <p>同一份明宫 brief，由原版模型和本地 Maya-XS 量化版各生成一次。两张图，两种取舍。</p>
+            <div><p class="section-kicker">Run 03 / 模型与生成</p><h3>同一份 brief，三次生成。</h3></div>
+            <p>同一份明宫 brief，交给三套系统：本地跑的 Maya-XS 量化版、线上的原版 checkpoint，以及从零写一个单文件构建的 Fable 5.2。</p>
           </div>
-          <div class="comparison-pair">
+          <div class="comparison-pair is-triple">
             <figure class="comparison-panel">
               <div class="comparison-panel-media"><img decoding="async" src="/assets/img/demo-ming-local.jpg" alt="本地 Maya-XS 量化版明宫：暖色晨光、金色屋顶和白色石台基。" width="1600" height="1000" loading="eager"></div>
               <figcaption><span class="panel-label">A / 本地 · 约 1.6 bit</span><strong>Maya-XS</strong><span>93GB · 131K 上下文 · 91KB 输出</span></figcaption>
@@ -355,10 +355,14 @@
               <div class="comparison-panel-media"><img decoding="async" src="/assets/img/demo-ming-1017.jpg" alt="线上原版明宫：明亮薄雾天空、正面立面和右侧四个视角预设。" width="1600" height="1000" loading="eager"></div>
               <figcaption><span class="panel-label">B / 线上 · 原版</span><strong>DeepSeek Flash 1017</strong><span>原版 · 85KB 输出</span></figcaption>
             </figure>
+            <figure class="comparison-panel">
+              <div class="comparison-panel-media"><img decoding="async" src="/assets/img/demo-ming-fable.jpg" alt="Fable 5.2 版明宫：前景是宫门红墙，主殿坐落在三层汉白玉台基上，两侧配殿与松林。" width="1440" height="846" loading="eager"></div>
+              <figcaption><span class="panel-label">C / Fable 5.2</span><strong>Fable 5.2</strong><span>单文件 46KB · 原生 WebGL2 · 4 个视角</span></figcaption>
+            </figure>
           </div>
           <div class="comparison-run-foot">
-            <div class="work-links"><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/local/" target="_blank" rel="noopener">本地版 <span aria-hidden="true">↗</span></a><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/" target="_blank" rel="noopener">线上版 <span aria-hidden="true">↗</span></a><a href="/blog/two-taihe-halls.html">日志里的对比 <span aria-hidden="true">→</span></a></div>
-            <p class="work-muted">同一个 prompt；不是受控的模型 benchmark。哪些能比、哪些不能比，写在日志里。</p>
+            <div class="work-links"><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/local/" target="_blank" rel="noopener">本地版 <span aria-hidden="true">↗</span></a><a href="https://norwinyu.github.io/deepseek-flash-1017-ming-palace/" target="_blank" rel="noopener">线上版 <span aria-hidden="true">↗</span></a><a href="/demos/fable-ming-palace/" target="_blank" rel="noopener">Fable 5.2 版 <span aria-hidden="true">↗</span></a><a href="/blog/two-taihe-halls.html">日志里的对比 <span aria-hidden="true">→</span></a></div>
+            <p class="work-muted">同一份 brief 的三个构建；不是受控的模型 benchmark。哪些能比、哪些不能比，写在日志里。</p>
           </div>
         </article>
         <article class="comparison-run" id="harvest">

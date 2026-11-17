@@ -34,6 +34,9 @@ def main():
     for page in sorted(ROOT.glob("**/*.html")):
         if page.name == "404.html":
             continue
+        # Standalone demos are linked from Work but are not site pages.
+        if page.relative_to(ROOT).parts[0] == "demos":
+            continue
         path = webpath(page)
         en, zh = alternates(path)
         rows.append((BASE + path, BASE + en, BASE + zh))

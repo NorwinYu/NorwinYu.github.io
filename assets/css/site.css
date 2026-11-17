@@ -3780,6 +3780,10 @@ html {
   background: var(--line);
 }
 
+.comparison-pair.is-triple {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .comparison-panel {
   min-width: 0;
   margin: 0;
@@ -3894,7 +3898,8 @@ html {
     align-items: start;
   }
 
-  .comparison-pair {
+  .comparison-pair,
+  .comparison-pair.is-triple {
     grid-template-columns: 1fr;
   }
 
