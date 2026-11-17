@@ -3502,6 +3502,7 @@ html {
 .rig3d {
   position: relative;
   height: 360px;
+  overflow-x: clip;
   perspective: 1100px;
   perspective-origin: 50% 45%;
 }
