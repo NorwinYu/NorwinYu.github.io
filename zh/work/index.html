@@ -83,7 +83,7 @@
         <p class="section-kicker">实验 / 2026</p>
         <h1>代码里的实验。</h1>
         <p class="page-lede">游戏是一组探针，编程工具是另一组，机器本身是第三组。它们都在问同一条真实的生产管线——生成素材、代码、UI、验证和部署——LLM 能推多远，以及人还必须在哪一步介入。</p>
-        <div class="page-meta"><span><i></i>05 个游戏探针</span><span>02 组对比</span><span>04 个编程工具</span><span>05 类工作负载</span><span>在线 / 附源码</span></div>
+        <div class="page-meta"><span><i></i>06 个游戏探针</span><span>02 组对比</span><span>04 个编程工具</span><span>05 类工作负载</span><span>在线 / 附源码</span></div>
       </div>
     </header>
 
@@ -105,6 +105,7 @@
           <caption class="sr-only">实验地图：各项目及其被测的那个变量</caption>
           <thead><tr><th scope="col">实验</th><th scope="col">测什么</th><th scope="col">模型</th><th scope="col">杠杆</th></tr></thead>
           <tbody>
+            <tr><th scope="row">青云渡</th><td data-label="测什么">无外部素材的开放世界 3D</td><td data-label="模型">Fable 5.2 + Opus 5.5</td><td data-label="杠杆">代码/系统/UI；运行时生成美术与音频；node:test</td></tr>
             <tr><th scope="row">ECHO ZERO</th><td data-label="测什么">完整叙事管线 + 追加的语音层</td><td data-label="模型">DeepSeek Flash + MiniMax H3</td><td data-label="杠杆">代码/UI/音频；生成美术、视频、音乐；Edge TTS</td></tr>
             <tr><th scope="row">烽火三国</th><td data-label="测什么">生成素材塞进一个完整的游戏循环</td><td data-label="模型">DeepSeek Flash + MiniMax H3</td><td data-label="杠杆">代码/UI/音频；生成的图片与视频素材</td></tr>
             <tr><th scope="row">仙宗</th><td data-label="测什么">DeepSeek Flash 的 3D 能力</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">代码/系统/文档；程序化素材；Playwright</td></tr>
@@ -141,11 +142,33 @@
     </section>
 
     <div class="wrap section-head work-section-head">
-      <div class="section-heading"><p class="section-kicker">01 / 游戏探针</p><h2>11 个游戏构建，5 个深度切片。</h2></div>
-      <p class="section-intro">这里详细写 5 个游戏切片；另外 6 个构建放在下面的对比里。</p>
+      <div class="section-heading"><p class="section-kicker">01 / 游戏探针</p><h2>12 个游戏构建，6 个深度切片。</h2></div>
+      <p class="section-intro">这里详细写 6 个游戏切片；另外 6 个构建放在下面的对比里。</p>
     </div>
 
     <div class="wrap">
+      <article class="work-case" id="qingyun">
+        <div class="work-case-media"><img decoding="async" src="/assets/img/demo-qingyun.jpg" alt="黄昏时分的青云村、青云河与石桥" width="1440" height="731" loading="eager"></div>
+        <div class="work-case-copy">
+          <h2>青云渡 <span>Qingyun Crossing / 修仙开放世界</span></h2>
+          <p>一个纯前端、单人的 3D 开放世界修仙 Demo：八片区域连成一张无缝地图，七章主线从村外石桥一直走到九霄雷劫，全部美术与音频都在运行时生成。</p>
+          <ul>
+            <li>地形、建筑、人物、贴图与音效都由代码生成；最终产物是 index.html 加一个 1.3 MB 的 game.js。</li>
+            <li>三段连斩、弹反、瞬身与四门功法；秘境五层，每层随机布局，清层后三选一增益。</li>
+            <li>采药、炼丹、种灵田、钓鱼与宗门声望共用同一条进度，炼丹直接决定能不能筑基。</li>
+          </ul>
+          <dl class="work-specs">
+            <div><dt>体量</dt><dd>8 片区域 · 7 章主线</dd></div>
+            <div><dt>构建</dt><dd>2 个文件 · 1.3 MB · 无素材目录</dd></div>
+            <div><dt>技术</dt><dd>three.js r187 · WebGL2 · esbuild</dd></div>
+            <div><dt>测试</dt><dd>30 项 node:test，随 CI 运行</dd></div>
+            <div><dt>模型</dt><dd>Fable 5.2 + Opus 5.5</dd></div>
+            <div><dt>边界</dt><dd>止于金丹初期 · 仅键鼠</dd></div>
+          </dl>
+          <div class="work-links"><a href="https://norwinyu.github.io/qingyun-du/" target="_blank" rel="noopener">在线试玩 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/qingyun-du" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </article>
+
       <article class="work-case" id="echo-zero">
         <div class="work-case-media"><img decoding="async" src="/assets/img/demo-echo-zero.jpg" alt="ECHO ZERO 标题画面，云层之上悬着一圈深色的环形结构" width="1440" height="900" loading="eager"></div>
         <div class="work-case-copy">

@@ -83,7 +83,7 @@
         <p class="section-kicker">Experiments / 2026</p>
         <h1>Experiments in code.</h1>
         <p class="page-lede">Games are one probe, coding tools are another, and the rig itself is the third. All of them test how far an LLM can carry a real production pipeline — generated assets, code, UI, verification and deployment — and where a human still has to intervene.</p>
-        <div class="page-meta"><span><i></i>05 game probes</span><span>02 comparisons</span><span>04 coding tools</span><span>05 workloads</span><span>Live / source linked</span></div>
+        <div class="page-meta"><span><i></i>06 game probes</span><span>02 comparisons</span><span>04 coding tools</span><span>05 workloads</span><span>Live / source linked</span></div>
       </div>
     </header>
 
@@ -105,6 +105,7 @@
           <caption class="sr-only">Experiment map: projects and the variable each one tests</caption>
           <thead><tr><th scope="col">Experiment</th><th scope="col">What it tests</th><th scope="col">Model</th><th scope="col">Leverage</th></tr></thead>
           <tbody>
+            <tr><th scope="row">青云渡</th><td data-label="Tests">Open-world 3D shipped as two files</td><td data-label="Model">Fable 5.2 + Opus 5.5</td><td data-label="Leverage">Code/systems/UI; runtime-generated art and audio; node:test</td></tr>
             <tr><th scope="row">ECHO ZERO</th><td data-label="Tests">Full narrative pipeline + added voice layer</td><td data-label="Model">DeepSeek Flash + MiniMax H3</td><td data-label="Leverage">Code/UI/audio; generated art, video, music; Edge TTS</td></tr>
             <tr><th scope="row">烽火三国</th><td data-label="Tests">Generated assets inside a complete game loop</td><td data-label="Model">DeepSeek Flash + MiniMax H3</td><td data-label="Leverage">Code/UI/audio; generated image and video assets</td></tr>
             <tr><th scope="row">仙宗</th><td data-label="Tests">DeepSeek Flash's 3D capability</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Code/systems/docs; procedural assets; Playwright</td></tr>
@@ -141,11 +142,33 @@
     </section>
 
     <div class="wrap section-head work-section-head">
-      <div class="section-heading"><p class="section-kicker">01 / Game probes</p><h2>Eleven game builds, five deep probes.</h2></div>
-      <p class="section-intro">Five detailed game probes here; six more builds are paired in Comparisons below.</p>
+      <div class="section-heading"><p class="section-kicker">01 / Game probes</p><h2>Twelve game builds, six deep probes.</h2></div>
+      <p class="section-intro">Six detailed game probes here; six more builds are paired in Comparisons below.</p>
     </div>
 
     <div class="wrap">
+      <article class="work-case" id="qingyun">
+        <div class="work-case-media"><img decoding="async" src="../assets/img/demo-qingyun.jpg" alt="Qingyun village, river and stone bridge at dusk" width="1440" height="731" loading="eager"></div>
+        <div class="work-case-copy">
+          <h2>青云渡 <span>Qingyun Crossing / 修仙开放世界</span></h2>
+          <p>A single-player 3D open-world cultivation demo that runs entirely in the browser: eight regions on one seamless map, a seven-chapter main line from a village bridge to the heavenly tribulation, and no external art or audio files at all.</p>
+          <ul>
+            <li>Terrain, buildings, characters, textures and audio are generated at runtime; the shipped build is index.html plus one 1.3 MB game.js.</li>
+            <li>Action combat with a three-hit chain, parry, blink and four techniques; a five-floor roguelite realm with per-floor boons.</li>
+            <li>Farming, fishing, alchemy and sect standing feed the same progression that gates foundation building.</li>
+          </ul>
+          <dl class="work-specs">
+            <div><dt>Scope</dt><dd>8 regions · 7 chapters</dd></div>
+            <div><dt>Build</dt><dd>2 files · 1.3 MB · no assets</dd></div>
+            <div><dt>Stack</dt><dd>three.js r187 · WebGL2 · esbuild</dd></div>
+            <div><dt>Tests</dt><dd>30 node:test checks in CI</dd></div>
+            <div><dt>Model</dt><dd>Fable 5.2 + Opus 5.5</dd></div>
+            <div><dt>Limits</dt><dd>Ends at early Golden Core · keyboard and mouse</dd></div>
+          </dl>
+          <div class="work-links"><a href="https://norwinyu.github.io/qingyun-du/" target="_blank" rel="noopener">Play online <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/qingyun-du" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </article>
+
       <article class="work-case" id="echo-zero">
         <div class="work-case-media"><img decoding="async" src="../assets/img/demo-echo-zero.jpg" alt="ECHO ZERO title screen with a dark ring structure above clouds" width="1440" height="900" loading="eager"></div>
         <div class="work-case-copy">
