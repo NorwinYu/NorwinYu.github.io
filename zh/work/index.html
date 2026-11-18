@@ -113,12 +113,12 @@
             <tr><th scope="row">机场大亨 3D</th><td data-label="测什么">DeepSeek Flash + DSH + Godot 引擎路线</td><td data-label="模型">DeepSeek Flash + DSH</td><td data-label="杠杆">Godot 4.6 / GDScript；程序化网格与音频</td></tr>
             <tr><th scope="row">NEON BREACH</th><td data-label="测什么">无 harness 对照组</td><td data-label="模型">DeepSeek V4.1 Flash</td><td data-label="杠杆">纯 API，无 skill；原生 WebGL；程序化素材</td></tr>
             <tr><th scope="row">明宫三维</th><td data-label="测什么">量化版 vs 原版 vs Fable 5.2</td><td data-label="模型">DeepSeek-V4.1-Flash-1017 · Maya-XS · Fable 5.2</td><td data-label="杠杆">一句中文 prompt；单文件 WebGL2；无 skill</td></tr>
-            <tr><th scope="row">dsh-quota</th><td data-label="测什么">工具 / 按路由显示状态</td><td data-label="模型">DeepSeek V4.1 Flash</td><td data-label="杠杆">代码/测试/文档；配置驱动的适配器</td></tr>
+            <tr><th scope="row">MiniDSH</th><td data-label="测什么">Agent harness 对齐</td><td data-label="模型">未记录</td><td data-label="杠杆">Python 3.9+ · 核心零依赖 · MockModel + DeepSeek 适配器</td></tr>
             <tr><th scope="row">NorMark</th><td data-label="测什么">桌面编程应用</td><td data-label="模型">未记录</td><td data-label="杠杆">Electron / React / CodeMirror</td></tr>
+            <tr><th scope="row">sensorium</th><td data-label="测什么">不起子进程读硬件</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">Rust · ratatui · 进程内 NVML</td></tr>
             <tr><th scope="row">RoomTessera 3D</th><td data-label="测什么">空间工具</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">代码/UI/测试；程序化几何</td></tr>
             <tr><th scope="row">MiniMax H3 TP2</th><td data-label="测什么">22 GB 卡上的多卡杠杆</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">张量并行节点，每个 rank 一个 host 线程</td></tr>
-            <tr><th scope="row">sensorium</th><td data-label="测什么">不起子进程读硬件</td><td data-label="模型">DeepSeek Flash</td><td data-label="杠杆">Rust · ratatui · 进程内 NVML</td></tr>
-            <tr><th scope="row">MiniDSH</th><td data-label="测什么">Agent harness 对齐</td><td data-label="模型">未记录</td><td data-label="杠杆">Python 3.9+ · 核心零依赖 · MockModel + DeepSeek 适配器</td></tr>
+            <tr><th scope="row">dsh-quota</th><td data-label="测什么">工具 / 按路由显示状态</td><td data-label="模型">DeepSeek V4.1 Flash</td><td data-label="杠杆">代码/测试/文档；配置驱动的适配器</td></tr>
           </tbody>
         </table>
         <p class="table-note"><span>怎么读</span>矩阵是实验设计，下面的案例记录才是证据：建了什么、生成了什么、交接在哪一步断掉。</p>
@@ -391,37 +391,36 @@
     <section class="section section-alt coding-section" id="coding" aria-labelledby="coding-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">03 / 编程与工具</p><h2 id="coding-title">让技术栈变得可读的工具。</h2></div>
-        <p class="section-intro">编程实验不是支线任务。模型的工作在这里变得可检查：额度状态、本地优先的文档、空间编辑，以及验证构建的那些 harness。</p>
+        <p class="section-intro">编程实验不是支线任务。模型的工作在这里变得可检查：harness 本身、本地优先的文档、空间编辑，以及额度状态。</p>
       </div>
       <div class="wrap coding-grid">
-        <article class="coding-card">
+        <article class="coding-card" id="minidsh">
           <div class="coding-visual terminal">
             <div class="term-window">
-              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>dsh / 额度状态</span></div>
+              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>minidsh / plugins</span></div>
               <div class="term-body">
-                <p><span>$</span> dsh quota status</p>
-                <p><b>OpenCode Go</b><strong>剩余 96%</strong></p>
-                <p class="term-dim">滚动窗口 · 1h 0m 后重置</p>
-                <p><b>DeepSeek API</b><strong>¥42.50</strong></p>
-                <p class="term-dim">余额来源</p>
-                <p><b>Ark Coding Plan</b><strong>¥188 / ¥200</strong></p>
+                <p><span>$</span> minidsh plugins</p>
+                <p><b>agent.basic</b><strong>on</strong></p>
+                <p><b>workflow</b><strong>off</strong></p>
+                <p class="term-dim">MockModel · Python 3.9+</p>
+                <p><span>session</span><b>JSONL · 可检查</b></p>
               </div>
             </div>
           </div>
           <div class="coding-body">
-            <p class="demo-kicker">工具 · TypeScript</p>
-            <h3>dsh-quota</h3>
-            <p>给 DeepSeek Harness 做的、随路由变化的额度与花费组件。切换模型会改变 UI 该显示什么：套餐剩余、API 余额，还是本地记录的花费。</p>
-            <p class="model-line"><span>模型</span>DeepSeek V4.1 Flash · 代码、测试与文档 · 配置驱动适配器 · 51 项测试</p>
+            <p class="demo-kicker">Agent harness · Python</p>
+            <h3>MiniDSH <span>dsh-python-lab</span></h3>
+            <p>用 Python 拆解 DeepSeek Harness 的各层：插件、工具、审批、JSONL 会话、子 Agent、Skills、定时任务、Goal 和 PTC。默认用确定性 MockModel 跑通；DeepSeek 适配器单独开启。</p>
+            <p class="model-line"><span>模型</span>未记录 · Python 3.9+ · 核心零依赖</p>
             <dl class="demo-specs">
-              <div><dt>技术栈</dt><dd>TypeScript · Node · YAML</dd></div>
-              <div><dt>验证</dt><dd>51 项测试</dd></div>
-              <div><dt>状态</dt><dd>本地工具</dd></div>
+              <div><dt>技术栈</dt><dd>Python 3.9+</dd></div>
+              <div><dt>核心依赖</dt><dd>0</dd></div>
+              <div><dt>范围</dt><dd>Agent loop · 会话 · 子 Agent</dd></div>
+              <div><dt>状态</dt><dd>公开仓库</dd></div>
             </dl>
-            <div class="demo-foot"><span>源码可索取</span><span>配置里不放密钥</span></div>
+            <div class="demo-foot"><span>先跑 MockModel</span><a href="https://norwinyu.github.io/dsh-python-lab/" target="_blank" rel="noopener">教材 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/dsh-python-lab" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
           </div>
         </article>
-
         <article class="coding-card">
           <div class="coding-visual app-mock">
             <div class="app-window">
@@ -452,25 +451,6 @@
             <div class="demo-foot"><span>桌面应用</span><a href="https://github.com/NorwinYu/normark" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
           </div>
         </article>
-
-        <article class="coding-card" id="roomtessera">
-          <div class="coding-visual">
-            <img decoding="async" src="/assets/img/demo-roomtessera.jpg" alt="RoomTessera 3D 界面：户型图、家具和 3D 剖切视图。" width="1440" height="900" loading="lazy">
-          </div>
-          <div class="coding-body">
-            <p class="demo-kicker">空间工具 · React Three Fiber</p>
-            <h3>RoomTessera 3D</h3>
-            <p>上传一张户型图，得到一个可编辑的 3D 公寓：墙体识别、15 类家具、材质、测量和本地存档。</p>
-            <p class="model-line"><span>模型</span>DeepSeek Flash · 代码、UI 与测试 · 程序化几何与材质</p>
-            <dl class="demo-specs">
-              <div><dt>技术栈</dt><dd>React · Three.js · Vite</dd></div>
-              <div><dt>规模</dt><dd>墙体 · 家具 · 灯光</dd></div>
-              <div><dt>状态</dt><dd>在线预览</dd></div>
-            </dl>
-            <div class="demo-foot"><span>空间编辑</span><a href="https://norwinyu.github.io/roomtessera-3d/" target="_blank" rel="noopener">试玩 <span aria-hidden="true">↗</span></a></div>
-          </div>
-        </article>
-
         <article class="coding-card" id="sensorium">
           <div class="coding-visual terminal">
             <div class="term-window">
@@ -500,31 +480,48 @@
             <div class="work-links"><a href="https://github.com/NorwinYu/sensorium" target="_blank" rel="noopener">源码 <span aria-hidden="true">↗</span></a><a href="/blog/every-frame-four-percent.html">构建记录 <span aria-hidden="true">→</span></a><a href="/zh/ai.html">它读的那台机器 <span aria-hidden="true">→</span></a></div>
           </div>
         </article>
-        <article class="coding-card" id="minidsh">
+        <article class="coding-card" id="roomtessera">
+          <div class="coding-visual">
+            <img decoding="async" src="/assets/img/demo-roomtessera.jpg" alt="RoomTessera 3D 界面：户型图、家具和 3D 剖切视图。" width="1440" height="900" loading="lazy">
+          </div>
+          <div class="coding-body">
+            <p class="demo-kicker">空间工具 · React Three Fiber</p>
+            <h3>RoomTessera 3D</h3>
+            <p>上传一张户型图，得到一个可编辑的 3D 公寓：墙体识别、15 类家具、材质、测量和本地存档。</p>
+            <p class="model-line"><span>模型</span>DeepSeek Flash · 代码、UI 与测试 · 程序化几何与材质</p>
+            <dl class="demo-specs">
+              <div><dt>技术栈</dt><dd>React · Three.js · Vite</dd></div>
+              <div><dt>规模</dt><dd>墙体 · 家具 · 灯光</dd></div>
+              <div><dt>状态</dt><dd>在线预览</dd></div>
+            </dl>
+            <div class="demo-foot"><span>空间编辑</span><a href="https://norwinyu.github.io/roomtessera-3d/" target="_blank" rel="noopener">试玩 <span aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+        <article class="coding-card">
           <div class="coding-visual terminal">
             <div class="term-window">
-              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>minidsh / plugins</span></div>
+              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>dsh / 额度状态</span></div>
               <div class="term-body">
-                <p><span>$</span> minidsh plugins</p>
-                <p><b>agent.basic</b><strong>on</strong></p>
-                <p><b>workflow</b><strong>off</strong></p>
-                <p class="term-dim">MockModel · Python 3.9+</p>
-                <p><span>session</span><b>JSONL · 可检查</b></p>
+                <p><span>$</span> dsh quota status</p>
+                <p><b>OpenCode Go</b><strong>剩余 96%</strong></p>
+                <p class="term-dim">滚动窗口 · 1h 0m 后重置</p>
+                <p><b>DeepSeek API</b><strong>¥42.50</strong></p>
+                <p class="term-dim">余额来源</p>
+                <p><b>Ark Coding Plan</b><strong>¥188 / ¥200</strong></p>
               </div>
             </div>
           </div>
           <div class="coding-body">
-            <p class="demo-kicker">Agent harness · Python</p>
-            <h3>MiniDSH <span>dsh-python-lab</span></h3>
-            <p>用 Python 拆解 DeepSeek Harness 的各层：插件、工具、审批、JSONL 会话、子 Agent、Skills、定时任务、Goal 和 PTC。默认用确定性 MockModel 跑通；DeepSeek 适配器单独开启。</p>
-            <p class="model-line"><span>模型</span>未记录 · Python 3.9+ · 核心零依赖</p>
+            <p class="demo-kicker">工具 · TypeScript</p>
+            <h3>dsh-quota</h3>
+            <p>给 DeepSeek Harness 做的、随路由变化的额度与花费组件。切换模型会改变 UI 该显示什么：套餐剩余、API 余额，还是本地记录的花费。</p>
+            <p class="model-line"><span>模型</span>DeepSeek V4.1 Flash · 代码、测试与文档 · 配置驱动适配器 · 51 项测试</p>
             <dl class="demo-specs">
-              <div><dt>技术栈</dt><dd>Python 3.9+</dd></div>
-              <div><dt>核心依赖</dt><dd>0</dd></div>
-              <div><dt>范围</dt><dd>Agent loop · 会话 · 子 Agent</dd></div>
-              <div><dt>状态</dt><dd>公开仓库</dd></div>
+              <div><dt>技术栈</dt><dd>TypeScript · Node · YAML</dd></div>
+              <div><dt>验证</dt><dd>51 项测试</dd></div>
+              <div><dt>状态</dt><dd>本地工具</dd></div>
             </dl>
-            <div class="demo-foot"><span>先跑 MockModel</span><a href="https://github.com/NorwinYu/dsh-python-lab" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+            <div class="demo-foot"><span>源码可索取</span><span>配置里不放密钥</span></div>
           </div>
         </article>
       </div>

@@ -113,12 +113,12 @@
             <tr><th scope="row">机场大亨 3D</th><td data-label="Tests">DeepSeek Flash + DSH + Godot engine path</td><td data-label="Model">DeepSeek Flash + DSH</td><td data-label="Leverage">Godot 4.6 / GDScript; procedural meshes and audio</td></tr>
             <tr><th scope="row">NEON BREACH</th><td data-label="Tests">No-harness control run</td><td data-label="Model">DeepSeek V4.1 Flash</td><td data-label="Leverage">Pure API, no skill; native WebGL; procedural assets</td></tr>
             <tr><th scope="row">明宫三维</th><td data-label="Tests">Quantised local vs original vs Fable 5.2</td><td data-label="Model">DeepSeek-V4.1-Flash-1017 · Maya-XS · Fable 5.2</td><td data-label="Leverage">One Chinese prompt; single-file WebGL2; no skill</td></tr>
-            <tr><th scope="row">dsh-quota</th><td data-label="Tests">Tooling / route-aware state</td><td data-label="Model">DeepSeek V4.1 Flash</td><td data-label="Leverage">Code/tests/docs; config-driven adapters</td></tr>
+            <tr><th scope="row">MiniDSH</th><td data-label="Tests">Agent harness parity</td><td data-label="Model">Not recorded</td><td data-label="Leverage">Python 3.9+ · zero core deps · MockModel + DeepSeek adapter</td></tr>
             <tr><th scope="row">NorMark</th><td data-label="Tests">Desktop coding app</td><td data-label="Model">Not recorded</td><td data-label="Leverage">Electron / React / CodeMirror</td></tr>
+            <tr><th scope="row">sensorium</th><td data-label="Tests">Reading hardware without a subprocess</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Rust · ratatui · NVML in-process</td></tr>
             <tr><th scope="row">RoomTessera 3D</th><td data-label="Tests">Spatial tooling</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Code/UI/tests; procedural geometry</td></tr>
             <tr><th scope="row">MiniMax H3 TP2</th><td data-label="Tests">Multi-GPU leverage on 22 GB cards</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Tensor parallel node, one host thread per rank</td></tr>
-            <tr><th scope="row">sensorium</th><td data-label="Tests">Reading hardware without a subprocess</td><td data-label="Model">DeepSeek Flash</td><td data-label="Leverage">Rust · ratatui · NVML in-process</td></tr>
-            <tr><th scope="row">MiniDSH</th><td data-label="Tests">Agent harness parity</td><td data-label="Model">Not recorded</td><td data-label="Leverage">Python 3.9+ · zero core deps · MockModel + DeepSeek adapter</td></tr>
+            <tr><th scope="row">dsh-quota</th><td data-label="Tests">Tooling / route-aware state</td><td data-label="Model">DeepSeek V4.1 Flash</td><td data-label="Leverage">Code/tests/docs; config-driven adapters</td></tr>
           </tbody>
         </table>
         <p class="table-note"><span>How to read it</span>The matrix is the experiment design. The case notes below are the evidence: what was built, what was generated, and where the handoff broke.</p>
@@ -391,37 +391,36 @@
     <section class="section section-alt coding-section" id="coding" aria-labelledby="coding-title">
       <div class="wrap section-head">
         <div class="section-heading"><p class="section-kicker">03 / Coding &amp; tooling</p><h2 id="coding-title">Tools that make the stack legible.</h2></div>
-        <p class="section-intro">Coding experiments are not side quests. They are where the model work becomes inspectable: quota state, local-first documents, spatial editing and the harnesses that verify a build.</p>
+        <p class="section-intro">Coding experiments are not side quests. They are where the model work becomes inspectable: the harness itself, local-first documents, spatial editing and quota state.</p>
       </div>
       <div class="wrap coding-grid">
-        <article class="coding-card">
+        <article class="coding-card" id="minidsh">
           <div class="coding-visual terminal">
             <div class="term-window">
-              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>dsh / quota status</span></div>
+              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>minidsh / plugins</span></div>
               <div class="term-body">
-                <p><span>$</span> dsh quota status</p>
-                <p><b>OpenCode Go</b><strong>96% left</strong></p>
-                <p class="term-dim">rolling window · 1h 0m reset</p>
-                <p><b>DeepSeek API</b><strong>¥42.50</strong></p>
-                <p class="term-dim">balance source</p>
-                <p><b>Ark Coding Plan</b><strong>¥188 / ¥200</strong></p>
+                <p><span>$</span> minidsh plugins</p>
+                <p><b>agent.basic</b><strong>on</strong></p>
+                <p><b>workflow</b><strong>off</strong></p>
+                <p class="term-dim">MockModel · Python 3.9+</p>
+                <p><span>session</span><b>JSONL · traceable</b></p>
               </div>
             </div>
           </div>
           <div class="coding-body">
-            <p class="demo-kicker">Tooling · TypeScript</p>
-            <h3>dsh-quota</h3>
-            <p>Route-aware quota and spend widgets for DeepSeek Harness. A model switch changes what the UI should show: plan remaining, API balance or locally recorded spend.</p>
-            <p class="model-line"><span>Model</span>DeepSeek V4.1 Flash · Code, tests and docs · config-driven adapters · 51 tests</p>
+            <p class="demo-kicker">Agent harness · Python</p>
+            <h3>MiniDSH <span>dsh-python-lab</span></h3>
+            <p>A Python reimplementation of DeepSeek Harness's layers: plugins, tools, approvals, JSONL sessions, subagents, skills, schedules, goals and PTC. It starts with a deterministic MockModel; the DeepSeek adapter is separate.</p>
+            <p class="model-line"><span>Model</span>Not recorded · Python 3.9+ · zero core dependencies</p>
             <dl class="demo-specs">
-              <div><dt>Stack</dt><dd>TypeScript · Node · YAML</dd></div>
-              <div><dt>Validation</dt><dd>51 tests</dd></div>
-              <div><dt>Status</dt><dd>Local tool</dd></div>
+              <div><dt>Stack</dt><dd>Python 3.9+</dd></div>
+              <div><dt>Core deps</dt><dd>Zero</dd></div>
+              <div><dt>Scope</dt><dd>Agent loop · sessions · subagents</dd></div>
+              <div><dt>Status</dt><dd>Public repo</dd></div>
             </dl>
-            <div class="demo-foot"><span>Source on request</span><span>No secrets in config</span></div>
+            <div class="demo-foot"><span>MockModel first</span><a href="https://norwinyu.github.io/dsh-python-lab/" target="_blank" rel="noopener">Textbook <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/dsh-python-lab" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
           </div>
         </article>
-
         <article class="coding-card">
           <div class="coding-visual app-mock">
             <div class="app-window">
@@ -452,25 +451,6 @@
             <div class="demo-foot"><span>Desktop app</span><a href="https://github.com/NorwinYu/normark" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
           </div>
         </article>
-
-        <article class="coding-card" id="roomtessera">
-          <div class="coding-visual">
-            <img decoding="async" src="../assets/img/demo-roomtessera.jpg" alt="RoomTessera 3D interface with a floor plan, furniture and a 3D cutaway view." width="1440" height="900" loading="lazy">
-          </div>
-          <div class="coding-body">
-            <p class="demo-kicker">Spatial tool · React Three Fiber</p>
-            <h3>RoomTessera 3D</h3>
-            <p>Upload a floor plan and get an editable 3D apartment: wall recognition, 15 furniture types, materials, measurement and local saves.</p>
-            <p class="model-line"><span>Model</span>DeepSeek Flash · Code, UI and tests · procedural geometry and materials</p>
-            <dl class="demo-specs">
-              <div><dt>Stack</dt><dd>React · Three.js · Vite</dd></div>
-              <div><dt>Scope</dt><dd>Walls · furniture · light</dd></div>
-              <div><dt>Status</dt><dd>Live preview</dd></div>
-            </dl>
-            <div class="demo-foot"><span>Spatial editing</span><a href="https://norwinyu.github.io/roomtessera-3d/" target="_blank" rel="noopener">Play <span aria-hidden="true">↗</span></a></div>
-          </div>
-        </article>
-
         <article class="coding-card" id="sensorium">
           <div class="coding-visual terminal">
             <div class="term-window">
@@ -500,31 +480,48 @@
             <div class="work-links"><a href="https://github.com/NorwinYu/sensorium" target="_blank" rel="noopener">Source <span aria-hidden="true">↗</span></a><a href="/en/blog/every-frame-four-percent.html">Build note <span aria-hidden="true">→</span></a><a href="../ai.html">The rig it reads <span aria-hidden="true">→</span></a></div>
           </div>
         </article>
-        <article class="coding-card" id="minidsh">
+        <article class="coding-card" id="roomtessera">
+          <div class="coding-visual">
+            <img decoding="async" src="../assets/img/demo-roomtessera.jpg" alt="RoomTessera 3D interface with a floor plan, furniture and a 3D cutaway view." width="1440" height="900" loading="lazy">
+          </div>
+          <div class="coding-body">
+            <p class="demo-kicker">Spatial tool · React Three Fiber</p>
+            <h3>RoomTessera 3D</h3>
+            <p>Upload a floor plan and get an editable 3D apartment: wall recognition, 15 furniture types, materials, measurement and local saves.</p>
+            <p class="model-line"><span>Model</span>DeepSeek Flash · Code, UI and tests · procedural geometry and materials</p>
+            <dl class="demo-specs">
+              <div><dt>Stack</dt><dd>React · Three.js · Vite</dd></div>
+              <div><dt>Scope</dt><dd>Walls · furniture · light</dd></div>
+              <div><dt>Status</dt><dd>Live preview</dd></div>
+            </dl>
+            <div class="demo-foot"><span>Spatial editing</span><a href="https://norwinyu.github.io/roomtessera-3d/" target="_blank" rel="noopener">Play <span aria-hidden="true">↗</span></a></div>
+          </div>
+        </article>
+        <article class="coding-card">
           <div class="coding-visual terminal">
             <div class="term-window">
-              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>minidsh / plugins</span></div>
+              <div class="term-bar"><span class="term-lights" aria-hidden="true"><i></i><i></i><i></i></span><span>dsh / quota status</span></div>
               <div class="term-body">
-                <p><span>$</span> minidsh plugins</p>
-                <p><b>agent.basic</b><strong>on</strong></p>
-                <p><b>workflow</b><strong>off</strong></p>
-                <p class="term-dim">MockModel · Python 3.9+</p>
-                <p><span>session</span><b>JSONL · traceable</b></p>
+                <p><span>$</span> dsh quota status</p>
+                <p><b>OpenCode Go</b><strong>96% left</strong></p>
+                <p class="term-dim">rolling window · 1h 0m reset</p>
+                <p><b>DeepSeek API</b><strong>¥42.50</strong></p>
+                <p class="term-dim">balance source</p>
+                <p><b>Ark Coding Plan</b><strong>¥188 / ¥200</strong></p>
               </div>
             </div>
           </div>
           <div class="coding-body">
-            <p class="demo-kicker">Agent harness · Python</p>
-            <h3>MiniDSH <span>dsh-python-lab</span></h3>
-            <p>A Python reimplementation of DeepSeek Harness's layers: plugins, tools, approvals, JSONL sessions, subagents, skills, schedules, goals and PTC. It starts with a deterministic MockModel; the DeepSeek adapter is separate.</p>
-            <p class="model-line"><span>Model</span>Not recorded · Python 3.9+ · zero core dependencies</p>
+            <p class="demo-kicker">Tooling · TypeScript</p>
+            <h3>dsh-quota</h3>
+            <p>Route-aware quota and spend widgets for DeepSeek Harness. A model switch changes what the UI should show: plan remaining, API balance or locally recorded spend.</p>
+            <p class="model-line"><span>Model</span>DeepSeek V4.1 Flash · Code, tests and docs · config-driven adapters · 51 tests</p>
             <dl class="demo-specs">
-              <div><dt>Stack</dt><dd>Python 3.9+</dd></div>
-              <div><dt>Core deps</dt><dd>Zero</dd></div>
-              <div><dt>Scope</dt><dd>Agent loop · sessions · subagents</dd></div>
-              <div><dt>Status</dt><dd>Public repo</dd></div>
+              <div><dt>Stack</dt><dd>TypeScript · Node · YAML</dd></div>
+              <div><dt>Validation</dt><dd>51 tests</dd></div>
+              <div><dt>Status</dt><dd>Local tool</dd></div>
             </dl>
-            <div class="demo-foot"><span>MockModel first</span><a href="https://github.com/NorwinYu/dsh-python-lab" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+            <div class="demo-foot"><span>Source on request</span><span>No secrets in config</span></div>
           </div>
         </article>
       </div>

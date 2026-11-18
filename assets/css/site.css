@@ -949,7 +949,8 @@ pre code {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 8px 12px;
   margin-top: auto;
   padding-top: 12px;
   font-family: var(--mono);
@@ -963,6 +964,7 @@ pre code {
 .demo-foot a {
   color: var(--accent-deep);
   border-bottom: 1px solid var(--accent);
+  white-space: nowrap;
 }
 
 /* --------------------------------------------------------------------------
@@ -3706,9 +3708,11 @@ html {
   margin-left: 14px;
 }
 
-/* Four tools now: two rows of two on the work page, a flexible row at home. */
-.coding-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+/* Two up on desktop; the work grid drops to one column once cards get narrow. */
+@media (min-width: 941px) {
+  .coding-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .home-coding-grid {
