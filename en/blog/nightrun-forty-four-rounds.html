@@ -45,7 +45,7 @@
     <header class="article-hero">
       <div class="wrap">
         <a class="back-link" href="/en/blog/"><span aria-hidden="true">←</span> All notes</a>
-        <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Session archive</span><i aria-hidden="true"></i><span>Model comparison</span></p>
+        <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Two hands</span><i aria-hidden="true"></i><span>Model comparison</span></p>
         <h1>The model does not<br><em>think it is ugly.</em></h1>
         <p class="article-deck">Two sessions, almost the same number of human instructions. One ground an empty directory into a playable rainy city over 44 rounds. The other took the same code and rewrote it as a system. Same camera, two different projects.</p>
         <p class="article-cn">The gap is not in the prompt. It is in who can hold the whole system at once.</p>
@@ -60,7 +60,7 @@
         <nav class="article-toc" aria-label="Contents">
           <a href="#two">Two sessions</a><a href="#hours">By the numbers</a><a href="#phases">Session one: six phases</a><a href="#rounds">What each round changed</a><a href="#green">Eight gates, always green</a><a href="#typo">The frozen line</a><a href="#swap">Session two: after the swap</a><a href="#where">Where the prompt is</a><a href="#take">Conclusion</a>
         </nav>
-        <dl class="article-aside-facts"><div><dt>Session one</dt><dd>25 instructions · 44 self-numbered rounds</dd></div><div><dt>Session two</dt><dd>24 instructions · 4,087 tool calls</dd></div><div><dt>Output</dt><dd>9,272 lines → 14,934</dd></div><div><dt>Records</dt><dd>Both sessions archived</dd></div></dl>
+        <dl class="article-aside-facts"><div><dt>Session one</dt><dd>25 instructions · 44 self-numbered rounds</dd></div><div><dt>Session two</dt><dd>24 instructions · 27 files</dd></div><div><dt>Output</dt><dd>9,272 lines → 14,934</dd></div><div><dt>Basis</dt><dd>same brief · start · gates</dd></div></dl>
       </aside>
 
       <article class="article-body">
@@ -69,16 +69,15 @@
 
         <div class="stat-strip is-four">
           <div><strong>25 / 24</strong><span>human instructions</span></div>
-          <div><strong>1,189 / 4,087</strong><span>tool calls</span></div>
           <div><strong>44</strong><span>self-numbered rounds</span></div>
-          <div><strong>9,272 → 14,934</strong><span>lines</span></div>
+          <div><strong>13 → 27</strong><span>code files</span></div>
+          <div><strong>×1.6</strong><span>code volume</span></div>
         </div>
 
         <h2 id="two">Two sessions</h2>
-        <p>The first is an exported DeepSeek session: tens of megabytes of JSONL plus more than a hundred in-flight screenshots, from the first brief to the bug report "nothing moves when I open it".</p>
-        <p>The second ran in a different agent. It started on Fable 5.2, switched to Opus 5.5 mid-way (with a short detour to another model when a quota ran out), and its record is finer-grained: which files it read, which lines it wrote, which screenshot it took.</p>
-        <p>The two are back to back. Less than a minute after the first one stopped, the second session opened with "copy the project, then keep optimising, especially the modelling quality, plenty of logic bugs, game complexity". So this is not two models starting from zero. It is <strong>a relay</strong>: the second one inherited a complete build.</p>
-        <p>That is what makes the comparison fair: same brief, same starting point, same eight gates, different author.</p>
+        <p>Session one took more than two days and 44 rounds of detail work, and was stopped by one report: "nothing moves when I open it".</p>
+        <p>Session two has a different hand: Fable 5.2 opened it, Opus 5.5 closed it. It did not start from nothing — its first line was "copy the project, then keep optimising, especially the modelling quality, plenty of logic bugs, game complexity".</p>
+        <p>So this is not two models each building once. It is <strong>a relay</strong>: the second one inherited a complete build. That is what makes the comparison fair — same subject, same starting point, same eight gates, a different author.</p>
 
         <figure class="article-figure">
           <img decoding="async" src="/assets/img/nightrun-01-first.jpg" alt="The first render of the first build: boxy towers, a pink sphere, a magenta billboard." width="960" height="540" loading="lazy">
@@ -91,16 +90,13 @@
           <thead><tr><th></th><th>Session one · DeepSeek</th><th>Session two · Fable 5.2 / Opus 5.5</th></tr></thead>
           <tbody>
             <tr><td>Human instructions</td><td>25</td><td>24</td></tr>
-            <tr><td>Tool calls</td><td>1,189</td><td>4,087</td></tr>
-            <tr><td>File writes / reads</td><td>12 writes</td><td>686 edits or creates</td></tr>
             <tr><td>Session span</td><td>51.5 hours</td><td>about 29 hours</td></tr>
-            <tr><td>Assistant working time</td><td>not recorded separately</td><td>about 10 hours</td></tr>
             <tr><td>Code produced</td><td>13 files · 9,272 lines</td><td>27 files · 14,934 lines</td></tr>
             <tr><td>Game layer</td><td>one 2,762-line closure</td><td>five files, 4,495 lines</td></tr>
             <tr><td>Single-file size</td><td>2.03 MB</td><td>2.55 MB</td></tr>
           </tbody>
         </table>
-        <p>The striking part is not the line count, it is that the first and second rows hold at once: <strong>the same number of human sentences, three times the tool calls, half the session span, and under ten hours of actual work.</strong> If the gap were in the prompt, that pattern should not appear. The two briefs are near-identical, and the second one's opener is shorter: "copy it, then optimise".</p>
+        <p>The striking part is that the first and last rows hold at once: <strong>the same number of human sentences, half again the output, twice the structure, in less elapsed time.</strong> If the gap were in the prompt, that pattern should not appear. The two briefs are near-identical, and the second one's opener is shorter: "copy it, then optimise".</p>
 
         <h2 id="phases">Session one: six phases</h2>
         <p>Sort the 25 instructions by order and clear phases appear. Every quote below is verbatim; exact clock times are dropped.</p>
@@ -150,12 +146,12 @@
         <p>It belongs in the record because it marks the real boundary of this pipeline: <strong>293 screenshots, 44 self-review rounds and eight gates did not replace a human opening the page and walking two steps.</strong></p>
 
         <h2 id="swap">Session two: after the swap</h2>
-        <p>It opened by copying the project, then did something session one never did: <strong>it dispatched four parallel workers</strong> — vehicles, people and traffic; city buildings and roads; landmarks and bridges; waterfront and interiors. None of them finished. The quota ran out and all four were cancelled, leaving half-edited files.</p>
-        <p>The response is the most interesting part of this comparison. It did not keep pushing in parallel, and it did not call the half-finished work done. It wrote back plainly — "all four modelling tasks were cut off when the quota ran out… so I cannot claim it is bug-free" — and then <strong>replanned itself</strong>: no more subcontracting, serial stages, each one gated before the next.</p>
+        <p>It opened by copying the project, then did something session one never did: <strong>it tried to run modelling as four parallel lines</strong> — vehicles and people; city and roads; landmarks and bridges; waterfront and interiors. None of the four finished, and what they left behind did not fit together.</p>
+        <p>The response is the most interesting part of this comparison. It did not keep pushing in parallel, and it did not call the half-finished work done. It said so plainly — "all four tasks were cut off… so I cannot claim it is bug-free" — and then <strong>replanned itself</strong>: no more subcontracting, serial stages, each one gated before the next.</p>
         <p>Then three things happened.</p>
         <p><strong>One: structure first.</strong> Session one's <code>30-game.js</code> was a single 2,762-line closure holding state, clock, movement, driving, interiors, camera, map and handbook. Early in session two it was split into five files: core, motion, interiors, camera and HUD, main loop. That step produces no new pixels, but without it the later systems do not fit.</p>
         <p><strong>Two: one sentence became a layer.</strong> The instruction was: "I'm wondering whether there could be a simulated phone, so the map, navigation and tasks all live inside it. Re-examine the current game state, correct the strategy, the first screen, and the name." No specification. What came back: eight apps (messages, errands, map, taxi, album, wallet, journal, timetable), a phone battery with in-shop charging, seven errands pushed over time, four ways home each with S/A/B/C scoring, a new first screen, a new name, and a handbook and README rewritten to match.</p>
-        <p><strong>Three: it closes its own loop.</strong> It volunteers what it could not test: mouse lock cannot be triggered in a headless browser, so only drag-look was exercised; the mobile layout was only simulated in desktop Chrome at two orientations, never on a real phone. That is not a victory lap; it is a boundary written into the hand-off.</p>
+        <p><strong>Three: it closes its own loop.</strong> It draws the verification boundary itself: which paths were actually exercised, which were only half-checked (mouse lock in a real browser, the mobile layout on a real phone), rather than treating "the script ran" as "this is verified". That is not a victory lap; it is a boundary written into the hand-off.</p>
 
         <figure class="article-figure">
           <img decoding="async" src="/assets/img/nightrun-02-v1.jpg" alt="The first build's street at the same camera: dark volumes with dense window grids, hard-edged car, flat road sheen." width="960" height="540" loading="lazy">
@@ -185,7 +181,7 @@
           <li><strong>Structural sense.</strong> Splitting into five files produces no new pixels, but it decides whether an eighth system fits.</li>
           <li><strong>Judging likeness.</strong> The hardest one. Session one could pass eight gates and still fail the eye; session two got closer on the same street.</li>
         </ul>
-        <p>But session two was not "right first time". It hit a quota wall, lost all four workers, and replanned; what it returned still carried an explicit list of what had not been tested; and the defect that mattered at the end was still found by a human opening the page. Swapping models lowers the cost of <em>building the system correctly</em>; it does not remove the cost of <em>deciding what should be built</em>.</p>
+        <p>But session two was not "right first time". It tried parallel subcontracting, failed, and replanned itself; what it returned still carried an explicit list of what had not been tested; and the defect that mattered at the end was still found by a human opening the page. Swapping models lowers the cost of <em>building the system correctly</em>; it does not remove the cost of <em>deciding what should be built</em>.</p>
 
         <h2 id="take">Conclusion</h2>
         <p>What this measured is not "which model can write code". Both can. <strong>It measured feedback bandwidth: how much coherent change one sentence can buy.</strong></p>
@@ -194,7 +190,7 @@
         <blockquote>The gates can judge whether something is there. Only a person judges whether it looks right. The model does not think it is ugly; the human does.</blockquote>
         <p>That holds for both sessions. The difference is only that in the second one, each sentence the human said moved a much larger block.</p>
 
-        <p class="article-end"><strong>Reference /</strong> <a href="https://norwinyu.github.io/modu-night-walk/" target="_blank" rel="noopener">Modu Night Walk online</a> · <a href="https://github.com/NorwinYu/modu-night-walk" target="_blank" rel="noopener">source</a> · <a href="/work/#modu-night-walk">case on Work</a> · <a href="https://github.com/NorwinYu/photoreal-game" target="_blank" rel="noopener">photoreal-game skill</a>. Numbers come from both session records and the two source trees: session one is an exported DeepSeek archive, session two is a local agent session log. This is an engineering post-mortem, not a product review.</p>
+        <p class="article-end"><strong>Reference /</strong> <a href="https://norwinyu.github.io/modu-night-walk/" target="_blank" rel="noopener">Modu Night Walk online</a> · <a href="https://github.com/NorwinYu/modu-night-walk" target="_blank" rel="noopener">source</a> · <a href="/work/#modu-night-walk">case on Work</a> · <a href="https://github.com/NorwinYu/photoreal-game" target="_blank" rel="noopener">photoreal-game skill</a>. Numbers come from the records of both hands and the two source trees. This is an engineering post-mortem, not a product review.</p>
       </article>
       <div aria-hidden="true"></div>
     </div>

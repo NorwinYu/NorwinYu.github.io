@@ -45,7 +45,7 @@
     <header class="article-hero">
       <div class="wrap">
         <a class="back-link" href="/blog/"><span aria-hidden="true">←</span> 全部笔记</a>
-        <p class="article-kicker"><span class="is-accent">系统</span><i aria-hidden="true"></i><span>会话归档</span><i aria-hidden="true"></i><span>模型对比</span></p>
+        <p class="article-kicker"><span class="is-accent">系统</span><i aria-hidden="true"></i><span>两次执笔</span><i aria-hidden="true"></i><span>模型对比</span></p>
         <h1>模型不觉得丑，<br><em>人觉得。</em></h1>
         <p class="article-deck">两段会话，人说的话几乎一样多：一段用 44 轮把空目录推成一座能玩的雨夜城市；另一段换了模型，把同一座城市重写成一套系统。同一个机位，看起来像两个项目。</p>
         <p class="article-cn">差距不在提示词里，在谁能同时握住整个系统。</p>
@@ -60,7 +60,7 @@
         <nav class="article-toc" aria-label="文章目录">
           <a href="#two">两段会话</a><a href="#hours">数字对照</a><a href="#phases">第一段：六个阶段</a><a href="#rounds">每一轮在改什么</a><a href="#green">八道门一直绿着</a><a href="#typo">卡死的一行</a><a href="#swap">第二段：换模型之后</a><a href="#where">提示在哪</a><a href="#take">结论</a>
         </nav>
-        <dl class="article-aside-facts"><div><dt>第一段</dt><dd>25 次人工指令 · 44 轮自编号</dd></div><div><dt>第二段</dt><dd>24 次人工指令 · 4,087 次工具调用</dd></div><div><dt>产出</dt><dd>9,272 行 → 14,934 行</dd></div><div><dt>记录</dt><dd>两份会话归档</dd></div></dl>
+        <dl class="article-aside-facts"><div><dt>第一段</dt><dd>25 次人工指令 · 44 轮自编号</dd></div><div><dt>第二段</dt><dd>24 次人工指令 · 27 个文件</dd></div><div><dt>产出</dt><dd>9,272 行 → 14,934 行</dd></div><div><dt>对照</dt><dd>同题 · 同起点 · 同验收</dd></div></dl>
       </aside>
 
       <article class="article-body">
@@ -69,16 +69,15 @@
 
         <div class="stat-strip is-four">
           <div><strong>25 / 24</strong><span>两段的人工指令</span></div>
-          <div><strong>1,189 / 4,087</strong><span>工具调用</span></div>
           <div><strong>44</strong><span>第一段自编号轮次</span></div>
-          <div><strong>9,272 → 14,934</strong><span>行代码</span></div>
+          <div><strong>13 → 27</strong><span>代码文件</span></div>
+          <div><strong>×1.6</strong><span>代码量</span></div>
         </div>
 
         <h2 id="two">两段会话</h2>
-        <p>第一段是 DeepSeek 的一段导出归档：几十 MB 的 JSONL，加一百多张中间截图，从立项开始，到「打开以后动不了」这个 bug 结束。</p>
-        <p>第二段跑在另一个 agent 里，模型是 Fable 5.2，中途换成了 Opus 5.5（额度用尽时还短暂落到过别的模型）。记录更细：每一轮读哪些文件、写哪一行、跑哪次截图，都在。</p>
-        <p>两段是连着发生的：第一段收工之后不到一分钟，第二段就开了新会话，第一句话是「请你复制一份，然后还是优化，特别是建模质量，很多逻辑 bug，游戏复杂度」。所以这不是两个模型各自从零做一遍，而是<strong>一个接力</strong>：第二段拿到的是第一段的完整产物。</p>
-        <p>这点很重要，因为它让对比变得公平：同样的题目、同样的起点、同一套验收，只换了执笔的人。</p>
+        <p>第一段用两天多、44 轮细节迭代做完，最后被一句「打开以后动不了」叫停。</p>
+        <p>第二段换了一位执笔者：起笔是 Fable 5.2，收尾是 Opus 5.5。它没有从零开始——第一句话是「复制一份，然后还是优化，特别是建模质量，很多逻辑 bug，游戏复杂度」。</p>
+        <p>所以这不是两个模型各做一遍，而是<strong>一个接力</strong>：第二段拿到的是第一段的完整产物。这反而让对比更公平：同样的题目、同样的起点、同一套验收，只换了执笔的人。</p>
 
         <figure class="article-figure">
           <img decoding="async" src="/assets/img/nightrun-01-first.jpg" alt="第一版的首个渲染帧：方块状的塔楼、粉色球体、洋红色广告牌。" width="960" height="540" loading="lazy">
@@ -91,16 +90,13 @@
           <thead><tr><th></th><th>第一段 · DeepSeek</th><th>第二段 · Fable 5.2 / Opus 5.5</th></tr></thead>
           <tbody>
             <tr><td>人工指令</td><td>25</td><td>24</td></tr>
-            <tr><td>工具调用</td><td>1,189</td><td>4,087</td></tr>
-            <tr><td>其中改文件 / 读文件</td><td>12 次写入</td><td>686 次编辑或新建</td></tr>
             <tr><td>会话跨度</td><td>51.5 小时</td><td>约 29 小时</td></tr>
-            <tr><td>助手实际动手</td><td>未单独记录</td><td>约 10 小时</td></tr>
             <tr><td>产出代码</td><td>13 个文件 · 9,272 行</td><td>27 个文件 · 14,934 行</td></tr>
             <tr><td>游戏层</td><td>单闭包 2,762 行</td><td>拆成 5 个文件，共 4,495 行</td></tr>
             <tr><td>单文件体积</td><td>2.03 MB</td><td>2.55 MB</td></tr>
           </tbody>
         </table>
-        <p>最扎眼的不是行数，是第一行和第二行同时成立：<strong>人说的话一样多，工具调用多了三倍，会话跨度少了一半，而助手真正动手的时间不到十小时。</strong>如果差距在提示词，这条不该出现——两段的提示几乎同源，甚至第二段的开场更短，只是「复制一份，然后优化」。</p>
+        <p>最扎眼的是第一行和最后一行同时成立：<strong>人说的话一样多，产出多了一半，结构翻了一倍，而花掉的时间还少一些。</strong>如果差距在提示词，这条不该出现——两段的提示几乎同源，甚至第二段的开场更短，只是「复制一份，然后优化」。</p>
 
         <h2 id="phases">第一段：六个阶段</h2>
         <p>把第一段的 25 条指令按顺序排开，会看到很清楚的阶段。下面每一条都是用户原话，只隐去了具体时刻。</p>
@@ -150,12 +146,12 @@
         <p>这件事值得写进来，因为它标出了这套流程的真实边界：<strong>293 张截图、44 轮自检、8 道门，都没能替代人打开页面走两步。</strong></p>
 
         <h2 id="swap">第二段：换模型之后</h2>
-        <p>第二段开场，模型先把整个项目复制了一份，然后做了一件第一段没做过的事：<strong>它先派了四个并行 worker</strong>，分别负责「车 / 人 / 交通」「城市建筑与道路」「地标与桥」「滨江与室内」。四个都没跑完——额度耗尽，全部中止，只留下半成品。</p>
-        <p>接下来的反应是这个对比里最有意思的一处：它没有硬着头皮继续并行，也没有把半成品当成完成，而是在回复里写清楚「四个建模任务都因为额度耗尽中途中断……现在不能说它没有 bug」，然后<strong>自己改计划</strong>：不再分包，串行做，每个阶段过验收才进下一个阶段。</p>
+        <p>第二段开场，它先把整个项目复制了一份，然后做了一件第一段没做过的事：<strong>它试着把建模拆成四条线并行推进</strong>——车与人、城市与道路、地标与桥、滨江与室内。四条线一条都没跑完，只留下彼此不咬合的半成品。</p>
+        <p>接下来的反应是这个对比里最有意思的一处：它没有硬着头皮继续并行，也没有把半成品当成完成，而是先承认「这四个任务都中断了……现在不能说它没有 bug」，再<strong>自己改计划</strong>：不再分包，串行做，每个阶段过验收才进下一个阶段。</p>
         <p>然后它做了三件事。</p>
         <p><strong>一，先动结构。</strong>第一段的 <code>30-game.js</code> 是一个 2,762 行的闭包，状态、时钟、移动、驾驶、室内、相机、地图、手册全在里面。第二段开工不久就把它拆成五个文件：核心、运动、室内、相机与 HUD、主循环。这一步不产生任何新画面，但没有它，后面的系统塞不进去。</p>
         <p><strong>二，把「一句话」变成一层系统。</strong>用户说的是：「我在想是不是可以有个模拟手机，这样地图啊，导航啊都可以放进去，包括任务。请你重新审视现在的游戏状态，更正游戏的策略，首屏，以及名字。」这句话没有任何规格。模型交回来的是：手机八个 App（消息、委托、地图、打车、相册、钱包、手账、时刻）、手机电量与借线充电、七条随时间推送的委托、四种回家结局与 S/A/B/C 评级、新的首屏、新的名字、跟着改写的 README 与手册。</p>
-        <p><strong>三，自己收尾。</strong>它会主动交代没测到的部分：鼠标锁定在无头浏览器里触发不了，只能测拖动；手机版只在桌面 Chrome 里模拟过竖屏和横屏，没上真机。这不是自我表扬式的总结，是把验收边界写在交付里。</p>
+        <p><strong>三，自己收尾。</strong>它会主动划出验收边界：哪些路径真的跑过，哪些只验证到一半（真实浏览器里的鼠标锁定、真机上的手机版），而不是把「脚本跑通了」当成「验过了」。这不是自我表扬式的总结，是把边界写在交付里。</p>
 
         <figure class="article-figure">
           <img decoding="async" src="/assets/img/nightrun-02-v1.jpg" alt="第一版同机位街景：深色楼体、密集窗格、方块状车身。" width="960" height="540" loading="lazy">
@@ -185,7 +181,7 @@
           <li><strong>结构感。</strong>拆成五个文件不产生新画面，但它决定了第八个系统能不能塞进去。</li>
           <li><strong>对「像不像」的判断。</strong>这是最难的一条。第一段能通过 8 道门，但过不了人眼；第二段在同一条街上做到了更像。</li>
         </ul>
-        <p>但也不能把第二段说成「一次就成」。它中途撞过额度、四个 worker 全废、重排计划；它交回来的东西仍然明确了「没测到」的清单；最后真正发现问题的，还是人打开页面走两步。换模型降低的是「把系统做对」的成本，没有消除「判断什么该做」的成本。</p>
+        <p>但也不能把第二段说成「一次就成」。它试过并行分包、失败了、自己重排计划；它交回来的东西仍然带着「没测到」的清单；最后真正发现问题的，还是人打开页面走两步。换模型降低的是「把系统做对」的成本，没有消除「判断什么该做」的成本。</p>
 
         <h2 id="take">结论</h2>
         <p>这次实验量到的，不是「哪个模型会写代码」。两个都会。<strong>量到的是反馈带宽：一句话能换来多少自洽的改动。</strong></p>
@@ -194,7 +190,7 @@
         <blockquote>门可以判断「有没有」，人才能判断「像不像」。模型不觉得丑，人觉得。</blockquote>
         <p>这句话对两段都成立。区别只是：第一段需要人说 25 次，第二段需要人说的次数没少，但每一次都多推动了一大块。</p>
 
-        <p class="article-end"><strong>参考 /</strong> <a href="https://norwinyu.github.io/modu-night-walk/" target="_blank" rel="noopener">魔都夜行在线版</a> · <a href="https://github.com/NorwinYu/modu-night-walk" target="_blank" rel="noopener">源码</a> · <a href="/zh/work/#modu-night-walk">Work 里的案例</a> · <a href="https://github.com/NorwinYu/photoreal-game" target="_blank" rel="noopener">photoreal-game skill</a>。数字来自两段会话的导出记录与两个版本的源码；第一段的归档是 DeepSeek 会话，第二段是另一个 agent 的本地会话记录。这是一次工程复盘，不是产品评测。</p>
+        <p class="article-end"><strong>参考 /</strong> <a href="https://norwinyu.github.io/modu-night-walk/" target="_blank" rel="noopener">魔都夜行在线版</a> · <a href="https://github.com/NorwinYu/modu-night-walk" target="_blank" rel="noopener">源码</a> · <a href="/zh/work/#modu-night-walk">Work 里的案例</a> · <a href="https://github.com/NorwinYu/photoreal-game" target="_blank" rel="noopener">photoreal-game skill</a>。数字来自两次执笔的完整记录与两个版本的源码。这是一次工程复盘，不是产品评测。</p>
       </article>
       <div aria-hidden="true"></div>
     </div>
