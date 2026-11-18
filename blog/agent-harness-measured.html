@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>三分之一的成本，七个反例 — Norwin Yu</title>
+  <meta name="description" content="给一个工程 agent harness 做测量：预算砍到三分之一、把项目文档压成可检索的证据、以及七个听起来该有用却全都没用的改动。">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="三分之一的成本，七个反例 — Norwin Yu">
+  <meta property="og:description" content="分数卡住的时候，多半不是模型不够聪明，是它看到的东西不对。一次关于 agent harness 的测量记录。">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="zh_CN">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="canonical" href="https://norwinyu.github.io/blog/agent-harness-measured.html">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/agent-harness-measured.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/agent-harness-measured.html">
+  <link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/agent-harness-measured.html">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header article-header" data-header><div class="header-inner wrap"><a class="brand" href="/zh/" aria-label="Norwin Yu — 首页"><span class="brand-mark" aria-hidden="true">N<span>Y</span></span><span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span></a><nav class="article-nav" aria-label="文章导航"><a href="/zh/work/">实验</a><a href="/zh/ai.html">本地</a><a href="/blog/">日志</a><a href="/zh/about.html">关于</a></nav><a class="lang-switch" href="/en/blog/agent-harness-measured.html" hreflang="en">EN</a><span class="availability"><i aria-hidden="true"></i>开放研究交流</span></div></header>
+
+  <main id="main">
+    <header class="article-hero"><div class="wrap">
+      <a class="back-link" href="/blog/"><span aria-hidden="true">←</span> 全部笔记</a>
+      <p class="article-kicker"><span class="is-accent">评测</span><i aria-hidden="true"></i><span>Agent</span><i aria-hidden="true"></i><span>Harness</span></p>
+      <h1>三分之一的成本，<br><em>七个反例。</em></h1>
+      <p class="article-deck">给一个工程 agent 搭最小 harness：先把成本量出来，再把输入喂对，最后发现七个“听起来该有用”的改动全都没用。</p>
+      <p class="article-cn">分数卡住的时候，多半不是模型不够聪明，是它看到的东西不对。</p>
+      <div class="article-meta"><span><i aria-hidden="true"></i>Norwin Yu</span><span>2026 年 11 月</span><span>14 分钟</span><span>研究笔记 / 20</span></div>
+      <p class="ai-disclosure">写作：AI 代写 · 素材与校对：Norwin Yu</p>
+    </div></header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside"><p class="mono-label">目录</p><nav class="article-toc" aria-label="文章目录"><a href="#comp">比赛在考什么</a><a href="#shape">评测的形状</a><a href="#cost">先量成本</a><a href="#budget">预算旋钮</a><a href="#input">分数在输入端</a><a href="#lookup">条文检索</a><a href="#dead">七个反例</a><a href="#osc">多约束不收敛</a><a href="#numbers">两轮的数字</a><a href="#take">结论</a></nav>
+        <dl class="article-aside-facts"><div><dt>形态</dt><dd>单文件 WebSocket harness</dd></div><div><dt>任务</dt><dd>85 个工程任务（29 公开）</dd></div><div><dt>模型</dt><dd>DeepSeek V4.1 Flash</dd></div><div><dt>单任务成本</dt><dd>¥0.49</dd></div></dl>
+      </aside>
+
+      <article class="article-body">
+        <p>这不是一个把模型调得更准的评测，它回答一个更基础的问题：<strong>一个 agent 跑到工程任务上，钱花在哪、分丢在哪。</strong></p>
+        <p>结论先放在这里：把每任务的时间预算压到原来的三分之一，分数没掉；把项目文档压成模型真正读得懂的形态，部分分涨了两成；而所有“让它自查一遍”的改动，一个都没用。</p>
+
+        <div class="stat-strip is-four"><div><strong>85</strong><span>个任务</span></div><div><strong>7</strong><span>个反例</span></div><div><strong>1/3</strong><span>成本</span></div><div><strong>¥0.49</strong><span>每任务</span></div></div>
+
+        <h2 id="comp">这个比赛在考什么</h2>
+        <p>Physical-Engineering's Last Exam（PLE）由 Google 云 AI 研究和 Mercor 合作发布，85 个专家审校的长程工程任务，覆盖结构、土木、电气、机械四个方向。公开开发集 29 个，隐藏测试集 56 个。</p>
+        <p>每个任务是一个隔离容器里的真实项目文件夹，最多五十个文件：多页 PDF 施工图、IFC4 和 DXF 模型、负荷与接线表、地质钻孔记录、规范条文摘录，还有本地的 MCP 服务（邮件、日历、文档、CAD）。单个任务限时六小时。</p>
+        <p>要交的东西也不是预测文件，而是一个仓库：<code>submission.yaml</code> 声明模型和启动命令，<code>serve.py</code> 是一个 WebSocket 服务，再加 29 个公开任务的 <code>artifacts/</code>。第一阶段交两千字以内的说明文，按 100 分制评审——洞察与失败分析 25 分、工程推理 25 分、跨模型泛化 15 分、效率与扩展 20 分、清晰度与图表 15 分。前一百名进入第二阶段，在 56 个隐藏任务上实测。</p>
+        <p>奖金四十万美元，前三名分走。我写这篇时是 48 支队伍。</p>
+
+        <h2 id="shape">评测的形状</h2>
+        <p>理解这个比赛，关键是理解它怎么跑。你的 harness 跑在自己的容器里，任务跑在第二个容器里，两个容器都不通外网（只有模型端点可达）。协议是一串 JSON 帧：<code>exec</code> 跑命令、<code>read_file</code> 读文件、<code>write_file</code> 写文件、<code>http</code> 打本地 MCP，最后用 <code>done</code> 收尾。</p>
+        <p>也就是说，模型能做的每一件事，都是 harness 代替它向评测器发的一个请求。没有后门，没有“直接改容器”，也没有“偷偷联网”。</p>
+        <p>评分有三种：<code>checks</code> 是确定性的 Python 判分脚本，读交付物、跑断言；<code>rubric</code> 是 LLM 评审，按标准打分；<code>checks-judge</code> 两者都有。</p>
+        <p>最狠的是它的分数结构。以我测得最多的那个结构任务为例：</p>
+        <div class="callout"><span class="mono-label">分数结构</span><p>reward = 0.4 × 部分分 + 0.6 × [全部硬门槛通过] × 目标分。二十一道硬门槛，任何一道不过，六成分直接归零。</p></div>
+        <p>我第一次拿到的是 0.223：部分分 0.559，看着还行，但二十一道门槛全灭。这不是“差一点”，是「必须一次同时做对」。</p>
+
+        <h2 id="cost">先量成本，再谈分数</h2>
+        <p>官方样例 <code>custom-openai</code> 是一个完整可跑的 harness，我没改结构，直接跑一个任务，把三个数记下来：</p>
+
+        <table class="compare-table">
+          <thead><tr><th>指标</th><th>数值</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td data-label="指标">耗时</td><td data-label="数值">2,016 秒</td><td data-label="说明">33.6 分钟，没有预算上限</td></tr>
+            <tr><td data-label="指标">输入 token</td><td data-label="数值">22.75 M</td><td data-label="说明">99.5% 命中缓存</td></tr>
+            <tr><td data-label="指标">输出 token</td><td data-label="数值">218 k</td><td data-label="说明">—</td></tr>
+            <tr><td data-label="指标">成本</td><td data-label="数值">¥1.55</td><td data-label="说明">DeepSeek Flash 错峰价</td></tr>
+            <tr><td data-label="指标">分数</td><td data-label="数值">0.257</td><td data-label="说明">部分分 0.559，门槛全灭</td></tr>
+          </tbody>
+        </table>
+
+        <p>一个交付物只有五个小文件的任务，烧掉两千两百多万输入 token。它们花在哪？在读图纸、反复重读、验证、再重读。模型没有“读完就记住”这回事，每一步都要把全部历史重新送进上下文。</p>
+
+        <h2 id="budget">预算是最便宜的旋钮</h2>
+        <p>改了一行代码：harness 启动时，把会话截止时间压到 <code>HARNESS_BUDGET_SEC</code>。到点强制收尾，交付文件照样按最后状态判分。</p>
+
+        <table class="compare-table">
+          <thead><tr><th>预算</th><th>耗时</th><th>输入 token</th><th>成本</th><th>分数</th></tr></thead>
+          <tbody>
+            <tr><td data-label="预算">无上限</td><td data-label="耗时">2,016 s</td><td data-label="token">22.75 M</td><td data-label="成本">¥1.55</td><td data-label="分数">0.257</td></tr>
+            <tr><td data-label="预算">20 分钟</td><td data-label="耗时">398 s</td><td data-label="token">2.79 M</td><td data-label="成本">¥0.56</td><td data-label="分数">0.259</td></tr>
+            <tr><td data-label="预算">10 分钟</td><td data-label="耗时">146 s</td><td data-label="token">0.42 M</td><td data-label="成本">¥0.14</td><td data-label="分数">0.227</td></tr>
+            <tr><td data-label="预算">25 分钟</td><td data-label="耗时">708 s</td><td data-label="token">6.0 M</td><td data-label="成本">¥0.78</td><td data-label="分数">0.284</td></tr>
+          </tbody>
+        </table>
+
+        <p>二十倍的 token 差距，分数在正负 0.03 之内——而单任务的标准差本来就有 ±0.05。也就是说，那些多出来的 token 几乎买不到东西。</p>
+        <div class="callout"><span class="mono-label">一条经验</span><p>预算不是「给模型更多时间想」，而是「不让它无限重复」。到点强制收尾，交付物反而更完整——因为没有时间可以浪费在第三次重读同一份图纸上。</p></div>
+
+        <h2 id="input">分数在输入端，不在提示词里</h2>
+        <p>把预算压下来之后，剩下的失败开始暴露真实原因。它们不是算错，而是<strong>用错了数</strong>：设计里排了 7 根墙段，竣工记录里只有 5 根；造价报了 42.9 万，上限是 39.5 万；地震重量取了 3,449 kip，参考值 2,171 kip。</p>
+        <p>模型不是不会算，是它没有去读那些数字，而是按“典型值”假设了一个。所以真正该做的不是更好的提示词，是<strong>把项目文档翻译成它能直接用的形态</strong>。</p>
+        <p>于是写了一个 <code>digest.py</code>：任务开始时扫一遍工作目录，生成一份结构化摘要。</p>
+        <ul>
+          <li><strong>表格</strong>：小表全量输出。工程进度表往往只有十几行，只给前六行等于没给。</li>
+          <li><strong>图纸</strong>：DXF 的实体统计、图层、块，以及<em>按图层分组的完整标签清单</em>——面板编号、开口编号与尺寸全在里面。</li>
+          <li><strong>PDF</strong>：前十四页正文，外加一个“规则句”索引：含 <code>shall</code>、等号、不等号、单位的句子单独抽出来。</li>
+          <li><strong>点云</strong>：包围盒、z 分位数、字段结构。</li>
+          <li><strong>冲突扫描</strong>：所有出现 superseded、differ、accepted by RFI、erected position、record set 的句子，按原文列出。这就是“哪份文件说了算”。</li>
+          <li><strong>开口推断</strong>：按编号前缀分类（D 门、P 穿管、L 窗、EY 设备口），并说明窗下墙段仍算墙段。</li>
+        </ul>
+
+        <p>每加一层，部分分和失败门槛数都在动：</p>
+
+        <table class="compare-table">
+          <thead><tr><th>版本</th><th>部分分</th><th>失败硬门槛</th><th>总分</th></tr></thead>
+          <tbody>
+            <tr><td data-label="版本">无 digest</td><td data-label="部分分">0.559</td><td data-label="门槛">11</td><td data-label="总分">0.223</td></tr>
+            <tr><td data-label="版本">+ 输入消化</td><td data-label="部分分">0.618</td><td data-label="门槛">11</td><td data-label="总分">0.247</td></tr>
+            <tr><td data-label="版本">+ 冲突扫描</td><td data-label="部分分">0.706</td><td data-label="门槛">6</td><td data-label="总分">0.282</td></tr>
+            <tr><td data-label="版本">+ 开口推断</td><td data-label="部分分">0.693</td><td data-label="门槛">—</td><td data-label="总分">0.277</td></tr>
+            <tr><td data-label="版本">+ 条文检索</td><td data-label="部分分">0.706</td><td data-label="门槛">5</td><td data-label="总分">0.284</td></tr>
+          </tbody>
+        </table>
+
+        <p>跳得最大的一步是冲突扫描。竣工记录里写着一句话：<em>“erected positions differ from PC-101 Rev 2, accepted by RFI-041”</em>。也就是说，这张图上画的位置不是实际位置，要以竣工记录为准。模型自己不会去比对七个文件里哪句话在说“我过时了”。</p>
+
+        <h2 id="lookup">把规范变成可检索的证据</h2>
+        <p>第二个工具是 <code>lookup.py</code>：把工作目录里所有 PDF、DOCX、Markdown 按段落切块，建一个 BM25 索引，缓存在本地。用起来就一行：</p>
+        <p><code>python3 _harness/lookup.py "parapet tributary height anchorage"</code></p>
+        <p>它返回段落原文、文件名和页码。加 <code>--examples</code> 会优先返回带数字的算例。零模型调用，不花钱，也不会把上下文打爆。</p>
+        <p>实际命中的三条，正好是三个失败门槛的答案：</p>
+        <ul>
+          <li>SDC-02 §12.11.2.2.1：女儿墙悬挑的杠杆作用，锚固力要按悬臂算。</li>
+          <li>FEMA P-2192 式 12.10-1：<code>Fpx</code> 的公式与上下限。</li>
+          <li>DAP-2 第二阶段：墙段的柔度矩阵 <code>fuu = h³/(3EI) + h/(GAv)</code>，以及开裂惯性矩取 0.5 倍。</li>
+        </ul>
+        <p>失败门槛从 6 个降到 5 个。剩下的全是“和参考计算逐项一致”这类要求——那已经不属于检索能解决的范畴。</p>
+
+        <h2 id="dead">七个反例</h2>
+        <p>这一段是这篇文章真正想写的部分。下面七个改动，每一个在写之前我都认为“这应该有用”。</p>
+
+        <table class="compare-table">
+          <thead><tr><th>尝试</th><th>机制</th><th>结果</th></tr></thead>
+          <tbody>
+            <tr><td data-label="尝试">通用自检</td><td data-label="机制">完成前让它对着任务自查一遍</td><td data-label="结果">0.224（−0.03）</td></tr>
+            <tr><td data-label="尝试">数值交叉验算</td><td data-label="机制">强制用第二条路径重算每个被打分的数字</td><td data-label="结果">持平；另一个任务 +0.016，耗时三倍</td></tr>
+            <tr><td data-label="尝试">交付物契约检查</td><td data-label="机制">确定性比对模版的 JSON 键、表名、图层</td><td data-label="结果">0.210</td></tr>
+            <tr><td data-label="尝试">新鲜上下文评审</td><td data-label="机制">新开上下文、不带推理过程，只挑毛病</td><td data-label="结果">在噪声内</td></tr>
+            <tr><td data-label="尝试">里程碑强制</td><td data-label="机制">预算过半且没写文件，就强制先交粗糙版</td><td data-label="结果">从未触发：文件在，错在内容</td></tr>
+            <tr><td data-label="尝试">工具输出压缩</td><td data-label="机制">单条输出从 3 万字符压到 8 千，省上下文</td><td data-label="结果">token 翻倍：模型反复重读</td></tr>
+            <tr><td data-label="尝试">强制方法提取</td><td data-label="机制">先抽出协议里的编号步骤，再照着执行</td><td data-label="结果">0.197（−0.09）</td></tr>
+          </tbody>
+        </table>
+
+        <p>把它们放在一起看，原因只有一个：<strong>模型修不了它不理解的错。</strong></p>
+        <p>事后验证只在“它其实已经知道怎么对”的时候有用。当它不知道的时候，让它自查一遍，它只是把同一段错误推理再演一次，顺便多花一倍时间。数值验算最典型：它认认真真写了第二套公式，但前提假设还是错的，于是两个数一起错，还对得上。</p>
+        <p>最反直觉的是压缩。少给上下文本来是为了省钱，结果 token 翻倍——因为模型看不到完整输出，就去反复读同一个文件。省钱的动作变成了花钱的动作。</p>
+
+        <h2 id="osc">多约束下，它不收敛</h2>
+        <p>还有一个更重要的发现，来自最难的那个任务：从七张 PNG 图纸重建一个 27×21 米的数据大厅，并把三套头顶管线（桥架、母线、冷冻水管）布进去，要求零碰撞、每套管线各自成一个连通网络接到入口、每排机柜三套都要覆盖到 80% 以上、冷冻水还要够到每一台 CRAH，之外还有净高、喷淋、PDU 上空禁区。</p>
+        <p>我给它写了一个几何检查器：用 <code>ifcopenshell</code> 取每个构件的世界坐标包围盒，做三维重叠判定（超过 1 毫米算硬碰撞），再按服务算连通分量，算每排覆盖率，算每台 CRAH 到最近冷冻水管的距离。然后让 harness 在模型要收尾时自动跑一次，把报告塞回去。</p>
+
+        <table class="compare-table">
+          <thead><tr><th>反馈方式</th><th>碰撞</th><th>最低覆盖率</th><th>碰撞门槛</th><th>连通门槛</th></tr></thead>
+          <tbody>
+            <tr><td data-label="反馈">不给反馈</td><td data-label="碰撞">1</td><td data-label="覆盖">0.55</td><td data-label="门槛1">不过</td><td data-label="门槛2">不过</td></tr>
+            <tr><td data-label="反馈">模型自己查三次</td><td data-label="碰撞">0</td><td data-label="覆盖">0.55</td><td data-label="门槛1">过</td><td data-label="门槛2">不过</td></tr>
+            <tr><td data-label="反馈">自动检查一轮</td><td data-label="碰撞">7</td><td data-label="覆盖">1.00</td><td data-label="门槛1">不过</td><td data-label="门槛2">不过（网络已全通）</td></tr>
+            <tr><td data-label="反馈">多轮检查</td><td data-label="碰撞">2</td><td data-label="覆盖">0.55</td><td data-label="门槛1">不过</td><td data-label="门槛2">不过</td></tr>
+          </tbody>
+        </table>
+
+        <p>它在两个门槛之间来回摆动：告诉它碰撞，它把碰撞修到零，覆盖率掉回 0.55；告诉它覆盖率，它把三套管线铺满每一排、网络全部接通，碰撞又冒出七处。</p>
+        <div class="callout"><span class="mono-label">机制</span><p>单指标可以优化，多指标不收敛。这就是这类 benchmark 平均分这么低的原因：它不是“差一点”，是必须一次同时满足。</p></div>
+
+        <h2 id="numbers">两轮之后，数字是这样的</h2>
+        <p>单次测量在这个任务上不可信——同一个任务七次跑，六次零分、一次 0.56。所以最后跑了两个完整轮次，五个任务各两次：</p>
+
+        <table class="compare-table">
+          <thead><tr><th>任务</th><th>评分方式</th><th>第一轮</th><th>第二轮</th><th>均值</th><th>单任务成本</th></tr></thead>
+          <tbody>
+            <tr><td data-label="任务">景观图修订</td><td data-label="方式">rubric</td><td data-label="轮1">0.896</td><td data-label="轮2">0.571</td><td data-label="均值">0.734</td><td data-label="成本">¥0.31</td></tr>
+            <tr><td data-label="任务">防火测试备忘录</td><td data-label="方式">rubric</td><td data-label="轮1">0.702</td><td data-label="轮2">0.630</td><td data-label="均值">0.666</td><td data-label="成本">¥0.28</td></tr>
+            <tr><td data-label="任务">地震隔板剪力</td><td data-label="方式">checks</td><td data-label="轮1">0.292</td><td data-label="轮2">0.282</td><td data-label="均值">0.287</td><td data-label="成本">¥0.50</td></tr>
+            <tr><td data-label="任务">EOR 审阅意见</td><td data-label="方式">checks+judge</td><td data-label="轮1">0.176</td><td data-label="轮2">0.241</td><td data-label="均值">0.209</td><td data-label="成本">¥0.75</td></tr>
+            <tr><td data-label="任务">管线避碰</td><td data-label="方式">checks</td><td data-label="轮1">0.000</td><td data-label="轮2">0.000</td><td data-label="均值">0.000</td><td data-label="成本">¥0.62</td></tr>
+            <tr><td data-label="任务"><strong>集合</strong></td><td data-label="方式">—</td><td data-label="轮1">0.413</td><td data-label="轮2">0.345</td><td data-label="均值"><strong>0.379</strong></td><td data-label="成本"><strong>¥0.49</strong></td></tr>
+          </tbody>
+        </table>
+
+        <p>按这个成本外推 29 个公开任务：约 14 元、三到四小时串行。这个量级意味着，预算不再是实验的约束——真正的约束变成了「怎么把分数做上去」。</p>
+        <p>但要说清楚三件事。第一，相对官方样例，分数基本没动：地震任务 0.257 到 0.287，审阅任务 0.271 到 0.209，都在噪声里。真正稳定的是成本，降了大约三倍。第二，五个任务里只有两个跑过真正的基线，这是这次工作最大的方法缺陷。第三，分数几乎完全由交付物类型决定：写文档的 rubric 任务在 0.67 到 0.73，要求精确数值的 checks 任务在 0.00 到 0.29。</p>
+
+        <h2 id="take">结论</h2>
+        <p>三个月里试过的改动可以归成三句：</p>
+        <p><strong>一是先量成本。</strong>一个到点强制收尾的预算，是唯一既便宜又不掉分的旋钮。它买到的东西不是“更多思考”，而是“停止重复”。</p>
+        <p><strong>二是把数据喂对。</strong>把排期、图层、标签、冲突句、规则句按模型能直接用的单位摊开，比任何一句提示词都值钱。分数卡住的时候，先怀疑它看到的东西不对，而不是怀疑它不够聪明。</p>
+        <p><strong>三是别指望事后验证。</strong>自检、验算、评审、契约检查，在模型真不懂的时候全都没用。要测就测门槛，别测文笔。</p>
+
+        <p class="article-end"><strong>方法 /</strong> 数字来自 29 个公开开发任务中的 7 个，两个完整轮次；单任务成本按 DeepSeek V4.1 Flash 错峰价（缓存命中 $0.003/M、未命中 $0.15/M、输出 $0.60/M）折算，汇率按 7.1。四个任务因镜像构建需要联网或数据不完整而未能在本地运行。提交物中的 <code>artifacts/</code> 用 DeepSeek 生成、而声明的模型必须是 <code>google-cloud/*</code>，这一点在说明文里如实披露——它也是这个参赛作品最大的未决风险。不宣称任何名次。</p>
+      </article>
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title"><div class="wrap"><div><p>回到 / 日志</p><h2 id="next-title">全部笔记</h2></div><a href="/blog/"><span>浏览</span><span class="circle-arrow" aria-hidden="true">→</span></a></div></section>
+  </main>
+
+  <footer class="site-footer article-footer"><div class="footer-bottom wrap"><span>© 2026 Norwin Yu</span><nav class="article-footer-links" aria-label="页脚"><a href="/zh/work/">实验</a><a href="/zh/ai.html">本地</a><a href="/zh/open-source.html">开源</a><a href="/zh/competitions.html">竞赛</a><a href="/blog/">日志</a><a href="/zh/about.html">关于</a></nav><a href="/blog/">全部笔记 <span aria-hidden="true">→</span></a></div></footer>
+</body>
+</html>

@@ -29,6 +29,13 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/"/>
   </url>
   <url>
+    <loc>https://norwinyu.github.io/blog/agent-harness-measured.html</loc>
+    <lastmod>2026-11-18</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/agent-harness-measured.html"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/agent-harness-measured.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/agent-harness-measured.html"/>
+  </url>
+  <url>
     <loc>https://norwinyu.github.io/blog/agent-loops-need-taste.html</loc>
     <lastmod>2026-11-18</lastmod>
     <xhtml:link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/agent-loops-need-taste.html"/>
@@ -174,6 +181,13 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/"/>
     <xhtml:link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/"/>
+  </url>
+  <url>
+    <loc>https://norwinyu.github.io/en/blog/agent-harness-measured.html</loc>
+    <lastmod>2026-11-18</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/agent-harness-measured.html"/>
+    <xhtml:link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/agent-harness-measured.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/agent-harness-measured.html"/>
   </url>
   <url>
     <loc>https://norwinyu.github.io/en/blog/agent-loops-need-taste.html</loc>

@@ -83,7 +83,7 @@
         <p class="section-kicker">竞赛 / 2020 – 2026</p>
         <h1>名次，带凭证。</h1>
         <p class="page-lede">只列能对应到排行榜或提交记录的成绩。较早的条目是历史记录；2026 年的 Kaggle 条目还在进行中，不宣称奖牌。</p>
-        <div class="page-meta"><span><i></i>05 条记录</span><span>NLP · 广告 · 物流 · prompt 优化</span><span>第 14 名</span><span>45 / 102</span><span>51 / 1k+</span></div>
+        <div class="page-meta"><span><i></i>07 条记录</span><span>NLP · 广告 · 物流 · prompt 优化 · agent 评测</span><span>第 14 名</span><span>45 / 102</span><span>51 / 1k+</span></div>
       </div>
     </header>
 
@@ -98,6 +98,8 @@
           <thead><tr><th scope="col">年份 / 赛事</th><th scope="col">任务</th><th scope="col">方法</th><th scope="col">结果</th></tr></thead>
           <tbody>
             <tr><th scope="row"><span>2026</span>Kaggle · Name That LLM</th><td data-label="Task">把段落归到 18 种模型变体的归属任务。</td><td data-label="Approach">TF-IDF 基线 → 特征、SVM 与层级实验 → Qwen3-1.7B LoRA，配合 prompt 级切分与 seed 检查。</td><td data-label="Result">190k 条段落；数据清洗带来 +0.026 balanced accuracy。 <a href="/blog/name-that-llm.html">研究笔记 ↗</a></td></tr>
+            <tr><th scope="row"><span>2026</span>Kaggle · Physical-Engineering's Last Exam</th><td data-label="Task">为 85 个结构、土木、电气与机械长程工程任务构建自主 agent harness。</td><td data-label="Approach">最小 WebSocket harness；每任务硬时间预算；带文档冲突扫描的输入摘要；BM25 条文检索；IFC 碰撞与连通性检查器。</td><td data-label="Result">5 个开发任务两轮均值 0.38，单任务 ¥0.49。说明文撰写中，不宣称名次。 <a href="/blog/agent-harness-measured.html">研究笔记 ↗</a></td></tr>
+            <tr><th scope="row"><span>2026</span>Kaggle · Gemma 4 Developer Agent</th><td data-label="Task">把 Gemma 4 后训练成能自主修改真实仓库的软件工程 agent。</td><td data-label="Approach">静态提交包；思考预算、每任务时间上限与工具消融；编辑与代码图工具；复现公开集成栈。</td><td data-label="Result">自研 harness 公开分 0.18；复现公开栈 0.664。无名次。</td></tr>
             <tr><th scope="row"><span>2026</span>Kaggle · Gemma 4 Prompt Optimization</th><td data-label="Task">在固定的评测 harness 上做 prompt 优化。</td><td data-label="Approach">多轮 notebook 迭代、主题抓取、公开的 Dockerfile，以及反复提交。</td><td data-label="Result">进行中。不宣称名次或奖牌。</td></tr>
             <tr><th scope="row"><span>2020</span>中国大学生保险数字科技挑战赛</th><td data-label="Task">基于脱敏字 ID 与词 ID 的对话意图识别。</td><td data-label="Approach">Word2vec 128d，Transformer + BiLSTM，用 focal/F1 混合损失应对类别不平衡。</td><td data-label="Result">总排名第 14 · 华东赛区第 4 · macro F1 0.29306。</td></tr>
             <tr><th scope="row"><span>2020</span>天池 · 饿了么骑士行为预估</th><td data-label="Task">预测 COVID-19 疫情期间骑手的下一步行为。</td><td data-label="Approach">LightGBM，加入波次、订单与距离特征，在公开基线之上扩展。</td><td data-label="Result">45 / 102 · 线上分数 0.751。</td></tr>

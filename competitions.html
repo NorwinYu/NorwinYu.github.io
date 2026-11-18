@@ -83,7 +83,7 @@
         <p class="section-kicker">Competitions / 2020 – 2026</p>
         <h1>Rankings, with the receipts.</h1>
         <p class="page-lede">Only results I can point to a leaderboard or submission for. The older entries are historical; the 2026 Kaggle entries are works in progress, not medal claims.</p>
-        <div class="page-meta"><span><i></i>05 entries</span><span>NLP · advertising · logistics · prompt optimization</span><span>Rank 14</span><span>45 / 102</span><span>51 / 1k+</span></div>
+        <div class="page-meta"><span><i></i>07 entries</span><span>NLP · advertising · logistics · prompt optimization · agent benchmarks</span><span>Rank 14</span><span>45 / 102</span><span>51 / 1k+</span></div>
       </div>
     </header>
 
@@ -98,6 +98,8 @@
           <thead><tr><th scope="col">Year / event</th><th scope="col">Task</th><th scope="col">Approach</th><th scope="col">Result</th></tr></thead>
           <tbody>
             <tr><th scope="row"><span>2026</span>Kaggle · Name That LLM</th><td data-label="Task">18-way attribution of passages to model variants.</td><td data-label="Approach">TF-IDF baseline → feature, SVM and hierarchical experiments → Qwen3-1.7B LoRA with prompt-level splits and seed checks.</td><td data-label="Result">190k passages; +0.026 balanced accuracy from data cleaning. <a href="/en/blog/name-that-llm.html">Research note ↗</a></td></tr>
+            <tr><th scope="row"><span>2026</span>Kaggle · Physical-Engineering's Last Exam</th><td data-label="Task">Build an autonomous agent harness for 85 long-horizon structural, civil, electrical and mechanical engineering tasks.</td><td data-label="Approach">Minimal WebSocket harness; hard per-task time budget; input digest with a document-conflict scan; BM25 clause retrieval; IFC clash and connectivity checker.</td><td data-label="Result">5-task dev set at 0.38 mean over two rounds, ¥0.49 per task. Writeup in progress; no rank claimed. <a href="/en/blog/agent-harness-measured.html">Research note ↗</a></td></tr>
+            <tr><th scope="row"><span>2026</span>Kaggle · Gemma 4 Developer Agent</th><td data-label="Task">Post-train Gemma 4 into an autonomous software-engineering agent that patches real repositories.</td><td data-label="Approach">Static submission bundle; thinking-budget, per-task time-cap and tool ablations; edit and code-graph tools; forked public ensemble stack.</td><td data-label="Result">0.18 public with the own harness; 0.664 reproducing the public stack. No prize rank.</td></tr>
             <tr><th scope="row"><span>2026</span>Kaggle · Gemma 4 Prompt Optimization</th><td data-label="Task">Prompt optimization against a fixed evaluation harness.</td><td data-label="Approach">Multiple notebook iterations, topic scraping, a public Dockerfile and repeated submission cycles.</td><td data-label="Result">In progress. No rank or medal claimed.</td></tr>
             <tr><th scope="row"><span>2020</span>中国大学生保险数字科技挑战赛</th><td data-label="Task">Dialogue intent recognition from anonymized character and word IDs.</td><td data-label="Approach">Word2vec 128d, Transformer + BiLSTM, focal/F1 hybrid loss for class imbalance.</td><td data-label="Result">Rank 14 overall · 4th in East China · 0.29306 macro F1.</td></tr>
             <tr><th scope="row"><span>2020</span>天池 · 饿了么骑士行为预估</th><td data-label="Task">Predict a courier's next action during COVID-19.</td><td data-label="Approach">LightGBM with wave, order and distance features, extended from a public baseline.</td><td data-label="Result">45 / 102 · 0.751 online score.</td></tr>

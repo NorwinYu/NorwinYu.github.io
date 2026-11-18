@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>A third of the cost, seven dead ends — Norwin Yu</title>
+  <meta name="description" content="Measuring an engineering agent harness: a third of the budget, project documents rewritten as searchable evidence, and seven plausible improvements that all failed.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="A third of the cost, seven dead ends — Norwin Yu">
+  <meta property="og:description" content="When the score stalls, it is usually not that the model is not smart enough. It is looking at the wrong thing.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="canonical" href="https://norwinyu.github.io/en/blog/agent-harness-measured.html">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/agent-harness-measured.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/agent-harness-measured.html">
+  <link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/agent-harness-measured.html">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header><div class="header-inner wrap"><a class="brand" href="/" aria-label="Norwin Yu — home"><span class="brand-mark" aria-hidden="true">N<span>Y</span></span><span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span></a><nav class="article-nav" aria-label="Article"><a href="/work/">Experiments</a><a href="/ai.html">Local</a><a href="/en/blog/">Journal</a><a href="/about.html">About</a></nav><a class="lang-switch" href="/blog/agent-harness-measured.html" hreflang="zh-CN">中文</a><span class="availability"><i aria-hidden="true"></i>Open to research conversations</span></div></header>
+
+  <main id="main">
+    <header class="article-hero"><div class="wrap">
+      <a class="back-link" href="/en/blog/"><span aria-hidden="true">←</span> All notes</a>
+      <p class="article-kicker"><span class="is-accent">Evaluation</span><i aria-hidden="true"></i><span>Agent</span><i aria-hidden="true"></i><span>Harness</span></p>
+      <h1>A third of the cost,<br><em>seven dead ends.</em></h1>
+      <p class="article-deck">Building a minimal harness for an engineering agent benchmark: measure the bill first, feed the model the data it actually needs, and then find that seven plausible improvements all fail.</p>
+      <p class="article-cn">When the score stalls, it is usually not that the model is not smart enough. It is looking at the wrong thing.</p>
+      <div class="article-meta"><span><i aria-hidden="true"></i>Norwin Yu</span><span>November 2026</span><span>14 min</span><span>Research note / 20</span></div>
+      <p class="ai-disclosure">Writing: AI-drafted · Material and review: Norwin Yu</p>
+    </div></header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside"><p class="mono-label">Contents</p><nav class="article-toc" aria-label="Contents"><a href="#comp">What it tests</a><a href="#shape">The shape of it</a><a href="#cost">Measure the bill</a><a href="#budget">The budget knob</a><a href="#input">Score lives in the input</a><a href="#lookup">Clause retrieval</a><a href="#dead">Seven dead ends</a><a href="#osc">No convergence</a><a href="#numbers">Two rounds</a><a href="#take">Conclusion</a></nav>
+        <dl class="article-aside-facts"><div><dt>Shape</dt><dd>Single-file WebSocket harness</dd></div><div><dt>Tasks</dt><dd>85 engineering tasks (29 public)</dd></div><div><dt>Model</dt><dd>DeepSeek V4.1 Flash</dd></div><div><dt>Cost / task</dt><dd>¥0.49</dd></div></dl>
+      </aside>
+
+      <article class="article-body">
+        <p>This is not an evaluation about making a model score better. It answers a plainer question: <strong>when an agent runs an engineering task, where does the money go and where do the points go.</strong></p>
+        <p>The short version: capping the per-task budget at a third of the original cost nothing in score; rewriting the project documents into a form the model can actually read raised the partial score by a fifth; and every change that asked the model to check its own work did nothing at all.</p>
+
+        <div class="stat-strip is-four"><div><strong>85</strong><span>tasks</span></div><div><strong>7</strong><span>dead ends</span></div><div><strong>1/3</strong><span>the cost</span></div><div><strong>¥0.49</strong><span>per task</span></div></div>
+
+        <h2 id="comp">What the competition tests</h2>
+        <p>Physical-Engineering's Last Exam (PLE) comes from Google Cloud AI Research with Mercor: 85 expert-reviewed long-horizon tasks across structural, civil, electrical and mechanical engineering. Twenty-nine are a public development set; 56 are hidden.</p>
+        <p>Each task is a real project folder inside an isolated container, up to fifty files: multi-sheet PDF drawings, IFC4 and DXF models, load and wire schedules, geotechnical boring logs, code excerpts, and local MCP services for mail, calendar, documents and CAD. Six hours per task.</p>
+        <p>What you submit is not a predictions file but a repository: <code>submission.yaml</code> declaring the model and the start command, <code>serve.py</code> as a WebSocket server, and <code>artifacts/</code> from the 29 public tasks. Stage one is a writeup under 2,000 words scored out of 100 — insight and failure analysis 25, engineering reasoning 25, cross-model generalisability 15, efficiency and scaling 20, clarity 15. The top hundred go to stage two on the hidden set.</p>
+        <p>Four hundred thousand dollars across three prizes. Forty-eight teams when I wrote this.</p>
+
+        <h2 id="shape">The shape of it</h2>
+        <p>The harness runs in its own container; the task runs in a second one, offline except for the model endpoint. The protocol is a stream of JSON frames: <code>exec</code> a command, <code>read_file</code>, <code>write_file</code>, <code>http</code> into a local MCP server, and <code>done</code> to finish.</p>
+        <p>So everything the model does is a request the harness sends on its behalf for the evaluator to execute. No back door, no touching the container directly, no quiet network call.</p>
+        <p>Grading comes in three kinds: <code>checks</code> is a deterministic Python grader reading the deliverable and running assertions; <code>rubric</code> is an LLM judge against criteria; <code>checks-judge</code> is both.</p>
+        <p>The hard part is the score structure. Take the structural task I measured most:</p>
+        <div class="callout"><span class="mono-label">Score structure</span><p>reward = 0.4 × partial + 0.6 × [all hard gates pass] × objective. Twenty-one hard gates. Any one of them failing erases sixty per cent of the score.</p></div>
+        <p>My first run scored 0.223: partial 0.559, which looks reasonable, but all twenty-one gates failed. Not "slightly worse" — all at once or nothing.</p>
+
+        <h2 id="cost">Measure the bill before the score</h2>
+        <p>The official <code>custom-openai</code> sample is a complete working harness. I changed none of its structure, ran one task, and wrote down three numbers:</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Measure</th><th>Value</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Measure">Wall clock</td><td data-label="Value">2,016 s</td><td data-label="Note">33.6 minutes, no budget cap</td></tr>
+            <tr><td data-label="Measure">Input tokens</td><td data-label="Value">22.75 M</td><td data-label="Note">99.5% cache hits</td></tr>
+            <tr><td data-label="Measure">Output tokens</td><td data-label="Value">218 k</td><td data-label="Note">—</td></tr>
+            <tr><td data-label="Measure">Cost</td><td data-label="Value">¥1.55</td><td data-label="Note">DeepSeek Flash, off-peak</td></tr>
+            <tr><td data-label="Measure">Score</td><td data-label="Value">0.257</td><td data-label="Note">partial 0.559, no gate passed</td></tr>
+          </tbody>
+        </table>
+
+        <p>Twenty-two million input tokens for a deliverable of five small files. Where does it go? Reading drawings, re-reading, verifying, re-reading again. The model does not remember; every step resends the whole history.</p>
+
+        <h2 id="budget">The cheapest knob is the budget</h2>
+        <p>One line changed: at start-up the harness clamps the session deadline to <code>HARNESS_BUDGET_SEC</code>. When time is up it forces a close, and the working tree is graded as it stands.</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Budget</th><th>Wall clock</th><th>Input tokens</th><th>Cost</th><th>Score</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Budget">Uncapped</td><td data-label="Clock">2,016 s</td><td data-label="Tokens">22.75 M</td><td data-label="Cost">¥1.55</td><td data-label="Score">0.257</td></tr>
+            <tr><td data-label="Budget">20 min</td><td data-label="Clock">398 s</td><td data-label="Tokens">2.79 M</td><td data-label="Cost">¥0.56</td><td data-label="Score">0.259</td></tr>
+            <tr><td data-label="Budget">10 min</td><td data-label="Clock">146 s</td><td data-label="Tokens">0.42 M</td><td data-label="Cost">¥0.14</td><td data-label="Score">0.227</td></tr>
+            <tr><td data-label="Budget">25 min</td><td data-label="Clock">708 s</td><td data-label="Tokens">6.0 M</td><td data-label="Cost">¥0.78</td><td data-label="Score">0.284</td></tr>
+          </tbody>
+        </table>
+
+        <p>A twentyfold token difference, and the score moves by ±0.03 — while the single-task standard deviation is already ±0.05. Those extra tokens bought almost nothing.</p>
+        <div class="callout"><span class="mono-label">One lesson</span><p>The budget is not "time to think harder". It is "no time to repeat". Forcing a close makes the deliverable more complete, because there is no budget left for a third pass over the same drawing.</p></div>
+
+        <h2 id="input">The score lives in the input</h2>
+        <p>With the budget down, the remaining failures showed what was really wrong. Not arithmetic — <strong>wrong numbers</strong>. The design scheduled seven wall piers where the as-built log recorded five; the cost came out at ¥429k against a ¥395k cap; the seismic weight was 3,449 kip against a reference 2,171.</p>
+        <p>The model could calculate. It simply had not read those numbers, and had assumed a typical value instead. The fix is not a better prompt; it is <strong>translating the project documents into something the model can use directly</strong>.</p>
+        <p>So: <code>digest.py</code>. At task start it scans the working directory and writes one structured summary.</p>
+        <ul>
+          <li><strong>Tables</strong>: small schedules in full. An erection log has fifteen rows; showing six is the same as showing none.</li>
+          <li><strong>Drawings</strong>: DXF entity census, layers, blocks, and <em>every label grouped by layer</em> — panel marks, opening marks and sizes.</li>
+          <li><strong>PDFs</strong>: the first fourteen pages, plus a "rule line" index of sentences containing <code>shall</code>, equals, inequalities or units.</li>
+          <li><strong>Point clouds</strong>: bounding box, z percentiles, field layout.</li>
+          <li><strong>Conflict scan</strong>: every line containing superseded, differ, accepted by RFI, erected position, record set — quoted verbatim. This is the "which document governs" question.</li>
+          <li><strong>Opening inference</strong>: classify by mark prefix (D door, P penetration, L window, EY equipment) and state that a window run is still a pier, as a spandrel.</li>
+        </ul>
+
+        <p>Each layer moved the partial score and the gate count:</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Version</th><th>Partial</th><th>Failing gates</th><th>Total</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Version">No digest</td><td data-label="Partial">0.559</td><td data-label="Gates">11</td><td data-label="Total">0.223</td></tr>
+            <tr><td data-label="Version">+ input digest</td><td data-label="Partial">0.618</td><td data-label="Gates">11</td><td data-label="Total">0.247</td></tr>
+            <tr><td data-label="Version">+ conflict scan</td><td data-label="Partial">0.706</td><td data-label="Gates">6</td><td data-label="Total">0.282</td></tr>
+            <tr><td data-label="Version">+ opening inference</td><td data-label="Partial">0.693</td><td data-label="Gates">—</td><td data-label="Total">0.277</td></tr>
+            <tr><td data-label="Version">+ clause lookup</td><td data-label="Partial">0.706</td><td data-label="Gates">5</td><td data-label="Total">0.284</td></tr>
+          </tbody>
+        </table>
+
+        <p>The largest single jump was the conflict scan. The erection log said, in a surveyor's note: <em>"erected positions differ from PC-101 Rev 2, accepted by RFI-041"</em>. The drawing is not where the wall is; the record set is. No model will compare seven files looking for the sentence that says "I am out of date".</p>
+
+        <h2 id="lookup">Turn the code into searchable evidence</h2>
+        <p>The second tool is <code>lookup.py</code>: paragraph-level BM25 over every PDF, DOCX and Markdown file in the working directory, cached locally. One line to use:</p>
+        <p><code>python3 _harness/lookup.py "parapet tributary height anchorage"</code></p>
+        <p>It returns the passage, the file and the page. Add <code>--examples</code> and it prefers worked calculations. No model calls, no cost, no blowing up the context.</p>
+        <p>Three real hits, each the answer to a failing gate:</p>
+        <ul>
+          <li>SDC-02 §12.11.2.2.1: the parapet's cantilever lever arm for anchorage force.</li>
+          <li>FEMA P-2192 Eq 12.10-1: the <code>Fpx</code> formula with its minimum and maximum.</li>
+          <li>DAP-2 stage A: the wall segment flexibility <code>fuu = h³/(3EI) + h/(GAv)</code>, with cracked inertia at 0.5 Ig.</li>
+        </ul>
+        <p>Failing gates went from six to five. What remains is "agree with the reference calculation item by item" — beyond what retrieval can do.</p>
+
+        <h2 id="dead">Seven dead ends</h2>
+        <p>This is the section I actually wanted to write. Each of the seven changes below looked, before I built it, like it should help.</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Attempt</th><th>Mechanism</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Attempt">Generic self-check</td><td data-label="Mechanism">Audit the deliverable against the task before finishing</td><td data-label="Result">0.224 (−0.03)</td></tr>
+            <tr><td data-label="Attempt">Numeric cross-check</td><td data-label="Mechanism">Recompute every graded number down a second path</td><td data-label="Result">Flat; +0.016 on another task at three times the cost</td></tr>
+            <tr><td data-label="Attempt">Contract check</td><td data-label="Mechanism">Deterministic comparison of template JSON keys, sheets, layers</td><td data-label="Result">0.210</td></tr>
+            <tr><td data-label="Attempt">Fresh-context critic</td><td data-label="Mechanism">A clean context, without the reasoning, lists gaps</td><td data-label="Result">Inside the noise</td></tr>
+            <tr><td data-label="Attempt">Milestone enforcer</td><td data-label="Mechanism">Half the budget gone and nothing written: force a crude package</td><td data-label="Result">Never fired — the file existed, the content was wrong</td></tr>
+            <tr><td data-label="Attempt">Output compression</td><td data-label="Mechanism">Clip tool results from 30k to 8k characters to save context</td><td data-label="Result">Tokens doubled: the model re-read the files</td></tr>
+            <tr><td data-label="Attempt">Forced method extraction</td><td data-label="Mechanism">Pull the numbered method out of the protocol, then follow it</td><td data-label="Result">0.197 (−0.09)</td></tr>
+          </tbody>
+        </table>
+
+        <p>Read together, there is one cause: <strong>a model cannot fix an error it does not understand.</strong></p>
+        <p>Verification after the fact only works when the model already knows the right answer. When it does not, asking it to check its work replays the same faulty reasoning and doubles the bill. The numeric audit is the clearest case: it wrote a genuine second derivation, but the premises were still wrong, so both numbers were wrong in the same way and agreed with each other.</p>
+        <p>Compression is the counter-intuitive one. Withholding context was meant to save money, and it doubled the token count, because a model that cannot see the full output goes back and reads the same file again.</p>
+
+        <h2 id="osc">Under coupled constraints, it does not converge</h2>
+        <p>The most useful finding came from the hardest task: rebuild a 27 × 21 m data hall from seven PNG sheets, then route three overhead services — cable tray, busway, chilled water — with zero hard clashes, each service a single connected network reaching its entry, every rack row covered to 80% by all three, chilled water within 2.5 m of every CRAH, plus headroom, sprinkler and PDU-clearance rules.</p>
+        <p>I wrote a geometry checker: world-coordinate bounding boxes through <code>ifcopenshell</code>, 3D overlap beyond 1 mm as a hard clash, connected components per service, per-row coverage, nearest chilled-water distance per CRAH. Then the harness ran it automatically whenever the model tried to finish, and handed back the report.</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Feedback</th><th>Clashes</th><th>Worst coverage</th><th>Clash gate</th><th>Connectivity gate</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Feedback">None</td><td data-label="Clashes">1</td><td data-label="Coverage">0.55</td><td data-label="Gate 1">fail</td><td data-label="Gate 2">fail</td></tr>
+            <tr><td data-label="Feedback">Model checks itself ×3</td><td data-label="Clashes">0</td><td data-label="Coverage">0.55</td><td data-label="Gate 1">pass</td><td data-label="Gate 2">fail</td></tr>
+            <tr><td data-label="Feedback">Automatic check, one round</td><td data-label="Clashes">7</td><td data-label="Coverage">1.00</td><td data-label="Gate 1">fail</td><td data-label="Gate 2">fail (network fully connected)</td></tr>
+            <tr><td data-label="Feedback">Multiple rounds</td><td data-label="Clashes">2</td><td data-label="Coverage">0.55</td><td data-label="Gate 1">fail</td><td data-label="Gate 2">fail</td></tr>
+          </tbody>
+        </table>
+
+        <p>It oscillates. Show it the clashes and it drives them to zero, and coverage falls back to 0.55. Show it the coverage and it lays all three services across every row with the networks fully joined, and seven clashes appear.</p>
+        <div class="callout"><span class="mono-label">The mechanism</span><p>One metric can be optimised; several coupled ones do not converge. This is why the benchmark's mean score is so low: the task is not "a bit short of right", it has to be right all at once.</p></div>
+
+        <h2 id="numbers">After two rounds</h2>
+        <p>A single run is not evidence here — across seven runs of the same task, six scored zero and one scored 0.56. So the last measurement was two full rounds over five tasks:</p>
+
+        <table class="compare-table">
+          <thead><tr><th>Task</th><th>Grading</th><th>Round A</th><th>Round B</th><th>Mean</th><th>Cost</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Task">Landscape sheet revision</td><td data-label="Grading">rubric</td><td data-label="A">0.896</td><td data-label="B">0.571</td><td data-label="Mean">0.734</td><td data-label="Cost">¥0.31</td></tr>
+            <tr><td data-label="Task">Fire test memo</td><td data-label="Grading">rubric</td><td data-label="A">0.702</td><td data-label="B">0.630</td><td data-label="Mean">0.666</td><td data-label="Cost">¥0.28</td></tr>
+            <tr><td data-label="Task">Seismic diaphragm shear</td><td data-label="Grading">checks</td><td data-label="A">0.292</td><td data-label="B">0.282</td><td data-label="Mean">0.287</td><td data-label="Cost">¥0.50</td></tr>
+            <tr><td data-label="Task">EOR review corrections</td><td data-label="Grading">checks+judge</td><td data-label="A">0.176</td><td data-label="B">0.241</td><td data-label="Mean">0.209</td><td data-label="Cost">¥0.75</td></tr>
+            <tr><td data-label="Task">MEP routing</td><td data-label="Grading">checks</td><td data-label="A">0.000</td><td data-label="B">0.000</td><td data-label="Mean">0.000</td><td data-label="Cost">¥0.62</td></tr>
+            <tr><td data-label="Task"><strong>Set</strong></td><td data-label="Grading">—</td><td data-label="A">0.413</td><td data-label="B">0.345</td><td data-label="Mean"><strong>0.379</strong></td><td data-label="Cost"><strong>¥0.49</strong></td></tr>
+          </tbody>
+        </table>
+
+        <p>At that rate the 29 public tasks cost about ¥14 and three to four hours serially. Which means the budget has stopped being the constraint; the constraint is now the score itself.</p>
+        <p>Three caveats. First, against the official sample the score barely moved: 0.257 to 0.287 on the structural task, 0.271 to 0.209 on the review task, both inside the noise. What did move reliably is cost, down about threefold. Second, only two of the five tasks were ever run against a true baseline, which is the largest methodological hole in this work. Third, the score is almost entirely determined by the kind of deliverable: rubric tasks that ask for a document sit at 0.67–0.73, checks tasks that demand exact numbers at 0.00–0.29.</p>
+
+        <h2 id="take">Conclusion</h2>
+        <p>Three months of changes reduce to three sentences.</p>
+        <p><strong>Measure the bill first.</strong> A hard deadline that forces a close is the only knob that is both cheap and free of score cost. It does not buy more thinking; it buys an end to repetition.</p>
+        <p><strong>Fix the input.</strong> Lay out schedules, layers, labels, conflict lines and rule lines in the units the model can use. That is worth more than any prompt. When the score stalls, suspect what the model is looking at before suspecting how smart it is.</p>
+        <p><strong>Do not rely on after-the-fact verification.</strong> Self-checks, recomputation, critics and contract checks all fail once the model genuinely does not understand the task. Measure the gates, not the prose.</p>
+
+        <p class="article-end"><strong>Method /</strong> Numbers come from 7 of the 29 public development tasks across two full rounds; per-task cost uses DeepSeek V4.1 Flash off-peak pricing ($0.003/M cached input, $0.15/M uncached, $0.60/M output) at 7.1 RMB to the dollar. Four tasks could not be run locally because their images need network access to build or the dataset download was incomplete. The submitted <code>artifacts/</code> were generated with DeepSeek while the declared model must be a <code>google-cloud/*</code> one; that is disclosed in the writeup and remains the largest open risk in the entry. No rank is claimed.</p>
+      </article>
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title"><div class="wrap"><div><p>Back to / journal</p><h2 id="next-title">All notes</h2></div><a href="/en/blog/"><span>Browse</span><span class="circle-arrow" aria-hidden="true">→</span></a></div></section>
+  </main>
+
+  <footer class="site-footer article-footer"><div class="footer-bottom wrap"><span>© 2026 Norwin Yu</span><nav class="article-footer-links" aria-label="Footer"><a href="/work/">Experiments</a><a href="/ai.html">Local</a><a href="/open-source.html">Open source</a><a href="/competitions.html">Competitions</a><a href="/en/blog/">Journal</a><a href="/about.html">About</a></nav><a href="/en/blog/">All notes <span aria-hidden="true">→</span></a></div></footer>
+</body>
+</html>
