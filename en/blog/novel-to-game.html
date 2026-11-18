@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>Turning a novel into evidence — Norwin Yu</title>
+  <meta name="description" content="chinese-novel-to-game is not about generating a good game. It is about extraction: evidence-checked structure per chapter, character consolidation, a knowledge ledger, and gates that can be rerun.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Turning a novel into evidence — Norwin Yu">
+  <meta property="og:description" content="This skill is not about making a good game: it turns a several-hundred-thousand-character novel into data that can be checked, rerun and rejected.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="en_US">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="canonical" href="https://norwinyu.github.io/en/blog/novel-to-game.html">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/novel-to-game.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/novel-to-game.html">
+  <link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/novel-to-game.html">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header><div class="header-inner wrap"><a class="brand" href="/" aria-label="Norwin Yu — home"><span class="brand-mark" aria-hidden="true">N<span>Y</span></span><span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span></a><nav class="article-nav" aria-label="Article navigation"><a href="/work/">Experiments</a><a href="/ai.html">Local</a><a href="/en/blog/">Journal</a><a href="/about.html">About</a></nav><a class="lang-switch" href="/blog/novel-to-game.html" hreflang="zh-CN">中文</a><span class="availability"><i aria-hidden="true"></i>Open to research conversations</span></div></header>
+
+  <main id="main">
+    <header class="article-hero"><div class="wrap">
+      <a class="back-link" href="/en/blog/"><span aria-hidden="true">←</span> All notes</a>
+      <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Skill</span><i aria-hidden="true"></i><span>Extraction</span></p>
+      <h1>Turning a novel<br><em>into evidence.</em></h1>
+      <p class="article-deck">This skill is not about making a good game. It is about turning a few hundred thousand characters of fiction into data that can be checked, rerun, and rejected.</p>
+      <p class="article-cn">Generation was never short of imagination. What it lacked was an answer to “who said this line?” that you could look up.</p>
+      <div class="article-meta"><span><i aria-hidden="true"></i>Norwin Yu</span><span>November 2026</span><span>11 min</span><span>Research note / 19</span></div>
+      <p class="ai-disclosure">Writing: AI-drafted · Sources and review: Norwin Yu</p>
+    </div></header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside"><p class="mono-label">Contents</p><nav class="article-toc" aria-label="Article contents"><a href="#why">The problem isn't generation</a><a href="#stages">Ten stages</a><a href="#clean">① Cleaning</a><a href="#extract">② Extraction</a><a href="#merge">③ Consolidation</a><a href="#ledger">⑤ The ledger</a><a href="#cards">④ Character cards</a><a href="#downstream">⑥–⑧ Downstream</a><a href="#gates">Gates and goldens</a><a href="#cost">Cost and limits</a><a href="#take">Conclusion</a></nav>
+        <dl class="article-aside-facts"><div><dt>Shape</dt><dd>SKILL.md + 10 stages</dd></div><div><dt>Scale</dt><dd>21–1,646 chapters</dd></div><div><dt>Evidence</dt><dd>verbatim quote per fact</dd></div><div><dt>Requires</dt><dd>Python 3 · one compatible API</dd></div></dl>
+      </aside>
+
+      <article class="article-body">
+        <p>Turning a novel into a game is a road where “generation” is the cheapest thing available. Give a model a passage and it will produce plausible dialogue, scene description, even a whole side quest. What actually blocks you is a different class of question: <strong>in chapter 137, is this person in the room? Who said this line? Does he know that yet?</strong></p>
+        <p>Get those wrong and everything downstream is wrong. A misattributed line teaches the character card the wrong voice; a missing name in a scene lets an NPC talk about something they never witnessed; a missing knower turns into a spoiler the moment the player asks. That is why <a href="https://github.com/NorwinYu/chinese-novel-to-game" target="_blank" rel="noopener">chinese-novel-to-game</a> puts its engineering weight on stage ② (extraction) and stage ⑤ (the ledger), not stage ⑥ (the game).</p>
+
+        <div class="stat-strip is-four"><div><strong>10</strong><span>stages</span></div><div><strong>8</strong><span>gates</span></div><div><strong>38</strong><span>offline tests</span></div><div><strong>1,646</strong><span>chapters (largest)</span></div></div>
+
+        <h2 id="why">Swap “convincing” for “sourced”</h2>
+        <p>A line a model writes can read well and still be useless to a system. If an NPC is going to remember saying it, you first have to show that the line exists in the text, that this character said it, and that they were present when it happened.</p>
+        <p>Every stage of this skill produces the same kind of thing: <strong>intermediate data that the next stage can cite and a person can spot-check</strong> — not more prose. There is one test that matters: rerun it on another machine with another person and get the same checkable result.</p>
+
+        <h2 id="stages">Ten stages</h2>
+        <p>One command per stage, each with its own artifact and gate. ⑤ comes before ④ because character cards consume the ledger's “who was present, who knew”.</p>
+
+        <table class="compare-table stages">
+          <thead><tr><th>Stage</th><th>What it does</th><th>Artifact</th><th>Gate</th></tr></thead>
+          <tbody>
+            <tr><td data-label="Stage">⓪ Profile</td><td data-label="Does">Narrative person, quote style, line wrapping, dialogue share</td><td data-label="Artifact"><code>book.json</code> profile</td><td data-label="Gate">every suggested value sampled against the text</td></tr>
+            <tr><td data-label="Stage">① Clean</td><td data-label="Does">Encoding, noise, repair, chapter split, numbering audit</td><td data-label="Artifact"><code>chapters.jsonl</code></td><td data-label="Gate">chapter count explainable, no dialogue deleted</td></tr>
+            <tr><td data-label="Stage">② Extract</td><td data-label="Does">Entities, scene presence, speaker per quote, events, facts with knowers</td><td data-label="Artifact"><code>build/extract/*.json</code></td><td data-label="Gate">coverage 1 · cue disagreement ≤2% · unverified ≤2%</td></tr>
+            <tr><td data-label="Stage">③ Consolidate</td><td data-label="Does">Alias merge, tiers, lexicon, map nodes</td><td data-label="Artifact"><code>characters.json</code> · <code>userdict.txt</code> · <code>places.json</code></td><td data-label="Gate">S tiers exist, protagonist found, goldens pass</td></tr>
+            <tr><td data-label="Stage">⑤ Ledger</td><td data-label="Does">Who knows which fact, from which chapter</td><td data-label="Artifact"><code>ledger.json</code></td><td data-label="Gate">witness_not_present ≤5%</td></tr>
+            <tr><td data-label="Stage">④ Cards</td><td data-label="Does">One card per main character per story stage</td><td data-label="Artifact"><code>cards/&lt;id&gt;.json</code></td><td data-label="Gate">coverage 1 · no rewrites pending · no leaks</td></tr>
+            <tr><td data-label="Stage">⑥ Game</td><td data-label="Does">Scenes become readable beats, anchors, map</td><td data-label="Artifact"><code>game.json</code></td><td data-label="Gate">node coverage, play share, anchor count</td></tr>
+            <tr><td data-label="Stage">⑥b Design</td><td data-label="Does">Stats, goal, intel, one choice per anchor</td><td data-label="Artifact"><code>design.json</code></td><td data-label="Gate">canon survives · winnable · losable</td></tr>
+            <tr><td data-label="Stage">⑦ Looks</td><td data-label="Does">Descriptions into enumerated appearance parameters</td><td data-label="Artifact"><code>looks.json</code></td><td data-label="Gate">validator replaces illegal values and logs them</td></tr>
+            <tr><td data-label="Stage">⑧ Accept</td><td data-label="Does">Spoiler and memory probes, manual play</td><td data-label="Artifact"><code>probe_report.json</code></td><td data-label="Gate">all probes pass</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="clean">① Cleaning: decide what not to delete</h2>
+        <p>Before splitting chapters, profile the book. Is narration first person or third, are quotes curly or ASCII, is the body hard-wrapped at a fixed width, how much of it is dialogue. These are not style notes; they decide how the prompt and the validators are written. Guess wrong and the whole extraction run is wasted. So stage ⓪ writes its answers into <code>book.json</code>, and every later stage reads them.</p>
+        <p>Cleaning itself is deterministic code: encoding detection (one book was GB18030 with a truncated final byte), zero-width characters, inline URLs, site watermarks, short lines with no Chinese, common heading formats, chapters pasted twice. Noise rules live in <code>noise_rules.json</code>, and each rule is run over the whole book to report three things: how many lines it matches, how many of those are inside dialogue, and how many characters it deletes. Deleting a character's line is a bug.</p>
+        <p>Corruption gets repaired before it gets deleted. Some garbled runs were GBK text read one byte out of phase; a <code>gbk_byte_shift</code> repair recovers most of it. What cannot be decoded is left in place and marked unreadable during extraction. The ordering matters: <strong>deleting body text is irreversible; leaving noise only costs a little money.</strong></p>
+        <p>Numbering anomalies are classified, not silently fixed. The 544-chapter book had 14 of them; the 1,646-chapter book had 282: missing chapters in the source, typo'd numbers, a line that looks like a heading, duplicated pastes, extra parts restarting at one. Every one is written down in the notes with a reason.</p>
+
+        <h2 id="extract">② Extraction: every fact returns to the text</h2>
+        <p>This is the heaviest stage. Each chapter is numbered first: paragraphs as [p12], quotes as ⟨q7⟩. Paragraphs with broken quote direction — reversed throughout, reversed halfway, opening by continuing the previous quote — are re-paired from punctuation context, because otherwise the speaker is guaranteed to be wrong.</p>
+        <p>The model must return six things: paragraphs that are not story text, entities, scenes split by time and place (with a presence list), <strong>a speaker for every quote</strong>, events, and facts with knowers. Then the validator checks each one:</p>
+        <ul>
+          <li>an entity name must occur in this chapter's text; a full name the model supplies that is absent gets replaced by the chapter's form and kept only as a merge hint;</li>
+          <li>every fact's <code>quote</code> must be found verbatim in the paragraph it cites;</li>
+          <li>every quote must have a speaker;</li>
+          <li>paragraph and quote numbers must exist and stay in range.</li>
+        </ul>
+        <p>Failures go back to the model with the problem list, up to three rounds. Whatever still fails is marked <code>unverified</code>, and the ledger, the cards and the NPC memory refuse to treat it as evidence. Better one fact short than one fact false.</p>
+        <p>There is also a free check: “X said: …” and “… X laughed.” style cues are matched against the model's speakers. This only covers cued dialogue — roughly half of a classical chapter novel, far less in modern prose — but it is enough to catch systematic errors. Across four books the disagreement rate sat between 0.45% and 1.5%, and every disagreement was read.</p>
+        <p>Each book can carry an <code>extract_guide.md</code> with only what was observed in that book: a character usually called “the old man”, how to mark projected speech, what author notes look like. It is appended to every chapter prompt: a patch for one book, never foreknowledge of the plot.</p>
+        <p>Scale check: the 1,646-chapter book produced 13,737 facts, 8,394 events and 3,518 scenes; a 120-chapter book produced 1,533 facts and 1,057 scenes. Those are not token counts; they are the amount of data every later step has to consume.</p>
+
+        <h2 id="merge">③ Consolidation: surfaces into people</h2>
+        <p>In one chapter, “the old man”, “the girl in red” and “the shopkeeper” may be three people or one. Across the book, a form like “second uncle” may point at different people in different chapters. Consolidation is where that gets decided.</p>
+        <p>First separate descriptors from names: descriptor tails, organisation suffixes and demonstrative-headed forms do not merge across chapters; a title only one person per organisation can hold is the exception. The vocabulary is per book; the framework keeps only grammar-level words.</p>
+        <p>Then merge by rule: identical proper names join directly; when an alias belongs to essentially one person across the book, scattered entries join it; near-identical names, one-character differences and full-name hints from extraction go to the model pair by pair. There is a trap here: <strong>the model judges pairs, so two “yes” answers can chain two people together through a third entry.</strong> Merges are therefore checked as groups — if two groups are listed separately twice or more in the same chapter, the merge is refused and recorded as <code>blocked_by_conflict</code>.</p>
+        <p>Tiering is by share of the book: S needs to appear in ≥20% of chapters with ≥2% of the lines, A in ≥5% or ≥1% of lines, and a character with no dialogue caps at B, because there is no voice to imitate. A 1,646-chapter book converged to 4 S-tier and 17 A-tier characters; a 120-chapter book to 10 and 88.</p>
+        <p>Places and the lexicon sit on the same layer. Place names lose direction and time prefixes, suffix variants unify, generic rooms hang under the region they occur in, and the jieba dictionary is validated on real sentences from the book. Neither calls a model.</p>
+
+        <h2 id="ledger">⑤ The ledger: who knows what, by when</h2>
+        <p>The ledger is the least “AI” part of the skill: it calls no model, rebuilds in seconds, and its input is stage ②.</p>
+        <p>The rule is plain: an event's witnesses are its participants plus everyone present in the scene; a fact's knowers come from the extraction's <code>knowers</code> (self, told, witnessed, overheard, inferred). A knower written as a crowd word, or a name that does not resolve, expands to everyone present. Facts and events carry chapter and paragraph numbers, because order inside a chapter matters too.</p>
+        <p>There is one metric: <code>witness_not_present</code>, the share of knowers marked as having seen or overheard something while absent from the scene list; the gate is 5%. Scattered errors are acceptable. <strong>A concentration on one character means the book has a form of presence the extractor cannot represent</strong>: a companion living inside the protagonist, bound to an object, invisible, or sharing thoughts. The fix is not code: write a <code>companions</code> range in <code>knowledge_rules.json</code>, boundary chapters taken from the text. Only if the rules cannot express it does a plugin get written.</p>
+        <p>The 120-chapter book ended at 1,533 facts, 1,164 events and 1,057 scenes with 4.4% witnesses absent. That is not a beautiful number, but it is honest: what remains is scattered, not one person missing from the record.</p>
+
+        <h2 id="cards">④ Character cards: the state at the end of a stage</h2>
+        <p>Stages are cut at plot turns, not equal chapter counts — a change of place, a death or departure, a change of status. Each main character gets one card per stage: identity, appearance, personality (each trait anchored to behaviour in that stage), speech, relationships, goals, state at the end of the stage, secrets.</p>
+        <p>Generation only sees material from that character and that stage: their numbered lines, events they took part in, verified facts about them, the people they shared the most scenes with. Not the whole book, and the model is told not to fill gaps from its own memory. The previous stage's card is supplied for continuity, but the current material wins.</p>
+        <p>Then a specific leak check: anything written on the card is treated by the role-player as known. So secrets about the character, or plans others are keeping from them, are removed from the material when the ledger does not make them a knower and the sentence is not about them; they move to “what they do not know yet”, and the model is told not to write them into the card. Any sentence on the card that closely matches those withheld items is sent back.</p>
+        <p>Runtime avoids one more trap: <strong>the current stage's card describes the end of that stage</strong>, so handing it to the role-player would leak the future. Only the last completed stage's card is used.</p>
+
+        <h2 id="downstream">⑥–⑧ Downstream is a consumer</h2>
+        <p>By the time the game layer starts, there is very little generation left. Scenes become beats in order, important events (importance ≥ 3) become anchors on the map, and each character's last sighting becomes their trail. All of it is a projection of the ledger and the character registry.</p>
+        <p>Design (⑥b) does ask the model again: two to four stats, a stage goal, free-time actions after each chapter, one choice per anchor, a handful of intel items. Its acceptance is not visual: a simulator plays canon (must survive to the end), a planner (must be able to win) and random runs (must be able to lose). The simulator shares the engine with the web page, so “winnable” is not a claim in the copy.</p>
+        <p>Looks (⑦) fills descriptions into fixed enumerated parameters; the validator replaces unknown values with defaults and logs them. Acceptance (⑧) is two kinds of probe: ask about something that has not happened yet and see whether the character volunteers it, and ask about something they should know and check that the key detail appears. Then a human still clicks through it.</p>
+
+        <h2 id="gates">Gates, goldens, staleness</h2>
+        <p><code>gate</code> does not record “I checked”. It records the metrics plus a fingerprint of that stage's inputs. Change a rule, a vocabulary, a plugin or the code, and <code>status</code> marks the affected stages stale — the earlier pass no longer counts and has to be rerun.</p>
+        <p>Goldens (<code>golden.jsonl</code>) are judgments confirmed by a person against the text: who said this line, whether two names are one person, whether someone was present in a chapter, whether they knew something by then. Every rebuild rechecks them, so regressions cannot happen quietly.</p>
+        <p>A guard test closes the other direction: it takes S/A names, aliases and frequent places from every built book and scans the framework, the tests and the docs. Writing one book's vocabulary into <code>n2g/</code> fails the suite on the spot. That is what keeps “framework / per book / handbook” from slowly blending into one layer.</p>
+        <p>Fixes have a fixed ladder, top to bottom: book profile → vocabulary → rule files → extraction guide → plugin → framework. The framework only changes when two or more books hit the same problem and a general rule can fix it; after that, every book is regressed.</p>
+
+        <h2 id="cost">Cost, and what is still imperfect</h2>
+        <p>Only ②③④⑥b⑦⑧ can spend money. Every paid command takes <code>--budget</code>, stops starting new requests at the cap, and keeps finished work; calls are cached on a hash of the request body, so unchanged prompts are not paid for twice; cards can be estimated with <code>--dry-run</code> first. The four built books logged $0.04 to $0.78 of calls — but early runs predate the spend log, so that is not a total.</p>
+        <p>Some real failures: one book's quotes decay in a particular chapter, shifting speakers for a whole stretch, fixed with a <code>repair_line</code> plugin; one protagonist shares memory with a companion, concentrating the witness metric on one character, fixed with a <code>companions</code> range; crowd words polluting knowers, fixed in <code>crowd_words</code>; an NPC teasing instead of telling, counted as intel, fixed by requiring wording overlap for <code>told</code>.</p>
+        <p>Still imperfect: books whose dialogue has no quote marks need a plugin before extraction works; the ledger counts presence as knowledge, so a scene where someone is deliberately kept in the dark is still recorded as known, and only a golden with <code>known_gap</code> plus the card leak check contains it; cards describe the end of a stage, so stage boundaries should fall on departures; long books are expensive, which is why a pilot slice is a constraint, not a trick.</p>
+
+        <h2 id="take">Conclusion</h2>
+        <p>If you keep one sentence: <strong>this skill swaps “generated convincingly” for “sourced clearly”.</strong> Its product is not a game, but a checkable layer of data; the game is just the first consumer of that layer.</p>
+        <p>Repository: <a href="https://github.com/NorwinYu/chinese-novel-to-game" target="_blank" rel="noopener">NorwinYu/chinese-novel-to-game</a> · landing page: <a href="https://norwinyu.github.io/chinese-novel-to-game/" target="_blank" rel="noopener">chinese-novel-to-game</a>. The repository contains no novel text or adapted material; use it only with text you have the right to process.</p>
+
+        <p class="article-end"><strong>Method /</strong> Numbers come from four built books: 21, 120, 544 (30-chapter pilot) and 1,646 chapters. Gate metrics are recorded by <code>n2g gate</code>; goldens and spend come from each book's <code>golden.jsonl</code> and <code>spend.jsonl</code>. The books themselves are not in the repository; only aggregate numbers are quoted here.</p>
+      </article>
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title"><div class="wrap"><div><p>Back to / journal</p><h2 id="next-title">All notes</h2></div><a href="/en/blog/"><span>Browse</span><span class="circle-arrow" aria-hidden="true">→</span></a></div></section>
+  </main>
+
+  <footer class="site-footer article-footer"><div class="footer-bottom wrap"><span>© 2026 Norwin Yu</span><nav class="article-footer-links" aria-label="Footer"><a href="/work/">Experiments</a><a href="/ai.html">Local</a><a href="/open-source.html">Open source</a><a href="/competitions.html">Competitions</a><a href="/en/blog/">Journal</a><a href="/about.html">About</a></nav><a href="/en/blog/">All notes <span aria-hidden="true">→</span></a></div></footer>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>把小说拆成证据 — Norwin Yu</title>
+  <meta name="description" content="chinese-novel-to-game 的工程重心不是生成游戏，而是抽取：逐章带原文证据的结构化、人物归并、知识账本，以及每阶段可重跑的门槛。">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="把小说拆成证据 — Norwin Yu">
+  <meta property="og:description" content="这个 skill 不研究怎么做出好游戏：它研究怎么把一本几十万字的小说，变成一套能核对、能重跑、能否决自己的数据。">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/og.png">
+  <meta property="og:locale" content="zh_CN">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="canonical" href="https://norwinyu.github.io/blog/novel-to-game.html">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/novel-to-game.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/novel-to-game.html">
+  <link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/novel-to-game.html">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header article-header" data-header><div class="header-inner wrap"><a class="brand" href="/zh/" aria-label="Norwin Yu — 首页"><span class="brand-mark" aria-hidden="true">N<span>Y</span></span><span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span></a><nav class="article-nav" aria-label="文章导航"><a href="/zh/work/">实验</a><a href="/zh/ai.html">本地</a><a href="/blog/">日志</a><a href="/zh/about.html">关于</a></nav><a class="lang-switch" href="/en/blog/novel-to-game.html" hreflang="en">EN</a><span class="availability"><i aria-hidden="true"></i>开放研究交流</span></div></header>
+
+  <main id="main">
+    <header class="article-hero"><div class="wrap">
+      <a class="back-link" href="/blog/"><span aria-hidden="true">←</span> 全部笔记</a>
+      <p class="article-kicker"><span class="is-accent">系统</span><i aria-hidden="true"></i><span>Skill</span><i aria-hidden="true"></i><span>抽取</span></p>
+      <h1>把小说<br><em>拆成证据。</em></h1>
+      <p class="article-deck">这个 skill 不研究“怎么做出一个好游戏”。它研究怎么把一本几十万字的小说，变成一套能核对、能重跑、能否决自己的数据。</p>
+      <p class="article-cn">生成从来不缺想象力；缺的是“这句话是谁说的”能有一个可查的答案。</p>
+      <div class="article-meta"><span><i aria-hidden="true"></i>Norwin Yu</span><span>2026 年 11 月</span><span>11 分钟</span><span>研究笔记 / 19</span></div>
+      <p class="ai-disclosure">写作：AI 代写 · 素材与校对：Norwin Yu</p>
+    </div></header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside"><p class="mono-label">目录</p><nav class="article-toc" aria-label="文章目录"><a href="#why">问题不在生成</a><a href="#stages">十个阶段</a><a href="#clean">① 清洗</a><a href="#extract">② 抽取</a><a href="#merge">③ 归并</a><a href="#ledger">⑤ 账本</a><a href="#cards">④ 角色卡</a><a href="#downstream">⑥–⑧ 下游</a><a href="#gates">门槛与金标</a><a href="#cost">成本与遗留</a><a href="#take">结论</a></nav>
+        <dl class="article-aside-facts"><div><dt>形态</dt><dd>SKILL.md + 10 阶段</dd></div><div><dt>规模</dt><dd>21–1,646 章</dd></div><div><dt>证据</dt><dd>每条事实带逐字引文</dd></div><div><dt>依赖</dt><dd>Python 3 · 一个兼容接口</dd></div></dl>
+      </aside>
+
+      <article class="article-body">
+        <p>把小说改成游戏，这条路今天最不缺的就是“生成”。给模型一段原文，它能写出像模像样的对白、场景描述、甚至一整段支线。真正卡住人的是另一类问题：<strong>第 137 章，这个人在不在场？这句话是谁说的？他此刻知不知道那件事？</strong></p>
+        <p>这些问题答错，后面全错。说话人标错，角色卡就学错了语气；在场名单漏人，NPC 就会说出他不该知道的事；事实的知情人漏掉，玩家一问就穿帮。所以 <a href="https://github.com/NorwinYu/chinese-novel-to-game" target="_blank" rel="noopener">chinese-novel-to-game</a> 的工程重心不在第 ⑥ 步的“游戏”，而在第 ② 步的抽取和第 ⑤ 步的账本。</p>
+
+        <div class="stat-strip is-four"><div><strong>10</strong><span>个阶段</span></div><div><strong>8</strong><span>道门槛</span></div><div><strong>38</strong><span>个离线测试</span></div><div><strong>1,646</strong><span>章（最大一本）</span></div></div>
+
+        <h2 id="why">先把“像”换成“有出处”</h2>
+        <p>一句由模型写出来的台词，人读着像，不等于系统能拿它做任何事。要让一个 NPC 记得自己说过什么，你得先证明：这句话确实出现在原文里，说话人是这个人，而他又恰好在场。</p>
+        <p>这个 skill 的每个阶段都在生产同一类东西——<strong>能被下一阶段引用、也能被人抽查的中间数据</strong>，而不是更多文本。判断标准只有一个：换一个人、换一台机器重跑，能不能得到同一份可核对的结论。</p>
+
+        <h2 id="stages">十个阶段</h2>
+        <p>一条命令对应一个阶段，每个阶段有自己的产物和门槛。⑤ 排在 ④ 前面，是因为角色卡要用到账本里的“谁在场、谁知道”。</p>
+
+        <table class="compare-table stages">
+          <thead><tr><th>阶段</th><th>做什么</th><th>产物</th><th>门槛要点</th></tr></thead>
+          <tbody>
+            <tr><td data-label="阶段">⓪ 书型</td><td data-label="做什么">人称、引号、换行、对白占比</td><td data-label="产物"><code>book.json</code> 的 profile</td><td data-label="门槛">每个建议值抽样核对</td></tr>
+            <tr><td data-label="阶段">① 清洗</td><td data-label="做什么">编码、噪声、乱码修复、切章、编号审计</td><td data-label="产物"><code>chapters.jsonl</code></td><td data-label="门槛">章节数可解释，对白无误伤</td></tr>
+            <tr><td data-label="阶段">② 抽取</td><td data-label="做什么">实体、场景在场、逐句说话人、事件、事实与知情人</td><td data-label="产物"><code>build/extract/*.json</code></td><td data-label="门槛">覆盖 1 · 句式不一致 ≤2% · unverified ≤2%</td></tr>
+            <tr><td data-label="阶段">③ 归并</td><td data-label="做什么">别名合并、分级、词典、地图节点</td><td data-label="产物"><code>characters.json</code> · <code>userdict.txt</code> · <code>places.json</code></td><td data-label="门槛">有 S 级、找到主角、金标全过</td></tr>
+            <tr><td data-label="阶段">⑤ 账本</td><td data-label="做什么">谁在第几章知道哪条事实</td><td data-label="产物"><code>ledger.json</code></td><td data-label="门槛">witness_not_present ≤5%</td></tr>
+            <tr><td data-label="阶段">④ 角色卡</td><td data-label="做什么">每个主要角色每阶段一张卡</td><td data-label="产物"><code>cards/&lt;id&gt;.json</code></td><td data-label="门槛">覆盖 1 · 无待重写 · 无剧透</td></tr>
+            <tr><td data-label="阶段">⑥ 游戏化</td><td data-label="做什么">场景变成可读的 beats、锚点、地图</td><td data-label="产物"><code>game.json</code></td><td data-label="门槛">节点覆盖、可玩场次、锚点数</td></tr>
+            <tr><td data-label="阶段">⑥b 玩法</td><td data-label="做什么">属性、目标、情报、每个锚点一个抉择</td><td data-label="产物"><code>design.json</code></td><td data-label="门槛">canon 活到最后 · 能赢 · 能输</td></tr>
+            <tr><td data-label="阶段">⑦ 画面</td><td data-label="做什么">把描写填成枚举参数</td><td data-label="产物"><code>looks.json</code></td><td data-label="门槛">校验器换掉非法值并记录</td></tr>
+            <tr><td data-label="阶段">⑧ 验收</td><td data-label="做什么">剧透与记忆探针、人工试玩</td><td data-label="产物"><code>probe_report.json</code></td><td data-label="门槛">探针全过</td></tr>
+          </tbody>
+        </table>
+
+        <h2 id="clean">① 清洗：先决定不删</h2>
+        <p>切章之前先做书型诊断。人称是“我”还是“他”，引号是弯的还是直的，正文是不是按固定宽度硬断行，对白占多少——这些不是风格问题，而是决定后面提示词和校验怎么写的参数。判断错了，整批抽取返工。所以 ⓪ 的产物直接写进 <code>book.json</code>，后面所有阶段都读它。</p>
+        <p>清洗本身是一组确定性代码：编码识别（有的书是 GB18030，末尾还被截断了一个字节）、零宽字符、行内网址、页眉水印、没有中文的短行、常见标题格式、被重新贴过的重复章节。噪声规则写在 <code>noise_rules.json</code> 里，每条都要在全书上跑一遍，看见三件事：命中多少行、有多少命中落在对白里、总共删掉多少字。删到角色的台词就是错。</p>
+        <p>乱码先试修复，再考虑删。有一批乱码其实是错位一个字节读出来的 GBK 正文，用 <code>gbk_byte_shift</code> 重解码能读通大半；读不通的留着，让抽取阶段标记为不可读。这个顺序很重要：<strong>删正文是不可逆的，留噪声只是多花一点钱。</strong></p>
+        <p>编号异常不静默修。544 章的那本有 14 个异常，1,646 章的那本有 282 个：原书缺章、标题编号笔误、正文里一句像标题的话、重复粘贴、番外另起编号。每一条都归类写进笔记，能解释的才放过。</p>
+
+        <h2 id="extract">② 抽取：每条事实都能回到原文</h2>
+        <p>这是整个项目最重的一步。每章都会先被编号：段落是 [p12]，引号是 ⟨q7⟩。引号方向错乱的段落（整段反向、从中间开始反向、开头接着上一段的引语）按标点上下文重新配对，否则后面的说话人一定错。</p>
+        <p>模型要输出六样东西：不属于正文的段落、实体、按时间和地点切分的场景（含在场名单）、<strong>每个引号是谁说的</strong>、事件、以及带知情人的事实。然后校验器逐条检查：</p>
+        <ul>
+          <li>实体名必须在本章原文出现。模型写出本章没出现的全名，会被换成本章的称呼，全名只作为合并线索；</li>
+          <li>每条事实的 <code>quote</code> 必须能在对应段落里逐字找到；</li>
+          <li>每个引号都必须有说话人；</li>
+          <li>段号、引号编号必须存在，不能越界。</li>
+        </ul>
+        <p>不通过就把问题清单发回模型重做，最多三轮。三轮仍不过的实体和事实标上 <code>unverified</code>，账本、角色卡、NPC 记忆都不把它当证据——宁可少一条，不要一条假的。</p>
+        <p>还有一道不花钱的核对：用“某某道：……”和“……某某笑道。”这类句式反查说话人，和模型给的答案对比。这只能覆盖有句式的台词（古典章回里大约一半，现代白话少得多），但足够发现系统性错误。四本书的这个不一致率在 0.45%–1.5% 之间，逐条看过。</p>
+        <p>每本书可以带一份 <code>extract_guide.md</code>，只写从这本书里看到的东西：某人常被叫“老人”，隔空传话该标 <code>telepathy</code>，作者的话长什么样。它附在每章提示词后面，是这本书的补丁，不是对剧情的预知。</p>
+        <p>规模感：1,646 章的书跑出 13,737 条事实、8,394 个事件、3,518 个场景；120 章的书是 1,533 条事实、1,057 个场景。这些数字不是 token 数，而是后面每一步要消费的数据量。</p>
+
+        <h2 id="merge">③ 归并：把称呼变成人</h2>
+        <p>同一章里“老人”“红衣姑娘”“掌柜的”可能是三个人，也可能是同一个人；跨到全书，“二爷”这种称呼在不同章可能指不同人。归并这一层解决的就是这件事。</p>
+        <p>先把“描述词”和“名字”分开：称呼尾词、组织后缀、指示代词开头的称呼都算描述词，不参与跨章合并；每个组织只有一个人担任的头衔（比如“厂长”）例外。词表是每本书自己的，框架里只留语法级的词。</p>
+        <p>然后按规则合并：同专名直接并；某个别称全书基本只属于一个人时，把零散条目并进去；名字互相包含、只差一个字、或抽取时模型给了全名提示的，逐对交给模型裁定。这里有个容易忽略的坑：<strong>模型是一对一判断的，两个“是”可能经由第三个条目把两个人串起来。</strong> 所以合并必须按整组检查——两组在同一章里被分别列出两次以上，就拒绝合并，记成 <code>blocked_by_conflict</code>。</p>
+        <p>分级按全书比例：S 级要在 ≥20% 的章节出现且台词占 ≥2%，A 级 ≥5% 或台词 ≥1%，没有台词的角色最多 B 级（没有说话方式可模仿，就不写卡）。一本 1,646 章的书最后收敛到 S 级 4 人、A 级 17 人；120 章的那本是 10 和 88。</p>
+        <p>地图和分词在同一层：地点去掉方位词和时间前缀，“青石”和“青石城”按后缀归一，泛称按所在区域挂到上级；分词词典用书里的真实句子验证加词典前后的切分。它们都不调用模型。</p>
+
+        <h2 id="ledger">⑤ 账本：谁在第几章知道什么</h2>
+        <p>账本是整个 skill 里最不像“AI 功能”的部分：它不调用模型，几秒钟重建，输入就是第 ② 步的抽取结果。</p>
+        <p>规则很朴素：事件的见证人是参与者加上场景在场者；事实的知情人来自抽取时列的 <code>knowers</code>（自己知道、被告知、目击、偷听、推断）；知情人写成“众人”这类群体词、或者解析不出名字时，扩展到场景里的所有在场者。每条事实和事件都带章号和段号，因为同一章内的先后顺序也要能判断。</p>
+        <p>指标只有一个：<code>witness_not_present</code>——标为亲眼看到或偷听到、却不在场景名单里的知情人比例，门槛 5%。零散的错误可以接受，<strong>集中在同一个人身上就说明这本书有抽取模型理解不了的“在场”方式</strong>：住在主角身上、附在器物里、附身、隐身跟随。这时不写代码，先写 <code>knowledge_rules.json</code> 的 <code>companions</code> 区间，用原文确定起止章；规则表达不了才写插件。</p>
+        <p>120 章的那本书最后是 1,533 条事实、1,164 个事件、1,057 个场景，witness 比例 4.4%。这个数字不算漂亮，但它诚实：剩下的错误是零散的，不是某个人系统性缺席。</p>
+
+        <h2 id="cards">④ 角色卡：阶段末的状态</h2>
+        <p>阶段按剧情转折切，不按章数平均切——换了地方、关键人物死去或离开、身份大变，才是边界。每个主要角色每个阶段一张卡：身份、外貌、性格（每条附本阶段的具体行为）、说话方式、关系、目标、阶段末尾的状态、秘密。</p>
+        <p>生成时只给这个角色在这个阶段里的材料：他说过的话（带编号）、参与的事件、关于他的已核实事实、同场最多的人。不给整本书，也要求模型不要用自己的印象补。上一阶段的卡作为衔接参考一起给，以本阶段材料为准。</p>
+        <p>然后是一道专门的泄漏检查：卡里写的东西，扮演者都会当成自己知道的。所以关于他的秘密、别人瞒着他的计划，如果账本里他不是知情人、句子主语也不是他，就从材料里拿掉，改放进“他此时不知道的事”，并明确告诉模型不能写进卡里。卡里任何一句和“他不知道的事”高度重合，就打回重写。</p>
+        <p>运行时还要再避一次：<strong>当前阶段的卡描述的是阶段末尾</strong>，直接给扮演者会剧透，所以只用上一个已经结束阶段的卡。</p>
+
+        <h2 id="downstream">⑥–⑧ 下游只是消费者</h2>
+        <p>到了游戏这一层，反而没有多少“生成”了。场景按顺序变成一场一场的 beat，重要事件（importance ≥ 3）变成地图上的锚点，人物的最后出现位置变成行踪。这些都是账本和人物表的投影。</p>
+        <p>玩法设计（⑥b）才再问模型一次：2–4 个属性、一个阶段目标、每章末的空闲行动、每个锚点一个抉择、几段情报。它的验收不靠人眼看，而靠模拟器：照原著走必须活到最后、会玩的人必须能赢、乱玩必须可能输。模拟器和网页共用同一个引擎，所以“能赢”不是文案上的承诺。</p>
+        <p>画面（⑦）把书里的描写填进固定的枚举参数，校验器把不认识的值换成默认并记录。验收（⑧）是两类探针：问一件还没发生的事，看对方会不会自己说出来；问一件他该知道的事，看关键信息在不在。最后仍然要人真的点一遍。</p>
+
+        <h2 id="gates">门槛、金标、过期</h2>
+        <p><code>gate</code> 不记录“我检查过了”，它记录指标和该阶段输入文件的指纹。改了规则、词表、插件或代码之后，<code>status</code> 会把受影响的阶段标成 stale——旧的“通过”不算数，必须重跑。</p>
+        <p>金标（<code>golden.jsonl</code>）是人工对照原文确认过的判断：这句是谁说的、这两个名字是不是一个人、某人某章在不在场、到某章知不知道某事。每次重建自动复查，回归不会悄悄发生。</p>
+        <p>还有一个守卫测试：拿所有已构建书的 S/A 人名、别名、常用地点，反向扫描框架、测试和文档。往 <code>n2g/</code> 里写某本书的词，测试当场失败。它保证“框架 / 每本书 / 作业手册”这三层不会慢慢混在一起。</p>
+        <p>修复也有固定落点，从上往下找第一个能解决的：书型 → 词表 → 规则文件 → 抽取说明 → 插件 → 框架。框架层只有在两本以上的书都遇到、并且能用通用规则解决时才改，改完在所有书上回归。</p>
+
+        <h2 id="cost">成本与仍然不完美的地方</h2>
+        <p>会花钱的只有 ②③④⑥b⑦⑧。所有付费命令都支持 <code>--budget</code>，到额度就停止发起新请求，已完成的结果保留；模型调用按请求体哈希落盘缓存，提示词不变不重复付费；角色卡可以先 <code>--dry-run</code> 估价。四本书记录到的调用花费在 $0.04 到 $0.78 之间——但早期的花费日志不完整，这个数字不能当总成本看。</p>
+        <p>几个真实失败：某本的引号在某一章开始残缺，说话人整段错位，最后是写 <code>repair_line</code> 插件按章节修的；某本的主角和随身同伴共享记忆，导致 witness 指标集中在一个人身上，用 <code>companions</code> 区间修；群体称呼污染知情人，把词补进 <code>crowd_words</code>；NPC 只是吊胃口却被记成“问到了情报”，于是给 <code>told</code> 加了措辞重合校验。</p>
+        <p>仍然不完美：对白不带引号的书需要先写插件；账本按“在场即知道事件”计时，某人当面被瞒着的情节会记错，只能用金标标注并靠角色卡的泄漏检查兜住；角色卡描述阶段末，阶段划分要尽量让关键人物的退场落在边界上；长书很贵，先做切片是现实约束，不是技巧。</p>
+
+        <h2 id="take">结论</h2>
+        <p>如果只记一句：<strong>这个 skill 把“生成得像”换成了“说得清出处”。</strong> 它的产物不是一款游戏，而是一层可核查的数据；游戏只是这层数据的第一个消费者。</p>
+        <p>仓库：<a href="https://github.com/NorwinYu/chinese-novel-to-game" target="_blank" rel="noopener">NorwinYu/chinese-novel-to-game</a> · 介绍页：<a href="https://norwinyu.github.io/chinese-novel-to-game/" target="_blank" rel="noopener">chinese-novel-to-game</a>。仓库不含任何小说原文或改编产物，只处理你有权使用的文本。</p>
+
+        <p class="article-end"><strong>方法 /</strong> 数字来自四本已构建的书：21、120、544（30 章试点）、1,646 章。门槛指标由 <code>n2g gate</code> 记录，金标与花费来自各书的 <code>golden.jsonl</code> 与 <code>spend.jsonl</code>。书的内容不在仓库里，这里只引用聚合数字。</p>
+      </article>
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title"><div class="wrap"><div><p>回到 / 日志</p><h2 id="next-title">全部笔记</h2></div><a href="/blog/"><span>浏览</span><span class="circle-arrow" aria-hidden="true">→</span></a></div></section>
+  </main>
+
+  <footer class="site-footer article-footer"><div class="footer-bottom wrap"><span>© 2026 Norwin Yu</span><nav class="article-footer-links" aria-label="页脚"><a href="/zh/work/">实验</a><a href="/zh/ai.html">本地</a><a href="/zh/open-source.html">开源</a><a href="/zh/competitions.html">竞赛</a><a href="/blog/">日志</a><a href="/zh/about.html">关于</a></nav><a href="/blog/">全部笔记 <span aria-hidden="true">→</span></a></div></footer>
+</body>
+</html>

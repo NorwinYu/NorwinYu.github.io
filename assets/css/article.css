@@ -470,6 +470,12 @@
   color: var(--ink);
 }
 
+/* Stage tables: keep the stage label on one line so the row height stays even. */
+.compare-table.stages th:first-child,
+.compare-table.stages td:first-child {
+  white-space: nowrap;
+}
+
 .article-end {
   max-width: 700px;
   margin-top: 14px;
