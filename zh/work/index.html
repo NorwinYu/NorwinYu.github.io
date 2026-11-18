@@ -83,7 +83,7 @@
         <p class="section-kicker">实验 / 2026</p>
         <h1>代码里的实验。</h1>
         <p class="page-lede">游戏是一组探针，编程工具是另一组，机器本身是第三组。它们都在问同一条真实的生产管线——生成素材、代码、UI、验证和部署——LLM 能推多远，以及人还必须在哪一步介入。</p>
-        <div class="page-meta"><span><i></i>06 个游戏探针</span><span>02 组对比</span><span>04 个编程工具</span><span>05 类工作负载</span><span>在线 / 附源码</span></div>
+        <div class="page-meta"><span><i></i>07 个游戏探针</span><span>02 组对比</span><span>04 个编程工具</span><span>05 类工作负载</span><span>在线 / 附源码</span></div>
       </div>
     </header>
 
@@ -105,6 +105,7 @@
           <caption class="sr-only">实验地图：各项目及其被测的那个变量</caption>
           <thead><tr><th scope="col">实验</th><th scope="col">测什么</th><th scope="col">模型</th><th scope="col">杠杆</th></tr></thead>
           <tbody>
+            <tr><th scope="row">魔都夜行</th><td data-label="测什么">OSM 城市 + 一夜模拟</td><td data-label="模型">DeepSeek Flash → Fable 5.2 + Opus 5.5</td><td data-label="杠杆">代码/系统；OSM 管线；单文件构建</td></tr>
             <tr><th scope="row">青云渡</th><td data-label="测什么">无外部素材的开放世界 3D</td><td data-label="模型">Fable 5.2 + Opus 5.5</td><td data-label="杠杆">代码/系统/UI；运行时生成美术与音频；node:test</td></tr>
             <tr><th scope="row">ECHO ZERO</th><td data-label="测什么">完整叙事管线 + 追加的语音层</td><td data-label="模型">DeepSeek Flash + MiniMax H3</td><td data-label="杠杆">代码/UI/音频；生成美术、视频、音乐；Edge TTS</td></tr>
             <tr><th scope="row">烽火三国</th><td data-label="测什么">生成素材塞进一个完整的游戏循环</td><td data-label="模型">DeepSeek Flash + MiniMax H3</td><td data-label="杠杆">代码/UI/音频；生成的图片与视频素材</td></tr>
@@ -142,11 +143,33 @@
     </section>
 
     <div class="wrap section-head work-section-head">
-      <div class="section-heading"><p class="section-kicker">01 / 游戏探针</p><h2>12 个游戏构建，6 个深度切片。</h2></div>
-      <p class="section-intro">这里详细写 6 个游戏切片；另外 6 个构建放在下面的对比里。</p>
+      <div class="section-heading"><p class="section-kicker">01 / 游戏探针</p><h2>13 个游戏构建，7 个深度切片。</h2></div>
+      <p class="section-intro">这里详细写 7 个游戏切片；另外 6 个构建放在下面的对比里。</p>
     </div>
 
     <div class="wrap">
+      <article class="work-case" id="modu-night-walk">
+        <div class="work-case-media"><img decoding="async" src="/assets/img/demo-modu-nightwalk-street.jpg" alt="雨夜街头：撑伞的行人停在路边，旁边是一辆停下的电车" width="960" height="540" loading="eager"></div>
+        <div class="work-case-copy">
+          <h2>魔都夜行 <span>Modu Night Walk / 城市模拟</span></h2>
+          <p>单文件 Three.js 的雨夜城市：几何来自 1:1 的 OpenStreetMap 滨江数据，名字、店铺和人物是重新写过的。给你 23:00 到 01:00，七个委托、一部会没电的手机，和四种回家的方式。</p>
+          <ul>
+            <li>OSM 轮廓投影为本地米制坐标：413 个建筑轮廓、612 段道路、503 条步行道、114 块绿地、24 个 POI；名称全部改写，投影原点不公开。</li>
+            <li>渡轮、夜宵线、出租车、纯电自驾、无人机和江上游船；室内、天气、灯光秀，每种回家方式都有结算评级。</li>
+            <li>由 DeepSeek 反复迭代了几十轮写出；最后一轮优化由 Fable 5.2 与 Opus 5.5 完成。</li>
+          </ul>
+          <dl class="work-specs">
+            <div><dt>规模</dt><dd>2.5 × 2.2 km · 7 个委托 · 4 种结局</dd></div>
+            <div><dt>构建</dt><dd>单 HTML · 2.6 MB · 零请求</dd></div>
+            <div><dt>技术栈</dt><dd>three.js r169 · WebGL · OSM / ODbL</dd></div>
+            <div><dt>系统</dt><dd>手机 · 拍照评分 · 无人机 · 罚款</dd></div>
+            <div><dt>模型</dt><dd>DeepSeek Flash → Fable 5.2 + Opus 5.5</dd></div>
+            <div><dt>状态</dt><dd>技术预览，不是发行版</dd></div>
+          </dl>
+          <div class="work-links"><a href="https://norwinyu.github.io/modu-night-walk/" target="_blank" rel="noopener">打开演示 <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/modu-night-walk" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </article>
+
       <article class="work-case" id="qingyun">
         <div class="work-case-media"><img decoding="async" src="/assets/img/demo-qingyun.jpg" alt="黄昏时分的青云村、青云河与石桥" width="1440" height="731" loading="eager"></div>
         <div class="work-case-copy">

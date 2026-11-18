@@ -83,7 +83,7 @@
         <p class="section-kicker">Experiments / 2026</p>
         <h1>Experiments in code.</h1>
         <p class="page-lede">Games are one probe, coding tools are another, and the rig itself is the third. All of them test how far an LLM can carry a real production pipeline — generated assets, code, UI, verification and deployment — and where a human still has to intervene.</p>
-        <div class="page-meta"><span><i></i>06 game probes</span><span>02 comparisons</span><span>04 coding tools</span><span>05 workloads</span><span>Live / source linked</span></div>
+        <div class="page-meta"><span><i></i>07 game probes</span><span>02 comparisons</span><span>04 coding tools</span><span>05 workloads</span><span>Live / source linked</span></div>
       </div>
     </header>
 
@@ -105,6 +105,7 @@
           <caption class="sr-only">Experiment map: projects and the variable each one tests</caption>
           <thead><tr><th scope="col">Experiment</th><th scope="col">What it tests</th><th scope="col">Model</th><th scope="col">Leverage</th></tr></thead>
           <tbody>
+            <tr><th scope="row">魔都夜行</th><td data-label="Tests">OSM city plus a night simulation</td><td data-label="Model">DeepSeek Flash → Fable 5.2 + Opus 5.5</td><td data-label="Leverage">Code/systems; OSM pipeline; single-file build</td></tr>
             <tr><th scope="row">青云渡</th><td data-label="Tests">Open-world 3D shipped as two files</td><td data-label="Model">Fable 5.2 + Opus 5.5</td><td data-label="Leverage">Code/systems/UI; runtime-generated art and audio; node:test</td></tr>
             <tr><th scope="row">ECHO ZERO</th><td data-label="Tests">Full narrative pipeline + added voice layer</td><td data-label="Model">DeepSeek Flash + MiniMax H3</td><td data-label="Leverage">Code/UI/audio; generated art, video, music; Edge TTS</td></tr>
             <tr><th scope="row">烽火三国</th><td data-label="Tests">Generated assets inside a complete game loop</td><td data-label="Model">DeepSeek Flash + MiniMax H3</td><td data-label="Leverage">Code/UI/audio; generated image and video assets</td></tr>
@@ -142,11 +143,33 @@
     </section>
 
     <div class="wrap section-head work-section-head">
-      <div class="section-heading"><p class="section-kicker">01 / Game probes</p><h2>Twelve game builds, six deep probes.</h2></div>
-      <p class="section-intro">Six detailed game probes here; six more builds are paired in Comparisons below.</p>
+      <div class="section-heading"><p class="section-kicker">01 / Game probes</p><h2>Thirteen game builds, seven deep probes.</h2></div>
+      <p class="section-intro">Seven detailed game probes here; six more builds are paired in Comparisons below.</p>
     </div>
 
     <div class="wrap">
+      <article class="work-case" id="modu-night-walk">
+        <div class="work-case-media"><img decoding="async" src="../assets/img/demo-modu-nightwalk-street.jpg" alt="A pedestrian with an umbrella beside a stopped car on a rain-soaked street at night" width="960" height="540" loading="eager"></div>
+        <div class="work-case-copy">
+          <h2>魔都夜行 <span>Modu Night Walk / OSM city</span></h2>
+          <p>A single-file Three.js night on a 1:1 OpenStreetMap riverfront. The geometry is measured city; the names, shops and people are written. You get 23:00 to 01:00, seven errands, a phone that runs out of battery, and four ways to get home.</p>
+          <ul>
+            <li>OSM outlines projected to local metres: 413 building footprints, 612 road segments, 503 paths, 114 green areas, 24 POIs. Names rewritten; the projection origin is not published.</li>
+            <li>Ferry, night bus, taxi, EV, drone and river cruise; interiors, weather, a light show and a scored ending for each route.</li>
+            <li>Drafted and iterated over dozens of DeepSeek passes; the final optimisation pass was done with Fable 5.2 and Opus 5.5.</li>
+          </ul>
+          <dl class="work-specs">
+            <div><dt>Scope</dt><dd>2.5 × 2.2 km · 7 errands · 4 endings</dd></div>
+            <div><dt>Build</dt><dd>One HTML · 2.6 MB · zero requests</dd></div>
+            <div><dt>Stack</dt><dd>three.js r169 · WebGL · OSM / ODbL</dd></div>
+            <div><dt>Systems</dt><dd>Phone · camera scoring · drone · fines</dd></div>
+            <div><dt>Model</dt><dd>DeepSeek Flash → Fable 5.2 + Opus 5.5</dd></div>
+            <div><dt>Status</dt><dd>Technical preview, not a release</dd></div>
+          </dl>
+          <div class="work-links"><a href="https://norwinyu.github.io/modu-night-walk/" target="_blank" rel="noopener">Open demo <span aria-hidden="true">↗</span></a><a href="https://github.com/NorwinYu/modu-night-walk" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </article>
+
       <article class="work-case" id="qingyun">
         <div class="work-case-media"><img decoding="async" src="../assets/img/demo-qingyun.jpg" alt="Qingyun village, river and stone bridge at dusk" width="1440" height="731" loading="eager"></div>
         <div class="work-case-copy">
