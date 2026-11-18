@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>The model does not think it is ugly — Norwin Yu</title>
+  <meta name="description" content="51 hours, 25 human instructions, 44 self-numbered rounds: one model pushed an empty directory to a playable rainy city, then another model rewrote it. Same camera, different object.">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="The model does not think it is ugly — Norwin Yu">
+  <meta property="og:description" content="51 hours, 25 human instructions, 44 self-numbered rounds. Same camera, two models, two objects.">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/nightrun-03-v2.jpg">
+  <meta property="og:locale" content="en_US">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="canonical" href="https://norwinyu.github.io/en/blog/nightrun-forty-four-rounds.html">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/nightrun-forty-four-rounds.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/nightrun-forty-four-rounds.html">
+  <link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/nightrun-forty-four-rounds.html">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/" aria-label="Norwin Yu — home"><span class="brand-mark" aria-hidden="true">N<span>Y</span></span><span class="brand-text"><strong>Norwin Yu</strong><small>AI usage research</small></span></a>
+      <nav class="article-nav" aria-label="Article"><a href="/work/">Experiments</a><a href="/ai.html">Local</a><a href="/en/blog/">Journal</a><a href="/about.html">About</a></nav>
+      <a class="lang-switch" href="/blog/nightrun-forty-four-rounds.html" hreflang="zh-CN">中文</a>
+      <span class="availability"><i aria-hidden="true"></i>Open to research conversations</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="/en/blog/"><span aria-hidden="true">←</span> All notes</a>
+        <p class="article-kicker"><span class="is-accent">Systems</span><i aria-hidden="true"></i><span>Session archive</span><i aria-hidden="true"></i><span>Model comparison</span></p>
+        <h1>The model does not<br><em>think it is ugly.</em></h1>
+        <p class="article-deck">51 hours, 25 human instructions, 44 self-numbered rounds: one model pushed an empty directory to a playable rainy city. Then another model rewrote it, and the same camera now looks like a different project.</p>
+        <p class="article-cn">The gap is not in the prompt. It is in who can hold the whole system at once.</p>
+        <div class="article-meta"><span><i aria-hidden="true"></i>Norwin Yu</span><span>November 2026</span><span>14 min</span><span>Research note / 21</span></div>
+        <p class="ai-disclosure">Writing: AI-drafted · Material and review: Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">Contents</p>
+        <nav class="article-toc" aria-label="Contents">
+          <a href="#two">Two builds</a><a href="#hours">The numbers</a><a href="#phases">Six phases</a><a href="#rounds">What each round changed</a><a href="#green">Eight gates, always green</a><a href="#typo">The frozen line</a><a href="#swap">After the swap</a><a href="#where">Where the prompt is</a><a href="#take">Conclusion</a>
+        </nav>
+        <dl class="article-aside-facts"><div><dt>Session</dt><dd>51.5 hours · 25 instructions</dd></div><div><dt>Self-checks</dt><dd>1,189 tool calls · 293 screenshots</dd></div><div><dt>Builds</dt><dd>v1 9,272 lines → v2 14,934</dd></div><div><dt>Archive</dt><dd>DeepSeek session only</dd></div></dl>
+      </aside>
+
+      <article class="article-body">
+        <p>The story has clean timestamps. 15:25 on 15 November 2026, an empty directory; 18:55 on 17 November, a 2 MB single-file game that walks, drives, sails, flies a drone, enters seven shops, climbs a tower, takes five postcards and catches the last ferry. In between: 1,278 model steps, 1,189 tool calls, 293 self-review screenshots.</p>
+        <p>Then the same subject was rewritten by another model. This note separates two questions: <strong>what those first 51 hours were actually doing, round by round, and where the later rewrite differs.</strong></p>
+
+        <div class="stat-strip is-four">
+          <div><strong>51.5</strong><span>hours</span></div>
+          <div><strong>25</strong><span>human instructions</span></div>
+          <div><strong>44</strong><span>self-numbered rounds</span></div>
+          <div><strong>293</strong><span>self-review shots</span></div>
+        </div>
+
+        <h2 id="two">Two builds, one set of records</h2>
+        <p>First, the evidence. I have an exported session archive: a 39 MB JSONL file plus 162 in-flight screenshots. It covers the <strong>first build</strong>, from "make a GTA-like 3D city game" to the bug report "nothing moves when I open it".</p>
+        <p>That build is <code>shanghai-nightrun</code>: 13 JS files, 9,272 lines, a 2.03 MB single file. The second is <code>modu-nightrun</code>: 27 JS files, 14,934 lines, 2.55 MB. By the project owner's account, the final optimisation pass on the second one was done with Fable 5.2 and Opus 5.5.</p>
+        <p><strong>That session is not in this archive.</strong> So everything below about the second build is an artefact comparison, not a process comparison. Note also that the second build has since absorbed a compliance pass (real place names rewritten), so when you compare images, look at geometry, materials, lighting and the systems layer, and subtract the text differences from "what the optimiser did".</p>
+
+        <figure class="article-figure">
+          <img decoding="async" src="/assets/img/nightrun-01-first.jpg" alt="The first render of the first build: boxy towers, a pink sphere, a magenta billboard." width="960" height="540" loading="lazy">
+          <figcaption><span>15:54, 15 November. The first frame of the first build: box towers, a sphere, vertical rain lines.</span><span>Session screenshot</span></figcaption>
+        </figure>
+
+        <h2 id="hours">The numbers first</h2>
+        <p>Unpacked, the 51.5 hours look like this:</p>
+        <table class="compare-table">
+          <thead><tr><th>Item</th><th>Count</th><th>Note</th></tr></thead>
+          <tbody>
+            <tr><td>Human instructions</td><td>25</td><td>Almost all defect reports, not specs</td></tr>
+            <tr><td>Model steps</td><td>1,278</td><td>One tool call or one wrap-up per step</td></tr>
+            <tr><td>Tool calls</td><td>1,189</td><td>bash 725 · image reads 161 · hand-offs 90 · rest 213</td></tr>
+            <tr><td>Self-review screenshots</td><td>293</td><td>Kept in <code>shots/</code>, compared round by round</td></tr>
+            <tr><td>Rounds, self-numbered</td><td>44</td><td>The model labelled its own replies "Round N"</td></tr>
+            <tr><td>Time per round</td><td>~25 min</td><td>Between Round 5 and Round 44</td></tr>
+          </tbody>
+        </table>
+        <p>The round numbering was the model's own habit: change a slice, run the gates, post a screenshot, count a round. By the time it was stopped it had reached 44. Across the whole session, the human spoke 25 times.</p>
+
+        <h2 id="phases">Six phases</h2>
+        <p>Sorted by time, the 25 instructions fall into clear phases. Each quote below is verbatim from the session.</p>
+        <table class="compare-table">
+          <thead><tr><th>When</th><th>What the human said</th><th>What the phase built</th></tr></thead>
+          <tbody>
+            <tr><td>15 Nov 15:27</td><td>"A GTA-like 3D city game… detail first, breadth later"</td><td>Skeleton: single file, three.js, city, car, pedestrians, postcards</td></tr>
+            <tr><td>15 Nov 15:34</td><td>"Don't copy GTA's crime; make it tourist tasks"</td><td>Seven minutes in, the crime loop becomes a tourism loop</td></tr>
+            <tr><td>15 Nov 16:20</td><td>"Can you place the buildings for real from open map data?"</td><td>Overpass, then a rebuild on real OSM roads, buildings and shoreline</td></tr>
+            <tr><td>15 Nov 17:45</td><td>"The buildings are still crude… the car's acceleration and steering are bad"</td><td>Car rebuilt (greenhouse, arches, rims, seams), people, tower setbacks</td></tr>
+            <tr><td>15 Nov 19:09</td><td>"The road is still not detailed enough" / "the mirror reflection looks fake"</td><td>Kerbs, lane paint, crossings, manholes, tactile paving, signals; rough wet asphalt</td></tr>
+            <tr><td>15 Nov 20:37</td><td>"Coming out of the plaza there's a waterfront platform… does yours match?"</td><td>52-building Bund row, ground-floor windows, awnings, the far bank district</td></tr>
+            <tr><td>15 Nov 22:14</td><td>"Clipping… the ferry terminal is blocked by a building… nothing on the river"</td><td>Clipping fixed, ferry corridor cleared, 48 → 110 pedestrians, 6 boats, drone pad</td></tr>
+            <tr><td>16 Nov 15:01</td><td>"Most objects are still crude cuboids, nothing photoreal"</td><td>Rounded car bodies, capsule people, clustered trees, entrances and awnings</td></tr>
+            <tr><td>16 Nov 19:06</td><td>"This bridge does not match reality at all, check it"</td><td>375 steps: Nanpu, Yangpu and Lupu bridges rebuilt; taxi narration added</td></tr>
+            <tr><td>17 Nov 09:32</td><td>"Should we drop the countdown? It would be freer"</td><td>Countdown removed, free roam, HUD becomes ∞</td></tr>
+            <tr><td>17 Nov 18:35</td><td>"I just found that nothing moves when I open it"</td><td>One misspelled variable threw every frame; fixed, back to 8/8</td></tr>
+          </tbody>
+        </table>
+        <p>Look at the shape of those sentences. <strong>Not one says "make it more premium". Every one says "this part is wrong".</strong> The model could fix the point that was named; it could not name the next point itself.</p>
+
+        <h2 id="rounds">What each round changed</h2>
+        <p>A few rounds in detail, because the distance between "crude" and "detailed" is exactly what those 44 rounds were made of.</p>
+        <p><strong>The OSM round.</strong> The model queried Overpass, failed, switched mirrors, queried again; then reprojected building outlines, roads and shoreline into real coordinates and moved the landmarks from hand-placed positions to their OSM positions. The output of that round was not a prettier frame — it was <strong>a new coordinate system for the whole project</strong>. Every car, pedestrian, taxi route and minimap afterwards hung off the real road graph.</p>
+        <p><strong>The "fake reflection" round.</strong> It did not just dim the mirror. It turned the road surface into wet asphalt: Fresnel edge falloff, blur, vertical streaks, ripples, a wet-patch mask. That kind of change barely shows up in a thumbnail, and it is the difference between a rainy night and a shiny floor.</p>
+        <p><strong>The Bund rounds.</strong> The human used the real walk as the reference: out of the ring footbridge, along the promenade, and the far bank should be a wall of stone facades. The model built one row; at 21:03 the human pointed out that the whole opposite bank is buildings too. The next round added the district behind the row, plus physical signage and cordons at the map boundary.</p>
+        <p><strong>The density rounds.</strong> "Not enough stuff on the street" at 23:18 turned into 277 steps: parked cars, shared bikes, pedestrians with bags, vans, a food cart, street furniture — one pass at a time, each followed by the gates and a screenshot.</p>
+        <p><strong>The bridge round.</strong> The first bridges were judged "not remotely real"; the next pass was 375 steps: look up the actual structures of Nanpu, Yangpu and Lupu, rebuild H-shaped pylons, double cable planes and the arch, and add taxi narration along the way.</p>
+
+        <h2 id="green">Eight gates, always green</h2>
+        <p>The project carried a six-plus-two gate harness: shaders, object census, collision, lights, loop, look, plus product and mobile. Almost every wrap-up in the session reads <strong>8/8 PASS</strong>.</p>
+        <p>Yet the human, in the same hours, was saying "crude", "fake", "does not match". That is not a contradiction, it is two different rulers: <strong>the gates measure thresholds, the human measures likeness.</strong> Eight gates can answer "is there a shader error, is collision consistent, are draw calls within budget". They cannot answer "does this building look like Shanghai".</p>
+        <p>What the model did when it hit a budget is more interesting. As the scene grew, draw calls overflowed:</p>
+        <table class="compare-table">
+          <thead><tr><th>Point in the build</th><th>Actual calls</th><th>Response</th></tr></thead>
+          <tbody>
+            <tr><td>Bund row + Puxi district + promenade + drone</td><td>1,236</td><td>Raise the declared budget from 1,000 to 1,300</td></tr>
+            <tr><td>52 Bund facades with shopfronts and awnings</td><td>1,780</td><td>Raise the budget from 1,600 to 1,900</td></tr>
+          </tbody>
+        </table>
+        <p>It said so itself, in the reply: <strong>"This is raising the budget, not optimising."</strong> That sentence carries more information than any 8/8. The model knew what it was doing; it took the easier path.</p>
+
+        <h2 id="typo">The frozen line</h2>
+        <p>At the end of the 51 hours, the human opened the page and found the picture there but the player and the car frozen. The cause was one line:</p>
+        <blockquote><code>if (S.mode === 'foot' &amp;&amp; C.cafeSeat.active)</code> — <code>C.cafeSeat</code> does not exist; it should be <code>S.cafeSeat</code>.</blockquote>
+        <p>That line threw a <code>TypeError</code> every frame, which killed the whole game loop. Nothing to do with taste, nothing to do with architecture: one missing letter. After the fix the page went from one error per frame to zero, and the gates went back to 8/8.</p>
+        <p>It belongs in the record because it marks the real boundary of this pipeline: <strong>293 screenshots, 44 self-review rounds and eight gates did not replace a human opening the page and walking two steps.</strong></p>
+
+        <h2 id="swap">After the swap</h2>
+        <p>The later build was a rewrite by another model. Structure first:</p>
+        <table class="compare-table">
+          <thead><tr><th></th><th>v1 · DeepSeek</th><th>v2 · later rewrite</th></tr></thead>
+          <tbody>
+            <tr><td>JS files</td><td>13</td><td>27</td></tr>
+            <tr><td>Total lines</td><td>9,272</td><td>14,934</td></tr>
+            <tr><td>Game layer</td><td>One 2,762-line closure in <code>30-game.js</code></td><td>Five files, 4,495 lines</td></tr>
+            <tr><td>Single-file size</td><td>2.03 MB</td><td>2.55 MB</td></tr>
+            <tr><td>Phone layer</td><td>None</td><td>Eight apps (messages, errands, map, taxi, album, wallet, journal, timetable)</td></tr>
+            <tr><td>Errands</td><td>None</td><td>Seven, pushed over time, accept / decline / miss</td></tr>
+            <tr><td>Endings</td><td>Lose when the timer runs out</td><td>Four ways home, each scored</td></tr>
+            <tr><td>Touch</td><td>None</td><td>Stick, look, interact, brake, phone button</td></tr>
+          </tbody>
+        </table>
+        <p>The important row is not the line count, it is that the <strong>game layer was split</strong>. v1 packed state, clock, movement, driving, interiors, camera, map and handbook into one 2,762-line closure. v2 separated core, motion, interiors, camera/HUD, map, handbook, errands, phone and the main loop. The first runs, but every new system competes with seven others for the same scope.</p>
+        <p>The systems change is even clearer. v1's loop was "take five postcards and catch the last ferry within 900 seconds". v2 turned the same city into a schedule: 23:00 to 01:00, seven errands arriving over the night, a phone with a battery, a storm and a light show on a timetable, four ways home each with its own scoring. That is not a filter; it is a redesign from "timed task" to "one night".</p>
+
+        <figure class="article-figure">
+          <img decoding="async" src="/assets/img/nightrun-02-v1.jpg" alt="The v1 street at the same camera: dark volumes with dense window grids, hard-edged car, flat road sheen." width="960" height="540" loading="lazy">
+          <figcaption><span>v1, same camera: dark blocks with window grids, hard-edged car, flat road sheen.</span><span>Project screenshot · v1</span></figcaption>
+        </figure>
+
+        <figure class="article-figure">
+          <img decoding="async" src="/assets/img/nightrun-03-v2.jpg" alt="The v2 street at the same camera: warmer facades, softer shadows, rounder car, finer road surface." width="960" height="540" loading="lazy">
+          <figcaption><span>v2, same camera: same composition, a different tier of facades, materials, shadows and road detail.</span><span>Project screenshot · v2</span></figcaption>
+        </figure>
+
+        <p>Same camera preset, same city, same street. The difference is not one asset; it is several things landing together. Facades gained tiers and setbacks, so the windows stopped being a uniform grid. The car went from hard-edged box to surfaces with arches. Shadows and fog pushed the distance back. The road stopped being glitter and became wet asphalt with roughness.</p>
+
+        <figure class="article-figure">
+          <img decoding="async" src="/assets/img/nightrun-04-phone.jpg" alt="The v2 phone interface with an errand card, messages, minimap, stamina and warmth bars." width="1280" height="720" loading="lazy">
+          <figcaption><span>What v2 added is not a UI screenshot but a state layer: phone, errands, battery, weather and endings all hang off the same night.</span><span>Project screenshot · v2</span></figcaption>
+        </figure>
+
+        <h2 id="where">Where the prompt is</h2>
+        <p>"Why was the later build so much better" is easy to answer with "the prompt got better". I do not buy it, at least not from this material.</p>
+        <p>None of the 25 instructions in the archive is longer than two lines: <em>"most objects are still crude cuboids, nothing photoreal"</em>, <em>"this bridge does not match reality at all, check it"</em>, <em>"the road is still not detailed enough"</em>. These are complaints, not specifications. And the original brief for the first build was the more complete one: single file, three.js, real geography, detail first.</p>
+        <p>So the difference is not the prompt. It sits in four capabilities:</p>
+        <ul>
+          <li><strong>Finding the problem yourself.</strong> Every v1 round began after a human named what looked wrong: 25 instructions were the starting points, and the rest of the time the model was polishing on its own.</li>
+          <li><strong>Holding the system at once.</strong> v2 designed phone, errands, clock, weather, endings and scoring as one interlocking layer, instead of patching a 900-second timer.</li>
+          <li><strong>Structural sense.</strong> Splitting a 2,762-line closure into five modules produces no new pixels, but it decides whether an eighth system fits.</li>
+          <li><strong>Judging likeness.</strong> The hardest one. v1 could pass eight gates and still fail the eye; v2 got closer on the same street.</li>
+        </ul>
+        <p>One boundary has to be stated: <strong>v2 does not mean "right first time".</strong> Humans still did the compliance review, the place-name rewrite, the licence split, and the "not for release" positioning in the README. None of that was proposed by the model. Swapping models lowers the cost of <em>building the system correctly</em>; it does not remove the cost of <em>deciding what should be built</em>.</p>
+
+        <h2 id="take">Conclusion</h2>
+        <p>What this measured is not "which model can write code". Both can. <strong>It measured feedback bandwidth.</strong></p>
+        <p>The first build spent 51.5 hours, 25 human corrections, 44 self-review rounds and 293 screenshots to arrive at a city that plays, where every detail still had to be pointed at by a person. The second build rewrote the same city into a system with a schedule, errands and endings, and the same street looks like a different product.</p>
+        <p>And those eight gates were green the whole way. They proved a lot — no shader errors, consistent collision, every light anchored — and they never once proved "good-looking". Which leaves a plain conclusion:</p>
+        <blockquote>The gates can judge whether something is there. Only a person judges whether it looks right. The model does not think it is ugly; the human does.</blockquote>
+        <p>That holds for both builds. The only difference is how many times the human had to say it.</p>
+
+        <p class="article-end"><strong>Reference /</strong> <a href="https://norwinyu.github.io/modu-night-walk/" target="_blank" rel="noopener">Modu Night Walk online</a> · <a href="https://github.com/NorwinYu/modu-night-walk" target="_blank" rel="noopener">source</a> · <a href="/work/#modu-night-walk">case on Work</a> · <a href="https://github.com/NorwinYu/photoreal-game" target="_blank" rel="noopener">photoreal-game skill</a>. Numbers come from the exported session archive (39 MB JSONL, 162 in-flight screenshots) and the two source trees; the second session is not in the archive, so only artefacts are compared. This is an engineering post-mortem, not a product review.</p>
+      </article>
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title"><div class="wrap"><div><p>Next / Evaluation</p><h2 id="next-title">A third of the cost, seven dead ends</h2></div><a href="/en/blog/agent-harness-measured.html"><span>Read next</span><span class="circle-arrow" aria-hidden="true">→</span></a></div></section>
+  </main>
+
+  <footer class="site-footer article-footer"><div class="footer-bottom wrap"><span>© 2026 Norwin Yu</span><nav class="article-footer-links" aria-label="Footer"><a href="/work/">Experiments</a><a href="/ai.html">Local</a><a href="/open-source.html">Open source</a><a href="/competitions.html">Competitions</a><a href="/en/blog/">Journal</a><a href="/about.html">About</a></nav><a href="/en/blog/">All notes <span aria-hidden="true">→</span></a></div></footer>
+</body>
+</html>

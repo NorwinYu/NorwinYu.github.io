@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Norwin Yu">
+  <title>模型不觉得丑 — Norwin Yu</title>
+  <meta name="description" content="51 小时、25 次人工指令、44 轮细节迭代：DeepSeek 把空目录推到一座能玩的雨夜城市，然后换一次模型，同一个机位看起来像另一个项目。">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="模型不觉得丑 — Norwin Yu">
+  <meta property="og:description" content="51 小时、25 次人工指令、44 轮细节迭代：同一个机位，两个模型，两种东西。">
+  <meta property="og:image" content="https://norwinyu.github.io/assets/img/nightrun-03-v2.jpg">
+  <meta property="og:locale" content="zh_CN">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="preload" href="/assets/fonts/inter-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="canonical" href="https://norwinyu.github.io/blog/nightrun-forty-four-rounds.html">
+  <link rel="alternate" hreflang="en" href="https://norwinyu.github.io/en/blog/nightrun-forty-four-rounds.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://norwinyu.github.io/blog/nightrun-forty-four-rounds.html">
+  <link rel="alternate" hreflang="x-default" href="https://norwinyu.github.io/en/blog/nightrun-forty-four-rounds.html">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <link rel="stylesheet" href="/assets/css/article.css">
+  <script src="/assets/js/site.js" defer></script>
+</head>
+<body class="article-page">
+  <a class="skip-link" href="#main">跳到正文</a>
+  <header class="site-header article-header" data-header>
+    <div class="header-inner wrap">
+      <a class="brand" href="/zh/" aria-label="Norwin Yu — 首页"><span class="brand-mark" aria-hidden="true">N<span>Y</span></span><span class="brand-text"><strong>Norwin Yu</strong><small>AI 使用研究</small></span></a>
+      <nav class="article-nav" aria-label="文章导航"><a href="/zh/work/">实验</a><a href="/zh/ai.html">本地</a><a href="/blog/">日志</a><a href="/zh/about.html">关于</a></nav>
+      <a class="lang-switch" href="/en/blog/nightrun-forty-four-rounds.html" hreflang="en">EN</a>
+      <span class="availability"><i aria-hidden="true"></i>开放研究交流</span>
+    </div>
+  </header>
+
+  <main id="main">
+    <header class="article-hero">
+      <div class="wrap">
+        <a class="back-link" href="/blog/"><span aria-hidden="true">←</span> 全部笔记</a>
+        <p class="article-kicker"><span class="is-accent">系统</span><i aria-hidden="true"></i><span>会话归档</span><i aria-hidden="true"></i><span>模型对比</span></p>
+        <h1>模型不觉得丑，<br><em>人觉得。</em></h1>
+        <p class="article-deck">51 小时、25 次人工指令、44 轮细节迭代：DeepSeek 从一个空目录推到一座能玩的雨夜城市。然后换一次模型，同一个机位看起来像另一个项目。</p>
+        <p class="article-cn">差距不在提示词里，在谁能同时握住整个系统。</p>
+        <div class="article-meta"><span><i aria-hidden="true"></i>Norwin Yu</span><span>2026 年 11 月</span><span>14 分钟</span><span>研究笔记 / 21</span></div>
+        <p class="ai-disclosure">写作：AI 代写 · 素材与校对：Norwin Yu</p>
+      </div>
+    </header>
+
+    <div class="article-layout wrap">
+      <aside class="article-aside">
+        <p class="mono-label">目录</p>
+        <nav class="article-toc" aria-label="文章目录">
+          <a href="#two">两个版本</a><a href="#hours">先看数字</a><a href="#phases">六个阶段</a><a href="#rounds">每一轮在改什么</a><a href="#green">八道门一直绿着</a><a href="#typo">卡死的一行</a><a href="#swap">换模型之后</a><a href="#where">提示在哪</a><a href="#take">结论</a>
+        </nav>
+        <dl class="article-aside-facts"><div><dt>会话</dt><dd>51.5 小时 · 25 次人工指令</dd></div><div><dt>自检</dt><dd>1,189 次工具调用 · 293 张截图</dd></div><div><dt>版本</dt><dd>v1 9,272 行 → v2 14,934 行</dd></div><div><dt>归档</dt><dd>只含 DeepSeek 那一段</dd></div></dl>
+      </aside>
+
+      <article class="article-body">
+        <p>这段故事有一个完整的时间戳。2026 年 11 月 15 日 15:25，一个空目录；11 月 17 日 18:55，一个 2 MB 的单文件游戏，能走、能开车、能坐船、能飞无人机，能进七间店、能上塔顶、能拍五张明信片、能赶末班渡轮。中间是 1,278 个模型步、1,189 次工具调用、293 张自检截图。</p>
+        <p>再往后，同一个题材被另一个模型重写了一遍。这篇文章想把两件事分开说清楚：<strong>前期那 51 小时，每一轮到底在做什么；以及后来那次更换，究竟差在哪里。</strong></p>
+
+        <div class="stat-strip is-four">
+          <div><strong>51.5</strong><span>小时</span></div>
+          <div><strong>25</strong><span>次人工指令</span></div>
+          <div><strong>44</strong><span>轮自编号迭代</span></div>
+          <div><strong>293</strong><span>张自检截图</span></div>
+        </div>
+
+        <h2 id="two">两个版本，一份记录</h2>
+        <p>先说清楚材料。我手上有一份导出的会话归档（39 MB 的 JSONL 加 162 张中间截图），它覆盖的是<strong>第一版</strong>：从「做一个类似 GTA 的 3D 城市游戏」开始，到「打开以后都动不了」这个 bug 为止。</p>
+        <p>第一版是 <code>shanghai-nightrun</code>：13 个 JS 文件、9,272 行、2.03 MB 单文件。第二版是 <code>modu-nightrun</code>：27 个 JS 文件、14,934 行、2.55 MB。按项目所有者的说法，第二版的最后一轮优化由 Fable 5.2 与 Opus 5.5 完成。</p>
+        <p><strong>那份会话不在这个归档里。</strong>所以下面关于第二版的一切，只能比产物，不能比过程。另外，第二版现在还叠了我们后来做的合规改名（陆家嘴 → 临江嘴、外滩 → 澜滩、浦西 → 申西），所以看对比图时，只看几何、材质、光照和系统层，把文字差异从「优化成果」里扣掉。</p>
+
+        <figure class="article-figure">
+          <img decoding="async" src="/assets/img/nightrun-01-first.jpg" alt="第一版的首个渲染帧：方块状的塔楼、粉色球体、洋红色广告牌。" width="960" height="540" loading="lazy">
+          <figcaption><span>11 月 15 日 15:54，第一版的第一帧：塔是方块，球是球，雨是竖线。</span><span>会话中间截图</span></figcaption>
+        </figure>
+
+        <h2 id="hours">先看数字</h2>
+        <p>把 51.5 小时拆开看，节奏是这样的：</p>
+        <table class="compare-table">
+          <thead><tr><th>项目</th><th>数量</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td>人工指令</td><td>25</td><td>几乎全是缺陷报告，不是需求文档</td></tr>
+            <tr><td>模型步</td><td>1,278</td><td>平均每步一次工具调用或一次收尾</td></tr>
+            <tr><td>工具调用</td><td>1,189</td><td>bash 725 · 看图 161 · 交付 90 · 其他 213</td></tr>
+            <tr><td>自检截图</td><td>293</td><td>存在 <code>shots/</code> 里，逐轮对比</td></tr>
+            <tr><td>自编号轮次</td><td>44</td><td>模型自己在回复里用「Round N」编号</td></tr>
+            <tr><td>平均一轮</td><td>约 25 分钟</td><td>Round 5 到 Round 44 的间隔</td></tr>
+          </tbody>
+        </table>
+        <p>「Round」这个编号是模型自己起的。它每改一小块、跑一次验收、贴一张截图，就记一轮。到用户叫停时，它已经数到第 44 轮。整段会话里，人只开口了 25 次。</p>
+
+        <h2 id="phases">六个阶段</h2>
+        <p>把 25 条指令按时间排开，会看到很清楚的阶段。下面每一条都是用户原话，没改。 </p>
+        <table class="compare-table">
+          <thead><tr><th>时间</th><th>人对它说的话</th><th>这一阶段做了什么</th></tr></thead>
+          <tbody>
+            <tr><td>11-15 15:27</td><td>「做一个类似 GTA 的 3D 城市游戏……先满足精细要求再广度」</td><td>立骨架：单文件、three.js、城市、车、行人、明信片</td></tr>
+            <tr><td>11-15 15:34</td><td>「不要学 GTA 那种做犯罪的事情……可以开车，搭车，走路，还有游客任务」</td><td>七分钟内把犯罪循环换成游客循环</td></tr>
+            <tr><td>11-15 16:20</td><td>「能不能通过开源数据地图，真实放置建筑」</td><td>接 Overpass，按 OSM 真实坐标重建路网、建筑、岸线</td></tr>
+            <tr><td>11-15 17:45</td><td>「建筑还是很粗糙……车的加速转向不尽人意」</td><td>重做车（温室、轮拱、轮圈、缝隙）、人物、塔楼退台</td></tr>
+            <tr><td>11-15 19:09</td><td>「路况还是不够精细」「路面的镜面反射好假」</td><td>路缘石、车道线、斑马线、井盖、盲道、信号灯；湿路面改粗糙反射</td></tr>
+            <tr><td>11-15 20:37</td><td>「从正大广场出来就有个亲水平台……和你呈现的一样么？差在哪？」</td><td>外滩 52 栋石构建筑带、底层橱窗、入口雨棚、对岸城区</td></tr>
+            <tr><td>11-15 22:14</td><td>「穿模了……渡口有楼挡住了……江面也没有东西」</td><td>修穿模、清渡口走廊、行人 48 → 110、江面 6 艘船、无人机停机坪</td></tr>
+            <tr><td>11-16 15:01</td><td>「很多物体都还是很粗糙的长方体，一点也不写实」</td><td>圆角车身、胶囊人物、成簇树、入口门洞与雨棚</td></tr>
+            <tr><td>11-16 19:06</td><td>「这个桥一点不符合实际，请你仔细查查」</td><td>375 步重做南浦／杨浦／卢浦三桥，加出租车沿途报站</td></tr>
+            <tr><td>11-17 09:32</td><td>「我在想是不是不要倒计时，这样更自由」</td><td>去倒计时，改自由漫步，HUD 改成 ∞</td></tr>
+            <tr><td>11-17 18:35</td><td>「我刚刚发现，打开以后，都动不了目前」</td><td>一个变量名拼错，整帧抛异常；修好后 8/8</td></tr>
+          </tbody>
+        </table>
+        <p>注意这些句子的形状：<strong>没有一条是「请把它做得更高级」，全部是「这里不对」。</strong>模型每一轮都能把被指出的那一个点修好；但它不会自己指出下一个点。</p>
+
+        <h2 id="rounds">每一轮在改什么</h2>
+        <p>挑几轮说细一点，因为「粗糙」和「精细」之间的差别，正是这 44 轮的内容。</p>
+        <p><strong>接上 OSM 的那一轮。</strong>模型先用 Overpass 拉数据，失败，换镜像，再拉；然后把建筑轮廓、路网、岸线按真实坐标重投影，地标从手摆的位置挪到 OSM 的实际位置。这一轮的产出不是更好看的画面，而是<strong>整个项目换了一套坐标系</strong>：之后所有的车、行人、出租车的寻路、小地图，全部改挂到真实路网上。</p>
+        <p><strong>「镜面太假」的那一轮。</strong>它没有把反射调暗就结束，而是把路面从镜面改成湿沥青：Fresnel 边缘、模糊、竖向拉丝、涟漪、湿斑遮罩。这类改动在截图里不显眼，但它决定了雨夜是不是像雨夜。</p>
+        <p><strong>外滩那几轮。</strong>用户拿真实动线做对照——从环形天桥出来，沿滨江大道走到亲水平台，正面应该是一片石构建筑带。模型先只做了一排，用户在 21:03 指出「对面一片都是建筑，你也得实现吧」；于是补出整个对岸街区、边界处的实体标识与警戒线。</p>
+        <p><strong>街道密度那三轮。</strong>11-15 23:18 那条「路上东西也不够多」，模型一口气跑了 277 步：路边停车、共享单车、行人背包、面包车、餐车、街道家具，一轮接一轮地加，每加一次跑一遍验收，再贴一张图。</p>
+        <p><strong>桥那一轮。</strong>第一版的三座桥被用户判定「一点不符合实际」，接下来那一次是 375 步：查南浦、杨浦、卢浦的实际结构，重做 H 形桥塔、双索面拉索、拱肋，顺手加了出租车沿途报站。</p>
+
+        <h2 id="green">八道门一直绿着</h2>
+        <p>这个项目挂着一套六加二道验收：shader、对象普查、碰撞、灯光、回路、观感，加产品与移动端。整套流程在会话里几乎每次收尾都是 <strong>8/8 PASS</strong>。</p>
+        <p>但用户在同一个时间段里说的是「粗糙」「好假」「不符合实际」。这不是自相矛盾，这是两种尺子：<strong>门测的是阈值，人测的是像不像。</strong>八道门能回答「有没有 shader 错误、碰撞是否一致、draw call 是否超标」，回答不了「这栋楼像不像上海」。 </p>
+        <p>更值得注意的是模型面对预算时做了什么。场景一复杂，draw call 就超：</p>
+        <table class="compare-table">
+          <thead><tr><th>节点</th><th>实际 calls</th><th>处理</th></tr></thead>
+          <tbody>
+            <tr><td>外滩一排 + 浦西街区 + 亲水平台 + 无人机</td><td>1,236</td><td>把声明预算从 1,000 提到 1,300</td></tr>
+            <tr><td>外滩 52 栋加底层橱窗与雨棚</td><td>1,780</td><td>把预算从 1,600 提到 1,900</td></tr>
+          </tbody>
+        </table>
+        <p>它自己在回复里写明了这件事，原话是：<strong>「这是提高预算，不是优化。」</strong>这句话比任何 8/8 都更有信息量——模型知道自己在做什么，它只是选了更容易的那条路。</p>
+
+        <h2 id="typo">卡死的那一行</h2>
+        <p>51 小时的最后，用户打开页面，发现画面在、但人物和车完全不动。原因是一行：</p>
+        <blockquote><code>if (S.mode === 'foot' &amp;&amp; C.cafeSeat.active)</code> —— <code>C.cafeSeat</code> 不存在，应该是 <code>S.cafeSeat</code>。</blockquote>
+        <p>这一行每一帧都抛 <code>TypeError</code>，整个游戏循环直接中断。它和审美无关，和架构无关，就是少敲了一个字母。修完之后，页面错误从每帧一条回到 0 条，验收又回到 8/8。</p>
+        <p>这件事值得写进来，因为它标出了这套流程的真实边界：<strong>293 张截图、44 轮自检、8 道门，都没能替代人打开页面走两步。</strong></p>
+
+        <h2 id="swap">换模型之后</h2>
+        <p>后来的版本是另一个模型重写的。先看结构：</p>
+        <table class="compare-table">
+          <thead><tr><th></th><th>v1 · DeepSeek</th><th>v2 · 后一次重写</th></tr></thead>
+          <tbody>
+            <tr><td>JS 文件</td><td>13</td><td>27</td></tr>
+            <tr><td>总行数</td><td>9,272</td><td>14,934</td></tr>
+            <tr><td>游戏层</td><td><code>30-game.js</code> 单闭包 2,762 行</td><td>拆成 5 个文件，共 4,495 行</td></tr>
+            <tr><td>单文件体积</td><td>2.03 MB</td><td>2.55 MB</td></tr>
+            <tr><td>手机 App 层</td><td>无</td><td>8 个 App（消息、委托、地图、打车、相册、钱包、手账、时刻）</td></tr>
+            <tr><td>委托</td><td>无</td><td>7 个，随时间推送，可接受／婉拒／错过</td></tr>
+            <tr><td>结局</td><td>倒计时结束判负</td><td>4 种回家方式，全部结算评级</td></tr>
+            <tr><td>触屏</td><td>无</td><td>摇杆、环视、互动、手刹、手机键</td></tr>
+          </tbody>
+        </table>
+        <p>最关键的一条不是行数，是<strong>游戏层被拆开了</strong>：v1 把状态、时钟、移动、驾驶、室内、相机、地图、手册全部塞进一个 2,762 行的闭包里；v2 按关注点分成核心、运动、室内、相机/HUD、地图、手册、委托、手机、主循环。前者能跑，但每加一个系统都在和另外七个系统抢同一块作用域。</p>
+        <p>系统层的变化更明显：v1 的核心循环是「900 秒内拍五张明信片、赶末班渡轮」；v2 把这一夜做成了一份日程——23:00 到 01:00，两小时，七个委托陆续进来，手机有电量，暴雨和灯光秀按时刻表发生，四种回家方式各自结算。这不是加滤镜，是把一个「倒计时任务」重新设计成「一夜的生活」。</p>
+
+        <figure class="article-figure">
+          <img decoding="async" src="/assets/img/nightrun-02-v1.jpg" alt="第一版同机位街景：深色楼体、密集窗格、方块状车身。" width="960" height="540" loading="lazy">
+          <figcaption><span>v1 同一机位：建筑是带窗格的深色体块，车是硬边，路面反光偏平。</span><span>项目截图 · v1</span></figcaption>
+        </figure>
+
+        <figure class="article-figure">
+          <img decoding="async" src="/assets/img/nightrun-03-v2.jpg" alt="第二版同机位街景：暖色立面、柔和阴影、更圆的车身与更细的路面。" width="960" height="540" loading="lazy">
+          <figcaption><span>v2 同一机位：同样的构图，立面层次、材质、阴影与路面细节全部换了一档。</span><span>项目截图 · v2</span></figcaption>
+        </figure>
+
+        <p>两张图是同一个相机预设、同一个城市、同一条街。差别不在某一件模型，而在这几件事同时发生：立面有了分层与退台，窗格不再是均匀点阵；车从硬边方块变成有轮拱和曲面的形体；阴影和雾把远景推远了；路面从「亮片」变成有粗糙度的湿沥青。</p>
+
+        <figure class="article-figure">
+          <img decoding="async" src="/assets/img/nightrun-04-phone.jpg" alt="第二版的手机界面：委托卡片、消息、小地图与体力体温条同时在场。" width="1280" height="720" loading="lazy">
+          <figcaption><span>v2 新增的不是一张 UI 图，而是一整层状态：手机、委托、电量、天气与结局都挂在这一夜上。</span><span>项目截图 · v2</span></figcaption>
+        </figure>
+
+        <h2 id="where">提示在哪？</h2>
+        <p>「后来那次为什么好那么多」这个问题，很容易被回答成「提示写得更好」。我不这么看，至少在这份材料里找不到证据。</p>
+        <p>归档里的 25 条指令，最长的一条也没超过两行：<em>「很多物体都还是很粗糙的长方体，一点也不写实」</em>、<em>「这个桥一点不符合实际，请你仔细查查」</em>、<em>「路况还是不够精细」</em>。这些不是规格书，是抱怨。第一版最初的 brief 反而更完整：单文件、three.js、真实地理、细节优先。</p>
+        <p>所以差距不在提示词，而在这几处能力：</p>
+        <ul>
+          <li><strong>自己找问题的能力。</strong>v1 的每一轮都建立在「人先指出哪里丑」之上：25 条指令是起点，其余时间都是模型自己在一轮轮打磨。</li>
+          <li><strong>同时握住整个系统的能力。</strong>v2 一次把手机、委托、时钟、天气、结局、结算设计成互相咬合的一层，而不是在 900 秒倒计时上继续打补丁。</li>
+          <li><strong>结构感。</strong>把 2,762 行的单闭包拆成 5 个模块，本身不产生新画面，但它决定了第 8 个系统能不能塞进去。</li>
+          <li><strong>对「像不像」的判断。</strong>这是最难的一条。v1 能通过 8 道门，但过不了人眼；v2 在同一条街上做到了更像。</li>
+        </ul>
+        <p>必须补一句边界：<strong>第二版并不等于「一次就成」。</strong>它之后仍然有人做的事——合规审查、真实地名改写、许可分层、把「不发行」写进 README——这些都不是模型自己提出来的。换模型降低的是「把系统做对」的成本，没有消除「判断什么该做」的成本。</p>
+
+        <h2 id="take">结论</h2>
+        <p>这次实验量到的，不是「哪个模型会写代码」。两个都会。<strong>量到的是反馈带宽。</strong></p>
+        <p>第一版用掉了 51.5 小时、25 次人工纠错、44 轮自检、293 张截图，换来一个能玩、但每一处细节都需要人指认的城市。第二版把同一座城市重写成一个有日程、有委托、有结局的系统，同一条街看起来像另一款东西。</p>
+        <p>而那 8 道门始终是绿的。它们证明了很多事——shader 没坏、碰撞一致、灯都有锚点——唯独没有证明「好看」。所以最后能拿走的结论很朴素：</p>
+        <blockquote>门可以判断「有没有」，人才能判断「像不像」。模型不觉得丑，人觉得。</blockquote>
+        <p>这句话对两版都成立。区别只是：第一版需要人说 25 次，第二版需要人说的次数少一些。</p>
+
+        <p class="article-end"><strong>参考 /</strong> <a href="https://norwinyu.github.io/modu-night-walk/" target="_blank" rel="noopener">魔都夜行在线版</a> · <a href="https://github.com/NorwinYu/modu-night-walk" target="_blank" rel="noopener">源码</a> · <a href="/zh/work/#modu-night-walk">Work 里的案例</a> · <a href="https://github.com/NorwinYu/photoreal-game" target="_blank" rel="noopener">photoreal-game skill</a>。数字来自导出的会话归档（39 MB JSONL、162 张中间截图）与两个版本的源码；第二版的会话不在归档内，只比产物。这是一次工程复盘，不是产品评测。</p>
+      </article>
+      <div aria-hidden="true"></div>
+    </div>
+
+    <section class="next-note" aria-labelledby="next-title"><div class="wrap"><div><p>下一篇 / 评测</p><h2 id="next-title">三分之一的成本，七个反例</h2></div><a href="/blog/agent-harness-measured.html"><span>继续阅读</span><span class="circle-arrow" aria-hidden="true">→</span></a></div></section>
+  </main>
+
+  <footer class="site-footer article-footer"><div class="footer-bottom wrap"><span>© 2026 Norwin Yu</span><nav class="article-footer-links" aria-label="页脚"><a href="/zh/work/">实验</a><a href="/zh/ai.html">本地</a><a href="/zh/open-source.html">开源</a><a href="/zh/competitions.html">竞赛</a><a href="/blog/">日志</a><a href="/zh/about.html">关于</a></nav><a href="/blog/">全部笔记 <span aria-hidden="true">→</span></a></div></footer>
+</body>
+</html>
